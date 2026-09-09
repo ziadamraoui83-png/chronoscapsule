@@ -600,7 +600,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === messageModal) messageModal.classList.remove('active');
     });
     addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') { messageModal.classList.remove('active'); hideTooltip(); }
+        if (e.key === 'Escape') { messageModal.classList.remove('active'); deepModal.classList.remove('active'); hideTooltip(); }
     });
 
     messageText.addEventListener('input', (e) => {
@@ -672,4 +672,45 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add('live')));
         }
     }
+        /* ═══ كبسولة من الأعماق ═══ */
+    const deepBtn   = document.getElementById('deepBtn');
+    const deepModal = document.getElementById('deepModal');
+    const deepText  = document.getElementById('deepText');
+    const deepMeta  = document.getElementById('deepMeta');
+    let lastDeepId  = null;
+
+    async function openDeep() {
+        if (!sb) { showToast(CCI18N.lang==='ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️'); return; }
+        const { data, error } = await sb.rpc('get_deep_capsule', { p_exclude_id: lastDeepId });
+        if (error) { showToast('🌊 ' + error.message, '⚠️'); return; }
+        if (!data || !data.length) {
+            deepText.textContent = CCI18N.t('deep_empty');
+            deepText.classList.add('deep-empty');
+            deepMeta.innerHTML = '';
+            lastDeepId = null;
+        } else {
+            const r = data[0];
+            lastDeepId = r.o_id;
+            deepText.classList.remove('deep-empty');
+            deepText.textContent = '“' + r.o_text + '”';
+            const when = new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
+                { day:'numeric', month:'long', year:'numeric' }).format(new Date(r.o_created));
+            const ci = COUNTRY_INFO[r.o_country] || COUNTRY_INFO.OTHER;
+            deepMeta.innerHTML =
+                `<span>${CCI18N.countryLabel(r.o_country)}</span>` +
+                `<span>${(CCI18N.lang==='ar'?'بقلم':'by')} <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
+                `<span>${when}</span>` +
+                `<span>👁️ <b>${r.o_reads ?? 0}</b> ${CCI18N.t('deep_reads')}</span>`;
+            /* كل غَوصة تُحسب قراءة */
+            sb.rpc('read_capsule', { p_id: r.o_id });
+        }
+        deepModal.classList.add('active');
+    }
+
+    deepBtn.addEventListener('click', openDeep);
+    document.getElementById('deepAgain')?.addEventListener('click', openDeep);
+    document.getElementById('deepClose')?.addEventListener('click', () => deepModal.classList.remove('active'));
+    deepModal.addEventListener('click', (e) => {
+        if (e.target === deepModal) deepModal.classList.remove('active');
+    });
 });
