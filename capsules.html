@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كبسولتي | Chronos Capsule</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* أنماط خاصة بهذه الصفحة فقط */
+        body{overflow-y:auto}
+        .page{max-width:760px;margin:0 auto;padding:110px 20px 60px;min-height:100vh}
+        .page-head{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:34px}
+        .page-title{font-size:1.9rem;font-weight:900;color:#fff}
+        .back-link{color:#a78bfa;text-decoration:none;font-size:14px;display:flex;align-items:center;gap:7px;transition:color .3s}
+        .back-link:hover{color:#fff}
+        .code-box{background:rgba(15,23,42,.7);border:1px solid rgba(139,92,246,.4);border-radius:16px;
+            padding:22px;margin-bottom:30px;display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+            backdrop-filter:blur(10px)}
+        .code-box input{flex:1;min-width:200px;padding:12px 14px;background:rgba(0,0,0,.35);
+            border:1px solid rgba(255,255,255,.2);border-radius:10px;color:#fff;font-size:1rem;outline:none;
+            transition:border-color .3s;direction:ltr;text-align:center;font-family:monospace;letter-spacing:2px}
+        .code-box input:focus{border-color:#8b5cf6}
+        .code-box button{padding:12px 22px;background:linear-gradient(135deg,#6d28d9,#2563eb);
+            border:none;border-radius:10px;color:#fff;font-weight:700;cursor:pointer;font-size:.95rem;
+            transition:transform .3s,box-shadow .3s}
+        .code-box button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(99,102,241,.4)}
+        .capsule-list{display:flex;flex-direction:column;gap:16px}
+        .cap-card{background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.12);border-radius:16px;
+            padding:20px 22px;backdrop-filter:blur(10px);transition:border-color .3s}
+        .cap-card:hover{border-color:rgba(139,92,246,.5)}
+        .cap-card.in-orbit{border-inline-start:3px solid #fbbf24}
+        .cap-card.arrived{border-inline-start:3px solid #34d399}
+        .cap-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px}
+        .cap-status{font-size:12px;padding:5px 12px;border-radius:999px;font-weight:700}
+        .cap-status.orbit{background:rgba(251,191,36,.15);color:#fbbf24}
+        .cap-status.done{background:rgba(52,211,153,.15);color:#34d399}
+        .cap-date{font-size:12px;color:#94a3b8;direction:ltr}
+        .cap-text{color:#e2e8f0;line-height:1.7;margin-bottom:14px}
+        .cap-stats{display:flex;gap:18px;font-size:12.5px;color:#94a3b8;flex-wrap:wrap}
+        .cap-stats b{color:#a78bfa;direction:ltr;display:inline-block}
+        .cap-countdown{font-size:13px;color:#fbbf24;margin-top:8px;direction:ltr;text-align:left}
+        .cap-countdown.done-label{color:#34d399}
+        .empty-state{text-align:center;padding:70px 20px;color:#94a3b8}
+        .empty-state .ico{font-size:52px;margin-bottom:16px;opacity:.7}
+        .empty-state p{margin-bottom:22px;line-height:1.7}
+        .empty-state a{display:inline-block;padding:12px 26px;background:linear-gradient(135deg,#6d28d9,#2563eb);
+            color:#fff;border-radius:12px;text-decoration:none;font-weight:700;transition:transform .3s}
+        .empty-state a:hover{transform:translateY(-3px)}
+        .hint{font-size:12px;color:#64748b;margin-top:14px;line-height:1.6}
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="page-head">
+        <h1 class="page-title">🛰️ كبسولاتي</h1>
+        <a href="index.html" class="back-link">← العودة إلى الكوكب</a>
+    </div>
+
+    <!-- فتح كبسولة بالمفتاح -->
+    <div class="code-box">
+        <input type="text" id="codeInput" placeholder="أدخل مفتاح كبسولة…" maxlength="20">
+        <button id="openCodeBtn">فتح الكبسولة</button>
+    </div>
+    <div class="hint">💡 المفتاح يظهر لك في رسالة النجاح عند إرسال أي كبسولة. احفظه أو شارك رابط كبسولتك: <span style="direction:ltr;unicode-bidi:isolate">…/capsules.html?capsule=CODE</span></div>
+
+    <!-- قائمة كبسولات هذا الجهاز -->
+    <div class="capsule-list" id="capList"></div>
+
+    <div class="empty-state" id="emptyState" style="display:none">
+        <div class="ico">🚀</div>
+        <p>لم تطلق أي كبسولة من هذا المتصفح بعد.<br>أول رسالة لك تنتظرك على الكوكب!</p>
+        <a href="index.html">أطلق كبسولتك الأولى</a>
+    </div>
+</div>
+
+<div id="ccToast" class="cc-toast"><span class="ico">🚀</span><span class="txt"></span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="i18n.js"></script>
+<script>
+(function(){
+    "use strict";
+    const CC_CONFIG = { SUPABASE_URL: 'https://sylnhrtgrxfacskjaxlq.co', SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ' };
+    const sb = (CC_CONFIG.SUPABASE_URL && window.supabase)
+        ? supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY) : null;
+
+    const $ = s => document.querySelector(s);
+    const toast = (m, i='🚀') => {
+        const t = $('#ccToast');
+        t.querySelector('.ico').textContent = i; t.querySelector('.txt').textContent = m;
+        t.classList.add('show');
+        setTimeout(()=>t.classList.remove('show'), 3000);
+    };
+    const T = k => (window.CCI18N ? CCI18N.t(k) : k);
+    const moodIco = { hope:'🌅', nostalgia:'🌙', secret:'🤫', confession:'🎭', bold:'💥' };
+
+    function fmt(d){
+        return new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
+            {day:'numeric',month:'long',year:'numeric'}).format(new Date(d));
+    }
+    function countdown(target){
+        const diff = new Date(target) - Date.now();
+        if (diff <= 0) return null;
+        const d = Math.floor(diff/864e5), h = Math.floor(diff%864e5/36e5), m = Math.floor(diff%36e5/6e4);
+        return (d>0? d+'d ':'') + (h>0||d>0? h+'h ':'') + m+'m';
+    }
+
+    function card(c){
+        const arrived = !c.arrival_at || new Date(c.arrival_at) <= new Date();
+        const el = document.createElement('div');
+        el.className = 'cap-card ' + (arrived?'arrived':'in-orbit');
+        el.innerHTML = `
+            <div class="cap-top">
+                <span class="cap-status ${arrived?'done':'orbit'}">${arrived? '✅ هبطت على الكوكب' : '🛰️ تسبح في المدار'}</span>
+                <span class="cap-date">${fmt(c.arrival_at || c.created_at)}</span>
+            </div>
+            <div class="cap-text">${(c.o_text||c.text||'').replace(/</g,'&lt;')}</div>
+            <div class="cap-stats">
+                <span>${moodIco[c.o_mood||c.mood]||'✨'} ${c.o_country? CCI18N.countryLabel(c.o_country) : ''}</span>
+                <span>👁️ <b>${c.o_reads??c.reads??0}</b> ${CCI18N.lang==='ar'?'قراءة':'reads'}</span>
+                ${c.o_code||c.code ? `<span>🔑 <b style="font-size:11px">${(c.o_code||c.code).slice(0,8)}…</b></span>` : ''}
+            </div>
+            ${!arrived ? `<div class="cap-countdown">⏳ T-${countdown(c.arrival_at)}</div>` : ''}
+        `;
+        return el;
+    }
+
+    async function loadMine(){
+        const list = $('#capList');
+        list.innerHTML = '';
+        let items = [];
+
+        if (sb) {
+            const dev = localStorage.getItem('cc_device');
+            const { data, error } = await sb.rpc('get_my_capsules', { p_device_hash: dev });
+            if (!error && data) items = data.map(r => ({
+                code:r.o_code, text:r.o_text, mood:r.o_mood, country:r.o_country,
+                arrival_at:r.o_arrival_at, created_at:r.o_created, reads:r.o_reads
+            }));
+        }
+        if (!items.length) {
+            try {
+                items = (JSON.parse(localStorage.getItem('chronos_capsules_v1'))||[])
+                    .filter(m=>m.author).map(m=>({text:m.text,mood:m.mood,country:m.country,
+                        arrival_at:m.arrivalISO||new Date().toISOString(),created_at:m.arrivalISO||new Date().toISOString(),reads:0}));
+            } catch(e){}
+        }
+
+        if (!items.length){ $('#emptyState').style.display='block'; return; }
+        items.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
+        items.forEach(c => list.appendChild(card(c)));
+    }
+
+    async function openByCode(code){
+        if (!code.trim()){ toast(T('pick_date'),'⚠️'); return; }
+        if (!sb){ toast('هذه الميزة تحتاج ربط قاعدة البيانات','⚠️'); return; }
+        const { data, error } = await sb.rpc('open_by_code', { p_code: code.trim() });
+        if (error || !data || !data.length){ toast('كبسولة غير موجودة أو المفتاح خاطئ','⚠️'); return; }
+        const r = data[0];
+        const list = $('#capList');
+        const c = card({ code:r.o_code, text:r.o_text, mood:r.o_mood, country:r.o_country,
+            arrival_at:r.o_arrival_at, created_at:r.o_created, reads:r.o_reads });
+        list.prepend(c);
+        c.scrollIntoView({behavior:'smooth', block:'center'});
+        if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at) <= new Date())
+            sb.rpc('read_capsule', { p_id: r.o_id });
+    }
+
+    $('#openCodeBtn').addEventListener('click', ()=> openByCode($('#codeInput').value));
+    $('#codeInput').addEventListener('keydown', e=>{ if(e.key==='Enter') openByCode(e.target.value); });
+
+    const urlCode = new URLSearchParams(location.search).get('capsule');
+    if (urlCode){ $('#codeInput').value = urlCode; openByCode(urlCode); }
+
+    loadMine();
+})();
+</script>
+</body>
+</html>
+```[cite: 6]
