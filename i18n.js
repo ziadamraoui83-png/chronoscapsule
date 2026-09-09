@@ -45,6 +45,11 @@
       e_ARRIVAL_TOO_FAR: 'أقصى مدة للسفر عبر الزمن: 5 سنوات',
       e_REPLY_RATE_LIMITED: 'ردّك السابق ما زال يطير… انتظر دقيقة 💫',
       e_CAPSULE_NOT_OPEN: 'هذه الكبسولة لم تصل بعد أو غير متاحة',
+      deep_btn: 'كبسولة من الأعماق',
+      deep_title: 'من أعماق المحيط',
+      deep_again: 'غَوْصة أخرى',
+      deep_empty: 'المحيط هادئ الآن… لا توجد كبسولات قديمة كفاية بعد. عُد بعد يومين 🌊',
+      deep_reads: 'قراءة',
       e_FAIL: 'تعذر الإطلاق، حاول من جديد'
     },
     en: {
@@ -89,6 +94,11 @@
       e_ARRIVAL_TOO_FAR: 'Maximum time travel: 5 years',
       e_REPLY_RATE_LIMITED: 'Your previous reply is still in flight… wait a minute 💫',
       e_CAPSULE_NOT_OPEN: 'This capsule has not arrived yet, or is unavailable',
+      deep_btn: 'Capsule from the deep',
+      deep_title: 'From the ocean depths',
+      deep_again: 'Dive again',
+      deep_empty: 'The ocean is calm… no old-enough capsules yet. Come back in two days 🌊',
+      deep_reads: 'reads',
       e_FAIL: 'Launch failed, please try again'
     }
   };
