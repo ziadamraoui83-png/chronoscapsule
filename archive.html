@@ -3,604 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>أرشيف الكبسولات | Chronos Capsule</title>
-
-    <!-- SEO & Description -->
-    <meta name="description" content="تصفّح أرشيف كبسولات الزمن الكونية من 48 دولة — رسائل أمل وحنين وأسرار واعترافات وصلت من كل أنحاء العالم. صفّها حسب الدولة أو الشعور أو الأحدث والأكثر قراءة.">
-    <meta name="keywords" content="أرشيف كبسولة الزمن, رسائل مجهولة, chronos capsule archive, time capsule messages, رسائل من العالم">
-    <meta name="author" content="Chronos Capsule">
-    <meta name="theme-color" content="#010103">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="https://chronos-capsule.vercel.app/archive.html">
-    <link rel="alternate" hreflang="ar" href="https://chronos-capsule.vercel.app/archive.html">
-    <link rel="alternate" hreflang="en" href="https://chronos-capsule.vercel.app/archive.html">
-    <link rel="alternate" hreflang="x-default" href="https://chronos-capsule.vercel.app/archive.html">
-
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="أرشيف الكبسولات | Chronos Capsule">
-    <meta property="og:description" content="تصفّح رسائل الأمل والحنين والأسرار القادمة من 48 دولة حول العالم — أرشيف كبسولة الزمن الكونية.">
-    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
-    <meta property="og:url" content="https://chronos-capsule.vercel.app/archive.html">
-    <meta property="og:locale" content="ar_AR">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="أرشيف الكبسولات | Chronos Capsule">
-    <meta name="twitter:description" content="رسائل من 48 دولة تسبح في كبسولة الزمن الكونية — تصفّحها الآن.">
-
-    <!-- Favicon -->
+    <title>أرشيف الكوكب | Chronos Capsule</title>
+    <meta name="description" content="استكشف كبسولات الزمن من جميع أنحاء العالم. أرشيف كبسولة الزمن الكونية يحوي آلاف الرسائل والاعترافات.">
+    <!-- Hreflang & Favicon -->
+    <link rel="alternate" hreflang="ar" href="/archive.html" />
+    <link rel="alternate" hreflang="en" href="/archive.html?lang=en" />
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
-
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-
-    <!-- Schema.org -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CollectionPage",
-      "name": "أرشيف كبسولة الزمن الكونية",
-      "description": "أرشيف عام لرسائل كبسولة الزمن الكونية من دول العالم، قابل للفرز حسب الدولة والشعور والتاريخ.",
-      "url": "https://chronos-capsule.vercel.app/archive.html",
-      "isPartOf": { "@type": "WebSite", "name": "Chronos Capsule", "url": "https://chronos-capsule.vercel.app" },
-      "inLanguage": ["ar", "en"]
-    }
-    </script>
-
-    <style>
-        /* ══ إعادة تعيين أساسي ══ */
-        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
-        body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
-        button,a,select,input{cursor:pointer}
-        /* ══ خلفية الفضاء ══ */
-        body::before{content:'';position:fixed;inset:0;
-            background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
-                        radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
-            z-index:0;pointer-events:none}
-        body::after{content:'';position:fixed;inset:0;
-            background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
-                radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
-                radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
-                radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
-                radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
-            z-index:0;pointer-events:none}
-        :root{
-            --mood-hope:#38bdf8; --mood-nostalgia:#a78bfa; --mood-secret:#34d399;
-            --mood-confession:#fbbf24; --mood-bold:#f87171;
-        }
-        /* ══ ترويسة ══ */
-        .page-header{position:sticky;top:0;z-index:50;
-            background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
-            border-bottom:1px solid rgba(255,255,255,.07);
-            padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-        .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
-        .header-logo-icon{font-size:1.4rem}
-        .header-logo-text{font-size:1.05rem;font-weight:900;
-            background:linear-gradient(135deg,#a78bfa,#3b82f6);
-            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-        .header-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
-        .back-link,.nav-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
-            padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
-        .back-link:hover,.nav-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
-        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
-            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
-        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
-        /* ══ الصفحة الرئيسية ══ */
-        .page{max-width:900px;margin:0 auto;padding:34px 20px 80px;min-height:calc(100vh - 56px);position:relative;z-index:1}
-        .page-title{font-size:1.7rem;font-weight:900;color:#fff;margin-bottom:4px}
-        .page-subtitle{font-size:.88rem;color:#64748b;margin-bottom:22px}
-        .result-count{font-size:12.5px;color:#a78bfa;margin-bottom:18px;display:flex;align-items:center;gap:6px}
-        /* ══ فلاتر ══ */
-        .filter-section{margin-bottom:26px;display:flex;flex-direction:column;gap:12px}
-        .filter-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-        .filter-label{font-size:11.5px;color:#64748b;font-weight:700;white-space:nowrap;min-width:70px}
-        .cc-select{padding:9px 12px;background:rgba(15,23,42,.6);
-            border:1px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-size:.85rem;outline:none;
-            transition:border-color .3s;backdrop-filter:blur(8px);font-family:'Tajawal',sans-serif}
-        .cc-select:focus{border-color:#8b5cf6}
-        .filter-chips{display:flex;gap:7px;flex-wrap:wrap}
-        .filter-chip{padding:7px 14px;border-radius:999px;font-size:12px;font-weight:700;
-            border:1px solid rgba(255,255,255,.15);background:rgba(15,23,42,.6);color:#94a3b8;transition:all .3s}
-        .filter-chip:hover{border-color:#8b5cf6;color:#fff}
-        .filter-chip.active{background:rgba(139,92,246,.25);border-color:#8b5cf6;color:#fff}
-        .filter-chip[data-mood="hope"].active{background:rgba(56,189,248,.2);border-color:#38bdf8;color:#38bdf8}
-        .filter-chip[data-mood="nostalgia"].active{background:rgba(167,139,250,.2);border-color:#a78bfa;color:#a78bfa}
-        .filter-chip[data-mood="secret"].active{background:rgba(52,211,153,.2);border-color:#34d399;color:#34d399}
-        .filter-chip[data-mood="confession"].active{background:rgba(251,191,36,.2);border-color:#fbbf24;color:#fbbf24}
-        .filter-chip[data-mood="bold"].active{background:rgba(248,113,113,.2);border-color:#f87171;color:#f87171}
-        /* ══ قائمة الأرشيف ══ */
-        .archive-list{list-style:none;display:flex;flex-direction:column;gap:14px}
-        .arc-card{background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.1);border-radius:16px;
-            padding:20px 22px;backdrop-filter:blur(10px);transition:border-color .3s,transform .3s,box-shadow .3s;
-            border-inline-start:3px solid var(--mc,#8b5cf6)}
-        .arc-card:hover{border-color:rgba(139,92,246,.5);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
-        .arc-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:10px}
-        .arc-mood{font-size:11.5px;font-weight:700;padding:4px 11px;border-radius:999px;
-            background:rgba(255,255,255,.06);color:var(--mc,#cbd5e1)}
-        .arc-lang-badge{font-size:10.5px;font-weight:800;letter-spacing:.04em;color:#64748b;
-            border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:2px 7px}
-        .arc-date{font-size:11.5px;color:#94a3b8;direction:ltr;margin-inline-start:auto}
-        .arc-text{color:#e2e8f0;line-height:1.8;margin-bottom:14px;font-size:.98rem}
-        .arc-bottom{display:flex;gap:16px;font-size:12px;color:#94a3b8;flex-wrap:wrap;align-items:center}
-        .arc-bottom b{color:#a78bfa}
-        .arc-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-        .arc-btn{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;text-decoration:none;
-            display:inline-flex;align-items:center;gap:5px;transition:all .3s;border:1px solid rgba(255,255,255,.15);
-            background:rgba(255,255,255,.04);color:#94a3b8}
-        .arc-btn:hover{border-color:#8b5cf6;color:#fff;background:rgba(139,92,246,.15)}
-        .arc-btn.report-btn:disabled{opacity:.6;cursor:default}
-        /* ══ تحميل / حالة فارغة ══ */
-        .load-sentinel{display:flex;justify-content:center;padding:22px 0}
-        .load-more-btn{padding:11px 26px;border-radius:12px;font-size:13px;font-weight:700;
-            background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.35);color:#a78bfa;transition:all .3s}
-        .load-more-btn:hover{background:rgba(139,92,246,.25);color:#fff}
-        .load-more-btn:disabled{opacity:.5}
-        .skel{background:rgba(15,23,42,.5);border:1px solid rgba(255,255,255,.06);border-radius:16px;height:104px;
-            animation:skelPulse 1.4s ease-in-out infinite}
-        @keyframes skelPulse{0%,100%{opacity:.5}50%{opacity:.9}}
-        .empty-state{text-align:center;padding:70px 20px;color:#94a3b8}
-        .empty-state .ico{font-size:52px;margin-bottom:16px;opacity:.7}
-        .empty-state p{line-height:1.7}
-        /* ══ إشعار ══ */
-        .cc-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
-            background:rgba(15,23,42,.95);border:1px solid rgba(139,92,246,.4);border-radius:14px;
-            padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:14px;
-            backdrop-filter:blur(16px);z-index:9999;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);
-            pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
-        .cc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-        /* ══ جوال ══ */
-        @media(max-width:600px){
-            .page-header{padding:12px 16px}
-            .page{padding:24px 14px 60px}
-            .page-title{font-size:1.4rem}
-            .filter-row{flex-direction:column;align-items:stretch}
-            .filter-label{min-width:0}
-            .cc-select{width:100%}
-            .arc-date{margin-inline-start:0}
-        }
-    </style>
+    <link rel="stylesheet" href="archive.css">
 </head>
 <body>
-<!-- ══ الترويسة ══ -->
-<header class="page-header">
-    <a href="index.html" class="header-logo">
-        <span class="header-logo-icon">🚀</span>
-        <span class="header-logo-text">CHRONOS CAPSULE</span>
-    </a>
-    <div class="header-actions">
-        <button class="lang-toggle-cap" id="capLangToggle" type="button">EN</button>
-        <a href="capsules.html" class="nav-link" id="myCapsulesLink">🛰️ <span id="myCapsulesText">كبسولاتي</span></a>
-        <a href="index.html" class="back-link">
-            <span>←</span>
-            <span id="backLinkText">العودة للكوكب</span>
+    <header class="page-header">
+        <a href="index.html" class="header-logo">
+            <span class="header-logo-icon">🚀</span>
+            <span class="header-logo-text">Chronos Capsule</span>
         </a>
-    </div>
-</header>
+        <div class="header-actions">
+            <button id="langToggle" class="lang-toggle-cap">EN</button>
+            <a href="index.html" class="back-link">
+                <span id="backLinkText">العودة للكوكب</span>
+            </a>
+        </div>
+    </header>
 
-<!-- ══ الإشعار ══ -->
-<div class="cc-toast" id="arcToast"><span></span></div>
-
-<!-- ══ المحتوى ══ -->
-<main class="page">
-    <h1 class="page-title" id="pageTitle">🗂️ أرشيف الكبسولات</h1>
-    <p class="page-subtitle" id="pageSubtitle">رسائل هبطت من 48 دولة حول العالم — تصفّحها وصفّها كما تشاء</p>
-    <p class="result-count" id="resultCount" aria-live="polite"></p>
-
-    <!-- ══ الفلاتر ══ -->
-    <section class="filter-section" aria-label="فلاتر الأرشيف">
-        <div class="filter-row">
-            <span class="filter-label" id="sortLabel">الترتيب</span>
-            <select class="cc-select" id="sortSelect">
-                <option value="newest" id="optNewest">الأحدث أولاً</option>
-                <option value="oldest" id="optOldest">الأقدم أولاً</option>
-                <option value="mostread" id="optMostRead">الأكثر قراءة</option>
+    <main class="page">
+        <h1 class="page-title" id="pageTitle">أرشيف الكوكب</h1>
+        <p class="page-subtitle" id="pageSubtitle">اقرأ آلاف الرسائل التي تسبح في الفضـاء...</p>
+        
+        <aside class="filter-bar">
+            <!-- الفلاتر تعمل من سوبابيس (قاعدة البيانات) -->
+            <select id="filterCountry" class="filter-select"><option value="">🌍 جميع الدول</option></select>
+            <select id="filterMood" class="filter-select">
+                <option value="">✨ كل المشاعر</option>
+                <option value="hope">أمل (Hope)</option>
+                <option value="nostalgia">حنين (Nostalgia)</option>
+                <option value="secret">سر (Secret)</option>
+                <option value="confession">اعتراف (Confession)</option>
+                <option value="bold">جرأة (Bold)</option>
             </select>
-
-            <span class="filter-label" id="countryLabel">الدولة</span>
-            <select class="cc-select" id="countrySelect">
-                <option value="all" id="optAllCountries">كل الدول</option>
+            <select id="filterLang" class="filter-select">
+                <option value="">🌐 كل اللغات</option>
+                <option value="ar">العربية (AR)</option>
+                <option value="en">English (EN)</option>
             </select>
+            <select id="filterSort" class="filter-select">
+                <option value="newest">⏳ الأحدث أولاً</option>
+                <option value="oldest">🕰️ الأقدم أولاً</option>
+                <option value="reads">👁️ الأكثر قراءة</option>
+            </select>
+        </aside>
+
+        <section class="cap-list" id="archiveList"></section>
+        <div id="loader" class="loader">جاري جلب الكبسولات...</div>
+        
+        <div style="text-align:center;">
+            <button id="loadMoreBtn" class="load-more-btn" style="display:none;">تحميل المزيد</button>
         </div>
+    </main>
 
-        <div class="filter-row">
-            <span class="filter-label" id="moodLabel">الشعور</span>
-            <div class="filter-chips" id="moodChips">
-                <button class="filter-chip active" data-mood="all" type="button">🌌 <span id="moodAllText">الكل</span></button>
-                <button class="filter-chip" data-mood="hope" type="button">🌅 <span data-i18n="mood_hope">أمل</span></button>
-                <button class="filter-chip" data-mood="nostalgia" type="button">🌙 <span data-i18n="mood_nostalgia">حنين</span></button>
-                <button class="filter-chip" data-mood="secret" type="button">🤫 <span data-i18n="mood_secret">سر</span></button>
-                <button class="filter-chip" data-mood="confession" type="button">🎭 <span data-i18n="mood_confession">اعتراف</span></button>
-                <button class="filter-chip" data-mood="bold" type="button">💥 <span data-i18n="mood_bold">جرأة</span></button>
-            </div>
-        </div>
-
-        <div class="filter-row">
-            <span class="filter-label" id="msgLangLabel">لغة الرسالة</span>
-            <div class="filter-chips" id="langChips">
-                <button class="filter-chip active" data-lang="all" type="button" id="langAllText">الكل</button>
-                <button class="filter-chip" data-lang="ar" type="button">🇸🇦 عربي</button>
-                <button class="filter-chip" data-lang="en" type="button">🇬🇧 English</button>
-            </div>
-        </div>
-    </section>
-
-    <!-- ══ قائمة الكبسولات ══ -->
-    <ul class="archive-list" id="archiveList" role="list"></ul>
-
-    <!-- ══ حالة فارغة ══ -->
-    <div class="empty-state" id="emptyState" style="display:none">
-        <div class="ico">🛰️</div>
-        <p id="emptyText">لا توجد كبسولات مطابقة لهذا الفلتر بعد… جرّب فلترًا آخر</p>
-    </div>
-
-    <!-- ══ تحميل المزيد ══ -->
-    <div class="load-sentinel" id="loadSentinel">
-        <button class="load-more-btn" id="loadMoreBtn" type="button" style="display:none">تحميل المزيد ⤵</button>
-    </div>
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function(){
-    "use strict";
-    /* ══ إعداد Supabase ══ */
-    const SB_URL  = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
-    const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
-    const sb = (window.supabase) ? supabase.createClient(SB_URL, SB_KEY) : null;
-
-    const $ = id => document.getElementById(id);
-    const MOOD_ICO   = {hope:'💙',nostalgia:'💜',secret:'💚',confession:'💛',bold:'❤️'};
-    const MOOD_COLOR = {hope:'#38bdf8',nostalgia:'#a78bfa',secret:'#34d399',confession:'#fbbf24',bold:'#f87171'};
-
-    /* ══ لغة الصفحة — مستقلة ومتزامنة عبر مفتاح localStorage المشترك مع بقية الموقع ══ */
-    let arcLang = (() => {
-        try{
-            const saved = localStorage.getItem('cc_lang');
-            if (saved) return saved;
-        }catch(e){}
-        return ((navigator.language||'ar').toLowerCase().startsWith('ar')) ? 'ar' : 'en';
-    })();
-
-    const MOOD_LABELS = {
-        ar:{hope:'أمل',nostalgia:'حنين',secret:'سر',confession:'اعتراف',bold:'جرأة'},
-        en:{hope:'Hope',nostalgia:'Nostalgia',secret:'Secret',confession:'Confession',bold:'Bold'}
-    };
-    const MISC = {
-        ar:{ by:'بواسطة', anon:'مجهول', reads:'قراءة', fail:'حدث خطأ، حاول من جديد', translate:'ترجم', report:'إبلاغ',
-             reportOk:'شكرًا، تم تسجيل البلاغ وسيُراجع 🙏', reportFail:'تعذر إرسال البلاغ الآن', dbNeeded:'هذه الميزة تحتاج ربط قاعدة البيانات' },
-        en:{ by:'By', anon:'Anonymous', reads:'reads', fail:'Something went wrong, try again', translate:'Translate', report:'Report',
-             reportOk:'Thanks, your report was recorded 🙏', reportFail:'Could not submit the report now', dbNeeded:'This feature needs the database connection' }
-    };
-    const T = k => (MISC[arcLang] && MISC[arcLang][k]) || k;
-
-    function flagOf(code){
-        return /^[A-Z]{2}$/.test(code)
-            ? code.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)))
-            : '🌍';
-    }
-    function regionName(code, lg){
-        try{ const n = new Intl.DisplayNames([lg], { type:'region' }).of(code); return (n && n !== code) ? n : null; }
-        catch(e){ return null; }
-    }
-
-    /* نسخة خفيفة من خريطة الدول (بدون إحداثيات — لا حاجة لها هنا) لتغذية فلتر الدولة والتسميات */
-    const COUNTRY_INFO = {
-        DZ:{name:'الجزائر 🇩🇿'}, SA:{name:'السعودية 🇸🇦'}, EG:{name:'مصر 🇪🇬'}, MA:{name:'المغرب 🇲🇦'},
-        TN:{name:'تونس 🇹🇳'}, AE:{name:'الإمارات 🇦🇪'}, QA:{name:'قطر 🇶🇦'}, KW:{name:'الكويت 🇰🇼'},
-        LY:{name:'ليبيا 🇱🇾'}, MR:{name:'موريتانيا 🇲🇷'}, IQ:{name:'العراق 🇮🇶'}, JO:{name:'الأردن 🇯🇴'},
-        PS:{name:'فلسطين 🇵🇸'}, LB:{name:'لبنان 🇱🇧'}, SY:{name:'سوريا 🇸🇾'}, SD:{name:'السودان 🇸🇩'},
-        YE:{name:'اليمن 🇾🇪'}, OM:{name:'عُمان 🇴🇲'}, BH:{name:'البحرين 🇧🇭'}, TR:{name:'تركيا 🇹🇷'},
-        US:{name:'الولايات المتحدة 🇺🇸'}, CA:{name:'كندا 🇨🇦'}, MX:{name:'المكسيك 🇲🇽'}, BR:{name:'البرازيل 🇧🇷'},
-        AR:{name:'الأرجنتين 🇦🇷'}, GB:{name:'المملكة المتحدة 🇬🇧'}, FR:{name:'فرنسا 🇫🇷'}, DE:{name:'ألمانيا 🇩🇪'},
-        ES:{name:'إسبانيا 🇪🇸'}, IT:{name:'إيطاليا 🇮🇹'}, CH:{name:'سويسرا 🇨🇭'}, BE:{name:'بلجيكا 🇧🇪'},
-        NL:{name:'هولندا 🇳🇱'}, PT:{name:'البرتغال 🇵🇹'}, SE:{name:'السويد 🇸🇪'}, NO:{name:'النرويج 🇳🇴'},
-        RU:{name:'روسيا 🇷🇺'}, IN:{name:'الهند 🇮🇳'}, PK:{name:'باكستان 🇵🇰'}, ID:{name:'إندونيسيا 🇮🇩'},
-        MY:{name:'ماليزيا 🇲🇾'}, CN:{name:'الصين 🇨🇳'}, JP:{name:'اليابان 🇯🇵'}, KR:{name:'كوريا الجنوبية 🇰🇷'},
-        AU:{name:'أستراليا 🇦🇺'}, NG:{name:'نيجيريا 🇳🇬'}, ZA:{name:'جنوب أفريقيا 🇿🇦'}, SN:{name:'السنغال 🇸🇳'},
-        OTHER:{name:'فضاء آخر 🌍'}
-    };
-    window.COUNTRY_INFO = window.COUNTRY_INFO || COUNTRY_INFO;
-
-    function countryLabel(code){
-        if (!code) return '';
-        if (code === 'OTHER') return arcLang === 'ar' ? 'فضاء آخر 🌍' : 'Deep space 🌍';
-        const rn = regionName(code, arcLang);
-        if (rn) return rn + ' ' + flagOf(code);
-        const info = COUNTRY_INFO[code];
-        return info ? info.name : code + ' ' + flagOf(code);
-    }
-
-    function escapeHtml(s){ return (s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-    let _toastTimer;
-    function toast(msg, ico='🛰️'){
-        const el = $('arcToast');
-        if(!el) return;
-        el.innerHTML = `<span>${ico}</span> <span>${msg}</span>`;
-        el.classList.add('show');
-        clearTimeout(_toastTimer);
-        _toastTimer = setTimeout(()=>el.classList.remove('show'), 3500);
-    }
-
-    function fmt(iso){
-        if (!iso) return '';
-        try{
-            return new Date(iso).toLocaleDateString(
-                arcLang === 'ar' ? 'ar-EG' : 'en-GB',
-                {year:'numeric',month:'short',day:'numeric'});
-        }catch(e){ return String(iso).slice(0,10); }
-    }
-
-    /* ══ حالة الفلاتر والصفحات ══ */
-    const PAGE_SIZE = 20;
-    const state = { sort:'newest', country:'all', mood:'all', lang:'all', offset:0, done:false, loading:false, total:null };
-    let dateColumnOk = true; /* في حال عدم وجود created_at نستخدم arrival_at كبديل تلقائيًا */
-
-    function orderColumn(){
-        if (state.sort === 'mostread') return { col:'reads_count', asc:false };
-        const col = dateColumnOk ? 'created_at' : 'arrival_at';
-        return { col, asc: state.sort === 'oldest' };
-    }
-
-    function buildQuery(withCount){
-        let q = sb.from('capsules').select(
-            'id,text,author,country,mood,arrival_at,created_at,lang,reads_count',
-            withCount ? { count: 'exact' } : undefined
-        );
-        if (state.country !== 'all') q = q.eq('country', state.country);
-        if (state.mood !== 'all')    q = q.eq('mood', state.mood);
-        if (state.lang !== 'all')    q = q.eq('lang', state.lang);
-        const ord = orderColumn();
-        q = q.order(ord.col, { ascending: ord.asc });
-        q = q.range(state.offset, state.offset + PAGE_SIZE - 1);
-        return q;
-    }
-
-    function cardHtml(c){
-        const mood = c.mood || 'hope';
-        const isAr = (c.lang || 'ar') === 'ar';
-        const transUrl = `https://translate.google.com/?sl=auto&tl=${arcLang}&text=${encodeURIComponent(c.text||'')}&op=translate`;
-        const li = document.createElement('li');
-        const el = document.createElement('article');
-        el.className = 'arc-card';
-        el.style.setProperty('--mc', MOOD_COLOR[mood] || '#8b5cf6');
-        el.dataset.id = c.id;
-        el.innerHTML = `
-            <div class="arc-top">
-                <span class="arc-mood">${MOOD_ICO[mood]||'✨'} <span class="mood-label">${(MOOD_LABELS[arcLang]||MOOD_LABELS.ar)[mood]||mood}</span></span>
-                <span class="arc-lang-badge">${isAr?'AR':'EN'}</span>
-                <span class="arc-date">${fmt(c.created_at||c.arrival_at)}</span>
-            </div>
-            <p class="arc-text" dir="auto">"${escapeHtml(c.text)}"</p>
-            <div class="arc-bottom">
-                <span>📍 <span class="country-label">${countryLabel(c.country)}</span></span>
-                <span><span class="by-label">${T('by')}</span>: <b>${escapeHtml(c.author||T('anon'))}</b></span>
-                <span>👁️ <b>${c.reads_count ?? 0}</b> <span class="reads-label">${T('reads')}</span></span>
-            </div>
-            <div class="arc-actions">
-                <a class="arc-btn translate-btn" href="${transUrl}" target="_blank" rel="noopener">🔤 <span class="tr-label">${T('translate')}</span></a>
-                <button class="arc-btn report-btn" data-id="${c.id}" type="button">🚩 <span class="rp-label">${T('report')}</span></button>
-            </div>`;
-        el.dataset.mood = mood;
-        el.dataset.country = c.country || '';
-        el.querySelector('.report-btn').addEventListener('click', onReport);
-        li.appendChild(el);
-        return li;
-    }
-
-    async function onReport(e){
-        const btn = e.currentTarget;
-        const id = parseInt(btn.dataset.id, 10);
-        btn.disabled = true;
-        const original = btn.innerHTML;
-        btn.innerHTML = '…';
-        if (!sb){ toast(T('dbNeeded'), '⚠️'); btn.disabled = false; btn.innerHTML = original; return; }
-        try{
-            const { error } = await sb.rpc('report_capsule', { p_id: id, p_reason: 'user_report' });
-            if (error){
-                toast(T('reportFail'), '⚠️');
-                btn.innerHTML = original; btn.disabled = false;
-            } else {
-                btn.innerHTML = '✓';
-                toast(T('reportOk'), '🚩');
-            }
-        }catch(e2){
-            toast(T('fail'), '⚠️');
-            btn.innerHTML = original; btn.disabled = false;
-        }
-    }
-
-    function renderSkeletons(n){
-        const list = $('archiveList');
-        for (let i=0;i<n;i++){
-            const li = document.createElement('li');
-            li.className = 'skel-item';
-            li.innerHTML = '<div class="skel"></div>';
-            list.appendChild(li);
-        }
-    }
-    function clearSkeletons(){
-        document.querySelectorAll('#archiveList .skel-item').forEach(n=>n.remove());
-    }
-
-    function updateResultCount(){
-        const el = $('resultCount');
-        if (state.total == null){ el.textContent = ''; return; }
-        el.textContent = arcLang === 'ar' ? `🛰️ ${state.total} كبسولة مطابقة` : `🛰️ ${state.total} matching capsules`;
-    }
-
-    async function fetchPage(reset){
-        if (state.loading) return;
-        if (!reset && state.done) return;
-        state.loading = true;
-        $('loadMoreBtn').disabled = true;
-        if (reset){
-            state.offset = 0; state.done = false; state.total = null;
-            $('archiveList').innerHTML = '';
-            $('emptyState').style.display = 'none';
-        }
-        renderSkeletons(reset ? 6 : 3);
-
-        if (!sb){
-            clearSkeletons();
-            $('emptyState').style.display = 'block';
-            $('loadMoreBtn').style.display = 'none';
-            state.loading = false;
-            return;
-        }
-
-        try{
-            let { data, error, count } = await buildQuery(reset);
-            if (error && dateColumnOk && orderColumn().col === 'created_at'){
-                /* بديل تلقائي في حال لم يوجد عمود created_at في الجدول */
-                dateColumnOk = false;
-                ({ data, error, count } = await buildQuery(reset));
-            }
-            clearSkeletons();
-            if (error){
-                console.warn('archive fetch:', error.message);
-                toast(T('fail'), '⚠️');
-                state.loading = false;
-                return;
-            }
-            if (reset && typeof count === 'number') state.total = count;
-            updateResultCount();
-
-            const list = $('archiveList');
-            (data||[]).forEach(c => list.appendChild(cardHtml(c)));
-            state.offset += (data||[]).length;
-            state.done = !data || data.length < PAGE_SIZE;
-            $('loadMoreBtn').style.display = state.done ? 'none' : 'inline-flex';
-
-            if (reset && (!data || data.length === 0)) $('emptyState').style.display = 'block';
-        } catch(e){
-            clearSkeletons();
-            toast(T('fail'), '⚠️');
-        }
-        state.loading = false;
-        $('loadMoreBtn').disabled = false;
-    }
-
-    /* ══ التمرير اللانهائي ══ */
-    const sentinelObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(entries => {
-        if (entries[0].isIntersecting) fetchPage(false);
-    }, { rootMargin: '400px' }) : null;
-    if (sentinelObserver) sentinelObserver.observe($('loadSentinel'));
-
-    $('loadMoreBtn').addEventListener('click', () => fetchPage(false));
-
-    /* ══ الفلاتر ══ */
-    function wireChipGroup(containerId, dataAttr, stateKey){
-        const group = $(containerId);
-        group.addEventListener('click', e => {
-            const btn = e.target.closest('.filter-chip');
-            if (!btn) return;
-            group.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-            btn.classList.add('active');
-            state[stateKey] = btn.dataset[dataAttr];
-            fetchPage(true);
-        });
-    }
-    wireChipGroup('moodChips', 'mood', 'mood');
-    wireChipGroup('langChips', 'lang', 'lang');
-
-    $('sortSelect').addEventListener('change', e => { state.sort = e.target.value; fetchPage(true); });
-    $('countrySelect').addEventListener('change', e => { state.country = e.target.value; fetchPage(true); });
-
-    function populateCountries(){
-        const sel = $('countrySelect');
-        Object.keys(COUNTRY_INFO).forEach(code => {
-            if (code === 'OTHER') return;
-            sel.add(new Option(countryLabel(code), code));
-        });
-        sel.add(new Option(countryLabel('OTHER'), 'OTHER'));
-    }
-    populateCountries();
-
-    /* ══ لغة الواجهة (منفصلة عن فلتر لغة الرسالة) ══ */
-    const ARC_LANGS = {
-        ar:{ toggle:'EN', back:'العودة للكوكب', mine:'كبسولاتي', title:'🗂️ أرشيف الكبسولات',
-             subtitle:'رسائل هبطت من 48 دولة حول العالم — تصفّحها وصفّها كما تشاء',
-             sort:'الترتيب', newest:'الأحدث أولاً', oldest:'الأقدم أولاً', mostread:'الأكثر قراءة',
-             country:'الدولة', allCountries:'كل الدول', mood:'الشعور', all:'الكل',
-             msgLang:'لغة الرسالة', langAll:'الكل', emptyText:'لا توجد كبسولات مطابقة لهذا الفلتر بعد… جرّب فلترًا آخر',
-             loadMore:'تحميل المزيد ⤵' },
-        en:{ toggle:'عربي', back:'← Back to Planet', mine:'My Capsules', title:'🗂️ Capsule Archive',
-             subtitle:'Messages landed from 48 countries around the world — browse and sort them freely',
-             sort:'Sort', newest:'Newest first', oldest:'Oldest first', mostread:'Most read',
-             country:'Country', allCountries:'All countries', mood:'Mood', all:'All',
-             msgLang:'Message language', langAll:'All', emptyText:'No capsules match this filter yet… try another one',
-             loadMore:'Load more ⤵' }
-    };
-
-    const MOOD_CHIP_KEYS = ['hope','nostalgia','secret','confession','bold'];
-
-    function applyArcLang(l){
-        arcLang = l;
-        const D = ARC_LANGS[l] || ARC_LANGS.ar;
-        document.documentElement.lang = l;
-        document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
-        $('capLangToggle').textContent = D.toggle;
-        $('backLinkText').textContent = D.back;
-        $('myCapsulesText').textContent = D.mine;
-        $('pageTitle').textContent = D.title;
-        $('pageSubtitle').textContent = D.subtitle;
-        $('sortLabel').textContent = D.sort;
-        $('optNewest').textContent = D.newest;
-        $('optOldest').textContent = D.oldest;
-        $('optMostRead').textContent = D.mostread;
-        $('countryLabel').textContent = D.country;
-        $('optAllCountries').textContent = D.allCountries;
-        $('moodLabel').textContent = D.mood;
-        $('moodAllText').textContent = D.all;
-        $('msgLangLabel').textContent = D.msgLang;
-        $('langAllText').textContent = D.langAll;
-        $('emptyText').textContent = D.emptyText;
-        $('loadMoreBtn').textContent = D.loadMore;
-        MOOD_CHIP_KEYS.forEach(k => {
-            const el = document.querySelector(`#moodChips [data-mood="${k}"] [data-i18n]`);
-            if (el) el.textContent = (MOOD_LABELS[l]||MOOD_LABELS.ar)[k];
-        });
-
-        /* تحديث النصوص داخل البطاقات المعروضة بالفعل دون إعادة تحميلها */
-        document.querySelectorAll('.arc-card').forEach(card=>{
-            const moodLabel = card.querySelector('.mood-label');
-            if (moodLabel && card.dataset.mood) moodLabel.textContent = (MOOD_LABELS[l]||MOOD_LABELS.ar)[card.dataset.mood] || card.dataset.mood;
-            const countryEl = card.querySelector('.country-label');
-            if (countryEl && card.dataset.country) countryEl.textContent = countryLabel(card.dataset.country);
-            const byEl = card.querySelector('.by-label');
-            if (byEl) byEl.textContent = T('by');
-            const readsEl = card.querySelector('.reads-label');
-            if (readsEl) readsEl.textContent = T('reads');
-            const trLabel = card.querySelector('.tr-label');
-            if (trLabel) trLabel.textContent = T('translate');
-            const rpLabel = card.querySelector('.rp-label');
-            if (rpLabel && rpLabel.closest('button') && !rpLabel.closest('button').disabled) rpLabel.textContent = T('report');
-            const trLink = card.querySelector('.translate-btn');
-            if (trLink){
-                try{
-                    const u = new URL(trLink.href);
-                    u.searchParams.set('tl', l);
-                    trLink.href = u.toString();
-                }catch(e){}
-            }
-        });
-
-        /* إعادة بناء قائمة الدول بأسمائها المترجمة */
-        const curCountry = $('countrySelect').value;
-        $('countrySelect').innerHTML = '';
-        $('countrySelect').add(new Option(D.allCountries, 'all'));
-        populateCountries();
-        $('countrySelect').value = curCountry || 'all';
-    }
-
-    $('capLangToggle').addEventListener('click', () => {
-        const next = arcLang === 'ar' ? 'en' : 'ar';
-        try{ localStorage.setItem('cc_lang', next); }catch(e){}
-        applyArcLang(next);
-    });
-
-    applyArcLang(arcLang);
-    fetchPage(true);
-})();
-</script>
+    <!-- Supabase & Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="archive.js"></script>
 </body>
 </html>

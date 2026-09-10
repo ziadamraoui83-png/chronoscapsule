@@ -74,16 +74,38 @@ document.addEventListener('DOMContentLoaded', () => {
                     return list.filter(m => !m.arrivalISO || new Date(m.arrivalISO) <= new Date());
                 } catch (e) { return []; }
             }
+            let goldenId = null;
+            let goldenData = null;
+            try {
+                const { data: gData } = await sb.rpc('get_golden_capsule');
+                if (gData && gData.length) {
+                    goldenId = gData[0].o_id;
+                    goldenData = gData[0];
+                }
+            } catch (e) {}
+
             const { data, error } = await sb.from('capsules')
                 .select('id,text,author,country,mood,arrival_at')
                 .order('arrival_at', { ascending: false }).limit(200);
+            
             if (error) { console.warn('CapsuleStore.load:', error.message); return []; }
-            return data.map(r => {
+            
+            let loaded = data.map(r => {
                 const ci = countryInfo(r.country);
                 return { id: 'db_' + r.id, dbId: r.id, text: r.text,
                          author: r.author || CCI18N.t('anon_name'),
-                         country: r.country, mood: r.mood, lat: ci.lat, lng: ci.lng };
+                         country: r.country, mood: r.mood, lat: ci.lat, lng: ci.lng, isGolden: r.id === goldenId };
             });
+
+            if (goldenData && !loaded.find(m => m.dbId === goldenId)) {
+                const ci = countryInfo(goldenData.o_country);
+                loaded.push({
+                     id: 'db_' + goldenId, dbId: goldenId, text: goldenData.o_text,
+                     author: goldenData.o_author || CCI18N.t('anon_name'),
+                     country: goldenData.o_country, mood: goldenData.o_mood, lat: ci.lat, lng: ci.lng, isGolden: true
+                });
+            }
+            return loaded;
         },
         async save(msg) {
             const ci = countryInfo(msg.country);
@@ -93,6 +115,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     const list = JSON.parse(localStorage.getItem(this.key)) || [];
                     list.push(full);
                     localStorage.setItem(this.key, JSON.stringify(list));
+        async translateCapsule(id, targetLang) {
+            if (!this.online) return Promise.resolve(null);
+            try {
+                const { data, error } = await sb.functions.invoke('translate-capsule', {
+                    body: { id, target_lang: targetLang }
+                });
+                if (error) throw error;
+                return data?.translation || null;
+            } catch (e) {
+                console.error('Translation failed:', e);
+                return null;
+            }
+        },
                 } catch (e) {}
                 return { code: null };
             }
@@ -113,6 +148,74 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         readCapsule(dbId) { return this.online ? sb.rpc('read_capsule', { p_id: dbId }) : Promise.resolve(); },
         report(dbId, why) {
+    // Audio Context for Ocean Sounds
+    let audioCtx = null;
+    let oceanGain = null;
+    let oceanOsc = null;
+    let muteBtn = null;
+
+    function initAudio() {
+        try {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            oceanGain = audioCtx.createGain();
+            oceanGain.gain.value = 0.15;
+            oceanGain.connect(audioCtx.destination);
+
+            // Create ocean sound (low-frequency sine waves)
+            oceanOsc = audioCtx.createOscillator();
+            oceanOsc.type = 'sine';
+            oceanOsc.frequency.value = 120;
+            oceanOsc.connect(oceanGain);
+            oceanOsc.start();
+
+            // Add some depth with a sub-bass
+            const subOsc = audioCtx.createOscillator();
+            subOsc.type = 'sine';
+            subOsc.frequency.value = 60;
+            subOsc.connect(oceanGain);
+            subOsc.start();
+
+            // Check user preference
+            const savedMute = localStorage.getItem('cc_audio_muted');
+            if (savedMute === 'true') {
+                oceanGain.gain.value = 0;
+            }
+
+            // Create mute button
+            muteBtn = document.createElement('button');
+            muteBtn.className = 'mute-btn';
+            muteBtn.title = CCI18N.lang === 'ar' ? 'كتم الصوت المحيطي' : 'Mute Ocean Sound';
+            muteBtn.innerHTML = savedMute === 'true' ? '🔇' : '🔊';
+            document.querySelector('.header-actions').appendChild(muteBtn);
+
+            muteBtn.addEventListener('click', () => {
+                const isMuted = oceanGain.gain.value === 0;
+                oceanGain.gain.value = isMuted ? 0.15 : 0;
+                muteBtn.innerHTML = isMuted ? '🔊' : '🔇';
+                localStorage.setItem('cc_audio_muted', !isMuted);
+            });
+
+            // Reduce volume when modal opens
+            const modal = document.getElementById('messageModal');
+            if (modal) {
+                modal.addEventListener('toggle', (e) => {
+                    oceanGain.gain.value = e.newState === 'open' ? 0.05 : 0.15;
+                });
+            }
+        } catch (e) {
+            console.warn('Audio initialization failed:', e);
+        }
+    }
+
+    // Initialize audio when page loads
+    document.addEventListener('DOMContentLoaded', initAudio);
+
+    // Resume audio context on user interaction
+    document.addEventListener('click', () => {
+        if (audioCtx && audioCtx.state === 'suspended') {
+            audioCtx.resume();
+        }
+    }, { once: true });
             if (!this.online) return Promise.resolve(false);
             return sb.rpc('report_capsule', { p_id: dbId, p_reason: why })
                      .then(r => !r.error).catch(() => false);
@@ -345,25 +448,69 @@ document.addEventListener('DOMContentLoaded', () => {
     /* إضافة كبسولة مضيئة + هالة + تسمية الدولة */
     function createMessageMarker(msg) {
         const localPos = get3DPos(msg.lat, msg.lng);
-        const moodColor = MOOD_COLORS[msg.mood] || 0x60a5fa;
+        const isG = msg.isGolden;
+        const moodColor = isG ? 0xffd700 : (MOOD_COLORS[msg.mood] || 0x60a5fa);
 
         const markerMesh = new THREE.Mesh(
-            new THREE.SphereGeometry(0.08, 16, 16),
+            const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
+            const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
+            const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+
+            // Edge Function Translation (Alternative)
+            const edgeTranslateBtn = `<button class="action-btn translate-btn" data-id="${msg.dbId}" title="${CCI18N.lang === 'ar' ? 'ترجمة متقدمة' : 'Advanced Translation'}">🌐</button>`;
+
+            tooltip.innerHTML = `
+                ${goldenHeader}
+                <h4>${CCI18N.countryLabel(msg.country)} ${flag} ${translateBtn} ${edgeTranslateBtn}</h4>
+                <p>"${msg.text}"</p>
+                <div class="author">${CCI18N.t('by')}: ${msg.author}</div>
+            `;
+
+            const edgeBtn = tooltip.querySelector('.translate-btn[data-id]');
+            if (edgeBtn) {
+                edgeBtn.addEventListener('click', async (ev) => {
+                    ev.stopPropagation();
+                    edgeBtn.disabled = true;
+                    edgeBtn.textContent = '…';
+
+                    const translation = await CapsuleStore.translateCapsule(
+                        parseInt(edgeBtn.dataset.id, 10),
+                        CCI18N.lang === 'ar' ? 'AR' : 'EN'
+                    );
+
+                    if (translation) {
+                        const transDiv = document.createElement('div');
+                        transDiv.className = 'translation-box';
+                        transDiv.innerHTML = `
+                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">
+                                ${CCI18N.lang === 'ar' ? 'الترجمة المتقدمة' : 'Advanced Translation'}:
+                            </div>
+                            <p style="color:#a78bfa;font-style:italic;">"${translation}"</p>
+                        `;
+                        tooltip.appendChild(transDiv);
+                        edgeBtn.remove();
+                    } else {
+                        edgeBtn.textContent = '⚠️';
+                        edgeBtn.disabled = false;
+                    }
+                });
+            }
+            new THREE.SphereGeometry(isG ? 0.12 : 0.08, 16, 16),
             new THREE.MeshBasicMaterial({ color: moodColor })
         );
         markerMesh.position.copy(localPos);
         planet.add(markerMesh);
 
         const halo = new THREE.Mesh(
-            new THREE.SphereGeometry(0.13, 12, 12),
-            new THREE.MeshBasicMaterial({ color: moodColor, transparent: true, opacity: 0.25, blending: THREE.AdditiveBlending, depthWrite: false })
+            new THREE.SphereGeometry(isG ? 0.22 : 0.13, 12, 12),
+            new THREE.MeshBasicMaterial({ color: moodColor, transparent: true, opacity: isG ? 0.45 : 0.25, blending: THREE.AdditiveBlending, depthWrite: false })
         );
         halo.position.copy(localPos);
         planet.add(halo);
 
         const labelDiv = document.createElement('div');
-        labelDiv.className = 'country-label spawn';
-        labelDiv.style.setProperty('--mood', MOOD_CSS[msg.mood] || '#60a5fa');
+        labelDiv.className = 'country-label spawn' + (isG ? ' golden' : '');
+        labelDiv.style.setProperty('--mood', isG ? '#fbbf24' : (MOOD_CSS[msg.mood] || '#60a5fa'));
         labelDiv.innerHTML = `<span>📍</span> ${CCI18N.countryLabel(msg.country)}`;
         labelsContainer.appendChild(labelDiv);
         setTimeout(() => labelDiv.classList.remove('spawn'), 700);
@@ -376,7 +523,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
             const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
             const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+            const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang==='ar'?'الكبسولة الذهبية اليوم':'Golden Capsule of the Day'} 🌟</div>` : '';
+            
             tooltip.innerHTML = `
+                ${goldenHeader}
                 <h4>${CCI18N.countryLabel(msg.country)} ${flag} ${translateBtn}</h4>
                 <p>"${msg.text}"</p>
                 <div class="author">${CCI18N.t('by')}: ${msg.author}</div>
@@ -649,6 +799,49 @@ document.addEventListener('DOMContentLoaded', () => {
             : (document.getElementById('authorName').value.trim() || CCI18N.t('anon_name'));
         const mood = (document.querySelector('input[name="mood"]:checked') || {}).value || 'hope';
         const isPrivate = (document.querySelector('input[name="capsuleMode"]:checked') || {}).value === 'private';
+            const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
+            const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(r.o_text)}&op=translate`;
+            const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}" style="margin-inline-start:0; transform:scale(1.1)">🔤</a>`;
+
+            // Edge Function Translation Button
+            const edgeTranslateBtn = `<button class="action-btn translate-btn" data-id="${r.o_id}" title="${CCI18N.lang === 'ar' ? 'ترجمة متقدمة' : 'Advanced Translation'}" style="margin-inline-start:0; transform:scale(1.1)">🌐</button>`;
+
+            deepMeta.innerHTML =
+                `<span>${CCI18N.countryLabel(r.o_country)}</span>` +
+                `<span>${(CCI18N.lang==='ar'?'بقلم':'By')}: <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
+                `<span>${when}</span>` +
+                `<span>👁️ <b>${r.o_reads ?? 0}</b></span>` +
+                `${translateBtn} ${edgeTranslateBtn}`;
+
+            const edgeBtn = deepMeta.querySelector('.translate-btn[data-id]');
+            if (edgeBtn) {
+                edgeBtn.addEventListener('click', async (ev) => {
+                    ev.stopPropagation();
+                    edgeBtn.disabled = true;
+                    edgeBtn.textContent = '…';
+
+                    const translation = await CapsuleStore.translateCapsule(
+                        parseInt(edgeBtn.dataset.id, 10),
+                        CCI18N.lang === 'ar' ? 'AR' : 'EN'
+                    );
+
+                    if (translation) {
+                        const transDiv = document.createElement('div');
+                        transDiv.className = 'translation-box';
+                        transDiv.innerHTML = `
+                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">
+                                ${CCI18N.lang === 'ar' ? 'الترجمة المتقدمة' : 'Advanced Translation'}:
+                            </div>
+                            <p style="color:#a78bfa;font-style:italic;">"${translation}"</p>
+                        `;
+                        deepMeta.parentNode.insertBefore(transDiv, deepMeta.nextSibling);
+                        edgeBtn.remove();
+                    } else {
+                        edgeBtn.textContent = '⚠️';
+                        edgeBtn.disabled = false;
+                    }
+                });
+            }
 
         let arrivalISO = null;
         if (isPrivate) {

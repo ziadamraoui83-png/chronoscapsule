@@ -166,6 +166,15 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 }
 .country-label.spawn { animation: labelPop 0.55s cubic-bezier(0.2, 0.75, 0.2, 1); }
 @keyframes labelPop { from { transform: translate(-50%, -100%) scale(0.3); opacity: 0; } }
+.country-label.golden {
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.4), 0 0 30px rgba(251, 191, 36, 0.2);
+    animation: goldPulse 2s infinite alternate;
+    z-index: 45;
+}
+@keyframes goldPulse {
+    from { box-shadow: 0 0 10px rgba(251, 191, 36, 0.5); transform: translate(-50%, -50%) scale(1); }
+    to { box-shadow: 0 0 25px rgba(251, 191, 36, 0.8), 0 0 45px rgba(251, 191, 36, 0.4); transform: translate(-50%, -50%) scale(1.1); }
+}
 
 /* ═════════ تولتيب الرسالة ═════════ */
 .msg-tooltip {
@@ -218,6 +227,38 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 
 .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
 .close-btn { background: none; border: none; color: #94a3b8; font-size: 28px; transition: color 0.2s; }
+.translation-box {
+    margin-top: 12px;
+.mute-btn {
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    margin-inline-start: 8px;
+}
+
+.mute-btn:hover {
+    border-color: #8b5cf6;
+    color: #fff;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mute-btn {
+        animation: none;
+    }
+}
+    padding: 10px;
+    background: rgba(15, 23, 42, 0.7);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.6;
+}
 .close-btn:hover { color: #ef4444; }
 
 /* ═════════ الفورم ═════════ */

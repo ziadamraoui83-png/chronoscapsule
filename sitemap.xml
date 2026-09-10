@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+    <!-- الصفحات الثابتة -->
+    <url>
+        <loc>https://chronos-capsule.vercel.app/</loc>
+        <lastmod>2026-09-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link
+            rel="alternate"
+            hreflang="ar"
+            href="https://chronos-capsule.vercel.app/"
+        />
+        <xhtml:link
+            rel="alternate"
+            hreflang="en"
+            href="https://chronos-capsule.vercel.app/?lang=en"
+        />
+    </url>
+    
+    <url>
+        <loc>https://chronos-capsule.vercel.app/archive.html</loc>
+        <lastmod>2026-09-10</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link
+            rel="alternate"
+            hreflang="ar"
+            href="https://chronos-capsule.vercel.app/archive.html"
+        />
+        <xhtml:link
+            rel="alternate"
+            hreflang="en"
+            href="https://chronos-capsule.vercel.app/archive.html?lang=en"
+        />
+    </url>
+    
+    <url>
+        <loc>https://chronos-capsule.vercel.app/capsules.html</loc>
+        <lastmod>2026-09-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link
+            rel="alternate"
+            hreflang="ar"
+            href="https://chronos-capsule.vercel.app/capsules.html"
+        />
+        <xhtml:link
+            rel="alternate"
+            hreflang="en"
+            href="https://chronos-capsule.vercel.app/capsules.html?lang=en"
+        />
+    </url>
+    
+    <!-- صفحات الدول والمشاعر (سيتم توليدها ديناميكيًا) -->
+    <!-- مثال: -->
+    <url>
+        <loc>https://chronos-capsule.vercel.app/archive.html?country=DZ</loc>
+        <lastmod>2026-09-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+        <xhtml:link
+            rel="alternate"
+            hreflang="ar"
+            href="https://chronos-capsule.vercel.app/archive.html?country=DZ"
+        />
+        <xhtml:link
+            rel="alternate"
+            hreflang="en"
+            href="https://chronos-capsule.vercel.app/archive.html?country=DZ&amp;lang=en"
+        />
+    </url>
+    
+    <url>
+        <loc>https://chronos-capsule.vercel.app/archive.html?mood=hope</loc>
+        <lastmod>2026-09-10</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+        <xhtml:link
+            rel="alternate"
+            hreflang="ar"
+            href="https://chronos-capsule.vercel.app/archive.html?mood=hope"
+        />
+        <xhtml:link
+            rel="alternate"
+            hreflang="en"
+            href="https://chronos-capsule.vercel.app/archive.html?mood=hope&amp;lang=en"
+        />
+    </url>
+</urlset>
