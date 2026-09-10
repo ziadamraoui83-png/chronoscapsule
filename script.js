@@ -164,6 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function initThreeJS() {
+        const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x010103);
 
@@ -190,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
         scene.add(planet);
 
         const starsGeom = new THREE.BufferGeometry();
-        const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
         const starsCount = isMobile ? 1200 : 2500;
         const starPositions = new Float32Array(starsCount * 3);
         const starColors = new Float32Array(starsCount * 3);
