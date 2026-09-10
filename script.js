@@ -161,52 +161,35 @@ document.addEventListener('DOMContentLoaded', () => {
     let muteBtn = null;
 
     function initAudio() {
-        try {
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            oceanGain = audioCtx.createGain();
-            oceanGain.gain.value = 0.15;
-            oceanGain.connect(audioCtx.destination);
-
-            oceanOsc = audioCtx.createOscillator();
-            oceanOsc.type = 'sine';
-            oceanOsc.frequency.value = 120;
-            oceanOsc.connect(oceanGain);
-            oceanOsc.start();
-
-            const subOsc = audioCtx.createOscillator();
-            subOsc.type = 'sine';
-            subOsc.frequency.value = 60;
-            subOsc.connect(oceanGain);
-            subOsc.start();
-
-            const savedMute = localStorage.getItem('cc_audio_muted');
-            if (savedMute === 'true') {
-                oceanGain.gain.value = 0;
-            }
-
-            muteBtn = document.createElement('button');
-            muteBtn.className = 'mute-btn';
-            muteBtn.title = CCI18N.lang === 'ar' ? 'كتم الصوت المحيطي' : 'Mute Ocean Sound';
-            muteBtn.innerHTML = savedMute === 'true' ? '🔇' : '🔊';
-            document.querySelector('.header-actions').appendChild(muteBtn);
-
-            muteBtn.addEventListener('click', () => {
-                const isMuted = oceanGain.gain.value === 0;
-                oceanGain.gain.value = isMuted ? 0.15 : 0;
-                muteBtn.innerHTML = isMuted ? '🔊' : '🔇';
-                localStorage.setItem('cc_audio_muted', !isMuted);
-            });
-
-            const modal = document.getElementById('messageModal');
-            if (modal) {
-                modal.addEventListener('toggle', (e) => {
-                    oceanGain.gain.value = e.newState === 'open' ? 0.05 : 0.15;
-                });
-            }
-        } catch (e) {
-            console.warn('Audio initialization failed:', e);
+    try {
+        // التأكد من عدم إنشاء السياق مسبقاً
+        if (window.audioInitialized) return;
+        
+        // البحث عن الحاوية أو إنشاؤها إذا لم تكن موجودة
+        let audioContainer = document.getElementById('audio-container');
+        if (!audioContainer) {
+            audioContainer = document.createElement('div');
+            audioContainer.id = 'audio-container';
+            document.body.appendChild(audioContainer);
         }
+
+        // إنشاء AudioContext أو العنصر الصوتي بحذر
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (AudioContext) {
+            const ctx = new AudioContext();
+            // تفعيل السياق عند أول ضغطة زر من المستخدم
+            window.addEventListener('click', () => {
+                if (ctx.state === 'suspended') {
+                    ctx.resume();
+                }
+            }, { once: true });
+        }
+        
+        window.audioInitialized = true;
+    } catch (e) {
+        console.warn('Audio initialization deferred:', e);
     }
+}
 
     initAudio();
 
