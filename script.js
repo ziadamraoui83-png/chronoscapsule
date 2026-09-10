@@ -860,3 +860,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === deepModal) deepModal.classList.remove('active');
     });
 });
+
+// ربط زر تسجيل الدخول بجوجل عبر Supabase
+const googleLoginBtn = document.getElementById('google-login-btn');
+if (googleLoginBtn) {
+    googleLoginBtn.addEventListener('click', async () => {
+        // تأكد باللي المتغير لي راك مسمي بيه Supabase في السكربت نتاعك هو 'sb' (لأنني شفيتك تستعمل sb.rpc في السطر 851)
+        const { data, error } = await sb.auth.signInWithOAuth({
+            provider: 'google',
+        });
+        if (error) {
+            console.error('خطأ في تسجيل الدخول:', error.message);
+        }
+    });
+}

@@ -27,6 +27,34 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* تنسيق بسيط لزر تسجيل الدخول ليتناسب مع تصميم الفضاء الزجاجي */
+        .google-auth-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+        }
+        .google-auth-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+            border-color: rgba(58, 225, 255, 0.5);
+            box-shadow: 0 0 12px rgba(58, 225, 255, 0.2);
+        }
+        .site-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
 </head>
 <body>
     <!-- شاشة التحميل — يجب أن تكون أول شيء داخل body قبل كل شيء -->
@@ -62,7 +90,14 @@
                     <g class="cc-f" style="--fd:1.15s" fill="none" stroke="url(#ccxGoldW)" stroke-width="1.6"><use href="#ccxC" transform="translate(68.5,37)"/><use href="#ccxA" transform="translate(80.9,37)"/><use href="#ccxP" transform="translate(93.3,37)"/><use href="#ccxS" transform="translate(105.7,37)"/><use href="#ccxU" transform="translate(118.1,37)"/><use href="#ccxL" transform="translate(130.5,37)"/><use href="#ccxE" transform="translate(142.9,37)"/></g>
                 </svg>
             </div>
-          <div class="tagline"><a href="capsules.html" style="color:inherit;text-decoration:none">كبسولة الزمن الكونية · 🛰️ كبسولاتي</a></div>
+            
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div class="tagline"><a href="capsules.html" style="color:inherit;text-decoration:none">كبسولة الزمن الكونية · 🛰️ كبسولاتي</a></div>
+                <!-- زر تسجيل الدخول الجديد -->
+                <button id="googleLoginBtn" class="google-auth-btn">
+                    <span>🌐</span> دخول بجوجل
+                </button>
+            </div>
         </header>
 
         <!-- اللوحة الزجاجية -->
@@ -182,7 +217,8 @@
 
     <!-- إشعار زجاجي -->
     <div id="ccToast" class="cc-toast"><span class="ico">🚀</span><span class="txt"></span></div>
-        <!-- نافذة الأعماق -->
+    
+    <!-- نافذة الأعماق -->
     <div id="deepModal" class="modal-overlay deep-overlay">
         <div class="modal-card deep-card">
             <button id="deepClose" class="close-btn">&times;</button>
