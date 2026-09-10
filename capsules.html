@@ -136,6 +136,7 @@
     </a>
     <div class="header-actions">
         <button class="lang-toggle-cap" id="capLangToggle">EN</button>
+        <a href="archive.html" class="back-link">🗂️ <span id="archiveLinkText">الأرشيف</span></a>
         <a href="index.html" class="back-link">
             <span>←</span>
             <span id="backLinkText">العودة للكوكب</span>
@@ -364,11 +365,11 @@
     if (urlCode){ $('codeInput').value = urlCode; openByCode(urlCode); }
 
     const LANGS = {
-        ar:{toggle:'EN',back:'العودة للكوكب',title:'🛸 كبسولاتي',subtitle:'جميع الكبسولات المرتبطة بجهازك',
+        ar:{toggle:'EN',back:'العودة للكوكب',archive:'الأرشيف',title:'🛸 كبسولاتي',subtitle:'جميع الكبسولات المرتبطة بجهازك',
             codeBoxTitle:'افتح كبسولة بالمفتاح السري',openBtn:'فتح',codeHint:'أدخل مفتاح الكبسولة الذي وصلك',
             searchPh:'🔍 ابحث في كبسولاتك...',emptyText:'لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن',
             emptyLink:'إطلاق أول كبسولة',filterAll:'الكل',filterArrived:'✅ وصلت',filterOrbit:'🛰️ في المدار'},
-        en:{toggle:'AR',back:'← Back to Planet',title:'🛸 My Capsules',subtitle:'All capsules linked to your device',
+        en:{toggle:'AR',back:'← Back to Planet',archive:'Archive',title:'🛸 My Capsules',subtitle:'All capsules linked to your device',
             codeBoxTitle:'Open a capsule with secret key',openBtn:'Open',codeHint:'Enter the capsule key you received',
             searchPh:'🔍 Search your capsules...',emptyText:'No capsules launched yet<br>Start your time travel now',
             emptyLink:'Launch first capsule',filterAll:'All',filterArrived:'Arrived',filterOrbit:'🛰️ In Orbit'}
@@ -383,6 +384,7 @@
         document.documentElement.dir = l==='ar'?'rtl':'ltr';
         $('capLangToggle').textContent = D.toggle;
         $('backLinkText').textContent = D.back;
+        $('archiveLinkText').textContent = D.archive;
         $('pageTitle').textContent = D.title;
         $('pageSubtitle').textContent = D.subtitle;
         $('codeBoxTitle').textContent = D.codeBoxTitle;
