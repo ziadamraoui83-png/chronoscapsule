@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "index.html",
+      "use": "@vercel/static",
+      "config": {
+        "rewrites": [
+          { "source": "/archive", "destination": "/archive.html" },
+          { "source": "/capsules", "destination": "/capsules.html" }
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/archive.html",
+      "dest": "/archive.html",
+      "status": 200
+    },
+    {
+      "src": "/capsules.html",
+      "dest": "/capsules.html",
+      "status": 200
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html",
+      "status": 200
+    }
+  ]
+}
