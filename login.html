@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: #38bdf8;
+        }
+        .input-group {
+            margin-bottom: 16px;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #475569;
+            background: #0f172a;
+            color: #fff;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #38bdf8;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 12px;
+            background: #38bdf8;
+            color: #0f172a;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background 0.2s;
+        }
+        .btn-submit:hover {
+            background: #0ea5e9;
+        }
+        .separator {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: #94a3b8;
+            font-size: 13px;
+        }
+        .separator::before, .separator::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #475569;
+        }
+        .separator::before { margin-left: 10px; }
+        .separator::after { margin-right: 10px; }
+        
+        .btn-google {
+            width: 100%;
+            padding: 12px;
+            background: #fff;
+            color: #333;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: background 0.2s;
+        }
+        .btn-google:hover {
+            background: #f1f5f9;
+        }
+        .btn-google svg {
+            width: 18px;
+            height: 18px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h2>تسجيل الدخول</h2>
+        
+        <!-- نموذج تسجيل الدخول العادي -->
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="email">البريد الإلكتروني</label>
+                <input type="email" id="email" required placeholder="name@example.com">
+            </div>
+            <div class="input-group">
+                <label for="password">كلمة المرور</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
+            <button type="submit" class="btn-submit">دخول</button>
+        </form>
+
+        <div class="separator">أو</div>
+
+        <!-- زر تسجيل الدخول بواسطة غوغل -->
+        <button type="button" class="btn-google" id="googleLoginBtn">
+            <svg viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.15v3.14C3.15 21.32 7.23 24 12 24z"/>
+                <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.15C.42 8.1 0 9.99 0 12s.42 3.9 1.15 5.4l4.12-3.16z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.15 2.68 1.15 6.6l4.12 3.14c.95-2.85 3.6-4.99 6.73-4.99z"/>
+            </svg>
+            التسجيل باستخدام Google
+        </button>
+    </div>
+
+    <script>
+        // التعامل مع تسجيل الدخول العادي وتحويلك لصفحة الكرة الأرضية (مثلاً index.html)
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // هنا تقدر تزيد التحقق إذا حبيت، مباشرة نوجهوه لملف الكرة الأرضية
+            window.location.href = 'index.html'; 
+        });
+
+        // محاكاة تسجيل الدخول بغوغل والتحويل المباشر
+        document.getElementById('googleLoginBtn').addEventListener('click', function() {
+            // ربط مع مصادقة غوغل مستقبلاً، حالياً يوجهك مباشرة للكرة الأرضية
+            window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
