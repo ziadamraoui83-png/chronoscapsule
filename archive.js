@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — archive.js (نهائي مع GA4 + Social)
+   CHRONOS CAPSULE — archive.js
+   (نهائي: GA4 + Social + Card Generator + تتبع)
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
@@ -28,9 +29,7 @@
 
     /* ═══ GA4 Event Tracker ═══ */
     function trackEvent(eventName, params = {}) {
-        try {
-            if (typeof gtag === 'function') gtag('event', eventName, params);
-        } catch (e) {}
+        try { if (typeof gtag === 'function') gtag('event', eventName, params); } catch (e) {}
     }
 
     const flagOf = code => /^[A-Z]{2}$/.test(code)
@@ -133,6 +132,7 @@
         currentPage++;
     }
 
+    /* ═══ روابط المشاركة ═══ */
     function buildSocialRow(code, text) {
         const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
         const shortText = text.slice(0, 100);
@@ -155,6 +155,21 @@
             </div>`;
     }
 
+    /* ═══ زر إنشاء البطاقة ═══ */
+    function buildCardButton(code, text, author, country, mood, arrivalAt) {
+        const label = AppLang === 'ar' ? '🎨 أنشئ بطاقة' : '🎨 Create Card';
+        const dataAttrs = [
+            `data-card-code="${esc(code || '')}"`,
+            `data-card-text="${esc((text || '').slice(0, 200))}"`,
+            `data-card-author="${esc(author || '')}"`,
+            `data-card-country="${esc(country || '')}"`,
+            `data-card-mood="${esc(mood || 'hope')}"`,
+            `data-card-arrival="${esc(arrivalAt || '')}"`
+        ].join(' ');
+        return `<div class="card-actions-row"><button class="btn-create-card" ${dataAttrs} type="button">${label}</button></div>`;
+    }
+
+    /* ═══ بطاقة كبسولة ═══ */
     function createCard(r) {
         const el = document.createElement('article');
         el.className = `cap-item mood-${r.mood || 'hope'}`;
@@ -164,7 +179,7 @@
         }).format(new Date(r.created_at || r.arrival_at));
 
         const transUrl = `https://translate.google.com/?sl=auto&tl=${AppLang === 'ar' ? 'ar' : 'en'}&text=${encodeURIComponent(r.text)}&op=translate`;
-        const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" title="${AppLang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+        const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${AppLang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
 
         const codeVal = r.code || '';
         const hasCode = !!codeVal;
@@ -183,9 +198,10 @@
                     ${translateBtn}
                 </div>
             </div>
-            ${hasCode ? buildSocialRow(codeVal, r.text) : ''}`;
+            ${hasCode ? buildSocialRow(codeVal, r.text) : ''}
+            ${buildCardButton(codeVal, r.text, r.author, r.country, r.mood, r.arrival_at)}`;
 
-        /* تتبّع الترجمة */
+        /* ═══ تتبّع الترجمة ═══ */
         el.querySelector('[data-translate]')?.addEventListener('click', () => {
             trackEvent('capsule_translated', {
                 country: r.country,
@@ -193,7 +209,7 @@
             });
         });
 
-        /* تتبّع المشاركة الاجتماعية */
+        /* ═══ تتبّع المشاركة الاجتماعية ═══ */
         el.querySelectorAll('[data-social]').forEach(btn => {
             btn.addEventListener('click', () => {
                 trackEvent('capsule_shared', {
@@ -204,7 +220,7 @@
             });
         });
 
-        /* نسخ الرابط */
+        /* ═══ نسخ الرابط ═══ */
         const copyBtn = el.querySelector('[data-copy-url]');
         if (copyBtn) {
             copyBtn.addEventListener('click', () => {
@@ -216,6 +232,27 @@
                     })
                     .catch(() => {});
                 trackEvent('capsule_link_copied', { lang: AppLang });
+            });
+        }
+
+        /* ═══ زر إنشاء البطاقة ═══ */
+        const cardBtn = el.querySelector('.btn-create-card');
+        if (cardBtn) {
+            cardBtn.addEventListener('click', () => {
+                const opts = {
+                    text: cardBtn.dataset.cardText,
+                    author: cardBtn.dataset.cardAuthor,
+                    country: cardBtn.dataset.cardCountry,
+                    mood: cardBtn.dataset.cardMood,
+                    arrivalAt: cardBtn.dataset.cardArrival || null,
+                    lang: AppLang
+                };
+                if (window.CardGenerator && typeof window.CardGenerator.open === 'function') {
+                    window.CardGenerator.open(opts);
+                } else {
+                    alert(AppLang === 'ar' ? 'ميزة البطاقة غير جاهزة بعد' : 'Card feature not ready yet');
+                }
+                trackEvent('card_generate_clicked', { mood: opts.mood, lang: AppLang });
             });
         }
 

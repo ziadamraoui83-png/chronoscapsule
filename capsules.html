@@ -113,7 +113,8 @@
         .social-label{font-size:11px;color:#64748b;margin-inline-end:4px}
         .social-btn{display:inline-flex;align-items:center;justify-content:center;
             width:32px;height:32px;border-radius:50%;text-decoration:none;
-            font-size:15px;transition:all .25s ease;border:1px solid transparent}
+            font-size:15px;transition:all .25s ease;border:1px solid transparent;
+            background:transparent;cursor:pointer;padding:0;font-family:inherit}
         .social-btn.whatsapp{background:rgba(37,211,102,.12);color:#25d366;border-color:rgba(37,211,102,.3)}
         .social-btn.whatsapp:hover{background:#25d366;color:#fff;transform:translateY(-2px)}
         .social-btn.twitter{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)}
@@ -124,6 +125,13 @@
         .social-btn.telegram:hover{background:#0088cc;color:#fff;transform:translateY(-2px)}
         .social-btn.copy-link{background:rgba(139,92,246,.12);color:#a78bfa;border-color:rgba(139,92,246,.3)}
         .social-btn.copy-link:hover{background:#8b5cf6;color:#fff;transform:translateY(-2px)}
+        /* ══ زر إنشاء البطاقة ══ */
+        .card-actions-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+        .btn-create-card{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;
+            font-family:inherit;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(59,130,246,.15));
+            border:1px solid rgba(139,92,246,.4);color:#c4b5fd;cursor:pointer;transition:all .3s ease}
+        .btn-create-card:hover{background:linear-gradient(135deg,#6d28d9,#2563eb);color:#fff;
+            border-color:transparent;transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,.4)}
         @keyframes capsuleArrive{
             0%{transform:scale(.8) translateY(-20px);opacity:0}
             60%{transform:scale(1.04) translateY(4px);opacity:1}
@@ -210,6 +218,7 @@
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="card-generator.js"></script>
 <script src="i18n.js"></script>
 <script>
 (function(){
@@ -220,7 +229,6 @@
     const sb = (window.supabase) ? supabase.createClient(SB_URL, SB_KEY) : null;
 
     const $ = id => document.getElementById(id);
-    const T = k => (window.CCI18N ? CCI18N.t(k) : k);
 
     const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
         '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
@@ -228,9 +236,7 @@
 
     /* ═══ GA4 Event Tracker ═══ */
     function trackEvent(eventName, params = {}) {
-        try {
-            if (typeof gtag === 'function') gtag('event', eventName, params);
-        } catch (e) {}
+        try { if (typeof gtag === 'function') gtag('event', eventName, params); } catch (e) {}
     }
 
     const MOOD_ICO = {hope:'💙', nostalgia:'💜', secret:'💚', confession:'💛', bold:'❤️'};
@@ -241,6 +247,7 @@
         if (urlLang === 'ar' || urlLang === 'en') capLang = urlLang;
     } catch (e) {}
 
+    /* ═══ الإشعار ═══ */
     let _toastTimer;
     function toast(msg, ico = '🚀'){
         const el = $('capToast');
@@ -291,18 +298,18 @@
         $('emptyState').style.display = visible === 0 ? 'block' : 'none';
     }
 
-    /* ═══ بناء روابط المشاركة ═══ */
+    /* ═══ روابط المشاركة الاجتماعية ═══ */
     function buildSocialRow(code, text) {
         const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
         const shortText = text.slice(0, 100);
         const waText = encodeURIComponent(`${shortText}\n${url}`);
-        const twText = encodeURIComponent(`${shortText}`);
+        const twText = encodeURIComponent(shortText);
         const twUrl  = encodeURIComponent(url);
         const fbUrl  = encodeURIComponent(url);
         const tgUrl  = encodeURIComponent(url);
         const tgText = encodeURIComponent(shortText);
-
         const label = capLang === 'ar' ? 'شارك على:' : 'Share on:';
+
         return `
             <div class="social-row">
                 <span class="social-label">${label}</span>
@@ -312,6 +319,22 @@
                 <a href="https://t.me/share/url?url=${tgUrl}&text=${tgText}" target="_blank" rel="noopener" class="social-btn telegram" title="Telegram" data-social="telegram">✈️</a>
                 <button class="social-btn copy-link" title="${capLang === 'ar' ? 'نسخ الرابط' : 'Copy link'}" data-copy-url="${esc(url)}">🔗</button>
             </div>`;
+    }
+
+    /* ═══ زر إنشاء البطاقة ═══ */
+    function buildCardButton(c) {
+        const codeVal = c.o_code || c.code || '';
+        if (!codeVal) return '';
+        const label = capLang === 'ar' ? '🎨 أنشئ بطاقة' : '🎨 Create Card';
+        const dataAttrs = [
+            `data-card-code="${esc(codeVal)}"`,
+            `data-card-text="${esc((c.o_text || c.text || '').slice(0, 200))}"`,
+            `data-card-author=""`,
+            `data-card-country="${esc(c.o_country || '')}"`,
+            `data-card-mood="${esc(c.o_mood || c.mood || 'hope')}"`,
+            `data-card-arrival="${esc(c.arrival_at || '')}"`
+        ].join(' ');
+        return `<div class="card-actions-row"><button class="btn-create-card" ${dataAttrs} type="button">${label}</button></div>`;
     }
 
     function shareCapsule(code, text){
@@ -343,6 +366,7 @@
             .catch(() => toast(text, '🔗'));
     }
 
+    /* ═══ بطاقة كبسولة ═══ */
     function card(c, animate){
         animate = !!animate;
         const arrived = !c.arrival_at || new Date(c.arrival_at) <= new Date();
@@ -384,7 +408,8 @@
                 ${codeVal ? `<button class="btn-copy-code" data-code="${esc(codeVal)}">${copyLabel}</button>` : ''}
                 ${arrived && codeVal ? `<button class="btn-share" data-code="${esc(codeVal)}" data-text="${esc(rawText.slice(0, 80))}">${shareLabel}</button>` : ''}
             </div>
-            ${arrived && codeVal ? buildSocialRow(codeVal, rawText) : ''}`;
+            ${arrived && codeVal ? buildSocialRow(codeVal, rawText) : ''}
+            ${buildCardButton(c)}`;
 
         el.querySelector('.btn-copy-code')?.addEventListener('click', () => copyCode(codeVal));
         el.querySelector('.btn-share')?.addEventListener('click', () => shareCapsule(codeVal, rawText));
@@ -409,11 +434,33 @@
             });
         }
 
+        /* زر إنشاء البطاقة */
+        const cardBtn = el.querySelector('.btn-create-card');
+        if (cardBtn) {
+            cardBtn.addEventListener('click', () => {
+                const opts = {
+                    text: cardBtn.dataset.cardText,
+                    author: cardBtn.dataset.cardAuthor,
+                    country: cardBtn.dataset.cardCountry,
+                    mood: cardBtn.dataset.cardMood,
+                    arrivalAt: cardBtn.dataset.cardArrival || null,
+                    lang: capLang
+                };
+                if (window.CardGenerator && typeof window.CardGenerator.open === 'function') {
+                    window.CardGenerator.open(opts);
+                } else {
+                    toast(capLang === 'ar' ? 'ميزة البطاقة غير جاهزة' : 'Card feature not ready', '⚠️');
+                }
+                trackEvent('card_generate_clicked', { mood: opts.mood, lang: capLang });
+            });
+        }
+
         if (animate) setTimeout(() => el.classList.remove('just-arrived'), 1500);
 
         return {el, arrived, text: rawText};
     }
 
+    /* ═══ العد التنازلي الحي ═══ */
     setInterval(() => {
         document.querySelectorAll('.cap-countdown[data-arrival]').forEach(el => {
             const cd = countdown(el.dataset.arrival);
@@ -422,6 +469,7 @@
         });
     }, 1000);
 
+    /* ═══ تحميل كبسولاتي ═══ */
     async function loadMine(){
         const list = $('capList');
         list.innerHTML = '';
@@ -471,6 +519,7 @@
         applyFilters();
     }
 
+    /* ═══ فتح كبسولة بالمفتاح ═══ */
     async function openByCode(code){
         const trimmed = String(code || '').trim();
         if (!trimmed){ toast(capLang === 'ar' ? 'أدخل المفتاح أولاً' : 'Enter the key first', '⚠️'); return; }
@@ -532,11 +581,10 @@
         });
     });
 
+    /* ═══ الترجمة ═══ */
     const LANGS = {
         ar: {
-            toggle: 'EN',
-            back: 'العودة للكوكب',
-            title: '🛸 كبسولاتي',
+            toggle: 'EN', back: 'العودة للكوكب', title: '🛸 كبسولاتي',
             subtitle: 'جميع الكبسولات المرتبطة بجهازك',
             codeBoxTitle: 'افتح كبسولة بالمفتاح السري',
             openBtn: 'فتح',
@@ -549,9 +597,7 @@
             filterOrbit: '🛰️ في المدار'
         },
         en: {
-            toggle: 'AR',
-            back: '← Back to Planet',
-            title: '🛸 My Capsules',
+            toggle: 'AR', back: '← Back to Planet', title: '🛸 My Capsules',
             subtitle: 'All capsules linked to your device',
             codeBoxTitle: 'Open a capsule with secret key',
             openBtn: 'Open',
