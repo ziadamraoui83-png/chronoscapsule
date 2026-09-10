@@ -61,10 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const countryInfo = c => COUNTRY_INFO[c] || COUNTRY_INFO.OTHER;
     window.COUNTRY_INFO = COUNTRY_INFO;
-    // استبدل CCI18N.applyCountries(); بهذا السطر الآمن:
-if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
-    window.CCI18N.applyCountries();
-}
+    
+    if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
+        window.CCI18N.applyCountries();
+    }
 
     /* ═══ طبقة التخزين ═══ */
     const CapsuleStore = {
@@ -159,48 +159,35 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
 
     /* إعداد الصوت المحيطي والأصوات */
     let audioCtx = null;
-    let oceanGain = null;
-    let oceanOsc = null;
-    let muteBtn = null;
 
     function initAudio() {
-    try {
-        // التأكد من عدم إنشاء السياق مسبقاً
-        if (window.audioInitialized) return;
-        
-        // البحث عن الحاوية أو إنشاؤها إذا لم تكن موجودة
-        let audioContainer = document.getElementById('audio-container');
-        if (!audioContainer) {
-            audioContainer = document.createElement('div');
-            audioContainer.id = 'audio-container';
-            document.body.appendChild(audioContainer);
-        }
+        try {
+            if (window.audioInitialized) return;
+            
+            let audioContainer = document.getElementById('audio-container');
+            if (!audioContainer) {
+                audioContainer = document.createElement('div');
+                audioContainer.id = 'audio-container';
+                document.body.appendChild(audioContainer);
+            }
 
-        // إنشاء AudioContext أو العنصر الصوتي بحذر
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) {
-            const ctx = new AudioContext();
-            // تفعيل السياق عند أول ضغطة زر من المستخدم
-            window.addEventListener('click', () => {
-                if (ctx.state === 'suspended') {
-                    ctx.resume();
-                }
-            }, { once: true });
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) {
+                audioCtx = new AudioContext(); // تم تصحيح ربط المتغير العام هنا
+                window.addEventListener('click', () => {
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+                }, { once: true });
+            }
+            
+            window.audioInitialized = true;
+        } catch (e) {
+            console.warn('Audio initialization deferred:', e);
         }
-        
-        window.audioInitialized = true;
-    } catch (e) {
-        console.warn('Audio initialization deferred:', e);
     }
-}
 
     initAudio();
-
-    document.addEventListener('click', () => {
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-    }, { once: true });
 
     /* الرسائل الابتدائية */
     const seedMessages = [
@@ -235,15 +222,17 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
     /* أدوات واجهة */
     function showToast(msg, ico = '🚀') {
         const t = document.getElementById('ccToast');
+        if (!t) return;
         t.querySelector('.ico').textContent = ico;
         t.querySelector('.txt').textContent = msg;
         t.classList.add('show');
         clearTimeout(toastTimer);
         toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
     }
-    function hideTooltip() { tooltip.classList.remove('show'); tooltipTarget = null; }
+    function hideTooltip() { if (tooltip) tooltip.classList.remove('show'); tooltipTarget = null; }
     function updateCounter() {
-        document.getElementById('capsuleCount').textContent = activeMessages.length;
+        const counterEl = document.getElementById('capsuleCount');
+        if (counterEl) counterEl.textContent = activeMessages.length;
     }
 
     function initThreeJS() {
@@ -256,7 +245,8 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        document.getElementById('planet-viewport').appendChild(renderer.domElement);
+        const viewport = document.getElementById('planet-viewport');
+        if (viewport) viewport.appendChild(renderer.domElement);
 
         scene.add(new THREE.AmbientLight(0xffffff, 0.6));
         const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
@@ -320,18 +310,24 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         else camera.position.set(0, 0, baseDist);
         let prevFit = baseDist;
 
-        document.getElementById('zoomInBtn').addEventListener('click', () => {
-            const dist = Math.max(controls.minDistance, camera.position.distanceTo(controls.target) * 0.7);
-            const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
-            zoomTargetVector.copy(controls.target).add(dir.multiplyScalar(dist));
-            isZooming = true;
-        });
-        document.getElementById('zoomOutBtn').addEventListener('click', () => {
-            const dist = Math.min(controls.maxDistance, camera.position.distanceTo(controls.target) * 1.4);
-            const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
-            zoomTargetVector.copy(controls.target).add(dir.multiplyScalar(dist));
-            isZooming = true;
-        });
+        const zoomInBtn = document.getElementById('zoomInBtn');
+        if (zoomInBtn) {
+            zoomInBtn.addEventListener('click', () => {
+                const dist = Math.max(controls.minDistance, camera.position.distanceTo(controls.target) * 0.7);
+                const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+                zoomTargetVector.copy(controls.target).add(dir.multiplyScalar(dist));
+                isZooming = true;
+            });
+        }
+        const zoomOutBtn = document.getElementById('zoomOutBtn');
+        if (zoomOutBtn) {
+            zoomOutBtn.addEventListener('click', () => {
+                const dist = Math.min(controls.maxDistance, camera.position.distanceTo(controls.target) * 1.4);
+                const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+                zoomTargetVector.copy(controls.target).add(dir.multiplyScalar(dist));
+                isZooming = true;
+            });
+        }
 
         activeMessages.forEach(msg => createMessageMarker(msg));
         updateCounter();
@@ -442,7 +438,7 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         labelDiv.className = 'country-label spawn' + (isG ? ' golden' : '');
         labelDiv.style.setProperty('--mood', isG ? '#fbbf24' : (MOOD_CSS[msg.mood] || '#60a5fa'));
         labelDiv.innerHTML = `<span>📍</span> ${CCI18N.countryLabel(msg.country)}`;
-        labelsContainer.appendChild(labelDiv);
+        if (labelsContainer) labelsContainer.appendChild(labelDiv);
         setTimeout(() => labelDiv.classList.remove('spawn'), 700);
 
         labelDiv.addEventListener('click', (e) => {
@@ -455,18 +451,20 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
             const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
             const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang==='ar'?'الكبسولة الذهبية اليوم':'Golden Capsule of the Day'} 🌟</div>` : '';
             
-            tooltip.innerHTML = `
-                ${goldenHeader}
-                <h4>${CCI18N.countryLabel(msg.country)} ${flag} ${translateBtn}</h4>
-                <p>"${msg.text}"</p>
-                <div class="author">${CCI18N.t('by')}: ${msg.author}</div>
-            `;
-            tooltip.style.left = labelDiv.style.left;
-            tooltip.style.top = labelDiv.style.top;
-            tooltip.classList.add('show');
+            if (tooltip) {
+                tooltip.innerHTML = `
+                    ${goldenHeader}
+                    <h4>${CCI18N.countryLabel(msg.country)} ${flag} ${translateBtn}</h4>
+                    <p>"${msg.text}"</p>
+                    <div class="author">${CCI18N.t('by')}: ${msg.author}</div>
+                `;
+                tooltip.style.left = labelDiv.style.left;
+                tooltip.style.top = labelDiv.style.top;
+                tooltip.classList.add('show');
+            }
             tooltipTarget = labelDiv;
 
-            const rbtn = tooltip.querySelector('.report-btn');
+            const rbtn = tooltip ? tooltip.querySelector('.report-btn') : null;
             if (rbtn) rbtn.addEventListener('click', async (ev) => {
                 ev.stopPropagation();
                 rbtn.disabled = true; rbtn.textContent = '…';
@@ -512,7 +510,7 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
 
         if (tooltipTarget) {
             if (tooltipTarget.style.opacity === '0') hideTooltip();
-            else {
+            else if (tooltip) {
                 tooltip.style.left = tooltipTarget.style.left;
                 tooltip.style.top = tooltipTarget.style.top;
             }
@@ -634,7 +632,9 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
     const notePriv = document.getElementById('privacyNotePriv');
     let chosenDays = null;
 
-    arrivalDate.min = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+    if (arrivalDate) {
+        arrivalDate.min = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+    }
 
     function fmtDate(d) {
         return new Intl.DateTimeFormat(CCI18N.lang === 'ar' ? 'ar-DZ' : 'en-GB',
@@ -644,14 +644,22 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         chosenDays = days;
         document.querySelectorAll('.arrival-chips .chip').forEach(c =>
             c.classList.toggle('on', c.dataset.days === String(days)));
-        if (days === 'custom') { arrivalDate.style.display = 'block'; arrivalPreview.textContent = ''; return; }
-        arrivalDate.style.display = 'none';
-        arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + fmtDate(new Date(Date.now() + days * 864e5)) + '</b>';
+        if (days === 'custom') {
+            if (arrivalDate) arrivalDate.style.display = 'block';
+            if (arrivalPreview) arrivalPreview.textContent = '';
+            return;
+        }
+        if (arrivalDate) arrivalDate.style.display = 'none';
+        if (arrivalPreview) {
+            arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + fmtDate(new Date(Date.now() + days * 864e5)) + '</b>';
+        }
     }
-    arrivalDate.addEventListener('change', () => {
-        if (!arrivalDate.value) return;
-        arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + fmtDate(new Date(arrivalDate.value + 'T12:00:00')) + '</b>';
-    });
+    if (arrivalDate) {
+        arrivalDate.addEventListener('change', () => {
+            if (!arrivalDate.value || !arrivalPreview) return;
+            arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + fmtDate(new Date(arrivalDate.value + 'T12:00:00')) + '</b>';
+        });
+    }
     document.querySelectorAll('.arrival-chips .chip').forEach(c =>
         c.addEventListener('click', () => {
             const v = c.dataset.days;
@@ -660,98 +668,115 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
 
     modeRadios.forEach(radio => radio.addEventListener('change', (e) => {
         const isPrivate = e.target.value === 'private';
-        arrivalGroup.style.display = isPrivate ? 'block' : 'none';
-        notePub.style.display = isPrivate ? 'none' : 'block';
-        notePriv.style.display = isPrivate ? 'block' : 'none';
+        if (arrivalGroup) arrivalGroup.style.display = isPrivate ? 'block' : 'none';
+        if (notePub) notePub.style.display = isPrivate ? 'none' : 'block';
+        if (notePriv) notePriv.style.display = isPrivate ? 'block' : 'none';
         if (isPrivate) setArrival(1);
         else {
             chosenDays = null;
-            arrivalPreview.textContent = '';
-            arrivalDate.style.display = 'none';
+            if (arrivalPreview) arrivalPreview.textContent = '';
+            if (arrivalDate) arrivalDate.style.display = 'none';
             document.querySelectorAll('.arrival-chips .chip').forEach(c => c.classList.remove('on'));
         }
     }));
 
-    openModalBtn.addEventListener('click', () => messageModal.classList.add('active'));
-    closeModalBtn.addEventListener('click', () => messageModal.classList.remove('active'));
-    messageModal.addEventListener('click', (e) => {
-        if (e.target === messageModal) messageModal.classList.remove('active');
-    });
+    if (openModalBtn && messageModal) {
+        openModalBtn.addEventListener('click', () => messageModal.classList.add('active'));
+    }
+    if (closeModalBtn && messageModal) {
+        closeModalBtn.addEventListener('click', () => messageModal.classList.remove('active'));
+    }
+    if (messageModal) {
+        messageModal.addEventListener('click', (e) => {
+            if (e.target === messageModal) messageModal.classList.remove('active');
+        });
+    }
     window.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') { messageModal.classList.remove('active'); deepModal.classList.remove('active'); hideTooltip(); }
+        if (e.key === 'Escape') {
+            if (messageModal) messageModal.classList.remove('active');
+            if (deepModal) deepModal.classList.remove('active');
+            hideTooltip();
+        }
     });
 
-    messageText.addEventListener('input', (e) => {
-        charCounter.textContent = `${e.target.value.length} / ${e.target.getAttribute('maxlength')}`;
-    });
+    if (messageText && charCounter) {
+        messageText.addEventListener('input', (e) => {
+            charCounter.textContent = `${e.target.value.length} / ${e.target.getAttribute('maxlength')}`;
+        });
+    }
 
     function resetFormUI() {
         chosenDays = null;
-        arrivalGroup.style.display = 'none';
-        arrivalDate.style.display = 'none';
-        arrivalDate.value = '';
-        arrivalPreview.textContent = '';
-        notePub.style.display = 'block';
-        notePriv.style.display = 'none';
+        if (arrivalGroup) arrivalGroup.style.display = 'none';
+        if (arrivalDate) {
+            arrivalDate.style.display = 'none';
+            arrivalDate.value = '';
+        }
+        if (arrivalPreview) arrivalPreview.textContent = '';
+        if (notePub) notePub.style.display = 'block';
+        if (notePriv) notePriv.style.display = 'none';
         document.querySelectorAll('.arrival-chips .chip').forEach(c => c.classList.remove('on'));
-        charCounter.textContent = '0 / 300';
+        if (charCounter) charCounter.textContent = '0 / 300';
     }
 
     let lastLaunchTime = 0;
     const LAUNCH_COOLDOWN = 10000;
 
-    messageForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const country = document.getElementById('userCountry').value;
-        if (!country) { showToast(CCI18N.t('pick_warn'), '⚠️'); return; }
+    if (messageForm) {
+        messageForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const countryInput = document.getElementById('userCountry');
+            const country = countryInput ? countryInput.value : '';
+            if (!country) { showToast(CCI18N.t('pick_warn'), '⚠️'); return; }
 
-        const text = messageText.value.trim();
-        if (!text) {
-            showToast(CCI18N.t('msg_ph') || 'اكتب نص الرسالة أولاً', '⚠️');
-            return;
-        }
-
-        const now = Date.now();
-        if (now - lastLaunchTime < LAUNCH_COOLDOWN) {
-            const rem = Math.ceil((LAUNCH_COOLDOWN - (now - lastLaunchTime)) / 1000);
-            showToast(`⏳ انتظر ${rem} ثوانٍ قبل إطلاق كبسولة أخرى`, '⏱️');
-            return;
-        }
-
-        const author = document.getElementById('sendAsAnonymous')?.checked 
-            ? CCI18N.t('anon_name') 
-            : (document.getElementById('authorName').value.trim() || CCI18N.t('anon_name'));
-        const mood = (document.querySelector('input[name="mood"]:checked') || {}).value || 'hope';
-        const isPrivate = (document.querySelector('input[name="capsuleMode"]:checked') || {}).value === 'private';
-
-        let arrivalISO = null;
-        if (isPrivate) {
-            if (chosenDays === 'custom') {
-                if (!arrivalDate.value) { showToast(CCI18N.t('pick_date'), '⚠️'); return; }
-                arrivalISO = new Date(arrivalDate.value + 'T12:00:00').toISOString();
-            } else {
-                arrivalISO = new Date(Date.now() + chosenDays * 864e5).toISOString();
+            const text = messageText ? messageText.value.trim() : '';
+            if (!text) {
+                showToast(CCI18N.t('msg_ph') || 'اكتب نص الرسالة أولاً', '⚠️');
+                return;
             }
-        }
 
-        const btn = messageForm.querySelector('.btn-submit');
-        const original = btn.innerHTML;
-        btn.disabled = true; btn.textContent = CCI18N.t('preparing');
+            const now = Date.now();
+            if (now - lastLaunchTime < LAUNCH_COOLDOWN) {
+                const rem = Math.ceil((LAUNCH_COOLDOWN - (now - lastLaunchTime)) / 1000);
+                showToast(`⏳ انتظر ${rem} ثوانٍ قبل إطلاق كبسولة أخرى`, '⏱️');
+                return;
+            }
 
-        try {
-            const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
-            lastLaunchTime = Date.now();
-            launchMessage(country, text, author, mood);
-            showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
-            messageForm.reset();
-            resetFormUI();
-            messageModal.classList.remove('active');
-        } catch (err) {
-            showToast(err.message, '⚠️');
-        } finally {
-            btn.disabled = false; btn.innerHTML = original;
-        }
-    });
+            const author = document.getElementById('sendAsAnonymous')?.checked 
+                ? CCI18N.t('anon_name') 
+                : (document.getElementById('authorName')?.value.trim() || CCI18N.t('anon_name'));
+            const mood = (document.querySelector('input[name="mood"]:checked') || {}).value || 'hope';
+            const isPrivate = (document.querySelector('input[name="capsuleMode"]:checked') || {}).value === 'private';
+
+            let arrivalISO = null;
+            if (isPrivate) {
+                if (chosenDays === 'custom') {
+                    if (!arrivalDate || !arrivalDate.value) { showToast(CCI18N.t('pick_date'), '⚠️'); return; }
+                    arrivalISO = new Date(arrivalDate.value + 'T12:00:00').toISOString();
+                } else {
+                    arrivalISO = new Date(Date.now() + chosenDays * 864e5).toISOString();
+                }
+            }
+
+            const btn = messageForm.querySelector('.btn-submit');
+            const original = btn ? btn.innerHTML : '';
+            if (btn) { btn.disabled = true; btn.textContent = CCI18N.t('preparing'); }
+
+            try {
+                const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
+                lastLaunchTime = Date.now();
+                launchMessage(country, text, author, mood);
+                showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
+                messageForm.reset();
+                resetFormUI();
+                if (messageModal) messageModal.classList.remove('active');
+            } catch (err) {
+                showToast(err.message, '⚠️');
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerHTML = original; }
+            }
+        });
+    }
 
     window.addEventListener('cc:lang', () => {
         labelElements.forEach(it => {
@@ -780,15 +805,19 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         const { data, error } = await sb.rpc('get_deep_capsule', { p_exclude_id: lastDeepId });
         if (error) { showToast('🌊 ' + error.message, '⚠️'); return; }
         if (!data || !data.length) {
-            deepText.textContent = CCI18N.t('deep_empty');
-            deepText.classList.add('deep-empty');
-            deepMeta.innerHTML = '';
+            if (deepText) {
+                deepText.textContent = CCI18N.t('deep_empty');
+                deepText.classList.add('deep-empty');
+            }
+            if (deepMeta) deepMeta.innerHTML = '';
             lastDeepId = null;
         } else {
             const r = data[0];
             lastDeepId = r.o_id;
-            deepText.classList.remove('deep-empty');
-            deepText.textContent = '“' + r.o_text + '”';
+            if (deepText) {
+                deepText.classList.remove('deep-empty');
+                deepText.textContent = '“' + r.o_text + '”';
+            }
             const when = new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
                 { day:'numeric', month:'long', year:'numeric' }).format(new Date(r.o_created));
             
@@ -798,65 +827,73 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
 
             const edgeTranslateBtn = `<button class="action-btn translate-btn" data-id="${r.o_id}" title="${CCI18N.lang === 'ar' ? 'ترجمة متقدمة' : 'Advanced Translation'}" style="margin-inline-start:0; transform:scale(1.1)">🌐</button>`;
 
-            deepMeta.innerHTML =
-                `<span>${CCI18N.countryLabel(r.o_country)}</span>` +
-                `<span>${(CCI18N.lang==='ar'?'بقلم':'By')}: <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
-                `<span>${when}</span>` +
-                `<span>👁️ <b>${r.o_reads ?? 0}</b></span>` +
-                `${translateBtn} ${edgeTranslateBtn}`;
+            if (deepMeta) {
+                deepMeta.innerHTML =
+                    `<span>${CCI18N.countryLabel(r.o_country)}</span>` +
+                    `<span>${(CCI18N.lang==='ar'?'بقلم':'By')}: <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
+                    `<span>${when}</span>` +
+                    `<span>👁️ <b>${r.o_reads ?? 0}</b></span>` +
+                    `${translateBtn} ${edgeTranslateBtn}`;
 
-            const edgeBtn = deepMeta.querySelector('.translate-btn[data-id]');
-            if (edgeBtn) {
-                edgeBtn.addEventListener('click', async (ev) => {
-                    ev.stopPropagation();
-                    edgeBtn.disabled = true;
-                    edgeBtn.textContent = '…';
+                const edgeBtn = deepMeta.querySelector('.translate-btn[data-id]');
+                if (edgeBtn) {
+                    edgeBtn.addEventListener('click', async (ev) => {
+                        ev.stopPropagation();
+                        edgeBtn.disabled = true;
+                        edgeBtn.textContent = '…';
 
-                    const translation = await CapsuleStore.translateCapsule(
-                        parseInt(edgeBtn.dataset.id, 10),
-                        CCI18N.lang === 'ar' ? 'AR' : 'EN'
-                    );
+                        const translation = await CapsuleStore.translateCapsule(
+                            parseInt(edgeBtn.dataset.id, 10),
+                            CCI18N.lang === 'ar' ? 'AR' : 'EN'
+                        );
 
-                    if (translation) {
-                        const transDiv = document.createElement('div');
-                        transDiv.className = 'translation-box';
-                        transDiv.innerHTML = `
-                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">
-                                ${CCI18N.lang === 'ar' ? 'الترجمة المتقدمة' : 'Advanced Translation'}:
-                            </div>
-                            <p style="color:#a78bfa;font-style:italic;">"${translation}"</p>
-                        `;
-                        deepMeta.parentNode.insertBefore(transDiv, deepMeta.nextSibling);
-                        edgeBtn.remove();
-                    } else {
-                        edgeBtn.textContent = '⚠️';
-                        edgeBtn.disabled = false;
-                    }
-                });
+                        if (translation) {
+                            const transDiv = document.createElement('div');
+                            transDiv.className = 'translation-box';
+                            transDiv.innerHTML = `
+                                <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">
+                                    ${CCI18N.lang === 'ar' ? 'الترجمة المتقدمة' : 'Advanced Translation'}:
+                                </div>
+                                <p style="color:#a78bfa;font-style:italic;">"${translation}"</p>
+                            `;
+                            deepMeta.parentNode.insertBefore(transDiv, deepMeta.nextSibling);
+                            edgeBtn.remove();
+                        } else {
+                            edgeBtn.textContent = '⚠️';
+                            edgeBtn.disabled = false;
+                        }
+                    });
+                }
             }
             sb.rpc('read_capsule', { p_id: r.o_id });
         }
-        deepModal.classList.add('active');
+        if (deepModal) deepModal.classList.add('active');
     }
 
-    deepBtn.addEventListener('click', openDeep);
+    if (deepBtn) deepBtn.addEventListener('click', openDeep);
     document.getElementById('deepAgain')?.addEventListener('click', openDeep);
-    document.getElementById('deepClose')?.addEventListener('click', () => deepModal.classList.remove('active'));
-    deepModal.addEventListener('click', (e) => {
-        if (e.target === deepModal) deepModal.classList.remove('active');
-    });
-});
-
-// ربط زر تسجيل الدخول بجوجل عبر Supabase
-const googleLoginBtn = document.getElementById('google-login-btn');
-if (googleLoginBtn) {
-    googleLoginBtn.addEventListener('click', async () => {
-        // تأكد باللي المتغير لي راك مسمي بيه Supabase في السكربت نتاعك هو 'sb' (لأنني شفيتك تستعمل sb.rpc في السطر 851)
-        const { data, error } = await sb.auth.signInWithOAuth({
-            provider: 'google',
+    document.getElementById('deepClose')?.addEventListener('click', () => deepModal?.classList.remove('active'));
+    if (deepModal) {
+        deepModal.addEventListener('click', (e) => {
+            if (e.target === deepModal) deepModal.classList.remove('active');
         });
-        if (error) {
-            console.error('خطأ في تسجيل الدخول:', error.message);
-        }
-    });
-}
+    }
+
+    /* ربط زر تسجيل الدخول بجوجل عبر Supabase داخل نطاق الـ DOMContentLoaded لضمان وصوله لمتغير sb */
+    const googleLoginBtn = document.getElementById('google-login-btn');
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', async () => {
+            if (!sb) {
+                console.error('Supabase client is not initialized.');
+                return;
+            }
+            const { data, error } = await sb.auth.signInWithOAuth({
+                provider: 'google',
+            });
+            if (error) {
+                console.error('خطأ في تسجيل الدخول:', error.message);
+            }
+        });
+    }
+});
+```[cite: 2]
