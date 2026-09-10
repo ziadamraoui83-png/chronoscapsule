@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملفي الشخصي | Chronos Capsule</title>
+    <meta name="description" content="ملفك الشخصي في كبسولة الزمن الكونية">
+    <meta name="theme-color" content="#010103">
+    <meta name="robots" content="noindex, nofollow">
+
+    <!-- ✅ Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z872SS657T');
+    </script>
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
+        body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
+        button,a,select,input{cursor:pointer}
+
+        /* ══ خلفية الفضاء ══ */
+        body::before{content:'';position:fixed;inset:0;
+            background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
+                        radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
+            z-index:0;pointer-events:none}
+        body::after{content:'';position:fixed;inset:0;
+            background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
+                radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
+                radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+                radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
+            z-index:0;pointer-events:none}
+
+        /* ══ الترويسة ══ */
+        .page-header{position:sticky;top:0;z-index:50;
+            background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
+            border-bottom:1px solid rgba(255,255,255,.07);
+            padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .header-logo-icon{font-size:1.4rem}
+        .header-logo-text{font-size:1.05rem;font-weight:900;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .header-actions{display:flex;align-items:center;gap:8px}
+        .back-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
+            padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
+        .back-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
+        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
+        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
+
+        /* ══ الصفحة ══ */
+        .page{max-width:720px;margin:0 auto;padding:34px 20px 80px;position:relative;z-index:1}
+
+        /* ══ بطاقة البروفايل الرئيسية ══ */
+        .profile-hero{
+            position:relative;
+            background:linear-gradient(135deg,rgba(139,92,246,.08),rgba(59,130,246,.05));
+            border:1px solid rgba(139,92,246,.25);
+            border-radius:24px;
+            padding:40px 30px 32px;
+            text-align:center;
+            backdrop-filter:blur(12px);
+            box-shadow:0 20px 60px rgba(0,0,0,.4),0 0 60px rgba(139,92,246,.08);
+            overflow:hidden;
+            margin-bottom:22px;
+        }
+        .profile-hero::before{
+            content:'';position:absolute;top:0;left:20%;right:20%;height:1px;
+            background:linear-gradient(90deg,transparent,#a78bfa,#3b82f6,transparent);
+        }
+        .avatar-wrap{
+            position:relative;
+            width:120px;height:120px;
+            margin:0 auto 18px;
+        }
+        .avatar-ring{
+            position:absolute;inset:-6px;
+            border-radius:50%;
+            background:conic-gradient(from 0deg,#a78bfa,#3b82f6,#34d399,#a78bfa);
+            animation:spinRing 8s linear infinite;
+            filter:blur(2px);
+            opacity:.7;
+        }
+        @keyframes spinRing{
+            to{transform:rotate(360deg)}
+        }
+        .avatar-inner{
+            position:relative;
+            width:120px;height:120px;
+            border-radius:50%;
+            overflow:hidden;
+            border:4px solid #0f172a;
+            background:#0f172a;
+            z-index:2;
+        }
+        .avatar-inner img{
+            width:100%;height:100%;object-fit:cover;display:block;
+        }
+        .avatar-placeholder{
+            display:flex;align-items:center;justify-content:center;
+            width:100%;height:100%;
+            font-size:48px;
+            background:linear-gradient(135deg,#6d28d9,#2563eb);
+            color:#fff;
+            font-weight:900;
+        }
+        .profile-name{
+            font-size:1.6rem;font-weight:900;color:#fff;
+            margin-bottom:6px;line-height:1.2;
+            word-break:break-word;
+        }
+        .profile-email{
+            font-size:.9rem;color:#94a3b8;margin-bottom:14px;
+            word-break:break-all;
+        }
+        .verified-badge{
+            display:inline-flex;align-items:center;gap:6px;
+            background:rgba(52,211,153,.12);
+            border:1px solid rgba(52,211,153,.3);
+            color:#34d399;
+            padding:5px 12px;border-radius:999px;
+            font-size:11.5px;font-weight:700;
+        }
+        .verified-badge svg{flex:none}
+
+        /* ══ شبكة الإحصائيات ══ */
+        .stats-grid{
+            display:grid;grid-template-columns:repeat(3,1fr);
+            gap:12px;margin-bottom:22px;
+        }
+        .stat-card{
+            background:rgba(15,23,42,.6);
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:16px;
+            padding:18px 12px;
+            text-align:center;
+            backdrop-filter:blur(8px);
+            transition:all .3s ease;
+        }
+        .stat-card:hover{
+            border-color:rgba(139,92,246,.5);
+            transform:translateY(-2px);
+            background:rgba(15,23,42,.8);
+        }
+        .stat-icon{
+            font-size:22px;margin-bottom:8px;
+            filter:drop-shadow(0 0 8px rgba(139,92,246,.4));
+        }
+        .stat-value{
+            font-size:1.4rem;font-weight:900;color:#a78bfa;
+            direction:ltr;margin-bottom:4px;
+            font-variant-numeric:tabular-nums;
+        }
+        .stat-label{
+            font-size:11px;color:#64748b;font-weight:600;
+            letter-spacing:.03em;
+        }
+
+        /* ══ قسم الإعدادات ══ */
+        .section-title{
+            font-size:12px;font-weight:700;color:#64748b;
+            letter-spacing:.1em;text-transform:uppercase;
+            margin:26px 4px 10px;
+        }
+        .settings-list{
+            background:rgba(15,23,42,.5);
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:18px;
+            overflow:hidden;
+            backdrop-filter:blur(8px);
+        }
+        .setting-item{
+            display:flex;align-items:center;gap:14px;
+            padding:16px 20px;
+            border-bottom:1px solid rgba(255,255,255,.05);
+            transition:background .2s ease;
+            width:100%;
+            background:none;border-left:none;border-right:none;border-top:none;
+            text-align:start;color:#fff;
+        }
+        .setting-item:last-child{border-bottom:none}
+        .setting-item:hover{background:rgba(139,92,246,.06)}
+        .setting-icon{
+            width:38px;height:38px;
+            border-radius:10px;
+            background:rgba(139,92,246,.12);
+            display:flex;align-items:center;justify-content:center;
+            font-size:17px;flex:none;
+            border:1px solid rgba(139,92,246,.2);
+        }
+        .setting-body{flex:1;min-width:0}
+        .setting-title{font-size:14px;font-weight:700;color:#e2e8f0;margin-bottom:3px}
+        .setting-desc{font-size:11.5px;color:#64748b;line-height:1.5}
+        .setting-value{
+            font-size:13px;color:#a78bfa;font-weight:600;
+            max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+        }
+        .setting-arrow{color:#475569;font-size:18px;flex:none}
+
+        /* ══ منطقة الخطر ══ */
+        .danger-item .setting-icon{
+            background:rgba(239,68,68,.1);
+            border-color:rgba(239,68,68,.25);
+        }
+        .danger-item:hover{background:rgba(239,68,68,.06)}
+        .danger-item .setting-title{color:#f87171}
+
+        /* ══ حالة "غير مسجل" ══ */
+        .not-signed-in{
+            text-align:center;
+            padding:60px 20px;
+            background:rgba(15,23,42,.5);
+            border:1px solid rgba(255,255,255,.08);
+            border-radius:24px;
+            backdrop-filter:blur(12px);
+        }
+        .not-signed-in .big-ico{
+            font-size:64px;margin-bottom:20px;
+            filter:drop-shadow(0 0 20px rgba(139,92,246,.3));
+        }
+        .not-signed-in h2{
+            font-size:1.4rem;font-weight:900;margin-bottom:10px;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+        }
+        .not-signed-in p{
+            font-size:.95rem;color:#94a3b8;margin-bottom:26px;line-height:1.7;
+        }
+        .google-btn-big{
+            display:inline-flex;align-items:center;gap:10px;
+            background:#fff;color:#1f2937;
+            border:none;border-radius:12px;
+            padding:13px 24px;
+            font-size:15px;font-weight:700;
+            font-family:'Tajawal',sans-serif;
+            cursor:pointer;
+            transition:all .3s ease;
+            box-shadow:0 8px 24px rgba(255,255,255,.15);
+        }
+        .google-btn-big:hover{
+            transform:translateY(-2px);
+            box-shadow:0 12px 30px rgba(255,255,255,.25);
+        }
+        .google-btn-big svg{flex:none}
+
+        /* ══ Modal تعديل الاسم ══ */
+        .modal-overlay{
+            position:fixed;inset:0;
+            background:rgba(0,0,0,.75);
+            backdrop-filter:blur(8px);
+            display:flex;align-items:center;justify-content:center;
+            opacity:0;visibility:hidden;
+            transition:all .3s ease;
+            z-index:100;
+            padding:20px;
+        }
+        .modal-overlay.active{opacity:1;visibility:visible}
+        .modal-card{
+            background:#0f172a;
+            border:1px solid rgba(255,255,255,.1);
+            border-radius:20px;
+            padding:28px;
+            max-width:400px;width:100%;
+            box-shadow:0 30px 80px rgba(0,0,0,.7);
+            transform:scale(.94);opacity:0;
+            transition:all .3s cubic-bezier(.34,1.56,.64,1);
+        }
+        .modal-overlay.active .modal-card{transform:scale(1);opacity:1}
+        .modal-title{
+            font-size:1.15rem;font-weight:900;margin-bottom:6px;
+        }
+        .modal-subtitle{font-size:12.5px;color:#64748b;margin-bottom:20px}
+        .modal-input{
+            width:100%;padding:12px 14px;
+            background:rgba(0,0,0,.3);
+            border:1px solid rgba(255,255,255,.15);
+            border-radius:10px;
+            color:#fff;font-size:15px;outline:none;
+            font-family:'Tajawal',sans-serif;
+            transition:border-color .3s;
+        }
+        .modal-input:focus{border-color:#8b5cf6}
+        .modal-actions{
+            display:flex;gap:10px;margin-top:20px;
+        }
+        .btn-modal{
+            flex:1;
+            padding:12px 18px;
+            border-radius:10px;
+            font-size:14px;font-weight:700;
+            font-family:'Tajawal',sans-serif;
+            cursor:pointer;
+            transition:all .25s ease;
+            border:none;
+        }
+        .btn-cancel{
+            background:rgba(255,255,255,.08);
+            color:#cbd5e1;
+        }
+        .btn-cancel:hover{background:rgba(255,255,255,.14)}
+        .btn-save{
+            background:linear-gradient(135deg,#6d28d9,#2563eb);
+            color:#fff;
+        }
+        .btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(99,102,241,.4)}
+        .btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
+
+        /* ══ الإشعار ══ */
+        .cc-toast{
+            position:fixed;bottom:28px;left:50%;
+            transform:translateX(-50%) translateY(20px);
+            background:rgba(15,23,42,.95);
+            border:1px solid rgba(139,92,246,.4);
+            border-radius:14px;
+            padding:12px 20px;
+            display:flex;align-items:center;gap:10px;
+            font-size:14px;
+            backdrop-filter:blur(16px);
+            z-index:9999;
+            opacity:0;
+            transition:all .4s cubic-bezier(.34,1.56,.64,1);
+            pointer-events:none;
+            box-shadow:0 8px 32px rgba(0,0,0,.4);
+            max-width:90vw;
+        }
+        .cc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+        /* ══ جوال ══ */
+        @media(max-width:600px){
+            .page-header{padding:12px 16px}
+            .page{padding:24px 14px 60px}
+            .profile-hero{padding:32px 20px 26px}
+            .avatar-wrap,.avatar-inner{width:100px;height:100px}
+            .avatar-placeholder{font-size:40px}
+            .profile-name{font-size:1.3rem}
+            .stats-grid{grid-template-columns:repeat(3,1fr);gap:8px}
+            .stat-card{padding:14px 8px}
+            .stat-value{font-size:1.15rem}
+            .stat-icon{font-size:18px}
+            .stat-label{font-size:10px}
+            .setting-item{padding:14px 16px}
+            .setting-value{max-width:100px;font-size:12px}
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+            .avatar-ring{animation:none}
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══ الترويسة ══ -->
+<header class="page-header">
+    <a href="index.html" class="header-logo">
+        <span class="header-logo-icon">🚀</span>
+        <span class="header-logo-text">CHRONOS CAPSULE</span>
+    </a>
+    <div class="header-actions">
+        <button class="lang-toggle-cap" id="profLangToggle">EN</button>
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span id="backLinkText">العودة للكوكب</span>
+        </a>
+    </div>
+</header>
+
+<!-- ══ الإشعار ══ -->
+<div class="cc-toast" id="profToast"><span class="ico">🚀</span><span class="txt"></span></div>
+
+<!-- ══ المحتوى ══ -->
+<main class="page">
+
+    <!-- شاشة التحميل -->
+    <div id="loadingState" style="text-align:center;padding:80px 20px;color:#64748b;font-size:14px">
+        <div style="width:36px;height:36px;border-radius:50%;border:3px solid rgba(139,92,246,.2);border-top-color:#8b5cf6;animation:spinRing 1s linear infinite;margin:0 auto 16px"></div>
+        <span id="loadingText">جاري التحقق...</span>
+    </div>
+
+    <!-- غير مسجل دخول -->
+    <div class="not-signed-in" id="notSignedIn" style="display:none">
+        <div class="big-ico">🛸</div>
+        <h2 id="nsTitle">لم تسجّل الدخول بعد</h2>
+        <p id="nsDesc">سجّل الدخول بحساب Google لعرض ملفك الشخصي وإدارة إعداداتك</p>
+        <button class="google-btn-big" id="signInBigBtn">
+            <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true">
+                <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+            </svg>
+            <span id="bigBtnText">تسجيل الدخول بحساب Google</span>
+        </button>
+    </div>
+
+    <!-- مسجل دخول — البروفايل -->
+    <div id="profileContent" style="display:none">
+
+        <!-- البطاقة الرئيسية -->
+        <div class="profile-hero">
+            <div class="avatar-wrap">
+                <div class="avatar-ring"></div>
+                <div class="avatar-inner" id="avatarInner">
+                    <div class="avatar-placeholder" id="avatarPlaceholder">?</div>
+                </div>
+            </div>
+            <h1 class="profile-name" id="userName">—</h1>
+            <p class="profile-email" id="userEmail">—</p>
+            <div class="verified-badge">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+                <span id="verifiedText">موثّق عبر Google</span>
+            </div>
+        </div>
+
+        <!-- الإحصائيات -->
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon">🛸</div>
+                <div class="stat-value" id="statCapsules">0</div>
+                <div class="stat-label" id="labelCapsules">كبسولة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">👁️</div>
+                <div class="stat-value" id="statReads">0</div>
+                <div class="stat-label" id="labelReads">قراءة</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon">📅</div>
+                <div class="stat-value" id="statDays">0</div>
+                <div class="stat-label" id="labelDays">يوم معنا</div>
+            </div>
+        </div>
+
+        <!-- قسم الحساب -->
+        <div class="section-title" id="sectionAccount">الحساب</div>
+        <div class="settings-list">
+            <button class="setting-item" id="editNameBtn" type="button">
+                <div class="setting-icon">✏️</div>
+                <div class="setting-body">
+                    <div class="setting-title" id="editNameTitle">تعديل الاسم</div>
+                    <div class="setting-desc" id="editNameDesc">غيّر اسمك الظاهر على حسابك</div>
+                </div>
+                <div class="setting-value" id="nameValue">—</div>
+                <div class="setting-arrow">›</div>
+            </button>
+
+            <a class="setting-item" href="capsules.html">
+                <div class="setting-icon">📦</div>
+                <div class="setting-body">
+                    <div class="setting-title" id="myCapsTitle">كبسولاتي</div>
+                    <div class="setting-desc" id="myCapsDesc">اعرض كل كبسولاتك المُرسلة</div>
+                </div>
+                <div class="setting-arrow">›</div>
+            </a>
+        </div>
+
+        <!-- قسم الخروج -->
+        <div class="section-title" id="sectionDanger">منطقة الخروج</div>
+        <div class="settings-list">
+            <button class="setting-item" id="signOutBtn" type="button">
+                <div class="setting-icon">🚪</div>
+                <div class="setting-body">
+                    <div class="setting-title" id="signOutTitle">تسجيل الخروج</div>
+                    <div class="setting-desc" id="signOutDesc">الخروج من هذا الجهاز</div>
+                </div>
+                <div class="setting-arrow">›</div>
+            </button>
+
+            <button class="setting-item danger-item" id="signOutAllBtn" type="button">
+                <div class="setting-icon">⚠️</div>
+                <div class="setting-body">
+                    <div class="setting-title" id="signOutAllTitle">الخروج من كل الأجهزة</div>
+                    <div class="setting-desc" id="signOutAllDesc">سيتم إنهاء الجلسات على كل أجهزتك</div>
+                </div>
+                <div class="setting-arrow">›</div>
+            </button>
+        </div>
+
+    </div>
+</main>
+
+<!-- ══ Modal تعديل الاسم ══ -->
+<div class="modal-overlay" id="editNameModal">
+    <div class="modal-card">
+        <div class="modal-title" id="modalTitle">تعديل الاسم</div>
+        <div class="modal-subtitle" id="modalSubtitle">سيظهر هذا الاسم في ملفك الشخصي فقط — وليس على كبسولاتك.</div>
+        <input type="text" class="modal-input" id="newNameInput" maxlength="40" placeholder="اكتب اسمك الجديد...">
+        <div class="modal-actions">
+            <button class="btn-modal btn-cancel" id="cancelNameBtn" type="button">إلغاء</button>
+            <button class="btn-modal btn-save" id="saveNameBtn" type="button">حفظ</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══ السكربتات ══ -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function(){
+    "use strict";
+
+    const SB_URL = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
+    const sb = (window.supabase) ? supabase.createClient(SB_URL, SB_KEY) : null;
+
+    const $ = id => document.getElementById(id);
+
+    function trackEvent(eventName, params = {}) {
+        try { if (typeof gtag === 'function') gtag('event', eventName, params); } catch (e) {}
+    }
+
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+
+    /* ══ اللغة ══ */
+    const LANGS = {
+        ar: {
+            toggle: 'EN', back: 'العودة للكوكب',
+            loading: 'جاري التحقق...',
+            nsTitle: 'لم تسجّل الدخول بعد',
+            nsDesc: 'سجّل الدخول بحساب Google لعرض ملفك الشخصي وإدارة إعداداتك',
+            bigBtn: 'تسجيل الدخول بحساب Google',
+            verified: 'موثّق عبر Google',
+            labelCapsules: 'كبسولة', labelReads: 'قراءة', labelDays: 'يوم معنا',
+            sectionAccount: 'الحساب',
+            editNameTitle: 'تعديل الاسم',
+            editNameDesc: 'غيّر اسمك الظاهر على حسابك',
+            myCapsTitle: 'كبسولاتي',
+            myCapsDesc: 'اعرض كل كبسولاتك المُرسلة',
+            sectionDanger: 'منطقة الخروج',
+            signOutTitle: 'تسجيل الخروج',
+            signOutDesc: 'الخروج من هذا الجهاز',
+            signOutAllTitle: 'الخروج من كل الأجهزة',
+            signOutAllDesc: 'سيتم إنهاء الجلسات على كل أجهزتك',
+            modalTitle: 'تعديل الاسم',
+            modalSubtitle: 'سيظهر هذا الاسم في ملفك الشخصي فقط — وليس على كبسولاتك.',
+            namePh: 'اكتب اسمك الجديد...',
+            cancel: 'إلغاء', save: 'حفظ',
+            toastSaved: 'تم حفظ الاسم بنجاح ✨',
+            toastSignedOut: 'تم تسجيل الخروج 👋',
+            toastSignedOutAll: 'تم الخروج من كل الأجهزة 🔒',
+            toastError: 'حدث خطأ، حاول مرة أخرى',
+            confirmSignOutAll: 'هل أنت متأكد من الخروج من كل الأجهزة؟'
+        },
+        en: {
+            toggle: 'AR', back: '← Back to Planet',
+            loading: 'Verifying...',
+            nsTitle: 'Not signed in yet',
+            nsDesc: 'Sign in with Google to view your profile and manage settings',
+            bigBtn: 'Sign in with Google',
+            verified: 'Verified with Google',
+            labelCapsules: 'capsules', labelReads: 'reads', labelDays: 'days with us',
+            sectionAccount: 'Account',
+            editNameTitle: 'Edit name',
+            editNameDesc: 'Change your display name',
+            myCapsTitle: 'My Capsules',
+            myCapsDesc: 'View all your sent capsules',
+            sectionDanger: 'Sign out zone',
+            signOutTitle: 'Sign out',
+            signOutDesc: 'Sign out from this device',
+            signOutAllTitle: 'Sign out everywhere',
+            signOutAllDesc: 'End sessions on all your devices',
+            modalTitle: 'Edit name',
+            modalSubtitle: 'This name appears only on your profile — not on your capsules.',
+            namePh: 'Type your new name...',
+            cancel: 'Cancel', save: 'Save',
+            toastSaved: 'Name saved successfully ✨',
+            toastSignedOut: 'Signed out 👋',
+            toastSignedOutAll: 'Signed out everywhere 🔒',
+            toastError: 'Something went wrong, try again',
+            confirmSignOutAll: 'Are you sure you want to sign out from all devices?'
+        }
+    };
+
+    let profLang = (() => { try { return localStorage.getItem('cc_lang') || 'ar'; } catch (e) { return 'ar'; } })();
+
+    function applyLang(l) {
+        profLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+
+        const D = LANGS[l] || LANGS.ar;
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+
+        $('profLangToggle').textContent = D.toggle;
+        $('backLinkText').textContent = D.back;
+        $('loadingText').textContent = D.loading;
+        $('nsTitle').textContent = D.nsTitle;
+        $('nsDesc').textContent = D.nsDesc;
+        $('bigBtnText').textContent = D.bigBtn;
+        $('verifiedText').textContent = D.verified;
+        $('labelCapsules').textContent = D.labelCapsules;
+        $('labelReads').textContent = D.labelReads;
+        $('labelDays').textContent = D.labelDays;
+        $('sectionAccount').textContent = D.sectionAccount;
+        $('editNameTitle').textContent = D.editNameTitle;
+        $('editNameDesc').textContent = D.editNameDesc;
+        $('myCapsTitle').textContent = D.myCapsTitle;
+        $('myCapsDesc').textContent = D.myCapsDesc;
+        $('sectionDanger').textContent = D.sectionDanger;
+        $('signOutTitle').textContent = D.signOutTitle;
+        $('signOutDesc').textContent = D.signOutDesc;
+        $('signOutAllTitle').textContent = D.signOutAllTitle;
+        $('signOutAllDesc').textContent = D.signOutAllDesc;
+        $('modalTitle').textContent = D.modalTitle;
+        $('modalSubtitle').textContent = D.modalSubtitle;
+        $('newNameInput').placeholder = D.namePh;
+        $('cancelNameBtn').textContent = D.cancel;
+        $('saveNameBtn').textContent = D.save;
+
+        if (currentUser) fillUserData(currentUser);
+    }
+
+    $('profLangToggle').addEventListener('click', () => applyLang(profLang === 'ar' ? 'en' : 'ar'));
+
+    /* ══ الإشعار ══ */
+    let _toastTimer;
+    function toast(msg, ico = '✨'){
+        const el = $('profToast');
+        if (!el) return;
+        el.querySelector('.ico').textContent = ico;
+        el.querySelector('.txt').textContent = msg;
+        el.classList.add('show');
+        clearTimeout(_toastTimer);
+        _toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
+    }
+
+    /* ══ الحالة ══ */
+    let currentUser = null;
+
+    function getDisplayName(user) {
+        if (!user) return '';
+        const meta = user.user_metadata || {};
+        return meta.full_name || meta.name || (user.email ? user.email.split('@')[0] : '—');
+    }
+
+    function getAvatar(user) {
+        if (!user) return '';
+        const meta = user.user_metadata || {};
+        return meta.avatar_url || meta.picture || '';
+    }
+
+    function fillUserData(user) {
+        const name = getDisplayName(user);
+        const email = user.email || '';
+        const avatar = getAvatar(user);
+
+        $('userName').textContent = name;
+        $('userEmail').textContent = email;
+        $('nameValue').textContent = name;
+
+        const inner = $('avatarInner');
+        if (avatar) {
+            inner.innerHTML = `<img src="${esc(avatar)}" alt="" referrerpolicy="no-referrer" onerror="this.parentElement.innerHTML='<div class=&quot;avatar-placeholder&quot;>${esc(name[0] || '?')}</div>'">`;
+        } else {
+            inner.innerHTML = `<div class="avatar-placeholder">${esc((name[0] || '?').toUpperCase())}</div>`;
+        }
+    }
+
+    async function loadStats(user) {
+        if (!sb) return;
+        try {
+            const { data, error } = await sb.rpc('get_my_capsules', { p_device_hash: localStorage.getItem('cc_device') || '' });
+            if (!error && data) {
+                const count = data.length;
+                const reads = data.reduce((s, r) => s + (r.o_reads || 0), 0);
+                $('statCapsules').textContent = count;
+                $('statReads').textContent = reads;
+            }
+        } catch (e) {}
+
+        // أيام منذ الانضمام
+        if (user && user.created_at) {
+            const days = Math.max(1, Math.floor((Date.now() - new Date(user.created_at).getTime()) / 864e5));
+            $('statDays').textContent = days;
+        }
+    }
+
+    /* ══ عرض الحالة ══ */
+    function showProfile(user) {
+        currentUser = user;
+        $('loadingState').style.display = 'none';
+        $('notSignedIn').style.display = 'none';
+        $('profileContent').style.display = 'block';
+        fillUserData(user);
+        loadStats(user);
+    }
+
+    function showNotSignedIn() {
+        currentUser = null;
+        $('loadingState').style.display = 'none';
+        $('profileContent').style.display = 'none';
+        $('notSignedIn').style.display = 'block';
+    }
+
+    /* ══ تسجيل الدخول ══ */
+    async function signIn() {
+        if (!sb) { toast(LANGS[profLang].toastError, '⚠️'); return; }
+        try {
+            trackEvent('profile_signin_clicked', { lang: profLang });
+            const { error } = await sb.auth.signInWithOAuth({
+                provider: 'google',
+                options: { redirectTo: window.location.origin + '/profile.html' }
+            });
+            if (error) toast(error.message, '⚠️');
+        } catch (e) {
+            toast(LANGS[profLang].toastError, '⚠️');
+        }
+    }
+
+    $('signInBigBtn').addEventListener('click', signIn);
+
+    /* ══ تسجيل الخروج ══ */
+    $('signOutBtn').addEventListener('click', async () => {
+        try {
+            await sb.auth.signOut();
+            toast(LANGS[profLang].toastSignedOut, '👋');
+            trackEvent('profile_signed_out', { scope: 'local' });
+            setTimeout(() => showNotSignedIn(), 400);
+        } catch (e) {
+            toast(LANGS[profLang].toastError, '⚠️');
+        }
+    });
+
+    $('signOutAllBtn').addEventListener('click', async () => {
+        if (!confirm(LANGS[profLang].confirmSignOutAll)) return;
+        try {
+            await sb.auth.signOut({ scope: 'global' });
+            toast(LANGS[profLang].toastSignedOutAll, '🔒');
+            trackEvent('profile_signed_out', { scope: 'global' });
+            setTimeout(() => showNotSignedIn(), 400);
+        } catch (e) {
+            toast(LANGS[profLang].toastError, '⚠️');
+        }
+    });
+
+    /* ══ Modal تعديل الاسم ══ */
+    const modal = $('editNameModal');
+    const nameInput = $('newNameInput');
+
+    $('editNameBtn').addEventListener('click', () => {
+        if (!currentUser) return;
+        nameInput.value = getDisplayName(currentUser);
+        modal.classList.add('active');
+        setTimeout(() => nameInput.focus(), 100);
+    });
+
+    $('cancelNameBtn').addEventListener('click', () => modal.classList.remove('active'));
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('active'); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') modal.classList.remove('active'); });
+
+    $('saveNameBtn').addEventListener('click', async () => {
+        const newName = nameInput.value.trim();
+        if (!newName) { toast(LANGS[profLang].toastError, '⚠️'); return; }
+        if (!sb) { toast(LANGS[profLang].toastError, '⚠️'); return; }
+
+        const btn = $('saveNameBtn');
+        const original = btn.textContent;
+        btn.disabled = true; btn.textContent = '...';
+
+        try {
+            const { data, error } = await sb.auth.updateUser({ data: { full_name: newName } });
+            if (error) throw error;
+            toast(LANGS[profLang].toastSaved, '✨');
+            trackEvent('profile_name_changed', { lang: profLang });
+            modal.classList.remove('active');
+            if (data && data.user) {
+                currentUser = data.user;
+                fillUserData(data.user);
+            }
+        } catch (e) {
+            toast(LANGS[profLang].toastError, '⚠️');
+        } finally {
+            btn.disabled = false; btn.textContent = original;
+        }
+    });
+
+    /* ══ البدء ══ */
+    applyLang(profLang);
+
+    if (!sb) {
+        showNotSignedIn();
+    } else {
+        sb.auth.getSession().then(({ data }) => {
+            if (data && data.session && data.session.user) {
+                showProfile(data.session.user);
+            } else {
+                showNotSignedIn();
+            }
+        }).catch(() => showNotSignedIn());
+
+        sb.auth.onAuthStateChange((_event, session) => {
+            if (session && session.user) {
+                showProfile(session.user);
+            } else {
+                showNotSignedIn();
+            }
+        });
+    }
+})();
+</script>
+</body>
+</html>
