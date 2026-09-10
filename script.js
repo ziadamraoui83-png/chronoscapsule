@@ -61,7 +61,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const countryInfo = c => COUNTRY_INFO[c] || COUNTRY_INFO.OTHER;
     window.COUNTRY_INFO = COUNTRY_INFO;
-    CCI18N.applyCountries();
+    // استبدل CCI18N.applyCountries(); بهذا السطر الآمن:
+if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
+    window.CCI18N.applyCountries();
+}
 
     /* ═══ طبقة التخزين ═══ */
     const CapsuleStore = {
