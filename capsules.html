@@ -128,131 +128,280 @@
     </style>
 </head>
 <body>
-<div class="page">
-    <div class="page-head">
-        <h1 class="page-title">🛰️ كبسولاتي</h1>
-        <a href="index.html" class="back-link">← العودة إلى الكوكب</a>
+<!-- ══ الترويسة ══ -->
+<header class="page-header">
+    <a href="index.html" class="header-logo">
+        <span class="header-logo-icon">🚀</span>
+        <span class="header-logo-text">CHRONOS CAPSULE</span>
+    </a>
+    <div class="header-actions">
+        <button class="lang-toggle-cap" id="capLangToggle">EN</button>
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span id="backLinkText">العودة للكوكب</span>
+        </a>
     </div>
+</header>
 
-    <!-- فتح كبسولة بالمفتاح -->
+<!-- ══ الإشعار ══ -->
+<div class="cc-toast" id="capToast"><span></span></div>
+
+<!-- ══ المحتوى ══ -->
+<main class="page">
+    <h1 class="page-title" id="pageTitle">🛸 كبسولاتي</h1>
+    <p class="page-subtitle" id="pageSubtitle">جميع الكبسولات المرتبطة بجهازك</p>
+
+    <!-- صندوق المفتاح -->
     <div class="code-box">
-        <input type="text" id="codeInput" placeholder="أدخل مفتاح كبسولة…" maxlength="20">
-        <button id="openCodeBtn">فتح الكبسولة</button>
+        <div class="code-box-title">🔑 <span id="codeBoxTitle">افتح كبسولة بالمفتاح السري</span></div>
+        <div class="code-box-row">
+            <input type="text" id="codeInput" placeholder="XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
+            <button id="openCodeBtn" type="button">🔓 <span id="openBtnText">فتح</span></button>
+        </div>
+        <p class="hint" id="codeHint">أدخل مفتاح الكبسولة الذي وصلك — يعمل حتى قبل موعد الوصول</p>
     </div>
-    <div class="hint">💡 المفتاح يظهر لك في رسالة النجاح عند إرسال أي كبسولة. احفظه أو شارك رابط كبسولتك: <span style="direction:ltr;unicode-bidi:isolate">…/capsules.html?capsule=CODE</span></div>
 
-    <!-- قائمة كبسولات هذا الجهاز -->
+    <!-- شريط البحث والفلتر -->
+    <div class="filter-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث في كبسولاتك...">
+        <div class="filter-chips" id="filterChips">
+            <button class="filter-chip active" data-filter="all">الكل</button>
+            <button class="filter-chip" data-filter="arrived">✅ وصلت</button>
+            <button class="filter-chip" data-filter="orbit">🛰️ في المدار</button>
+        </div>
+    </div>
+
+    <!-- قائمة الكبسولات -->
     <div class="capsule-list" id="capList"></div>
 
+    <!-- حالة فارغة -->
     <div class="empty-state" id="emptyState" style="display:none">
-        <div class="ico">🚀</div>
-        <p>لم تطلق أي كبسولة من هذا المتصفح بعد.<br>أول رسالة لك تنتظرك على الكوكب!</p>
-        <a href="index.html">أطلق كبسولتك الأولى</a>
+        <div class="ico">🛸</div>
+        <p id="emptyText">لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن</p>
+        <a href="index.html" id="emptyLink">إطلاق أول كبسولة</a>
     </div>
-</div>
-
-<div id="ccToast" class="cc-toast"><span class="ico">🚀</span><span class="txt"></span></div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="i18n.js"></script>
 <script>
 (function(){
     "use strict";
-    const CC_CONFIG = { SUPABASE_URL: 'https://sylnhrtgrxfacskjaxlq.co', SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ' };
-    const sb = (CC_CONFIG.SUPABASE_URL && window.supabase)
-        ? supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY) : null;
+    /* ══ إعداد Supabase — رابط صحيح ══ */
+    const SB_URL  = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
+    const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
+    const sb = (window.supabase) ? supabase.createClient(SB_URL, SB_KEY) : null;
 
-    const $ = s => document.querySelector(s);
-    const toast = (m, i='🚀') => {
-        const t = $('#ccToast');
-        t.querySelector('.ico').textContent = i; t.querySelector('.txt').textContent = m;
-        t.classList.add('show');
-        setTimeout(()=>t.classList.remove('show'), 3000);
-    };
+    const $ = id => document.getElementById(id);
     const T = k => (window.CCI18N ? CCI18N.t(k) : k);
-    const moodIco = { hope:'🌅', nostalgia:'🌙', secret:'🤫', confession:'🎭', bold:'💥' };
+    const MOOD_ICO = {hope:'💙',nostalgia:'💜',secret:'💚',confession:'💛',bold:'❤️'};
 
-    function fmt(d){
-        return new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
-            {day:'numeric',month:'long',year:'numeric'}).format(new Date(d));
+    let _toastTimer;
+    function toast(msg, ico='🚀'){
+        const el = $('capToast');
+        if(!el) return;
+        el.innerHTML = `<span>${ico}</span> <span>${msg}</span>`;
+        el.classList.add('show');
+        clearTimeout(_toastTimer);
+        _toastTimer = setTimeout(()=>el.classList.remove('show'), 3500);
     }
-    function countdown(target){
-        const diff = new Date(target) - Date.now();
+
+    function fmt(iso){
+        if (!iso) return '';
+        try{
+            return new Date(iso).toLocaleDateString(
+                (window.CCI18N && CCI18N.lang==='ar')?'ar-EG':'en-GB',
+                {year:'numeric',month:'short',day:'numeric'});
+        }catch(e){return iso.slice(0,10)}
+    }
+
+    function countdown(iso){
+        const diff = new Date(iso) - Date.now();
         if (diff <= 0) return null;
-        const d = Math.floor(diff/864e5), h = Math.floor(diff%864e5/36e5), m = Math.floor(diff%36e5/6e4);
-        return (d>0? d+'d ':'') + (h>0||d>0? h+'h ':'') + m+'m';
+        const d = Math.floor(diff/864e5);
+        const h = Math.floor((diff%864e5)/36e5);
+        const m = Math.floor((diff%36e5)/6e4);
+        if (d > 0) return `${d}d ${h}h ${m}m`;
+        return `${h}h ${m}m`;
     }
 
-    function card(c){
+    let allCards = [];
+    let activeFilter = 'all';
+    let searchQ = '';
+
+    function applyFilters(){
+        let visible = 0;
+        allCards.forEach(({el, arrived, text})=>{
+            const matchFilter = activeFilter==='all' || (activeFilter==='arrived'&&arrived) || (activeFilter==='orbit'&&!arrived);
+            const matchSearch = !searchQ || text.toLowerCase().includes(searchQ.toLowerCase());
+            el.style.display = (matchFilter && matchSearch) ? '' : 'none';
+            if (matchFilter && matchSearch) visible++;
+        });
+        $('emptyState').style.display = visible===0 ? 'block' : 'none';
+    }
+
+    function shareCapsule(code, text){
+        const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
+        if (navigator.share){
+            navigator.share({title:'كبسولة الزمن', text: text.slice(0,80)+'…', url}).catch(()=>{});
+        } else {
+            navigator.clipboard.writeText(url).then(()=>toast('تم نسخ رابط الكبسولة!','🔗'));
+        }
+    }
+
+    function copyCode(code){
+        navigator.clipboard.writeText(code).then(()=>toast('تم نسخ المفتاح!','🔑')).catch(()=>{
+            toast(code,'🔑');
+        });
+    }
+
+    function card(c, animate=false){
         const arrived = !c.arrival_at || new Date(c.arrival_at) <= new Date();
+        const rawText = (c.o_text||c.text||'');
         const el = document.createElement('div');
-        el.className = 'cap-card ' + (arrived?'arrived':'in-orbit');
+        el.className = 'cap-card ' + (arrived?'arrived':'in-orbit') + (animate?' just-arrived':'');
+        const codeVal = c.o_code||c.code||'';
+        const isAr = (window.CCI18N && CCI18N.lang==='ar');
+        const lockedHtml = !arrived
+            ? `<div class="cap-text locked">🔒 ${isAr?'الرسالة مقفلة حتى موعد الوصول':'Message locked until arrival'}</div>`
+            : `<div class="cap-text">${rawText.replace(/</g,'&lt;')}</div>`;
+
         el.innerHTML = `
             <div class="cap-top">
-                <span class="cap-status ${arrived?'done':'orbit'}">${arrived? '✅ هبطت على الكوكب' : '🛰️ تسبح في المدار'}</span>
-                <span class="cap-date">${fmt(c.arrival_at || c.created_at)}</span>
+                <span class="cap-status ${arrived?'done':'orbit'}">${arrived?'✅ هبطت على الكوكب':'🛰️ تسبح في المدار'}</span>
+                <span class="cap-date">${fmt(c.arrival_at||c.created_at)}</span>
             </div>
-            <div class="cap-text">${(c.o_text||c.text||'').replace(/</g,'&lt;')}</div>
+            ${lockedHtml}
             <div class="cap-stats">
-                <span>${moodIco[c.o_mood||c.mood]||'✨'} ${c.o_country? CCI18N.countryLabel(c.o_country) : ''}</span>
-                <span>👁️ <b>${c.o_reads??c.reads??0}</b> ${CCI18N.lang==='ar'?'قراءة':'reads'}</span>
-                ${c.o_code||c.code ? `<span>🔑 <b style="font-size:11px">${(c.o_code||c.code).slice(0,8)}…</b></span>` : ''}
+                <span>${MOOD_ICO[c.o_mood||c.mood]||'✨'} ${c.o_country&&window.CCI18N?CCI18N.countryLabel(c.o_country):''}</span>
+                <span>👁️ <b>${c.o_reads??c.reads??0}</b> ${isAr?'قراءة':'reads'}</span>
+                ${codeVal?`<span>🔑 <b style="font-size:11px;font-family:monospace">${codeVal.slice(0,8)}…</b></span>`:''}
             </div>
-            ${!arrived ? `<div class="cap-countdown">⏳ T-${countdown(c.arrival_at)}</div>` : ''}
-        `;
-        return el;
+            ${!arrived&&c.arrival_at?`<div class="cap-countdown" data-arrival="${c.arrival_at}">⏳ T-${countdown(c.arrival_at)||'—'}</div>`:''}
+            <div class="cap-actions">
+                ${codeVal?`<button class="btn-copy-code" data-code="${codeVal}">🔑 نسخ المفتاح</button>`:''}
+                ${arrived&&codeVal?`<button class="btn-share" data-code="${codeVal}" data-text="${rawText.slice(0,80).replace(/"/g,'&quot;')}">🔗 مشاركة</button>`:''}
+            </div>`;
+
+        el.querySelector('.btn-copy-code')?.addEventListener('click', ()=>copyCode(codeVal));
+        el.querySelector('.btn-share')?.addEventListener('click', ()=>shareCapsule(codeVal, rawText));
+
+        if(animate) setTimeout(()=>el.classList.remove('just-arrived'), 1500);
+
+        return {el, arrived, text: rawText};
     }
 
+    setInterval(()=>{
+        document.querySelectorAll('.cap-countdown[data-arrival]').forEach(el=>{
+            const cd = countdown(el.dataset.arrival);
+            if (cd) el.textContent = `⏳ T-${cd}`;
+            else { el.textContent='✅ وصلت للتو!'; el.className='cap-countdown done-label'; }
+        });
+    }, 1000);
+
     async function loadMine(){
-        const list = $('#capList');
+        const list = $('capList');
         list.innerHTML = '';
+        allCards = [];
         let items = [];
 
-        if (sb) {
+        if (sb){
             const dev = localStorage.getItem('cc_device');
-            const { data, error } = await sb.rpc('get_my_capsules', { p_device_hash: dev });
-            if (!error && data) items = data.map(r => ({
-                code:r.o_code, text:r.o_text, mood:r.o_mood, country:r.o_country,
-                arrival_at:r.o_arrival_at, created_at:r.o_created, reads:r.o_reads
-            }));
-        }
-        if (!items.length) {
-            try {
-                items = (JSON.parse(localStorage.getItem('chronos_capsules_v1'))||[])
-                    .filter(m=>m.author).map(m=>({text:m.text,mood:m.mood,country:m.country,
-                        arrival_at:m.arrivalISO||new Date().toISOString(),created_at:m.arrivalISO||new Date().toISOString(),reads:0}));
-            } catch(e){}
+            if (dev){
+                try{
+                    const {data,error} = await sb.rpc('get_my_capsules',{p_device_hash:dev});
+                    if (!error && data) items = data.map(r=>({
+                        o_code:r.o_code, o_text:r.o_text, o_mood:r.o_mood, o_country:r.o_country,
+                        arrival_at:r.o_arrival_at, created_at:r.o_created, o_reads:r.o_reads
+                    }));
+                }catch(e){}
+            }
         }
 
-        if (!items.length){ $('#emptyState').style.display='block'; return; }
-        items.sort((a,b)=> new Date(b.created_at) - new Date(a.created_at));
-        items.forEach(c => list.appendChild(card(c)));
+        if (!items.length){
+            try{
+                items = (JSON.parse(localStorage.getItem('chronos_capsules_v1'))||[])
+                    .map(m=>({o_text:m.text,o_mood:m.mood,o_country:m.country,
+                        arrival_at:m.arrivalISO||null,created_at:m.ts||new Date().toISOString(),o_reads:0}));
+            }catch(e){}
+        }
+
+        if (!items.length){ $('emptyState').style.display='block'; return; }
+        items.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+        items.forEach(c=>{
+            const cardObj = card(c);
+            allCards.push(cardObj);
+            list.appendChild(cardObj.el);
+        });
     }
 
     async function openByCode(code){
-        if (!code.trim()){ toast(T('pick_date'),'⚠️'); return; }
+        const trimmed = code.trim();
+        if (!trimmed){ toast('أدخل المفتاح أولاً','⚠️'); return; }
         if (!sb){ toast('هذه الميزة تحتاج ربط قاعدة البيانات','⚠️'); return; }
-        const { data, error } = await sb.rpc('open_by_code', { p_code: code.trim() });
-        if (error || !data || !data.length){ toast('كبسولة غير موجودة أو المفتاح خاطئ','⚠️'); return; }
-        const r = data[0];
-        const list = $('#capList');
-        const c = card({ code:r.o_code, text:r.o_text, mood:r.o_mood, country:r.o_country,
-            arrival_at:r.o_arrival_at, created_at:r.o_created, reads:r.o_reads });
-        list.prepend(c);
-        c.scrollIntoView({behavior:'smooth', block:'center'});
-        if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at) <= new Date())
-            sb.rpc('read_capsule', { p_id: r.o_id });
+        try{
+            const {data,error} = await sb.rpc('open_by_code',{p_code:trimmed});
+            if (error||!data||!data.length){ toast('كبسولة غير موجودة أو المفتاح خاطئ','⚠️'); return; }
+            const r = data[0];
+            const list = $('capList');
+            const cardObj = card({
+                o_code:r.o_code, o_text:r.o_text, o_mood:r.o_mood, o_country:r.o_country,
+                arrival_at:r.o_arrival_at, created_at:r.o_created, o_reads:r.o_reads
+            }, true);
+            allCards.unshift(cardObj);
+            list.prepend(cardObj.el);
+            cardObj.el.scrollIntoView({behavior:'smooth',block:'center'});
+            toast('تم فتح الكبسولة!','🔓');
+            if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at)<=new Date())
+                sb.rpc('read_capsule',{p_id:r.o_id}).catch(()=>{});
+        }catch(e){ toast('حدث خطأ، حاول مجدداً','⚠️'); }
     }
 
-    $('#openCodeBtn').addEventListener('click', ()=> openByCode($('#codeInput').value));
-    $('#codeInput').addEventListener('keydown', e=>{ if(e.key==='Enter') openByCode(e.target.value); });
+    $('openCodeBtn').addEventListener('click',()=>openByCode($('codeInput').value));
+    $('codeInput').addEventListener('keydown',e=>{ if(e.key==='Enter') openByCode(e.target.value); });
 
     const urlCode = new URLSearchParams(location.search).get('capsule');
-    if (urlCode){ $('#codeInput').value = urlCode; openByCode(urlCode); }
+    if (urlCode){ $('codeInput').value = urlCode; openByCode(urlCode); }
+
+    const LANGS = {
+        ar:{toggle:'EN',back:'العودة للكوكب',title:'🛸 كبسولاتي',subtitle:'جميع الكبسولات المرتبطة بجهازك',
+            codeBoxTitle:'افتح كبسولة بالمفتاح السري',openBtn:'فتح',codeHint:'أدخل مفتاح الكبسولة الذي وصلك',
+            searchPh:'🔍 ابحث في كبسولاتك...',emptyText:'لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن',
+            emptyLink:'إطلاق أول كبسولة',filterAll:'الكل',filterArrived:'✅ وصلت',filterOrbit:'🛰️ في المدار'},
+        en:{toggle:'AR',back:'← Back to Planet',title:'🛸 My Capsules',subtitle:'All capsules linked to your device',
+            codeBoxTitle:'Open a capsule with secret key',openBtn:'Open',codeHint:'Enter the capsule key you received',
+            searchPh:'🔍 Search your capsules...',emptyText:'No capsules launched yet<br>Start your time travel now',
+            emptyLink:'Launch first capsule',filterAll:'All',filterArrived:'Arrived',filterOrbit:'🛰️ In Orbit'}
+    };
+    let capLang = (()=>{ try{return localStorage.getItem('cc_lang')||'ar';}catch(e){return 'ar';} })();
+
+    function applyCapLang(l){
+        capLang = l;
+        try{localStorage.setItem('cc_lang',l);}catch(e){}
+        const D = LANGS[l]||LANGS.ar;
+        document.documentElement.lang = l;
+        document.documentElement.dir = l==='ar'?'rtl':'ltr';
+        $('capLangToggle').textContent = D.toggle;
+        $('backLinkText').textContent = D.back;
+        $('pageTitle').textContent = D.title;
+        $('pageSubtitle').textContent = D.subtitle;
+        $('codeBoxTitle').textContent = D.codeBoxTitle;
+        $('openBtnText').textContent = D.openBtn;
+        $('codeHint').textContent = D.codeHint;
+        $('searchInput').placeholder = D.searchPh;
+        $('emptyText').innerHTML = D.emptyText;
+        $('emptyLink').textContent = D.emptyLink;
+        const chips = document.querySelectorAll('.filter-chip');
+        if(chips[0]) chips[0].textContent = D.filterAll;
+        if(chips[1]) chips[1].textContent = D.filterArrived;
+        if(chips[2]) chips[2].textContent = D.filterOrbit;
+    }
+
+    $('capLangToggle').addEventListener('click',()=>applyCapLang(capLang==='ar'?'en':'ar'));
+    applyCapLang(capLang);
 
     loadMine();
 })();
 </script>
 </body>
 </html>
-```[cite: 6]

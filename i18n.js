@@ -141,6 +141,7 @@
   }
 
   function countryLabel(code) {
+    if (!code) return '';
     if (code === 'OTHER') return t('other_space');
     const info = (window.COUNTRY_INFO || {})[code];
     const name = regionName(code, lang) || (info && info.name) || code;

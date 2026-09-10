@@ -599,7 +599,7 @@ document.addEventListener('DOMContentLoaded', () => {
     messageModal.addEventListener('click', (e) => {
         if (e.target === messageModal) messageModal.classList.remove('active');
     });
-    addEventListener('keydown', (e) => {
+    window.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') { messageModal.classList.remove('active'); deepModal.classList.remove('active'); hideTooltip(); }
     });
 
@@ -619,12 +619,31 @@ document.addEventListener('DOMContentLoaded', () => {
         charCounter.textContent = '0 / 300';
     }
 
+    let lastLaunchTime = 0;
+    const LAUNCH_COOLDOWN = 10000; // 10 ثوانٍ بين كل إطلاق
+
     messageForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const country = document.getElementById('userCountry').value;
         if (!country) { showToast(CCI18N.t('pick_warn'), '⚠️'); return; }
+        
         const text = messageText.value.trim();
-        const author = document.getElementById('authorName').value.trim() || CCI18N.t('anon_name');
+        if (!text) {
+            showToast(CCI18N.t('msg_ph') || 'اكتب نص الرسالة أولاً', '⚠️');
+            return;
+        }
+
+        // Rate limit على المستوى العميل
+        const now = Date.now();
+        if (now - lastLaunchTime < LAUNCH_COOLDOWN) {
+            const rem = Math.ceil((LAUNCH_COOLDOWN - (now - lastLaunchTime)) / 1000);
+            showToast(`انتظر ${rem} ثوانٍ قبل إطلاق كبسولة أخرى ⏳`, '⏱️');
+            return;
+        }
+
+        const author = document.getElementById('sendAsAnonymous')?.checked
+            ? CCI18N.t('anon_name')
+            : (document.getElementById('authorName').value.trim() || CCI18N.t('anon_name'));
         const mood = (document.querySelector('input[name="mood"]:checked') || {}).value || 'hope';
         const isPrivate = (document.querySelector('input[name="capsuleMode"]:checked') || {}).value === 'private';
 
@@ -644,6 +663,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
+            lastLaunchTime = Date.now();
             launchMessage(country, text, author, mood);
             showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
             messageForm.reset();
@@ -657,7 +677,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* عند تبديل اللغة تُعاد تسمية كل الدول على الكوكب فورًا */
-    addEventListener('cc:lang', () => {
+    window.addEventListener('cc:lang', () => {
         labelElements.forEach(it => {
             it.element.innerHTML = `<span>📍</span> ${CCI18N.countryLabel(it.msg.country)}`;
         });
