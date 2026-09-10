@@ -13,6 +13,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ═══ أدوات مساعدة ═══ */
     const $ = id => document.getElementById(id);
+        /* ═══ Google Analytics Event Tracker ═══ */
+    function trackEvent(eventName, params = {}) {
+        try {
+            if (typeof gtag === 'function') {
+                gtag('event', eventName, params);
+            }
+        } catch (e) {}
+    }
 
     /* حماية كاملة من XSS — تهرّب كل الرموز الخطرة */
     const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
@@ -430,12 +438,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         labelDiv.addEventListener('click', (e) => {
             e.stopPropagation();
+                        trackEvent('capsule_viewed', {
+                country: msg.country,
+                mood: msg.mood || 'hope',
+                is_golden: !!isG,
+                lang: CCI18N.lang
+            });
             const flag = msg.dbId
                 ? `<button class="action-btn report-btn" data-db="${msg.dbId}" title="${CCI18N.lang === 'ar' ? 'بلاغ عن محتوى غير لائق' : 'Report inappropriate content'}">🚩</button>`
                 : '';
             const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
             const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
-            const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+             const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${AppLang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
             const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang === 'ar' ? 'الكبسولة الذهبية اليوم' : 'Golden Capsule of the Day'} 🌟</div>` : '';
 
             /* ✅ إصلاح XSS: استخدام esc() على كل المحتوى القادم من المستخدم */
@@ -743,9 +757,21 @@ document.addEventListener('DOMContentLoaded', () => {
         btn.disabled = true; btn.textContent = CCI18N.t('preparing');
 
         try {
-            const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
+                        const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
             launchMessage(country, text, author, mood);
-            showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
+             showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
+
+            /* ✅ تتبّع الإرسال */
+            trackEvent('capsule_sent', {
+                country: country,
+                mood: mood,
+                is_private: isPrivate,
+                is_anonymous: isAnon,
+                has_text: text.length > 0,
+                text_length: text.length,
+                lang: CCI18N.lang
+            });
+
             messageForm.reset();
             resetFormUI();
             messageModal.classList.remove('active');
@@ -811,7 +837,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* عند تبديل اللغة: تحديث أسماء الدول في التسميات + زر Google */
+                            /* عند تبديل اللغة: تحديث أسماء الدول في التسميات + زر Google */
     addEventListener('cc:lang', () => {
+        trackEvent('language_toggle', { lang: CCI18N.lang, page: 'home' });
         labelElements.forEach(it => {
             it.element.innerHTML = `<span>📍</span> ${esc(CCI18N.countryLabel(it.msg.country))}`;
         });
@@ -831,7 +859,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let lastDeepId  = null;
 
     async function openDeep() {
+        trackEvent('deep_dive_opened', { lang: CCI18N.lang });
         if (!sb) {
+                    
             showToast(CCI18N.lang === 'ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️');
             return;
         }

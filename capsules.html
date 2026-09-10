@@ -3,21 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="google-site-verification" content="F0LC1gHJdqI7RF6OdtE51g2DMhnCkko3c-GzsEzKzUI" />
     <title>كبسولتي | Chronos Capsule</title>
     <meta name="description" content="اعرض كبسولاتك الزمنية الخاصة وتابع مواعيد وصولها — كبسولة الزمن الكونية.">
     <meta name="theme-color" content="#010103">
     <meta name="robots" content="noindex, follow">
 
-    <!-- Favicon -->
+    <!-- ✅ Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z872SS657T');
+    </script>
+
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* ══ إعادة تعيين أساسي ══ */
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
         body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
         button,a,select,input{cursor:pointer}
-        /* ══ خلفية الفضاء ══ */
         body::before{content:'';position:fixed;inset:0;
             background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
                         radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
@@ -29,7 +34,6 @@
                 radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
                 radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
             z-index:0;pointer-events:none}
-        /* ══ ترويسة ══ */
         .page-header{position:sticky;top:0;z-index:50;
             background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
             border-bottom:1px solid rgba(255,255,255,.07);
@@ -46,11 +50,9 @@
         .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
             border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
         .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
-        /* ══ الصفحة الرئيسية ══ */
         .page{max-width:760px;margin:0 auto;padding:34px 20px 80px;min-height:calc(100vh - 56px);position:relative;z-index:1}
         .page-title{font-size:1.7rem;font-weight:900;color:#fff;margin-bottom:4px}
         .page-subtitle{font-size:.88rem;color:#64748b;margin-bottom:26px}
-        /* ══ صندوق المفتاح ══ */
         .code-box{background:rgba(15,23,42,.6);border:1px solid rgba(139,92,246,.3);border-radius:16px;
             padding:18px 20px;margin-bottom:22px;backdrop-filter:blur(8px)}
         .code-box-title{font-size:14px;font-weight:700;color:#a78bfa;margin-bottom:12px;
@@ -67,7 +69,6 @@
             display:inline-flex;align-items:center;gap:6px}
         .code-box-row button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(99,102,241,.4)}
         .code-box-row button:active{transform:translateY(0)}
-        /* ══ فلتر وبحث ══ */
         .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
         .search-input{flex:1;min-width:180px;padding:10px 14px;background:rgba(15,23,42,.6);
             border:1px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-size:.9rem;outline:none;
@@ -79,7 +80,6 @@
             border:1px solid rgba(255,255,255,.15);background:rgba(15,23,42,.6);color:#94a3b8;transition:all .3s}
         .filter-chip:hover{border-color:#8b5cf6;color:#fff}
         .filter-chip.active{background:rgba(139,92,246,.25);border-color:#8b5cf6;color:#fff}
-        /* ══ بطاقات الكبسولات ══ */
         .capsule-list{display:flex;flex-direction:column;gap:14px}
         .cap-card{background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.1);border-radius:16px;
             padding:20px 22px;backdrop-filter:blur(10px);transition:border-color .3s,transform .3s,box-shadow .3s}
@@ -100,7 +100,6 @@
         .cap-countdown{font-size:13px;color:#fbbf24;margin-top:10px;direction:ltr;
             font-family:monospace;background:rgba(251,191,36,.06);border-radius:8px;padding:6px 10px;display:inline-block}
         .cap-countdown.done-label{color:#34d399;background:rgba(52,211,153,.06)}
-        /* ══ أزرار الكبسولة ══ */
         .cap-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
         .btn-share{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;
             background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:#60a5fa;transition:all .3s}
@@ -108,7 +107,23 @@
         .btn-copy-code{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;
             background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:#a78bfa;transition:all .3s}
         .btn-copy-code:hover{background:rgba(139,92,246,.25);color:#fff}
-        /* ══ حركة وصول الكبسولة ══ */
+        /* ══ أزرار المشاركة الاجتماعية ══ */
+        .social-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;
+            padding-top:10px;border-top:1px dashed rgba(255,255,255,.08)}
+        .social-label{font-size:11px;color:#64748b;margin-inline-end:4px}
+        .social-btn{display:inline-flex;align-items:center;justify-content:center;
+            width:32px;height:32px;border-radius:50%;text-decoration:none;
+            font-size:15px;transition:all .25s ease;border:1px solid transparent}
+        .social-btn.whatsapp{background:rgba(37,211,102,.12);color:#25d366;border-color:rgba(37,211,102,.3)}
+        .social-btn.whatsapp:hover{background:#25d366;color:#fff;transform:translateY(-2px)}
+        .social-btn.twitter{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)}
+        .social-btn.twitter:hover{background:#000;color:#fff;transform:translateY(-2px)}
+        .social-btn.facebook{background:rgba(24,119,242,.12);color:#1877f2;border-color:rgba(24,119,242,.3)}
+        .social-btn.facebook:hover{background:#1877f2;color:#fff;transform:translateY(-2px)}
+        .social-btn.telegram{background:rgba(0,136,204,.12);color:#0088cc;border-color:rgba(0,136,204,.3)}
+        .social-btn.telegram:hover{background:#0088cc;color:#fff;transform:translateY(-2px)}
+        .social-btn.copy-link{background:rgba(139,92,246,.12);color:#a78bfa;border-color:rgba(139,92,246,.3)}
+        .social-btn.copy-link:hover{background:#8b5cf6;color:#fff;transform:translateY(-2px)}
         @keyframes capsuleArrive{
             0%{transform:scale(.8) translateY(-20px);opacity:0}
             60%{transform:scale(1.04) translateY(4px);opacity:1}
@@ -120,7 +135,6 @@
             50%{box-shadow:0 0 0 14px rgba(52,211,153,0)}}
         .cap-card.arrived.just-arrived{animation:capsuleArrive .7s cubic-bezier(.34,1.56,.64,1) forwards,
             openPulse 1.2s ease .5s}
-        /* ══ حالة فارغة ══ */
         .empty-state{text-align:center;padding:70px 20px;color:#94a3b8}
         .empty-state .ico{font-size:52px;margin-bottom:16px;opacity:.7}
         .empty-state p{margin-bottom:22px;line-height:1.7}
@@ -128,14 +142,12 @@
             color:#fff;border-radius:12px;text-decoration:none;font-weight:700;transition:transform .3s}
         .empty-state a:hover{transform:translateY(-3px)}
         .hint{font-size:12px;color:#64748b;margin-top:12px;line-height:1.6}
-        /* ══ إشعار ══ */
         .cc-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
             background:rgba(15,23,42,.95);border:1px solid rgba(139,92,246,.4);border-radius:14px;
             padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:14px;
             backdrop-filter:blur(16px);z-index:9999;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);
             pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
         .cc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-        /* ══ جوال ══ */
         @media(max-width:600px){
             .page-header{padding:12px 16px}
             .page{padding:24px 14px 60px}
@@ -143,7 +155,6 @@
             .filter-bar{flex-direction:column;align-items:stretch}
             .search-input{width:100%}
         }
-        /* ══ تقليل الحركة ══ */
         @media (prefers-reduced-motion: reduce) {
             * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
             .cap-card:hover { transform: none; }
@@ -151,7 +162,6 @@
     </style>
 </head>
 <body>
-<!-- ══ الترويسة ══ -->
 <header class="page-header">
     <a href="index.html" class="header-logo">
         <span class="header-logo-icon">🚀</span>
@@ -166,15 +176,12 @@
     </div>
 </header>
 
-<!-- ══ الإشعار ══ -->
 <div class="cc-toast" id="capToast"><span class="ico">🚀</span><span class="txt"></span></div>
 
-<!-- ══ المحتوى ══ -->
 <main class="page">
     <h1 class="page-title" id="pageTitle">🛸 كبسولاتي</h1>
     <p class="page-subtitle" id="pageSubtitle">جميع الكبسولات المرتبطة بجهازك</p>
 
-    <!-- صندوق المفتاح -->
     <div class="code-box">
         <div class="code-box-title">🔑 <span id="codeBoxTitle">افتح كبسولة بالمفتاح السري</span></div>
         <div class="code-box-row">
@@ -184,7 +191,6 @@
         <p class="hint" id="codeHint">أدخل مفتاح الكبسولة الذي وصلك — يعمل حتى قبل موعد الوصول</p>
     </div>
 
-    <!-- شريط البحث والفلتر -->
     <div class="filter-bar">
         <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث في كبسولاتك...">
         <div class="filter-chips" id="filterChips">
@@ -194,10 +200,8 @@
         </div>
     </div>
 
-    <!-- قائمة الكبسولات -->
     <div class="capsule-list" id="capList"></div>
 
-    <!-- حالة فارغة -->
     <div class="empty-state" id="emptyState" style="display:none">
         <div class="ico">🛸</div>
         <p id="emptyText">لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن</p>
@@ -211,7 +215,6 @@
 (function(){
     "use strict";
 
-    /* ══ إعداد Supabase ══ */
     const SB_URL  = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
     const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
     const sb = (window.supabase) ? supabase.createClient(SB_URL, SB_KEY) : null;
@@ -219,41 +222,38 @@
     const $ = id => document.getElementById(id);
     const T = k => (window.CCI18N ? CCI18N.t(k) : k);
 
-    /* ══ حماية XSS شاملة ══ */
     const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
         '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
     }[c]));
 
+    /* ═══ GA4 Event Tracker ═══ */
+    function trackEvent(eventName, params = {}) {
+        try {
+            if (typeof gtag === 'function') gtag('event', eventName, params);
+        } catch (e) {}
+    }
+
     const MOOD_ICO = {hope:'💙', nostalgia:'💜', secret:'💚', confession:'💛', bold:'❤️'};
 
-    /* ══ اللغة — تعريف مبكر لتجنّب TDZ ══ */
     let capLang = (() => { try { return localStorage.getItem('cc_lang') || 'ar'; } catch (e) { return 'ar'; } })();
-
-    /* قراءة ?lang= من الرابط */
     try {
         const urlLang = new URLSearchParams(location.search).get('lang');
         if (urlLang === 'ar' || urlLang === 'en') capLang = urlLang;
     } catch (e) {}
 
-    /* ══ الإشعار ══ */
     let _toastTimer;
     function toast(msg, ico = '🚀'){
         const el = $('capToast');
         if (!el) return;
         const icoEl = el.querySelector('.ico');
         const txtEl = el.querySelector('.txt');
-        if (icoEl && txtEl) {
-            icoEl.textContent = ico;
-            txtEl.textContent = msg;
-        } else {
-            el.textContent = ico + ' ' + msg;
-        }
+        if (icoEl && txtEl) { icoEl.textContent = ico; txtEl.textContent = msg; }
+        else { el.textContent = ico + ' ' + msg; }
         el.classList.add('show');
         clearTimeout(_toastTimer);
         _toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
     }
 
-    /* ══ التنسيق ══ */
     function fmt(iso){
         if (!iso) return '';
         try {
@@ -273,7 +273,6 @@
         return `${h}h ${m}m`;
     }
 
-    /* ══ الحالة ══ */
     let allCards = [];
     let activeFilter = 'all';
     let searchQ = '';
@@ -292,8 +291,31 @@
         $('emptyState').style.display = visible === 0 ? 'block' : 'none';
     }
 
-    /* ══ المشاركة والنسخ ══ */
+    /* ═══ بناء روابط المشاركة ═══ */
+    function buildSocialRow(code, text) {
+        const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
+        const shortText = text.slice(0, 100);
+        const waText = encodeURIComponent(`${shortText}\n${url}`);
+        const twText = encodeURIComponent(`${shortText}`);
+        const twUrl  = encodeURIComponent(url);
+        const fbUrl  = encodeURIComponent(url);
+        const tgUrl  = encodeURIComponent(url);
+        const tgText = encodeURIComponent(shortText);
+
+        const label = capLang === 'ar' ? 'شارك على:' : 'Share on:';
+        return `
+            <div class="social-row">
+                <span class="social-label">${label}</span>
+                <a href="https://wa.me/?text=${waText}" target="_blank" rel="noopener" class="social-btn whatsapp" title="WhatsApp" data-social="whatsapp">📱</a>
+                <a href="https://twitter.com/intent/tweet?text=${twText}&url=${twUrl}" target="_blank" rel="noopener" class="social-btn twitter" title="X / Twitter" data-social="twitter">𝕏</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${fbUrl}" target="_blank" rel="noopener" class="social-btn facebook" title="Facebook" data-social="facebook">f</a>
+                <a href="https://t.me/share/url?url=${tgUrl}&text=${tgText}" target="_blank" rel="noopener" class="social-btn telegram" title="Telegram" data-social="telegram">✈️</a>
+                <button class="social-btn copy-link" title="${capLang === 'ar' ? 'نسخ الرابط' : 'Copy link'}" data-copy-url="${esc(url)}">🔗</button>
+            </div>`;
+    }
+
     function shareCapsule(code, text){
+        trackEvent('capsule_shared', { method: 'native', lang: capLang });
         const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
         if (navigator.share){
             navigator.share({
@@ -309,12 +331,18 @@
     }
 
     function copyCode(code){
+        trackEvent('capsule_key_copied', { lang: capLang });
         navigator.clipboard.writeText(code)
             .then(() => toast(capLang === 'ar' ? 'تم نسخ المفتاح!' : 'Key copied!', '🔑'))
             .catch(() => toast(code, '🔑'));
     }
 
-    /* ══ بناء بطاقة كبسولة ══ */
+    function copyText(text, msg) {
+        navigator.clipboard.writeText(text)
+            .then(() => toast(msg, '🔗'))
+            .catch(() => toast(text, '🔗'));
+    }
+
     function card(c, animate){
         animate = !!animate;
         const arrived = !c.arrival_at || new Date(c.arrival_at) <= new Date();
@@ -337,7 +365,6 @@
             : '';
 
         const readsLabel = isAr ? 'قراءة' : 'reads';
-
         const copyLabel = isAr ? '🔑 نسخ المفتاح' : '🔑 Copy key';
         const shareLabel = isAr ? '🔗 مشاركة' : '🔗 Share';
 
@@ -356,17 +383,37 @@
             <div class="cap-actions">
                 ${codeVal ? `<button class="btn-copy-code" data-code="${esc(codeVal)}">${copyLabel}</button>` : ''}
                 ${arrived && codeVal ? `<button class="btn-share" data-code="${esc(codeVal)}" data-text="${esc(rawText.slice(0, 80))}">${shareLabel}</button>` : ''}
-            </div>`;
+            </div>
+            ${arrived && codeVal ? buildSocialRow(codeVal, rawText) : ''}`;
 
         el.querySelector('.btn-copy-code')?.addEventListener('click', () => copyCode(codeVal));
         el.querySelector('.btn-share')?.addEventListener('click', () => shareCapsule(codeVal, rawText));
+
+        /* تتبّع المشاركة الاجتماعية */
+        el.querySelectorAll('[data-social]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                trackEvent('capsule_shared', {
+                    method: btn.dataset.social,
+                    lang: capLang
+                });
+            });
+        });
+
+        /* نسخ الرابط */
+        const copyBtn = el.querySelector('[data-copy-url]');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const url = copyBtn.dataset.copyUrl;
+                copyText(url, capLang === 'ar' ? 'تم نسخ الرابط!' : 'Link copied!');
+                trackEvent('capsule_link_copied', { lang: capLang });
+            });
+        }
 
         if (animate) setTimeout(() => el.classList.remove('just-arrived'), 1500);
 
         return {el, arrived, text: rawText};
     }
 
-    /* ══ العد التنازلي الحي ══ */
     setInterval(() => {
         document.querySelectorAll('.cap-countdown[data-arrival]').forEach(el => {
             const cd = countdown(el.dataset.arrival);
@@ -375,7 +422,6 @@
         });
     }, 1000);
 
-    /* ══ تحميل كبسولات المستخدم ══ */
     async function loadMine(){
         const list = $('capList');
         list.innerHTML = '';
@@ -425,7 +471,6 @@
         applyFilters();
     }
 
-    /* ══ فتح كبسولة بالمفتاح ══ */
     async function openByCode(code){
         const trimmed = String(code || '').trim();
         if (!trimmed){ toast(capLang === 'ar' ? 'أدخل المفتاح أولاً' : 'Enter the key first', '⚠️'); return; }
@@ -434,6 +479,7 @@
             const { data, error } = await sb.rpc('open_by_code', { p_code: trimmed });
             if (error || !data || !data.length){
                 toast(capLang === 'ar' ? 'كبسولة غير موجودة أو المفتاح خاطئ' : 'Capsule not found or wrong key', '⚠️');
+                trackEvent('capsule_open_failed', { lang: capLang });
                 return;
             }
             const r = data[0];
@@ -451,6 +497,12 @@
             list.prepend(cardObj.el);
             cardObj.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
             toast(capLang === 'ar' ? 'تم فتح الكبسولة!' : 'Capsule opened!', '🔓');
+
+            trackEvent('capsule_opened_by_code', {
+                has_arrived: new Date(r.o_arrival_at) <= new Date(),
+                lang: capLang
+            });
+
             if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at) <= new Date()) {
                 sb.rpc('read_capsule', { p_id: r.o_id }).catch(() => {});
             }
@@ -459,7 +511,6 @@
         }
     }
 
-    /* ══ المستمعون ══ */
     $('openCodeBtn').addEventListener('click', () => openByCode($('codeInput').value));
     $('codeInput').addEventListener('keydown', e => { if (e.key === 'Enter') openByCode(e.target.value); });
 
@@ -476,11 +527,11 @@
             document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
             chip.classList.add('active');
             activeFilter = chip.dataset.filter;
+            trackEvent('capsules_filter_changed', { filter: activeFilter, lang: capLang });
             applyFilters();
         });
     });
 
-    /* ══ الترجمة والتوطين ══ */
     const LANGS = {
         ar: {
             toggle: 'EN',
@@ -514,12 +565,15 @@
         }
     };
 
-    /* ══ تطبيق اللغة — مع مزامنة i18n.js ══ */
     function applyCapLang(l){
+        const wasChanging = (capLang !== l);
         capLang = l;
         try { localStorage.setItem('cc_lang', l); } catch (e) {}
 
-        /* ✅ مزامنة i18n.js ليصبح CCI18N.lang صحيحًا قبل إعادة الرسم */
+        if (wasChanging) {
+            trackEvent('language_toggle', { lang: l, page: 'capsules' });
+        }
+
         if (window.CCI18N && typeof window.CCI18N.setLang === 'function') {
             try { window.CCI18N.setLang(l, false); } catch (e) {}
         }
@@ -544,13 +598,11 @@
         if (chips[1]) chips[1].textContent = D.filterArrived;
         if (chips[2]) chips[2].textContent = D.filterOrbit;
 
-        /* ✅ إعادة رسم البطاقات باللغة الجديدة */
         loadMine();
     }
 
     $('capLangToggle').addEventListener('click', () => applyCapLang(capLang === 'ar' ? 'en' : 'ar'));
 
-    /* ══ التشغيل الأول ══ */
     applyCapLang(capLang);
 })();
 </script>

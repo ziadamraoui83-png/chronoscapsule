@@ -1,10 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — archive.js (نسخة مصحّحة شاملة)
+   CHRONOS CAPSULE — archive.js (نهائي مع GA4 + Social)
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
 
-    /* ══ خريطة الدول (أسماء عربية كاحتياطي فقط) ══ */
     const COUNTRY_INFO = {
         DZ:{name:'الجزائر 🇩🇿'}, SA:{name:'السعودية 🇸🇦'}, EG:{name:'مصر 🇪🇬'}, MA:{name:'المغرب 🇲🇦'},
         TN:{name:'تونس 🇹🇳'}, AE:{name:'الإمارات 🇦🇪'}, QA:{name:'قطر 🇶🇦'}, KW:{name:'الكويت 🇰🇼'},
@@ -21,20 +20,23 @@
         OTHER:{name:'فضاء آخر 🌍'}
     };
 
-    /* ══ أدوات مساعدة ══ */
     const $ = id => document.getElementById(id);
 
-    /* حماية كاملة من XSS — تهرّب كل الرموز الخطرة وليس < فقط */
     const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
         '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
     }[c]));
 
-    /* علم الدولة من رمز ISO المكوّن من حرفين */
+    /* ═══ GA4 Event Tracker ═══ */
+    function trackEvent(eventName, params = {}) {
+        try {
+            if (typeof gtag === 'function') gtag('event', eventName, params);
+        } catch (e) {}
+    }
+
     const flagOf = code => /^[A-Z]{2}$/.test(code)
         ? code.replace(/./g, ch => String.fromCodePoint(127397 + ch.charCodeAt(0)))
         : '🌍';
 
-    /* اسم الدولة مترجم حسب اللغة الحالية */
     const _dnCache = {};
     function countryLabel(code, lang) {
         if (!code) return '';
@@ -47,16 +49,12 @@
         return (COUNTRY_INFO[code] && COUNTRY_INFO[code].name) || code;
     }
 
-    /* ══ اللغة — نُعرّفها مبكرًا لتجنّب TDZ ══ */
     let AppLang = (() => { try { return localStorage.getItem('cc_lang') || 'ar'; } catch (e) { return 'ar'; } })();
-
-    /* قراءة ?lang= من الرابط (يدعم روابط SEO alternate) */
     try {
         const urlLang = new URLSearchParams(location.search).get('lang');
         if (urlLang === 'en' || urlLang === 'ar') AppLang = urlLang;
     } catch (e) {}
 
-    /* ══ تعبئة فلتر الدول ══ */
     const cSelect = $('filterCountry');
     function populateCountries() {
         const cur = cSelect.value;
@@ -70,12 +68,10 @@
     }
     populateCountries();
 
-    /* ══ اتصال Supabase — بيانات حقيقية (بدل YOUR_SUPABASE_URL) ══ */
     const CC_SB_URL = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
     const CC_SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
     const sb = (window.supabase) ? supabase.createClient(CC_SB_URL, CC_SB_KEY) : null;
 
-    /* ══ الجلب والتحميل ══ */
     let currentPage = 0;
     const LIMIT = 15;
     let isLoading = false;
@@ -103,7 +99,7 @@
         const sort    = $('filterSort').value;
 
         let q = sb.from('capsules').select('*', { count: 'exact' })
-    .eq('mode', 'public').eq('status', 'visible');
+            .eq('mode', 'public').eq('status', 'visible');
 
         if (country) q = q.eq('country', country);
         if (mood)    q = q.eq('mood', mood);
@@ -137,6 +133,28 @@
         currentPage++;
     }
 
+    function buildSocialRow(code, text) {
+        const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
+        const shortText = text.slice(0, 100);
+        const waText = encodeURIComponent(`${shortText}\n${url}`);
+        const twText = encodeURIComponent(shortText);
+        const twUrl  = encodeURIComponent(url);
+        const fbUrl  = encodeURIComponent(url);
+        const tgUrl  = encodeURIComponent(url);
+        const tgText = encodeURIComponent(shortText);
+        const label = AppLang === 'ar' ? 'شارك:' : 'Share:';
+
+        return `
+            <div class="social-row">
+                <span class="social-label">${label}</span>
+                <a href="https://wa.me/?text=${waText}" target="_blank" rel="noopener" class="social-btn whatsapp" title="WhatsApp" data-social="whatsapp">📱</a>
+                <a href="https://twitter.com/intent/tweet?text=${twText}&url=${twUrl}" target="_blank" rel="noopener" class="social-btn twitter" title="X / Twitter" data-social="twitter">𝕏</a>
+                <a href="https://www.facebook.com/sharer/sharer.php?u=${fbUrl}" target="_blank" rel="noopener" class="social-btn facebook" title="Facebook" data-social="facebook">f</a>
+                <a href="https://t.me/share/url?url=${tgUrl}&text=${tgText}" target="_blank" rel="noopener" class="social-btn telegram" title="Telegram" data-social="telegram">✈️</a>
+                <button class="social-btn copy-link" title="${AppLang === 'ar' ? 'نسخ الرابط' : 'Copy link'}" data-copy-url="${esc(url)}">🔗</button>
+            </div>`;
+    }
+
     function createCard(r) {
         const el = document.createElement('article');
         el.className = `cap-item mood-${r.mood || 'hope'}`;
@@ -147,6 +165,9 @@
 
         const transUrl = `https://translate.google.com/?sl=auto&tl=${AppLang === 'ar' ? 'ar' : 'en'}&text=${encodeURIComponent(r.text)}&op=translate`;
         const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" title="${AppLang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+
+        const codeVal = r.code || '';
+        const hasCode = !!codeVal;
 
         el.innerHTML = `
             <div class="cap-head">
@@ -161,17 +182,62 @@
                     <span>👁️ ${r.reads_count != null ? r.reads_count : 0}</span>
                     ${translateBtn}
                 </div>
-            </div>`;
+            </div>
+            ${hasCode ? buildSocialRow(codeVal, r.text) : ''}`;
+
+        /* تتبّع الترجمة */
+        el.querySelector('[data-translate]')?.addEventListener('click', () => {
+            trackEvent('capsule_translated', {
+                country: r.country,
+                target_lang: AppLang === 'ar' ? 'ar' : 'en'
+            });
+        });
+
+        /* تتبّع المشاركة الاجتماعية */
+        el.querySelectorAll('[data-social]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                trackEvent('capsule_shared', {
+                    method: btn.dataset.social,
+                    country: r.country,
+                    lang: AppLang
+                });
+            });
+        });
+
+        /* نسخ الرابط */
+        const copyBtn = el.querySelector('[data-copy-url]');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const url = copyBtn.dataset.copyUrl;
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        copyBtn.textContent = '✅';
+                        setTimeout(() => { copyBtn.textContent = '🔗'; }, 1200);
+                    })
+                    .catch(() => {});
+                trackEvent('capsule_link_copied', { lang: AppLang });
+            });
+        }
+
         return el;
     }
 
-    /* ══ المستمعون ══ */
     ['filterCountry', 'filterMood', 'filterLang', 'filterSort'].forEach(id =>
-        $(id).addEventListener('change', () => fetchArchive(true))
+        $(id).addEventListener('change', () => {
+            trackEvent('archive_filter_changed', {
+                filter: id.replace('filter', '').toLowerCase(),
+                value: $(id).value || 'all',
+                lang: AppLang
+            });
+            fetchArchive(true);
+        })
     );
-    $('loadMoreBtn').addEventListener('click', () => fetchArchive(false));
 
-    /* ══ الترجمة والتوطين ══ */
+    $('loadMoreBtn').addEventListener('click', () => {
+        trackEvent('archive_load_more', { page: currentPage + 1, lang: AppLang });
+        fetchArchive(false);
+    });
+
     const LANGS = {
         ar: {
             toggle: 'EN', back: 'العودة للكوكب', title: 'أرشيف الكوكب',
@@ -192,8 +258,13 @@
     };
 
     function applyLang(l) {
+        const wasChanging = (AppLang !== l);
         AppLang = l;
         try { localStorage.setItem('cc_lang', l); } catch (e) {}
+
+        if (wasChanging) {
+            trackEvent('language_toggle', { lang: l, page: 'archive' });
+        }
 
         const D = LANGS[l] || LANGS.ar;
         document.documentElement.lang = l;
@@ -205,7 +276,6 @@
         $('pageSubtitle').textContent  = D.subtitle;
         $('loadMoreBtn').textContent   = D.loadMore;
 
-        /* ترجمة خيارات فلتر المشاعر (0 + 1..5) */
         const fMood = $('filterMood');
         fMood.options[0].text = D.f_mood;
         const moodKeys = ['hope', 'nostalgia', 'secret', 'confession', 'bold'];
@@ -213,23 +283,18 @@
             if (fMood.options[i + 1]) fMood.options[i + 1].text = D.moods[k];
         });
 
-        /* ترجمة خيارات فلتر الترتيب */
         const fSort = $('filterSort');
         fSort.options[0].text = D.s_new;
         fSort.options[1].text = D.s_old;
         fSort.options[2].text = D.s_read;
 
-        /* ترجمة خيار فلتر اللغة (يحتوي على AR/EN — ثابت) */
         $('filterLang').options[0].text = D.f_lang;
 
-        /* إعادة بناء قائمة الدول باللغة الجديدة */
         populateCountries();
-
         fetchArchive(true);
     }
 
     $('langToggle').addEventListener('click', () => applyLang(AppLang === 'ar' ? 'en' : 'ar'));
 
-    /* ══ التشغيل الأول ══ */
     applyLang(AppLang);
 })();

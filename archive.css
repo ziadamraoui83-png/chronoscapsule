@@ -101,3 +101,22 @@ html[dir="ltr"] .filter-select {
     * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
     .cap-item:hover { transform: none; }
 }
+
+/* ═════════ أزرار المشاركة الاجتماعية ═════════ */
+.social-row{display:flex;gap:6px;margin-top:12px;padding-top:10px;
+    border-top:1px dashed rgba(255,255,255,.08);flex-wrap:wrap;align-items:center}
+.social-label{font-size:11px;color:#64748b;margin-inline-end:4px}
+.social-btn{display:inline-flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:50%;text-decoration:none;
+    font-size:14px;transition:all .25s ease;border:1px solid transparent;
+    background:transparent;cursor:pointer;padding:0;font-family:inherit}
+.social-btn.whatsapp{background:rgba(37,211,102,.12);color:#25d366;border-color:rgba(37,211,102,.3)}
+.social-btn.whatsapp:hover{background:#25d366;color:#fff;transform:translateY(-2px)}
+.social-btn.twitter{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.2)}
+.social-btn.twitter:hover{background:#000;color:#fff;transform:translateY(-2px)}
+.social-btn.facebook{background:rgba(24,119,242,.12);color:#1877f2;border-color:rgba(24,119,242,.3)}
+.social-btn.facebook:hover{background:#1877f2;color:#fff;transform:translateY(-2px)}
+.social-btn.telegram{background:rgba(0,136,204,.12);color:#0088cc;border-color:rgba(0,136,204,.3)}
+.social-btn.telegram:hover{background:#0088cc;color:#fff;transform:translateY(-2px)}
+.social-btn.copy-link{background:rgba(139,92,246,.12);color:#a78bfa;border-color:rgba(139,92,246,.3)}
+.social-btn.copy-link:hover{background:#8b5cf6;color:#fff;transform:translateY(-2px)}
