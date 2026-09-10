@@ -115,19 +115,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     const list = JSON.parse(localStorage.getItem(this.key)) || [];
                     list.push(full);
                     localStorage.setItem(this.key, JSON.stringify(list));
-        async translateCapsule(id, targetLang) {
-            if (!this.online) return Promise.resolve(null);
-            try {
-                const { data, error } = await sb.functions.invoke('translate-capsule', {
-                    body: { id, target_lang: targetLang }
-                });
-                if (error) throw error;
-                return data?.translation || null;
-            } catch (e) {
-                console.error('Translation failed:', e);
-                return null;
-            }
-        },
                 } catch (e) {}
                 return { code: null };
             }
@@ -145,6 +132,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('cc_my_codes', JSON.stringify(codes.slice(-100)));
             } catch (e) {}
             return { code: data };
+        },
+        async translateCapsule(id, targetLang) {
+            if (!this.online) return Promise.resolve(null);
+            try {
+                const { data, error } = await sb.functions.invoke('translate-capsule', {
+                    body: { id, target_lang: targetLang }
+                });
+                if (error) throw error;
+                return data?.translation || null;
+            } catch (e) {
+                console.error('Translation failed:', e);
+                return null;
+            }
         },
         readCapsule(dbId) { return this.online ? sb.rpc('read_capsule', { p_id: dbId }) : Promise.resolve(); },
         report(dbId, why) {
@@ -452,49 +452,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const moodColor = isG ? 0xffd700 : (MOOD_COLORS[msg.mood] || 0x60a5fa);
 
         const markerMesh = new THREE.Mesh(
-            const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
-            const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
-            const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
-
-            // Edge Function Translation (Alternative)
-            const edgeTranslateBtn = `<button class="action-btn translate-btn" data-id="${msg.dbId}" title="${CCI18N.lang === 'ar' ? 'ترجمة متقدمة' : 'Advanced Translation'}">🌐</button>`;
-
-            tooltip.innerHTML = `
-                ${goldenHeader}
-                <h4>${CCI18N.countryLabel(msg.country)} ${flag} ${translateBtn} ${edgeTranslateBtn}</h4>
-                <p>"${msg.text}"</p>
-                <div class="author">${CCI18N.t('by')}: ${msg.author}</div>
-            `;
-
-            const edgeBtn = tooltip.querySelector('.translate-btn[data-id]');
-            if (edgeBtn) {
-                edgeBtn.addEventListener('click', async (ev) => {
-                    ev.stopPropagation();
-                    edgeBtn.disabled = true;
-                    edgeBtn.textContent = '…';
-
-                    const translation = await CapsuleStore.translateCapsule(
-                        parseInt(edgeBtn.dataset.id, 10),
-                        CCI18N.lang === 'ar' ? 'AR' : 'EN'
-                    );
-
-                    if (translation) {
-                        const transDiv = document.createElement('div');
-                        transDiv.className = 'translation-box';
-                        transDiv.innerHTML = `
-                            <div style="font-size:11px;color:#94a3b8;margin-bottom:4px;">
-                                ${CCI18N.lang === 'ar' ? 'الترجمة المتقدمة' : 'Advanced Translation'}:
-                            </div>
-                            <p style="color:#a78bfa;font-style:italic;">"${translation}"</p>
-                        `;
-                        tooltip.appendChild(transDiv);
-                        edgeBtn.remove();
-                    } else {
-                        edgeBtn.textContent = '⚠️';
-                        edgeBtn.disabled = false;
-                    }
-                });
-            }
             new THREE.SphereGeometry(isG ? 0.12 : 0.08, 16, 16),
             new THREE.MeshBasicMaterial({ color: moodColor })
         );
