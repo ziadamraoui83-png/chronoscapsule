@@ -449,7 +449,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 : '';
             const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
             const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
-             const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${AppLang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+            const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
             const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang === 'ar' ? 'الكبسولة الذهبية اليوم' : 'Golden Capsule of the Day'} 🌟</div>` : '';
 
             /* ✅ إصلاح XSS: استخدام esc() على كل المحتوى القادم من المستخدم */
