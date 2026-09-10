@@ -868,22 +868,6 @@ if (googleLoginBtn) {
         // تأكد باللي المتغير لي راك مسمي بيه Supabase في السكربت نتاعك هو 'sb' (لأنني شفيتك تستعمل sb.rpc في السطر 851)
         const { data, error } = await sb.auth.signInWithOAuth({
             provider: 'google',
-
-            // تفعيل زر تسجيل الدخول بواسطة جوجل عبر Supabase
-document.addEventListener('DOMContentLoaded', () => {
-    const googleLoginBtn = document.getElementById('googleLoginBtn');
-    if (googleLoginBtn) {
-        googleLoginBtn.addEventListener('click', async () => {
-            const { data, error } = await sb.auth.signInWithOAuth({
-                provider: 'google',
-            });
-            if (error) {
-                console.error('خطأ في تسجيل الدخول عبر جوجل:', error.message);
-            }
-        });
-    }
-});
-            
         });
         if (error) {
             console.error('خطأ في تسجيل الدخول:', error.message);
