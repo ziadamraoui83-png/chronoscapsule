@@ -371,10 +371,13 @@ document.addEventListener('DOMContentLoaded', () => {
         labelDiv.addEventListener('click', (e) => {
             e.stopPropagation();
             const flag = msg.dbId
-                ? `<button class="report-btn" data-db="${msg.dbId}" title="بلاغ عن محتوى غير لائق">🚩</button>`
+                ? `<button class="action-btn report-btn" data-db="${msg.dbId}" title="بلاغ عن محتوى غير لائق">🚩</button>`
                 : '';
+            const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
+            const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
+            const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
             tooltip.innerHTML = `
-                <h4>${CCI18N.countryLabel(msg.country)} ${flag}</h4>
+                <h4>${CCI18N.countryLabel(msg.country)} ${flag} ${translateBtn}</h4>
                 <p>"${msg.text}"</p>
                 <div class="author">${CCI18N.t('by')}: ${msg.author}</div>
             `;
@@ -715,12 +718,17 @@ document.addEventListener('DOMContentLoaded', () => {
             deepText.textContent = '“' + r.o_text + '”';
             const when = new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
                 { day:'numeric', month:'long', year:'numeric' }).format(new Date(r.o_created));
-            const ci = COUNTRY_INFO[r.o_country] || COUNTRY_INFO.OTHER;
+            
+            const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
+            const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(r.o_text)}&op=translate`;
+            const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}" style="margin-inline-start:0; transform:scale(1.1)">🔤</a>`;
+
             deepMeta.innerHTML =
                 `<span>${CCI18N.countryLabel(r.o_country)}</span>` +
-                `<span>${(CCI18N.lang==='ar'?'بقلم':'by')} <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
+                `<span>${(CCI18N.lang==='ar'?'بقلم':'By')}: <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
                 `<span>${when}</span>` +
-                `<span>👁️ <b>${r.o_reads ?? 0}</b> ${CCI18N.t('deep_reads')}</span>`;
+                `<span>👁️ <b>${r.o_reads ?? 0}</b></span>` + 
+                `${translateBtn}`;
             /* كل غَوصة تُحسب قراءة */
             sb.rpc('read_capsule', { p_id: r.o_id });
         }
