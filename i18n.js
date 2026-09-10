@@ -1,11 +1,11 @@
-/* ═════════ CHRONOS CAPSULE — طبقة التعريب v2 (عربي / English) ═════════ */
+/* ═════════ CHRONOS CAPSULE — طبقة التعريب v3 (عربي / English) ═════════ */
 (function () {
   "use strict";
 
   const DICT = {
     ar: {
       title: 'كبسولة الزمن | Chronos Capsule',
-      tagline: 'كبسولة الزمن الكونية',
+      tagline: 'كبسولة الزمن الكونية · 🛰️ كبسولاتي',
       title_html: 'أرسل رسالتك إلى <span class="highlight">الفضاء</span>',
       desc: 'اكتب رسالتك السرية أو اعترافك، اختر دولتك، ودعها تطير لتستقر على كبسولة الزمن الكونية ليقرأها الغرباء بسلام.',
       new_msg: 'اكتب رسالة جديدة',
@@ -28,6 +28,7 @@
       name_label: 'اسمك أو اللقب',
       name_ph: 'اكتب اسمك هنا...',
       name_optional: 'اختياري — بدونه تُنشر كبسولتك باسم «مجهول»',
+      send_anon: 'إرسال كمجهول',
       country_label: 'الدولة',
       choose_country: 'اختر دولتك لتحديد نقطة الانطلاق',
       launch_btn: 'إطلاق الكبسولة نحو الفضاء',
@@ -54,7 +55,7 @@
     },
     en: {
       title: 'Chronos Capsule | Send a message to space',
-      tagline: 'The Cosmic Time Capsule',
+      tagline: 'Cosmic Time Capsule · 🛰️ My Capsules',
       title_html: 'Send your message to <span class="highlight">space</span>',
       desc: 'Write your secret or confession, pick your country, and let it fly to rest upon the cosmic time capsule — for strangers to read in peace.',
       new_msg: 'Write a new message',
@@ -77,6 +78,7 @@
       name_label: 'Your name or alias',
       name_ph: 'Type your name here...',
       name_optional: 'Optional — without it your capsule is signed "Anonymous"',
+      send_anon: 'Send anonymously',
       country_label: 'Country',
       choose_country: 'Choose your country as the launch point',
       launch_btn: 'Launch capsule into space',
@@ -103,11 +105,12 @@
     }
   };
 
+  /* ✅ تم إصلاح: `.tagline` يستهدف الآن الرابط الداخلي فقط (بدل أن يمحو <a>) */
+  /* ✅ تم إصلاح: حذف `#openModalBtn` لأنه كان يُكرّر النص (span له data-i18n بالفعل) */
   const SELS = [
-    ['.tagline', 'tagline'],
+    ['.tagline a', 'tagline'],
     ['.main-title', 'title_html', 'html'],
     ['.main-desc', 'desc'],
-    ['#openModalBtn', 'new_msg', 'node'],
     ['.capsule-counter span:last-child', 'counter'],
     ['.site-footer p', 'footer'],
     ['.modal-header h3', 'modal_title'],
@@ -152,7 +155,7 @@
     const sel = document.getElementById('userCountry');
     const CI = window.COUNTRY_INFO || {};
     if (!sel) return;
-    
+
     const cur = sel.value;
     sel.innerHTML = '';
     const ph = new Option(t('choose_country'), '');
@@ -166,6 +169,7 @@
     if (cur && (CI[cur] || cur === 'OTHER')) sel.value = cur;
   }
 
+  /* ملاحظة: هذه الدالة لم تعد مستخدمة (بعد إصلاح `.tagline`)، لكنها محفوظة */
   function setTextNode(el, txt) {
     const node = [...el.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
     if (node) node.textContent = txt;
@@ -195,7 +199,6 @@
     if (toggleBtn) toggleBtn.textContent = t('lang_btn');
   }
 
-  // تعريف دالة setLang في النطاق الصحيح لتكون مرئية للجميع
   function setLang(l, save) {
     lang = l;
     if (save !== false) { try { localStorage.setItem('cc_lang', l); } catch (e) {} }
@@ -205,28 +208,49 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
+    /* ═══ تحديد اللغة الافتراضية ═══ */
+    /* 1) ?lang= في الرابط (روابط SEO alternate)  */
+    /* 2) localStorage                             */
+    /* 3) لغة المتصفح                              */
     let saved = null;
     try { saved = localStorage.getItem('cc_lang'); } catch (e) {}
-    lang = saved || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
 
+    let urlLang = null;
+    try {
+      const p = new URLSearchParams(location.search).get('lang');
+      if (p === 'ar' || p === 'en') urlLang = p;
+    } catch (e) {}
+
+    lang = urlLang
+        || saved
+        || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+
+    /* ═══ زر تبديل اللغة — يُضاف تلقائيًا للترويسة إن وُجدت ═══ */
     toggleBtn = document.createElement('button');
     toggleBtn.className = 'lang-toggle';
     toggleBtn.type = 'button';
     toggleBtn.addEventListener('click', () => setLang(lang === 'ar' ? 'en' : 'ar'));
-    
+
     const header = document.querySelector('.site-header');
     if (header) {
-      header.appendChild(toggleBtn);
+      /* حاول وضعه داخل حاوية الإجراءات الداخلية (بجانب زر جوجل) */
+      const innerAction = header.querySelector(':scope > div:not(.logo)');
+      if (innerAction && innerAction.tagName === 'DIV') {
+        innerAction.appendChild(toggleBtn);
+      } else {
+        header.appendChild(toggleBtn);
+      }
     }
 
     setLang(lang, false);
   });
 
-  window.CCI18N = { 
-    get lang() { return lang; }, 
-    t, 
-    err, 
-    countryLabel, 
-    applyCountries 
+  window.CCI18N = {
+    get lang() { return lang; },
+    t,
+    err,
+    countryLabel,
+    applyCountries,
+    setLang
   };
 })();

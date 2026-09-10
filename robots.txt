@@ -1,31 +1,32 @@
+# ═══════════════════════════════════════════════════════════
+# CHRONOS CAPSULE — robots.txt
+# ═══════════════════════════════════════════════════════════
+
 User-agent: *
-Disallow: /supabase/
-Disallow: /functions/
+Allow: /
 Disallow: /api/
+Disallow: /functions/
+Disallow: /supabase/
+Disallow: /capsules.html?capsule=
+Disallow: /*?*capsule=
 
-Sitemap: https://chronos-capsule.vercel.app/sitemap.xml
-
-# Allow crawling of archive pages with filters
 User-agent: Googlebot
-Allow: /archive.html?country=
-Allow: /archive.html?mood=
-Allow: /archive.html?lang=
-Allow: /archive.html?sort=
+Disallow: /capsules.html?capsule=
+Allow: /
 
-# Allow crawling of capsule pages with codes
-User-agent: Googlebot
-Allow: /capsules.html?capsule=
+User-agent: Googlebot-Image
+Allow: /
 
-# Allow crawling of landing pages
-User-agent: Googlebot
-Allow: /archive.html?country=DZ
-Allow: /archive.html?country=SA
-Allow: /archive.html?country=EG
-Allow: /archive.html?country=MA
-Allow: /archive.html?country=TN
-Allow: /archive.html?country=AE
-Allow: /archive.html?mood=hope
-Allow: /archive.html?mood=nostalgia
-Allow: /archive.html?mood=secret
-Allow: /archive.html?mood=confession
-Allow: /archive.html?mood=bold
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+Sitemap: https://chronoscapsule.vercel.app/sitemap.xml

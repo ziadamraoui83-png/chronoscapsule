@@ -1,3 +1,6 @@
+/* ═══════════════════════════════════════════════════════════
+   CHRONOS CAPSULE — script.js (نسخة مصحّحة شاملة)
+   ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
     let scene, camera, renderer, controls, planet, stars;
 
@@ -5,14 +8,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let zoomTargetVector = new THREE.Vector3();
 
     let rotFactor = 1, rotTarget = 1;
-    let fitDist = 21;                 /* بعد الكوكب الافتراضي — يُحسب تلقائيًا حسب الشاشة */
+    let fitDist = 21;
     const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    /* ألوان المشاعر — مرجع واحد للنقاط والتسميات والكبسولة */
+    /* ═══ أدوات مساعدة ═══ */
+    const $ = id => document.getElementById(id);
+
+    /* حماية كاملة من XSS — تهرّب كل الرموز الخطرة */
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+
+    /* ═══ ألوان المشاعر ═══ */
     const MOOD_COLORS = { hope: 0x38bdf8, nostalgia: 0xa78bfa, secret: 0x34d399, confession: 0xfbbf24, bold: 0xf87171 };
     const MOOD_CSS    = { hope: '#38bdf8', nostalgia: '#a78bfa', secret: '#34d399', confession: '#fbbf24', bold: '#f87171' };
 
-    /* ═══ إعدادات الاتصال — الصق مفتاحيك هنا ═══ */
+    /* ═══ إعدادات الاتصال — مفاتيح حقيقية ═══ */
     const CC_CONFIG = {
         SUPABASE_URL: 'https://sylnhrtgrxfacskjaxlq.supabase.co',
         SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ'
@@ -31,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function detectLang(t) { return /[\u0600-\u06FF]/.test(t) ? 'ar' : 'en'; }
 
-    /* خريطة الدول */
+    /* ═══ خريطة الدول ═══ */
     const COUNTRY_INFO = {
         DZ:{lat:28.03,lng:1.66,name:'الجزائر 🇩🇿'}, SA:{lat:24.71,lng:46.68,name:'السعودية 🇸🇦'},
         EG:{lat:26.82,lng:30.80,name:'مصر 🇪🇬'}, MA:{lat:31.79,lng:-7.09,name:'المغرب 🇲🇦'},
@@ -61,10 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const countryInfo = c => COUNTRY_INFO[c] || COUNTRY_INFO.OTHER;
     window.COUNTRY_INFO = COUNTRY_INFO;
-    // استبدل CCI18N.applyCountries(); بهذا السطر الآمن:
-if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
-    window.CCI18N.applyCountries();
-}
+
+    /* آمن: تطبيق الدول عبر i18n.js إن كان متاحًا */
+    if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
+        window.CCI18N.applyCountries();
+    }
 
     /* ═══ طبقة التخزين ═══ */
     const CapsuleStore = {
@@ -90,9 +102,9 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
             const { data, error } = await sb.from('capsules')
                 .select('id,text,author,country,mood,arrival_at')
                 .order('arrival_at', { ascending: false }).limit(200);
-            
+
             if (error) { console.warn('CapsuleStore.load:', error.message); return []; }
-            
+
             let loaded = data.map(r => {
                 const ci = countryInfo(r.country);
                 return { id: 'db_' + r.id, dbId: r.id, text: r.text,
@@ -157,52 +169,10 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         }
     };
 
-    /* إعداد الصوت المحيطي والأصوات */
-    let audioCtx = null;
-    let oceanGain = null;
-    let oceanOsc = null;
-    let muteBtn = null;
+    /* ملاحظة: طبقة الصوت المحيطي (AudioContext) أُزيلت لأنها لم تكن تُنتج صوتًا فعليًا.
+       إن أردت إضافتها لاحقًا، استخدم <audio> element أو Tone.js بشكل صريح. */
 
-    function initAudio() {
-    try {
-        // التأكد من عدم إنشاء السياق مسبقاً
-        if (window.audioInitialized) return;
-        
-        // البحث عن الحاوية أو إنشاؤها إذا لم تكن موجودة
-        let audioContainer = document.getElementById('audio-container');
-        if (!audioContainer) {
-            audioContainer = document.createElement('div');
-            audioContainer.id = 'audio-container';
-            document.body.appendChild(audioContainer);
-        }
-
-        // إنشاء AudioContext أو العنصر الصوتي بحذر
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        if (AudioContext) {
-            const ctx = new AudioContext();
-            // تفعيل السياق عند أول ضغطة زر من المستخدم
-            window.addEventListener('click', () => {
-                if (ctx.state === 'suspended') {
-                    ctx.resume();
-                }
-            }, { once: true });
-        }
-        
-        window.audioInitialized = true;
-    } catch (e) {
-        console.warn('Audio initialization deferred:', e);
-    }
-}
-
-    initAudio();
-
-    document.addEventListener('click', () => {
-        if (audioCtx && audioCtx.state === 'suspended') {
-            audioCtx.resume();
-        }
-    }, { once: true });
-
-    /* الرسائل الابتدائية */
+    /* ═══ الرسائل الابتدائية ═══ */
     const seedMessages = [
         { id: 1, country: 'DZ', name: 'الجزائر 🇩🇿', text: 'سلام من أرض الشهداء والمحبة إلى جميع سكان الأرض!', author: 'رياض', lat: 28.0339, lng: 1.6596 },
         { id: 2, country: 'SA', name: 'السعودية 🇸🇦', text: 'اللهم احفظ أمتنا ويسر لكل حالم طريقه نحو المستقبل ✨', author: 'سارة', lat: 24.7136, lng: 46.6753 },
@@ -232,9 +202,14 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
     const tooltip = document.getElementById('msgTooltip');
     const labelsContainer = document.getElementById('labels-container');
 
-    /* أدوات واجهة */
+    /* ═══ مراجع DOM مبكّرة (لتجنّب TDZ) ═══ */
+    const messageModal = document.getElementById('messageModal');
+    const deepModal = document.getElementById('deepModal');
+
+    /* ═══ أدوات واجهة ═══ */
     function showToast(msg, ico = '🚀') {
         const t = document.getElementById('ccToast');
+        if (!t) return;
         t.querySelector('.ico').textContent = ico;
         t.querySelector('.txt').textContent = msg;
         t.classList.add('show');
@@ -246,6 +221,9 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         document.getElementById('capsuleCount').textContent = activeMessages.length;
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       إعداد Three.js
+       ═══════════════════════════════════════════════════════════ */
     function initThreeJS() {
         const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
         scene = new THREE.Scene();
@@ -348,10 +326,12 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         });
 
         const clock = new THREE.Clock();
+        let frameCount = 0;
 
         function animate() {
             requestAnimationFrame(animate);
             const dt = Math.min(clock.getDelta(), 0.05);
+            frameCount++;
 
             const d = camera.position.distanceTo(controls.target);
             const t = THREE.MathUtils.clamp((d - controls.minDistance) / (controls.maxDistance - controls.minDistance), 0, 1);
@@ -381,7 +361,10 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
             }
 
             controls.update();
-            updateLabelsPosition();
+
+            /* تحسين الأداء: تحديث المواضع كل إطارين فقط */
+            if (frameCount % 2 === 0) updateLabelsPosition();
+
             renderer.render(scene, camera);
         }
         animate();
@@ -441,25 +424,26 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         const labelDiv = document.createElement('div');
         labelDiv.className = 'country-label spawn' + (isG ? ' golden' : '');
         labelDiv.style.setProperty('--mood', isG ? '#fbbf24' : (MOOD_CSS[msg.mood] || '#60a5fa'));
-        labelDiv.innerHTML = `<span>📍</span> ${CCI18N.countryLabel(msg.country)}`;
+        labelDiv.innerHTML = `<span>📍</span> ${esc(CCI18N.countryLabel(msg.country))}`;
         labelsContainer.appendChild(labelDiv);
         setTimeout(() => labelDiv.classList.remove('spawn'), 700);
 
         labelDiv.addEventListener('click', (e) => {
             e.stopPropagation();
             const flag = msg.dbId
-                ? `<button class="action-btn report-btn" data-db="${msg.dbId}" title="بلاغ عن محتوى غير لائق">🚩</button>`
+                ? `<button class="action-btn report-btn" data-db="${msg.dbId}" title="${CCI18N.lang === 'ar' ? 'بلاغ عن محتوى غير لائق' : 'Report inappropriate content'}">🚩</button>`
                 : '';
             const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
             const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
-            const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
-            const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang==='ar'?'الكبسولة الذهبية اليوم':'Golden Capsule of the Day'} 🌟</div>` : '';
-            
+            const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+            const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang === 'ar' ? 'الكبسولة الذهبية اليوم' : 'Golden Capsule of the Day'} 🌟</div>` : '';
+
+            /* ✅ إصلاح XSS: استخدام esc() على كل المحتوى القادم من المستخدم */
             tooltip.innerHTML = `
                 ${goldenHeader}
-                <h4>${CCI18N.countryLabel(msg.country)} ${flag} ${translateBtn}</h4>
-                <p>"${msg.text}"</p>
-                <div class="author">${CCI18N.t('by')}: ${msg.author}</div>
+                <h4>${esc(CCI18N.countryLabel(msg.country))} ${flag} ${translateBtn}</h4>
+                <p>"${esc(msg.text)}"</p>
+                <div class="author">${esc(CCI18N.t('by'))}: ${esc(msg.author)}</div>
             `;
             tooltip.style.left = labelDiv.style.left;
             tooltip.style.top = labelDiv.style.top;
@@ -611,18 +595,19 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         requestAnimationFrame(animateLaunch);
     }
 
-        initThreeJS();
+    initThreeJS();
 
-    /* جلب الكبسولات الهابطة من القاعدة (أو المحلية في وضع offline) */
+    /* ═══ جلب الكبسولات من القاعدة ═══ */
     CapsuleStore.load().then(list => {
         list.forEach(m => { activeMessages.push(m); createMessageMarker(m); });
         updateCounter();
     });
 
-    /* ═══════ إدارة النموذج والواجهة ═══════ */
+    /* ═══════════════════════════════════════════════════════════
+       إدارة النموذج والواجهة
+       ═══════════════════════════════════════════════════════════ */
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
-    const messageModal = document.getElementById('messageModal');
     const messageForm = document.getElementById('messageForm');
     const messageText = document.getElementById('messageText');
     const charCounter = document.querySelector('.char-counter');
@@ -633,9 +618,15 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
     const arrivalPreview = document.getElementById('arrivalPreview');
     const notePub = document.getElementById('privacyNotePub');
     const notePriv = document.getElementById('privacyNotePriv');
+    const authorNameInput = document.getElementById('authorName');
+    const sendAsAnonymous = document.getElementById('sendAsAnonymous');
     let chosenDays = null;
 
-    arrivalDate.min = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+    /* ✅ إعادة حساب min كل مرة تفتح النافذة (كانت ثابتة وتصبح قديمة) */
+    function refreshArrivalMin() {
+        arrivalDate.min = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
+    }
+    refreshArrivalMin();
 
     function fmtDate(d) {
         return new Intl.DateTimeFormat(CCI18N.lang === 'ar' ? 'ar-DZ' : 'en-GB',
@@ -647,11 +638,11 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
             c.classList.toggle('on', c.dataset.days === String(days)));
         if (days === 'custom') { arrivalDate.style.display = 'block'; arrivalPreview.textContent = ''; return; }
         arrivalDate.style.display = 'none';
-        arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + fmtDate(new Date(Date.now() + days * 864e5)) + '</b>';
+        arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + esc(fmtDate(new Date(Date.now() + days * 864e5))) + '</b>';
     }
     arrivalDate.addEventListener('change', () => {
         if (!arrivalDate.value) return;
-        arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + fmtDate(new Date(arrivalDate.value + 'T12:00:00')) + '</b>';
+        arrivalPreview.innerHTML = CCI18N.t('arrives_on') + ' <b>' + esc(fmtDate(new Date(arrivalDate.value + 'T12:00:00'))) + '</b>';
     });
     document.querySelectorAll('.arrival-chips .chip').forEach(c =>
         c.addEventListener('click', () => {
@@ -673,14 +664,35 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         }
     }));
 
-    openModalBtn.addEventListener('click', () => messageModal.classList.add('active'));
+    /* ✅ عند فتح النافذة: تحديث min + مزامنة حالة "مجهول" */
+    openModalBtn.addEventListener('click', () => {
+        refreshArrivalMin();
+        if (sendAsAnonymous && authorNameInput) {
+            authorNameInput.disabled = sendAsAnonymous.checked;
+            authorNameInput.style.opacity = sendAsAnonymous.checked ? '0.5' : '1';
+        }
+        messageModal.classList.add('active');
+    });
     closeModalBtn.addEventListener('click', () => messageModal.classList.remove('active'));
     messageModal.addEventListener('click', (e) => {
         if (e.target === messageModal) messageModal.classList.remove('active');
     });
     addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') { messageModal.classList.remove('active'); deepModal.classList.remove('active'); hideTooltip(); }
+        if (e.key === 'Escape') {
+            messageModal.classList.remove('active');
+            deepModal.classList.remove('active');
+            hideTooltip();
+        }
     });
+
+    /* ✅ ربط "إرسال كمجهول" فعليًا */
+    if (sendAsAnonymous && authorNameInput) {
+        sendAsAnonymous.addEventListener('change', (e) => {
+            authorNameInput.disabled = e.target.checked;
+            authorNameInput.style.opacity = e.target.checked ? '0.5' : '1';
+            if (e.target.checked) authorNameInput.value = '';
+        });
+    }
 
     messageText.addEventListener('input', (e) => {
         charCounter.textContent = `${e.target.value.length} / ${e.target.getAttribute('maxlength')}`;
@@ -696,14 +708,23 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         notePriv.style.display = 'none';
         document.querySelectorAll('.arrival-chips .chip').forEach(c => c.classList.remove('on'));
         charCounter.textContent = '0 / 300';
+        if (sendAsAnonymous) sendAsAnonymous.checked = false;
+        if (authorNameInput) { authorNameInput.disabled = false; authorNameInput.style.opacity = '1'; }
     }
 
     messageForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const country = document.getElementById('userCountry').value;
         if (!country) { showToast(CCI18N.t('pick_warn'), '⚠️'); return; }
+
         const text = messageText.value.trim();
-        const author = document.getElementById('authorName').value.trim() || CCI18N.t('anon_name');
+
+        /* ✅ قراءة "إرسال كمجهول" فعليًا */
+        const isAnon = !!(sendAsAnonymous && sendAsAnonymous.checked);
+        const author = isAnon
+            ? CCI18N.t('anon_name')
+            : (authorNameInput.value.trim() || CCI18N.t('anon_name'));
+
         const mood = (document.querySelector('input[name="mood"]:checked') || {}).value || 'hope';
         const isPrivate = (document.querySelector('input[name="capsuleMode"]:checked') || {}).value === 'private';
 
@@ -735,22 +756,85 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         }
     });
 
-    /* عند تبديل اللغة تُعاد تسمية كل الدول على الكوكب فورًا */
+    /* ═══════════════════════════════════════════════════════════
+       Google Auth
+       ═══════════════════════════════════════════════════════════ */
+    const googleBtn = document.getElementById('googleLoginBtn');
+
+    function updateAuthUI(user) {
+        if (!googleBtn) return;
+        if (user) {
+            const name = (user.user_metadata && user.user_metadata.full_name)
+                      || (user.email ? user.email.split('@')[0] : null)
+                      || (CCI18N.lang === 'ar' ? 'مستخدم' : 'User');
+            googleBtn.innerHTML = `<span>👤</span> ${esc(name)}`;
+            googleBtn.title = CCI18N.lang === 'ar' ? 'اضغط لتسجيل الخروج' : 'Click to sign out';
+        } else {
+            googleBtn.innerHTML = `<span>🌐</span> ${CCI18N.lang === 'ar' ? 'دخول بجوجل' : 'Sign in with Google'}`;
+            googleBtn.title = '';
+        }
+    }
+
+    if (sb && googleBtn) {
+        /* جلب الجلسة الحالية */
+        sb.auth.getSession().then(({ data }) => {
+            updateAuthUI(data && data.session ? data.session.user : null);
+        }).catch(() => updateAuthUI(null));
+
+        /* الاستماع لتغيرات الحالة */
+        sb.auth.onAuthStateChange((_event, session) => {
+            updateAuthUI(session ? session.user : null);
+        });
+
+        /* زر الدخول / الخروج */
+        googleBtn.addEventListener('click', async () => {
+            try {
+                const { data } = await sb.auth.getSession();
+                if (data && data.session) {
+                    await sb.auth.signOut();
+                    showToast(CCI18N.lang === 'ar' ? 'تم تسجيل الخروج' : 'Signed out', '👋');
+                } else {
+                    const { error } = await sb.auth.signInWithOAuth({
+                        provider: 'google',
+                        options: { redirectTo: window.location.origin + window.location.pathname }
+                    });
+                    if (error) showToast(error.message, '⚠️');
+                }
+            } catch (err) {
+                showToast(CCI18N.lang === 'ar' ? 'فشل الاتصال بجوجل' : 'Google sign-in failed', '⚠️');
+            }
+        });
+    } else if (googleBtn) {
+        googleBtn.addEventListener('click', () => {
+            showToast(CCI18N.lang === 'ar' ? 'قاعدة البيانات غير متصلة' : 'Database not connected', '⚠️');
+        });
+    }
+
+    /* عند تبديل اللغة: تحديث أسماء الدول في التسميات + زر Google */
     addEventListener('cc:lang', () => {
         labelElements.forEach(it => {
-            it.element.innerHTML = `<span>📍</span> ${CCI18N.countryLabel(it.msg.country)}`;
+            it.element.innerHTML = `<span>📍</span> ${esc(CCI18N.countryLabel(it.msg.country))}`;
         });
+        if (sb) {
+            sb.auth.getSession().then(({ data }) => {
+                updateAuthUI(data && data.session ? data.session.user : null);
+            }).catch(() => {});
+        }
     });
 
-    /* ═══ كبسولة من الأعماق ═══ */
+    /* ═══════════════════════════════════════════════════════════
+       كبسولة من الأعماق
+       ═══════════════════════════════════════════════════════════ */
     const deepBtn   = document.getElementById('deepBtn');
-    const deepModal = document.getElementById('deepModal');
     const deepText  = document.getElementById('deepText');
     const deepMeta  = document.getElementById('deepMeta');
     let lastDeepId  = null;
 
     async function openDeep() {
-        if (!sb) { showToast(CCI18N.lang==='ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️'); return; }
+        if (!sb) {
+            showToast(CCI18N.lang === 'ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️');
+            return;
+        }
         const { data, error } = await sb.rpc('get_deep_capsule', { p_exclude_id: lastDeepId });
         if (error) { showToast('🌊 ' + error.message, '⚠️'); return; }
         if (!data || !data.length) {
@@ -763,14 +847,14 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
             lastDeepId = r.o_id;
             deepText.classList.remove('deep-empty');
             deepText.textContent = '“' + r.o_text + '”';
-            const when = new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
-                { day:'numeric', month:'long', year:'numeric' }).format(new Date(r.o_created));
+            const when = new Intl.DateTimeFormat(CCI18N.lang === 'ar' ? 'ar-DZ' : 'en-GB',
+                { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(r.o_created));
             deepMeta.innerHTML =
-                `<span>${CCI18N.countryLabel(r.o_country)}</span>` +
-                `<span>${(CCI18N.lang==='ar'?'بقلم':'by')} <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
-                `<span>${when}</span>` +
-                `<span>👁️ <b>${r.o_reads ?? 0}</b> ${CCI18N.t('deep_reads')}</span>`;
-            sb.rpc('read_capsule', { p_id: r.o_id });
+                `<span>${esc(CCI18N.countryLabel(r.o_country))}</span>` +
+                `<span>${esc(CCI18N.lang === 'ar' ? 'بقلم' : 'by')} <b>${esc(r.o_author || '—')}</b></span>` +
+                `<span>${esc(when)}</span>` +
+                `<span>👁️ <b>${r.o_reads != null ? r.o_reads : 0}</b> ${esc(CCI18N.t('deep_reads'))}</span>`;
+            sb.rpc('read_capsule', { p_id: r.o_id }).catch(() => {});
         }
         deepModal.classList.add('active');
     }
@@ -782,7 +866,7 @@ if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         if (e.target === deepModal) deepModal.classList.remove('active');
     });
 
-    /* تفعيل حركة رسم الشعار */
+    /* ═══ حركة رسم الشعار ═══ */
     const logo = document.querySelector('.cc-logo');
     if (logo) {
         if (REDUCE) { try { logo.pauseAnimations(); } catch (e) {} }

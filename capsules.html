@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>كبسولتي | Chronos Capsule</title>
-    <!-- SEO -->
     <meta name="description" content="اعرض كبسولاتك الزمنية الخاصة وتابع مواعيد وصولها — كبسولة الزمن الكونية.">
     <meta name="theme-color" content="#010103">
+    <meta name="robots" content="noindex, follow">
+
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
@@ -48,6 +49,23 @@
         .page{max-width:760px;margin:0 auto;padding:34px 20px 80px;min-height:calc(100vh - 56px);position:relative;z-index:1}
         .page-title{font-size:1.7rem;font-weight:900;color:#fff;margin-bottom:4px}
         .page-subtitle{font-size:.88rem;color:#64748b;margin-bottom:26px}
+        /* ══ صندوق المفتاح ══ */
+        .code-box{background:rgba(15,23,42,.6);border:1px solid rgba(139,92,246,.3);border-radius:16px;
+            padding:18px 20px;margin-bottom:22px;backdrop-filter:blur(8px)}
+        .code-box-title{font-size:14px;font-weight:700;color:#a78bfa;margin-bottom:12px;
+            display:flex;align-items:center;gap:8px}
+        .code-box-row{display:flex;gap:10px;flex-wrap:wrap}
+        .code-box-row input{flex:1;min-width:0;padding:10px 14px;background:rgba(0,0,0,.3);
+            border:1px solid rgba(255,255,255,.15);border-radius:10px;color:#fff;font-size:14px;
+            outline:none;font-family:monospace;letter-spacing:.1em;transition:border-color .3s}
+        .code-box-row input:focus{border-color:#8b5cf6}
+        .code-box-row input::placeholder{color:#64748b;letter-spacing:.05em}
+        .code-box-row button{padding:10px 18px;background:linear-gradient(135deg,#6d28d9,#2563eb);
+            border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;
+            cursor:pointer;transition:transform .25s,box-shadow .25s;white-space:nowrap;
+            display:inline-flex;align-items:center;gap:6px}
+        .code-box-row button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(99,102,241,.4)}
+        .code-box-row button:active{transform:translateY(0)}
         /* ══ فلتر وبحث ══ */
         .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
         .search-input{flex:1;min-width:180px;padding:10px 14px;background:rgba(15,23,42,.6);
@@ -72,7 +90,7 @@
         .cap-status.orbit{background:rgba(251,191,36,.12);color:#fbbf24;border:1px solid rgba(251,191,36,.2)}
         .cap-status.done{background:rgba(52,211,153,.12);color:#34d399;border:1px solid rgba(52,211,153,.2)}
         .cap-date{font-size:11.5px;color:#94a3b8;direction:ltr}
-        .cap-text{color:#e2e8f0;line-height:1.75;margin-bottom:14px;font-size:.975rem}
+        .cap-text{color:#e2e8f0;line-height:1.75;margin-bottom:14px;font-size:.975rem;unicode-bidi:plaintext}
         .cap-text.locked{color:#64748b;font-style:italic;font-size:.9rem;
             background:rgba(251,191,36,.05);border:1px dashed rgba(251,191,36,.2);
             border-radius:10px;padding:12px 14px}
@@ -124,7 +142,11 @@
             .filter-bar{flex-direction:column;align-items:stretch}
             .search-input{width:100%}
         }
-        .code-box button:active{transform:translateY(0)}
+        /* ══ تقليل الحركة ══ */
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+            .cap-card:hover { transform: none; }
+        }
     </style>
 </head>
 <body>
@@ -144,7 +166,7 @@
 </header>
 
 <!-- ══ الإشعار ══ -->
-<div class="cc-toast" id="capToast"><span></span></div>
+<div class="cc-toast" id="capToast"><span class="ico">🚀</span><span class="txt"></span></div>
 
 <!-- ══ المحتوى ══ -->
 <main class="page">
@@ -187,118 +209,172 @@
 <script>
 (function(){
     "use strict";
-    /* ══ إعداد Supabase — رابط صحيح ══ */
+
+    /* ══ إعداد Supabase ══ */
     const SB_URL  = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
     const SB_KEY  = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
     const sb = (window.supabase) ? supabase.createClient(SB_URL, SB_KEY) : null;
 
     const $ = id => document.getElementById(id);
     const T = k => (window.CCI18N ? CCI18N.t(k) : k);
-    const MOOD_ICO = {hope:'💙',nostalgia:'💜',secret:'💚',confession:'💛',bold:'❤️'};
 
+    /* ══ حماية XSS شاملة ══ */
+    const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
+        '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
+    }[c]));
+
+    const MOOD_ICO = {hope:'💙', nostalgia:'💜', secret:'💚', confession:'💛', bold:'❤️'};
+
+    /* ══ اللغة — تعريف مبكر لتجنّب TDZ ══ */
+    let capLang = (() => { try { return localStorage.getItem('cc_lang') || 'ar'; } catch (e) { return 'ar'; } })();
+
+    /* قراءة ?lang= من الرابط */
+    try {
+        const urlLang = new URLSearchParams(location.search).get('lang');
+        if (urlLang === 'ar' || urlLang === 'en') capLang = urlLang;
+    } catch (e) {}
+
+    /* ══ الإشعار ══ */
     let _toastTimer;
-    function toast(msg, ico='🚀'){
+    function toast(msg, ico = '🚀'){
         const el = $('capToast');
-        if(!el) return;
-        el.innerHTML = `<span>${ico}</span> <span>${msg}</span>`;
+        if (!el) return;
+        const icoEl = el.querySelector('.ico');
+        const txtEl = el.querySelector('.txt');
+        if (icoEl && txtEl) {
+            icoEl.textContent = ico;
+            txtEl.textContent = msg;
+        } else {
+            el.textContent = ico + ' ' + msg;
+        }
         el.classList.add('show');
         clearTimeout(_toastTimer);
-        _toastTimer = setTimeout(()=>el.classList.remove('show'), 3500);
+        _toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
     }
 
+    /* ══ التنسيق ══ */
     function fmt(iso){
         if (!iso) return '';
-        try{
+        try {
             return new Date(iso).toLocaleDateString(
-                (window.CCI18N && CCI18N.lang==='ar')?'ar-EG':'en-GB',
-                {year:'numeric',month:'short',day:'numeric'});
-        }catch(e){return iso.slice(0,10)}
+                capLang === 'ar' ? 'ar-EG' : 'en-GB',
+                { year:'numeric', month:'short', day:'numeric' });
+        } catch (e) { return String(iso).slice(0, 10); }
     }
 
     function countdown(iso){
         const diff = new Date(iso) - Date.now();
         if (diff <= 0) return null;
-        const d = Math.floor(diff/864e5);
-        const h = Math.floor((diff%864e5)/36e5);
-        const m = Math.floor((diff%36e5)/6e4);
+        const d = Math.floor(diff / 864e5);
+        const h = Math.floor((diff % 864e5) / 36e5);
+        const m = Math.floor((diff % 36e5) / 6e4);
         if (d > 0) return `${d}d ${h}h ${m}m`;
         return `${h}h ${m}m`;
     }
 
+    /* ══ الحالة ══ */
     let allCards = [];
     let activeFilter = 'all';
     let searchQ = '';
 
     function applyFilters(){
         let visible = 0;
-        allCards.forEach(({el, arrived, text})=>{
-            const matchFilter = activeFilter==='all' || (activeFilter==='arrived'&&arrived) || (activeFilter==='orbit'&&!arrived);
+        allCards.forEach(({el, arrived, text}) => {
+            const matchFilter = activeFilter === 'all'
+                || (activeFilter === 'arrived' && arrived)
+                || (activeFilter === 'orbit' && !arrived);
             const matchSearch = !searchQ || text.toLowerCase().includes(searchQ.toLowerCase());
-            el.style.display = (matchFilter && matchSearch) ? '' : 'none';
-            if (matchFilter && matchSearch) visible++;
+            const show = matchFilter && matchSearch;
+            el.style.display = show ? '' : 'none';
+            if (show) visible++;
         });
-        $('emptyState').style.display = visible===0 ? 'block' : 'none';
+        $('emptyState').style.display = visible === 0 ? 'block' : 'none';
     }
 
+    /* ══ المشاركة والنسخ ══ */
     function shareCapsule(code, text){
         const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
         if (navigator.share){
-            navigator.share({title:'كبسولة الزمن', text: text.slice(0,80)+'…', url}).catch(()=>{});
+            navigator.share({
+                title: capLang === 'ar' ? 'كبسولة الزمن' : 'Chronos Capsule',
+                text: text.slice(0, 80) + '…',
+                url
+            }).catch(() => {});
         } else {
-            navigator.clipboard.writeText(url).then(()=>toast('تم نسخ رابط الكبسولة!','🔗'));
+            navigator.clipboard.writeText(url)
+                .then(() => toast(capLang === 'ar' ? 'تم نسخ رابط الكبسولة!' : 'Capsule link copied!', '🔗'))
+                .catch(() => toast(url, '🔗'));
         }
     }
 
     function copyCode(code){
-        navigator.clipboard.writeText(code).then(()=>toast('تم نسخ المفتاح!','🔑')).catch(()=>{
-            toast(code,'🔑');
-        });
+        navigator.clipboard.writeText(code)
+            .then(() => toast(capLang === 'ar' ? 'تم نسخ المفتاح!' : 'Key copied!', '🔑'))
+            .catch(() => toast(code, '🔑'));
     }
 
-    function card(c, animate=false){
+    /* ══ بناء بطاقة كبسولة ══ */
+    function card(c, animate){
+        animate = !!animate;
         const arrived = !c.arrival_at || new Date(c.arrival_at) <= new Date();
-        const rawText = (c.o_text||c.text||'');
+        const rawText = (c.o_text || c.text || '');
+        const isAr = capLang === 'ar';
         const el = document.createElement('div');
-        el.className = 'cap-card ' + (arrived?'arrived':'in-orbit') + (animate?' just-arrived':'');
-        const codeVal = c.o_code||c.code||'';
-        const isAr = (window.CCI18N && CCI18N.lang==='ar');
+        el.className = 'cap-card ' + (arrived ? 'arrived' : 'in-orbit') + (animate ? ' just-arrived' : '');
+        const codeVal = c.o_code || c.code || '';
+
         const lockedHtml = !arrived
-            ? `<div class="cap-text locked">🔒 ${isAr?'الرسالة مقفلة حتى موعد الوصول':'Message locked until arrival'}</div>`
-            : `<div class="cap-text">${rawText.replace(/</g,'&lt;')}</div>`;
+            ? `<div class="cap-text locked">🔒 ${isAr ? 'الرسالة مقفلة حتى موعد الوصول' : 'Message locked until arrival'}</div>`
+            : `<div class="cap-text">${esc(rawText)}</div>`;
+
+        const statusText = arrived
+            ? (isAr ? '✅ هبطت على الكوكب' : '✅ Arrived')
+            : (isAr ? '🛰️ تسبح في المدار' : '🛰️ In orbit');
+
+        const countryTxt = c.o_country && window.CCI18N
+            ? CCI18N.countryLabel(c.o_country)
+            : '';
+
+        const readsLabel = isAr ? 'قراءة' : 'reads';
+
+        const copyLabel = isAr ? '🔑 نسخ المفتاح' : '🔑 Copy key';
+        const shareLabel = isAr ? '🔗 مشاركة' : '🔗 Share';
 
         el.innerHTML = `
             <div class="cap-top">
-                <span class="cap-status ${arrived?'done':'orbit'}">${arrived?'✅ هبطت على الكوكب':'🛰️ تسبح في المدار'}</span>
-                <span class="cap-date">${fmt(c.arrival_at||c.created_at)}</span>
+                <span class="cap-status ${arrived ? 'done' : 'orbit'}">${statusText}</span>
+                <span class="cap-date">${esc(fmt(c.arrival_at || c.created_at))}</span>
             </div>
             ${lockedHtml}
             <div class="cap-stats">
-                <span>${MOOD_ICO[c.o_mood||c.mood]||'✨'} ${c.o_country&&window.CCI18N?CCI18N.countryLabel(c.o_country):''}</span>
-                <span>👁️ <b>${c.o_reads??c.reads??0}</b> ${isAr?'قراءة':'reads'}</span>
-                ${codeVal?`<span>🔑 <b style="font-size:11px;font-family:monospace">${codeVal.slice(0,8)}…</b></span>`:''}
+                <span>${MOOD_ICO[c.o_mood || c.mood] || '✨'} ${esc(countryTxt)}</span>
+                <span>👁️ <b>${c.o_reads != null ? c.o_reads : (c.reads != null ? c.reads : 0)}</b> ${readsLabel}</span>
+                ${codeVal ? `<span>🔑 <b style="font-size:11px;font-family:monospace">${esc(codeVal.slice(0, 8))}…</b></span>` : ''}
             </div>
-            ${!arrived&&c.arrival_at?`<div class="cap-countdown" data-arrival="${c.arrival_at}">⏳ T-${countdown(c.arrival_at)||'—'}</div>`:''}
+            ${!arrived && c.arrival_at ? `<div class="cap-countdown" data-arrival="${esc(c.arrival_at)}">⏳ T-${esc(countdown(c.arrival_at) || '—')}</div>` : ''}
             <div class="cap-actions">
-                ${codeVal?`<button class="btn-copy-code" data-code="${codeVal}">🔑 نسخ المفتاح</button>`:''}
-                ${arrived&&codeVal?`<button class="btn-share" data-code="${codeVal}" data-text="${rawText.slice(0,80).replace(/"/g,'&quot;')}">🔗 مشاركة</button>`:''}
+                ${codeVal ? `<button class="btn-copy-code" data-code="${esc(codeVal)}">${copyLabel}</button>` : ''}
+                ${arrived && codeVal ? `<button class="btn-share" data-code="${esc(codeVal)}" data-text="${esc(rawText.slice(0, 80))}">${shareLabel}</button>` : ''}
             </div>`;
 
-        el.querySelector('.btn-copy-code')?.addEventListener('click', ()=>copyCode(codeVal));
-        el.querySelector('.btn-share')?.addEventListener('click', ()=>shareCapsule(codeVal, rawText));
+        el.querySelector('.btn-copy-code')?.addEventListener('click', () => copyCode(codeVal));
+        el.querySelector('.btn-share')?.addEventListener('click', () => shareCapsule(codeVal, rawText));
 
-        if(animate) setTimeout(()=>el.classList.remove('just-arrived'), 1500);
+        if (animate) setTimeout(() => el.classList.remove('just-arrived'), 1500);
 
         return {el, arrived, text: rawText};
     }
 
-    setInterval(()=>{
-        document.querySelectorAll('.cap-countdown[data-arrival]').forEach(el=>{
+    /* ══ العد التنازلي الحي ══ */
+    setInterval(() => {
+        document.querySelectorAll('.cap-countdown[data-arrival]').forEach(el => {
             const cd = countdown(el.dataset.arrival);
             if (cd) el.textContent = `⏳ T-${cd}`;
-            else { el.textContent='✅ وصلت للتو!'; el.className='cap-countdown done-label'; }
+            else { el.textContent = capLang === 'ar' ? '✅ وصلت للتو!' : '✅ Just arrived!'; el.className = 'cap-countdown done-label'; }
         });
     }, 1000);
 
+    /* ══ تحميل كبسولات المستخدم ══ */
     async function loadMine(){
         const list = $('capList');
         list.innerHTML = '';
@@ -308,99 +384,173 @@
         if (sb){
             const dev = localStorage.getItem('cc_device');
             if (dev){
-                try{
-                    const {data,error} = await sb.rpc('get_my_capsules',{p_device_hash:dev});
-                    if (!error && data) items = data.map(r=>({
-                        o_code:r.o_code, o_text:r.o_text, o_mood:r.o_mood, o_country:r.o_country,
-                        arrival_at:r.o_arrival_at, created_at:r.o_created, o_reads:r.o_reads
+                try {
+                    const { data, error } = await sb.rpc('get_my_capsules', { p_device_hash: dev });
+                    if (!error && data) items = data.map(r => ({
+                        o_code: r.o_code,
+                        o_text: r.o_text,
+                        o_mood: r.o_mood,
+                        o_country: r.o_country,
+                        arrival_at: r.o_arrival_at,
+                        created_at: r.o_created,
+                        o_reads: r.o_reads
                     }));
-                }catch(e){}
+                } catch (e) {}
             }
         }
 
         if (!items.length){
-            try{
-                items = (JSON.parse(localStorage.getItem('chronos_capsules_v1'))||[])
-                    .map(m=>({o_text:m.text,o_mood:m.mood,o_country:m.country,
-                        arrival_at:m.arrivalISO||null,created_at:m.ts||new Date().toISOString(),o_reads:0}));
-            }catch(e){}
+            try {
+                items = (JSON.parse(localStorage.getItem('chronos_capsules_v1')) || [])
+                    .map(m => ({
+                        o_text: m.text,
+                        o_mood: m.mood,
+                        o_country: m.country,
+                        arrival_at: m.arrivalISO || null,
+                        created_at: m.ts || new Date().toISOString(),
+                        o_reads: 0
+                    }));
+            } catch (e) {}
         }
 
-        if (!items.length){ $('emptyState').style.display='block'; return; }
-        items.sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
-        items.forEach(c=>{
+        if (!items.length){ $('emptyState').style.display = 'block'; return; }
+
+        items.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        items.forEach(c => {
             const cardObj = card(c);
             allCards.push(cardObj);
             list.appendChild(cardObj.el);
         });
+        applyFilters();
     }
 
+    /* ══ فتح كبسولة بالمفتاح ══ */
     async function openByCode(code){
-        const trimmed = code.trim();
-        if (!trimmed){ toast('أدخل المفتاح أولاً','⚠️'); return; }
-        if (!sb){ toast('هذه الميزة تحتاج ربط قاعدة البيانات','⚠️'); return; }
-        try{
-            const {data,error} = await sb.rpc('open_by_code',{p_code:trimmed});
-            if (error||!data||!data.length){ toast('كبسولة غير موجودة أو المفتاح خاطئ','⚠️'); return; }
+        const trimmed = String(code || '').trim();
+        if (!trimmed){ toast(capLang === 'ar' ? 'أدخل المفتاح أولاً' : 'Enter the key first', '⚠️'); return; }
+        if (!sb){ toast(capLang === 'ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️'); return; }
+        try {
+            const { data, error } = await sb.rpc('open_by_code', { p_code: trimmed });
+            if (error || !data || !data.length){
+                toast(capLang === 'ar' ? 'كبسولة غير موجودة أو المفتاح خاطئ' : 'Capsule not found or wrong key', '⚠️');
+                return;
+            }
             const r = data[0];
             const list = $('capList');
             const cardObj = card({
-                o_code:r.o_code, o_text:r.o_text, o_mood:r.o_mood, o_country:r.o_country,
-                arrival_at:r.o_arrival_at, created_at:r.o_created, o_reads:r.o_reads
+                o_code: r.o_code,
+                o_text: r.o_text,
+                o_mood: r.o_mood,
+                o_country: r.o_country,
+                arrival_at: r.o_arrival_at,
+                created_at: r.o_created,
+                o_reads: r.o_reads
             }, true);
             allCards.unshift(cardObj);
             list.prepend(cardObj.el);
-            cardObj.el.scrollIntoView({behavior:'smooth',block:'center'});
-            toast('تم فتح الكبسولة!','🔓');
-            if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at)<=new Date())
-                sb.rpc('read_capsule',{p_id:r.o_id}).catch(()=>{});
-        }catch(e){ toast('حدث خطأ، حاول مجدداً','⚠️'); }
+            cardObj.el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            toast(capLang === 'ar' ? 'تم فتح الكبسولة!' : 'Capsule opened!', '🔓');
+            if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at) <= new Date()) {
+                sb.rpc('read_capsule', { p_id: r.o_id }).catch(() => {});
+            }
+        } catch (e) {
+            toast(capLang === 'ar' ? 'حدث خطأ، حاول مجدداً' : 'Something went wrong, try again', '⚠️');
+        }
     }
 
-    $('openCodeBtn').addEventListener('click',()=>openByCode($('codeInput').value));
-    $('codeInput').addEventListener('keydown',e=>{ if(e.key==='Enter') openByCode(e.target.value); });
+    /* ══ المستمعون ══ */
+    $('openCodeBtn').addEventListener('click', () => openByCode($('codeInput').value));
+    $('codeInput').addEventListener('keydown', e => { if (e.key === 'Enter') openByCode(e.target.value); });
 
     const urlCode = new URLSearchParams(location.search).get('capsule');
     if (urlCode){ $('codeInput').value = urlCode; openByCode(urlCode); }
 
-    const LANGS = {
-        ar:{toggle:'EN',back:'العودة للكوكب',title:'🛸 كبسولاتي',subtitle:'جميع الكبسولات المرتبطة بجهازك',
-            codeBoxTitle:'افتح كبسولة بالمفتاح السري',openBtn:'فتح',codeHint:'أدخل مفتاح الكبسولة الذي وصلك',
-            searchPh:'🔍 ابحث في كبسولاتك...',emptyText:'لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن',
-            emptyLink:'إطلاق أول كبسولة',filterAll:'الكل',filterArrived:'✅ وصلت',filterOrbit:'🛰️ في المدار'},
-        en:{toggle:'AR',back:'← Back to Planet',title:'🛸 My Capsules',subtitle:'All capsules linked to your device',
-            codeBoxTitle:'Open a capsule with secret key',openBtn:'Open',codeHint:'Enter the capsule key you received',
-            searchPh:'🔍 Search your capsules...',emptyText:'No capsules launched yet<br>Start your time travel now',
-            emptyLink:'Launch first capsule',filterAll:'All',filterArrived:'Arrived',filterOrbit:'🛰️ In Orbit'}
-    };
-    let capLang = (()=>{ try{return localStorage.getItem('cc_lang')||'ar';}catch(e){return 'ar';} })();
+    $('searchInput').addEventListener('input', e => {
+        searchQ = e.target.value.trim();
+        applyFilters();
+    });
 
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+            chip.classList.add('active');
+            activeFilter = chip.dataset.filter;
+            applyFilters();
+        });
+    });
+
+    /* ══ الترجمة والتوطين ══ */
+    const LANGS = {
+        ar: {
+            toggle: 'EN',
+            back: 'العودة للكوكب',
+            title: '🛸 كبسولاتي',
+            subtitle: 'جميع الكبسولات المرتبطة بجهازك',
+            codeBoxTitle: 'افتح كبسولة بالمفتاح السري',
+            openBtn: 'فتح',
+            codeHint: 'أدخل مفتاح الكبسولة الذي وصلك — يعمل حتى قبل موعد الوصول',
+            searchPh: '🔍 ابحث في كبسولاتك...',
+            emptyText: 'لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن',
+            emptyLink: 'إطلاق أول كبسولة',
+            filterAll: 'الكل',
+            filterArrived: '✅ وصلت',
+            filterOrbit: '🛰️ في المدار'
+        },
+        en: {
+            toggle: 'AR',
+            back: '← Back to Planet',
+            title: '🛸 My Capsules',
+            subtitle: 'All capsules linked to your device',
+            codeBoxTitle: 'Open a capsule with secret key',
+            openBtn: 'Open',
+            codeHint: 'Enter the capsule key you received — works even before arrival',
+            searchPh: '🔍 Search your capsules...',
+            emptyText: 'No capsules launched yet<br>Start your time travel now',
+            emptyLink: 'Launch first capsule',
+            filterAll: 'All',
+            filterArrived: '✅ Arrived',
+            filterOrbit: '🛰️ In Orbit'
+        }
+    };
+
+    /* ══ تطبيق اللغة — مع مزامنة i18n.js ══ */
     function applyCapLang(l){
         capLang = l;
-        try{localStorage.setItem('cc_lang',l);}catch(e){}
-        const D = LANGS[l]||LANGS.ar;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+
+        /* ✅ مزامنة i18n.js ليصبح CCI18N.lang صحيحًا قبل إعادة الرسم */
+        if (window.CCI18N && typeof window.CCI18N.setLang === 'function') {
+            try { window.CCI18N.setLang(l, false); } catch (e) {}
+        }
+
+        const D = LANGS[l] || LANGS.ar;
         document.documentElement.lang = l;
-        document.documentElement.dir = l==='ar'?'rtl':'ltr';
+        document.documentElement.dir  = (l === 'ar') ? 'rtl' : 'ltr';
+
         $('capLangToggle').textContent = D.toggle;
-        $('backLinkText').textContent = D.back;
-        $('pageTitle').textContent = D.title;
-        $('pageSubtitle').textContent = D.subtitle;
-        $('codeBoxTitle').textContent = D.codeBoxTitle;
-        $('openBtnText').textContent = D.openBtn;
-        $('codeHint').textContent = D.codeHint;
-        $('searchInput').placeholder = D.searchPh;
-        $('emptyText').innerHTML = D.emptyText;
-        $('emptyLink').textContent = D.emptyLink;
+        $('backLinkText').textContent  = D.back;
+        $('pageTitle').textContent     = D.title;
+        $('pageSubtitle').textContent  = D.subtitle;
+        $('codeBoxTitle').textContent  = D.codeBoxTitle;
+        $('openBtnText').textContent   = D.openBtn;
+        $('codeHint').textContent      = D.codeHint;
+        $('searchInput').placeholder   = D.searchPh;
+        $('emptyText').innerHTML       = D.emptyText;
+        $('emptyLink').textContent     = D.emptyLink;
+
         const chips = document.querySelectorAll('.filter-chip');
-        if(chips[0]) chips[0].textContent = D.filterAll;
-        if(chips[1]) chips[1].textContent = D.filterArrived;
-        if(chips[2]) chips[2].textContent = D.filterOrbit;
+        if (chips[0]) chips[0].textContent = D.filterAll;
+        if (chips[1]) chips[1].textContent = D.filterArrived;
+        if (chips[2]) chips[2].textContent = D.filterOrbit;
+
+        /* ✅ إعادة رسم البطاقات باللغة الجديدة */
+        loadMine();
     }
 
-    $('capLangToggle').addEventListener('click',()=>applyCapLang(capLang==='ar'?'en':'ar'));
-    applyCapLang(capLang);
+    $('capLangToggle').addEventListener('click', () => applyCapLang(capLang === 'ar' ? 'en' : 'ar'));
 
-    loadMine();
+    /* ══ التشغيل الأول ══ */
+    applyCapLang(capLang);
 })();
 </script>
 </body>
