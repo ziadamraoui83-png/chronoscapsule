@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
     window.COUNTRY_INFO = COUNTRY_INFO;
     CCI18N.applyCountries();
 
-    /* ═══ طبقة التخزين — عند ربط قاعدة البيانات هذا هو المكان الوحيد ═══ */
+    /* ═══ طبقة التخزين ═══ */
     const CapsuleStore = {
         online: !!sb,
         key: 'chronos_capsules_v1',
@@ -148,7 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         readCapsule(dbId) { return this.online ? sb.rpc('read_capsule', { p_id: dbId }) : Promise.resolve(); },
         report(dbId, why) {
-    // Audio Context for Ocean Sounds
+            if (!this.online) return Promise.resolve(false);
+            return sb.rpc('report_capsule', { p_id: dbId, p_reason: why })
+                     .then(r => !r.error).catch(() => false);
+        }
+    };
+
+    /* إعداد الصوت المحيطي والأصوات */
     let audioCtx = null;
     let oceanGain = null;
     let oceanOsc = null;
@@ -161,27 +167,23 @@ document.addEventListener('DOMContentLoaded', () => {
             oceanGain.gain.value = 0.15;
             oceanGain.connect(audioCtx.destination);
 
-            // Create ocean sound (low-frequency sine waves)
             oceanOsc = audioCtx.createOscillator();
             oceanOsc.type = 'sine';
             oceanOsc.frequency.value = 120;
             oceanOsc.connect(oceanGain);
             oceanOsc.start();
 
-            // Add some depth with a sub-bass
             const subOsc = audioCtx.createOscillator();
             subOsc.type = 'sine';
             subOsc.frequency.value = 60;
             subOsc.connect(oceanGain);
             subOsc.start();
 
-            // Check user preference
             const savedMute = localStorage.getItem('cc_audio_muted');
             if (savedMute === 'true') {
                 oceanGain.gain.value = 0;
             }
 
-            // Create mute button
             muteBtn = document.createElement('button');
             muteBtn.className = 'mute-btn';
             muteBtn.title = CCI18N.lang === 'ar' ? 'كتم الصوت المحيطي' : 'Mute Ocean Sound';
@@ -195,7 +197,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('cc_audio_muted', !isMuted);
             });
 
-            // Reduce volume when modal opens
             const modal = document.getElementById('messageModal');
             if (modal) {
                 modal.addEventListener('toggle', (e) => {
@@ -207,22 +208,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initialize audio when page loads
-    document.addEventListener('DOMContentLoaded', initAudio);
+    initAudio();
 
-    // Resume audio context on user interaction
     document.addEventListener('click', () => {
         if (audioCtx && audioCtx.state === 'suspended') {
             audioCtx.resume();
         }
     }, { once: true });
-            if (!this.online) return Promise.resolve(false);
-            return sb.rpc('report_capsule', { p_id: dbId, p_reason: why })
-                     .then(r => !r.error).catch(() => false);
-        }
-    };
 
-    /* الرسائل الابتدائية: 6 عربية + 12 عالمية */
+    /* الرسائل الابتدائية */
     const seedMessages = [
         { id: 1, country: 'DZ', name: 'الجزائر 🇩🇿', text: 'سلام من أرض الشهداء والمحبة إلى جميع سكان الأرض!', author: 'رياض', lat: 28.0339, lng: 1.6596 },
         { id: 2, country: 'SA', name: 'السعودية 🇸🇦', text: 'اللهم احفظ أمتنا ويسر لكل حالم طريقه نحو المستقبل ✨', author: 'سارة', lat: 24.7136, lng: 46.6753 },
@@ -252,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const tooltip = document.getElementById('msgTooltip');
     const labelsContainer = document.getElementById('labels-container');
 
-    /* ─── أدوات واجهة ─── */
+    /* أدوات واجهة */
     function showToast(msg, ico = '🚀') {
         const t = document.getElementById('ccToast');
         t.querySelector('.ico').textContent = ico;
@@ -319,16 +313,15 @@ document.addEventListener('DOMContentLoaded', () => {
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true; controls.dampingFactor = 0.05;
         controls.enableZoom = true; controls.enablePan = false;
-        controls.enableRotate = true;   /* الدوران بالماوس على الحاسوب وبالإصبع على الجوال */
+        controls.enableRotate = true;
 
         controls.addEventListener('start', () => { isZooming = false; hideTooltip(); });
 
-        /* ★★ نظام ملاءمة الكوكب لكل شاشة (جوال/حاسوب/تدوير) ★★ */
         function applyFit() {
             const vFov = THREE.MathUtils.degToRad(camera.fov);
             const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
-            const fov = Math.min(vFov, hFov);          /* في الشاشة العمودية: الأفقية هي الحاكمة */
-            const dist = 5.6 / Math.sin(fov * 0.34);   /* الكوكب ≈ 60% من أصغر بُعد للشاشة */
+            const fov = Math.min(vFov, hFov);
+            const dist = 5.6 / Math.sin(fov * 0.34);
             fitDist = dist;
             controls.minDistance = dist * 0.45;
             controls.maxDistance = dist * 1.5;
@@ -341,7 +334,6 @@ document.addEventListener('DOMContentLoaded', () => {
         else camera.position.set(0, 0, baseDist);
         let prevFit = baseDist;
 
-        /* أزرار التقريب — خطوات نسبية تناسب كل الشاشات */
         document.getElementById('zoomInBtn').addEventListener('click', () => {
             const dist = Math.max(controls.minDistance, camera.position.distanceTo(controls.target) * 0.7);
             const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
@@ -363,7 +355,6 @@ document.addEventListener('DOMContentLoaded', () => {
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
             const f = applyFit();
-            /* حافظ على نسبة الزوم الحالية عند تدوير الجوال أو تغيير الحجم */
             const d = camera.position.distanceTo(controls.target);
             const nd = THREE.MathUtils.clamp(d * (f / prevFit), controls.minDistance, controls.maxDistance);
             camera.position.sub(controls.target).setLength(nd).add(controls.target);
@@ -376,7 +367,6 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(animate);
             const dt = Math.min(clock.getDelta(), 0.05);
 
-            /* إبطاء الدوران عند التقريب: 5% عند أقرب نقطة، 100% عند الأبعد */
             const d = camera.position.distanceTo(controls.target);
             const t = THREE.MathUtils.clamp((d - controls.minDistance) / (controls.maxDistance - controls.minDistance), 0, 1);
             rotTarget = 0.05 + 0.95 * (t * t * (3 - 2 * t));
@@ -411,7 +401,6 @@ document.addEventListener('DOMContentLoaded', () => {
         animate();
     }
 
-    /* شهاب عابر كل 5-12 ثانية */
     function spawnMeteor() {
         if (document.visibilityState !== 'visible') return;
         const R = () => THREE.MathUtils.randFloatSpread(1);
@@ -434,7 +423,6 @@ document.addEventListener('DOMContentLoaded', () => {
         })();
     }
 
-    /* تحويل إحداثيات خطوط الطول والعرض إلى 3D */
     function get3DPos(lat, lng, radius = 5.05) {
         const phi = (90 - lat) * (Math.PI / 180);
         const theta = (lng + 180) * (Math.PI / 180);
@@ -445,7 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
-    /* إضافة كبسولة مضيئة + هالة + تسمية الدولة */
     function createMessageMarker(msg) {
         const localPos = get3DPos(msg.lat, msg.lng);
         const isG = msg.isGolden;
@@ -509,10 +496,8 @@ document.addEventListener('DOMContentLoaded', () => {
         labelElements.push({ mesh: markerMesh, element: labelDiv, localPos: localPos, msg: msg });
     }
 
-    /* إخفاء التولتيب بالنقر في أي مكان فارغ (مستمع واحد للصفحة كلها) */
     document.addEventListener('click', () => hideTooltip());
 
-    /* تحديث مواقع التسميات + عتبة ظهور نسبية لحجم الشاشة */
     function updateLabelsPosition() {
         const cameraDistance = camera.position.distanceTo(controls.target);
         const showLabels = cameraDistance < fitDist * 0.62;
@@ -548,7 +533,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /* كبسولة إطلاق متوافقة مع Three.js r128، بلون الشعور */
     function buildCapsuleMesh(mood) {
         const c = MOOD_COLORS[mood] || 0x60a5fa;
         const g = new THREE.Group();
@@ -574,7 +558,6 @@ document.addEventListener('DOMContentLoaded', () => {
         capsule.lookAt(endPos);
         scene.add(capsule);
 
-        /* ذيل توهج يتلاشى خلف الكبسولة */
         const TRAIL_N = 14;
         const trailPositions = new Float32Array(TRAIL_N * 3);
         for (let i = 0; i < TRAIL_N; i++) {
@@ -644,7 +627,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initThreeJS();
 
-    /* جلب الكبسولات الهابطة من القاعدة (أو المحلية في وضع offline) */
     CapsuleStore.load().then(list => {
         list.forEach(m => { activeMessages.push(m); createMessageMarker(m); });
         updateCounter();
@@ -730,37 +712,104 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     let lastLaunchTime = 0;
-    const LAUNCH_COOLDOWN = 10000; // 10 ثوانٍ بين كل إطلاق
+    const LAUNCH_COOLDOWN = 10000;
 
     messageForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         const country = document.getElementById('userCountry').value;
         if (!country) { showToast(CCI18N.t('pick_warn'), '⚠️'); return; }
-        
+
         const text = messageText.value.trim();
         if (!text) {
             showToast(CCI18N.t('msg_ph') || 'اكتب نص الرسالة أولاً', '⚠️');
             return;
         }
 
-        // Rate limit على المستوى العميل
         const now = Date.now();
         if (now - lastLaunchTime < LAUNCH_COOLDOWN) {
             const rem = Math.ceil((LAUNCH_COOLDOWN - (now - lastLaunchTime)) / 1000);
-            showToast(`انتظر ${rem} ثوانٍ قبل إطلاق كبسولة أخرى ⏳`, '⏱️');
+            showToast(`⏳ انتظر ${rem} ثوانٍ قبل إطلاق كبسولة أخرى`, '⏱️');
             return;
         }
 
-        const author = document.getElementById('sendAsAnonymous')?.checked
-            ? CCI18N.t('anon_name')
+        const author = document.getElementById('sendAsAnonymous')?.checked 
+            ? CCI18N.t('anon_name') 
             : (document.getElementById('authorName').value.trim() || CCI18N.t('anon_name'));
         const mood = (document.querySelector('input[name="mood"]:checked') || {}).value || 'hope';
         const isPrivate = (document.querySelector('input[name="capsuleMode"]:checked') || {}).value === 'private';
+
+        let arrivalISO = null;
+        if (isPrivate) {
+            if (chosenDays === 'custom') {
+                if (!arrivalDate.value) { showToast(CCI18N.t('pick_date'), '⚠️'); return; }
+                arrivalISO = new Date(arrivalDate.value + 'T12:00:00').toISOString();
+            } else {
+                arrivalISO = new Date(Date.now() + chosenDays * 864e5).toISOString();
+            }
+        }
+
+        const btn = messageForm.querySelector('.btn-submit');
+        const original = btn.innerHTML;
+        btn.disabled = true; btn.textContent = CCI18N.t('preparing');
+
+        try {
+            const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
+            lastLaunchTime = Date.now();
+            launchMessage(country, text, author, mood);
+            showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
+            messageForm.reset();
+            resetFormUI();
+            messageModal.classList.remove('active');
+        } catch (err) {
+            showToast(err.message, '⚠️');
+        } finally {
+            btn.disabled = false; btn.innerHTML = original;
+        }
+    });
+
+    window.addEventListener('cc:lang', () => {
+        labelElements.forEach(it => {
+            it.element.innerHTML = `<span>📍</span> ${CCI18N.countryLabel(it.msg.country)}`;
+        });
+    });
+
+    const logo = document.querySelector('.cc-logo');
+    if (logo) {
+        if (REDUCE) { try { logo.pauseAnimations(); } catch (e) {} }
+        else {
+            logo.classList.add('cc-anim');
+            requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add('live')));
+        }
+    }
+
+    /* ═══ كبسولة من الأعماق ═══ */
+    const deepBtn   = document.getElementById('deepBtn');
+    const deepModal = document.getElementById('deepModal');
+    const deepText  = document.getElementById('deepText');
+    const deepMeta  = document.getElementById('deepMeta');
+    let lastDeepId  = null;
+
+    async function openDeep() {
+        if (!sb) { showToast(CCI18N.lang==='ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️'); return; }
+        const { data, error } = await sb.rpc('get_deep_capsule', { p_exclude_id: lastDeepId });
+        if (error) { showToast('🌊 ' + error.message, '⚠️'); return; }
+        if (!data || !data.length) {
+            deepText.textContent = CCI18N.t('deep_empty');
+            deepText.classList.add('deep-empty');
+            deepMeta.innerHTML = '';
+            lastDeepId = null;
+        } else {
+            const r = data[0];
+            lastDeepId = r.o_id;
+            deepText.classList.remove('deep-empty');
+            deepText.textContent = '“' + r.o_text + '”';
+            const when = new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
+                { day:'numeric', month:'long', year:'numeric' }).format(new Date(r.o_created));
+            
             const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
             const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(r.o_text)}&op=translate`;
             const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}" style="margin-inline-start:0; transform:scale(1.1)">🔤</a>`;
 
-            // Edge Function Translation Button
             const edgeTranslateBtn = `<button class="action-btn translate-btn" data-id="${r.o_id}" title="${CCI18N.lang === 'ar' ? 'ترجمة متقدمة' : 'Advanced Translation'}" style="margin-inline-start:0; transform:scale(1.1)">🌐</button>`;
 
             deepMeta.innerHTML =
@@ -799,87 +848,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 });
             }
-
-        let arrivalISO = null;
-        if (isPrivate) {
-            if (chosenDays === 'custom') {
-                if (!arrivalDate.value) { showToast(CCI18N.t('pick_date'), '⚠️'); return; }
-                arrivalISO = new Date(arrivalDate.value + 'T12:00:00').toISOString();
-            } else {
-                arrivalISO = new Date(Date.now() + chosenDays * 864e5).toISOString();
-            }
-        }
-
-        const btn = messageForm.querySelector('.btn-submit');
-        const original = btn.innerHTML;
-        btn.disabled = true; btn.textContent = CCI18N.t('preparing');
-
-        try {
-            const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
-            lastLaunchTime = Date.now();
-            launchMessage(country, text, author, mood);
-            showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
-            messageForm.reset();
-            resetFormUI();
-            messageModal.classList.remove('active');
-        } catch (err) {
-            showToast(err.message, '⚠️');
-        } finally {
-            btn.disabled = false; btn.innerHTML = original;
-        }
-    });
-
-    /* عند تبديل اللغة تُعاد تسمية كل الدول على الكوكب فورًا */
-    window.addEventListener('cc:lang', () => {
-        labelElements.forEach(it => {
-            it.element.innerHTML = `<span>📍</span> ${CCI18N.countryLabel(it.msg.country)}`;
-        });
-    });
-
-    /* تفعيل حركة رسم الشعار */
-    const logo = document.querySelector('.cc-logo');
-    if (logo) {
-        if (REDUCE) { try { logo.pauseAnimations(); } catch (e) {} }
-        else {
-            logo.classList.add('cc-anim');
-            requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add('live')));
-        }
-    }
-        /* ═══ كبسولة من الأعماق ═══ */
-    const deepBtn   = document.getElementById('deepBtn');
-    const deepModal = document.getElementById('deepModal');
-    const deepText  = document.getElementById('deepText');
-    const deepMeta  = document.getElementById('deepMeta');
-    let lastDeepId  = null;
-
-    async function openDeep() {
-        if (!sb) { showToast(CCI18N.lang==='ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️'); return; }
-        const { data, error } = await sb.rpc('get_deep_capsule', { p_exclude_id: lastDeepId });
-        if (error) { showToast('🌊 ' + error.message, '⚠️'); return; }
-        if (!data || !data.length) {
-            deepText.textContent = CCI18N.t('deep_empty');
-            deepText.classList.add('deep-empty');
-            deepMeta.innerHTML = '';
-            lastDeepId = null;
-        } else {
-            const r = data[0];
-            lastDeepId = r.o_id;
-            deepText.classList.remove('deep-empty');
-            deepText.textContent = '“' + r.o_text + '”';
-            const when = new Intl.DateTimeFormat(CCI18N.lang==='ar'?'ar-DZ':'en-GB',
-                { day:'numeric', month:'long', year:'numeric' }).format(new Date(r.o_created));
-            
-            const tLang = CCI18N.lang === 'ar' ? 'ar' : 'en';
-            const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(r.o_text)}&op=translate`;
-            const translateBtn = `<a href="${transUrl}" target="_blank" class="action-btn translate-btn" title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}" style="margin-inline-start:0; transform:scale(1.1)">🔤</a>`;
-
-            deepMeta.innerHTML =
-                `<span>${CCI18N.countryLabel(r.o_country)}</span>` +
-                `<span>${(CCI18N.lang==='ar'?'بقلم':'By')}: <b>${(r.o_author||'—').replace(/</g,'&lt;')}</b></span>` +
-                `<span>${when}</span>` +
-                `<span>👁️ <b>${r.o_reads ?? 0}</b></span>` + 
-                `${translateBtn}`;
-            /* كل غَوصة تُحسب قراءة */
             sb.rpc('read_capsule', { p_id: r.o_id });
         }
         deepModal.classList.add('active');
