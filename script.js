@@ -865,7 +865,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateLabelsPosition() {
         const cameraDistance = camera.position.distanceTo(controls.target);
-        const showLabels = cameraDistance < fitDist * 0.62;
+        /* ✅ عرض الأسماء عند التقريب المعتدل */
+        const showLabels = cameraDistance < fitDist * 0.95;
 
         labelElements.forEach(item => {
             const worldPos = new THREE.Vector3();
