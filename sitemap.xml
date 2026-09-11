@@ -35,6 +35,28 @@
         <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/about.html"/>
     </url>
 
+    <!-- ═══ سياسة الخصوصية ═══ -->
+    <url>
+        <loc>https://chronoscapsule.vercel.app/privacy.html</loc>
+        <lastmod>2026-09-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/privacy.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/privacy.html?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/privacy.html"/>
+    </url>
+
+    <!-- ═══ شروط الاستخدام ═══ -->
+    <url>
+        <loc>https://chronoscapsule.vercel.app/terms.html</loc>
+        <lastmod>2026-09-11</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/terms.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/terms.html?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/terms.html"/>
+    </url>
+
     <!-- ═══ الأرشيف حسب المشاعر ═══ -->
     <url>
         <loc>https://chronoscapsule.vercel.app/archive.html?mood=hope</loc>
