@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+  <defs>
+    <linearGradient id="capsuleGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FAFCFF"/>
+      <stop offset="0.5" stop-color="#F4F8FF"/>
+      <stop offset="1" stop-color="#96A2BE"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3AE1FF"/>
+      <stop offset="1" stop-color="#D355FF"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3AE1FF" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#3AE1FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="192" height="192" rx="42" fill="#010103"/>
+  <circle cx="96" cy="96" r="80" fill="url(#glowGrad)"/>
+  <g transform="translate(96,96)">
+    <ellipse cx="0" cy="0" rx="72" ry="24" fill="none" stroke="url(#ringGrad)" stroke-width="3" transform="rotate(-22)"/>
+    <path d="M0,-58 C-18,-58 -26,-44 -26,-26 C-26,0 -10,10 -10,26 C-10,44 -18,58 0,58 C18,58 26,44 26,26 C26,10 10,0 10,-26 C10,-44 18,-58 0,-58 Z"
+          fill="none" stroke="url(#capsuleGrad)" stroke-width="5" stroke-linejoin="round"/>
+    <circle cx="0" cy="0" r="6" fill="#3AE1FF"/>
+    <circle cx="0" cy="0" r="12" fill="none" stroke="#3AE1FF" stroke-width="2" opacity="0.4"/>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="capsuleGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FAFCFF"/>
+      <stop offset="0.5" stop-color="#F4F8FF"/>
+      <stop offset="1" stop-color="#96A2BE"/>
+    </linearGradient>
+    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3AE1FF"/>
+      <stop offset="1" stop-color="#D355FF"/>
+    </linearGradient>
+    <radialGradient id="glowGrad" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#3AE1FF" stop-opacity="0.4"/>
+      <stop offset="1" stop-color="#3AE1FF" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#010103"/>
+  <circle cx="256" cy="256" r="213" fill="url(#glowGrad)"/>
+  <g transform="translate(256,256)">
+    <ellipse cx="0" cy="0" rx="192" ry="64" fill="none" stroke="url(#ringGrad)" stroke-width="8" transform="rotate(-22)"/>
+    <path d="M0,-155 C-48,-155 -69,-117 -69,-69 C-69,0 -27,27 -27,69 C-27,117 -48,155 0,155 C48,155 69,117 69,69 C69,27 27,0 27,-69 C27,-117 48,-155 0,-155 Z"
+          fill="none" stroke="url(#capsuleGrad)" stroke-width="13" stroke-linejoin="round"/>
+    <circle cx="0" cy="0" r="16" fill="#3AE1FF"/>
+    <circle cx="0" cy="0" r="32" fill="none" stroke="#3AE1FF" stroke-width="5" opacity="0.4"/>
+  </g>
+</svg>

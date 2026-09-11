@@ -23,6 +23,13 @@
     <meta name="keywords" content="كبسولة الزمن, رسالة للمستقبل, chronos capsule, time capsule, رسالة سرية">
     <meta name="author" content="Chronos Capsule">
     <meta name="theme-color" content="#010103">
+        <!-- ✅ PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Chronos">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <meta name="mobile-web-app-capable" content="yes">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
@@ -296,5 +303,70 @@
 window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
 setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
 </script>
+    <!-- ✅ PWA Service Worker + Install Button -->
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then((reg) => console.log('✅ SW registered:', reg.scope))
+                .catch((err) => console.log('❌ SW error:', err));
+        });
+    }
+
+    /* ═══ زر "ثبّت التطبيق" ═══ */
+    let deferredPrompt = null;
+    const installBtn = document.createElement('button');
+    installBtn.id = 'ccInstallBtn';
+    installBtn.type = 'button';
+    installBtn.innerHTML = '📱 <span>ثبّت التطبيق</span>';
+    installBtn.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%) translateY(120%);
+        background: linear-gradient(135deg, #6d28d9, #2563eb);
+        color: #fff;
+        border: none;
+        border-radius: 999px;
+        padding: 12px 22px;
+        font-family: 'Tajawal', sans-serif;
+        font-size: 14px;
+        font-weight: 700;
+        cursor: pointer;
+        z-index: 998;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 8px 32px rgba(99,102,241,.4);
+        transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+        backdrop-filter: blur(10px);
+    `;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.body.appendChild(installBtn);
+        setTimeout(() => {
+            installBtn.style.transform = 'translateX(-50%) translateY(0)';
+        }, 1500);
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (typeof gtag === 'function') {
+            gtag('event', 'pwa_install_prompt', { outcome });
+        }
+        deferredPrompt = null;
+        installBtn.style.transform = 'translateX(-50%) translateY(120%)';
+        setTimeout(() => installBtn.remove(), 500);
+    });
+
+    window.addEventListener('appinstalled', () => {
+        if (typeof gtag === 'function') gtag('event', 'pwa_installed');
+        installBtn.remove();
+    });
+    </script>
 </body>
 </html>
