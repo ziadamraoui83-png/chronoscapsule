@@ -3,7 +3,7 @@
    يحتفظ فقط بالملفات المحلية — لا يعترض الطلبات الخارجية
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.0.9';
+const CACHE_VERSION = 'cc-v1.0.14';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
