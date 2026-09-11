@@ -17,8 +17,6 @@
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
         body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
         a,button{cursor:pointer}
-
-        /* ══ خلفية الفضاء ══ */
         body::before{content:'';position:fixed;inset:0;
             background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
                         radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
@@ -30,8 +28,6 @@
                 radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
                 radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
             z-index:0;pointer-events:none}
-
-        /* ══ الترويسة ══ */
         .page-header{position:sticky;top:0;z-index:50;
             background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
             border-bottom:1px solid rgba(255,255,255,.07);
@@ -48,11 +44,7 @@
         .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
             border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
         .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
-
-        /* ══ الصفحة ══ */
         .page{max-width:760px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
-
-        /* ══ البطل ══ */
         .hero{text-align:center;padding:20px 0 40px;position:relative}
         .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);
             width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);
@@ -60,10 +52,7 @@
         .hero-emoji{font-size:56px;margin-bottom:18px;
             filter:drop-shadow(0 0 20px rgba(139,92,246,.4));
             animation:floatEmoji 4s ease-in-out infinite}
-        @keyframes floatEmoji{
-            0%,100%{transform:translateY(0)}
-            50%{transform:translateY(-8px)}
-        }
+        @keyframes floatEmoji{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         .hero-title{font-size:2.2rem;font-weight:900;margin-bottom:12px;line-height:1.2;
             background:linear-gradient(135deg,#a78bfa,#3b82f6,#3AE1FF);
             -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -72,11 +61,8 @@
             display:inline-flex;align-items:center;gap:6px;
             padding:5px 12px;background:rgba(139,92,246,.08);
             border:1px solid rgba(139,92,246,.2);border-radius:999px}
-
-        /* ══ فهرس المحتويات ══ */
         .toc{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);
-            border-radius:18px;padding:22px 26px;margin-bottom:24px;
-            backdrop-filter:blur(10px)}
+            border-radius:18px;padding:22px 26px;margin-bottom:24px;backdrop-filter:blur(10px)}
         .toc-title{font-size:13px;font-weight:900;color:#a78bfa;
             letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;
             display:flex;align-items:center;gap:8px}
@@ -87,8 +73,6 @@
             transition:transform .3s ease;display:inline-block}
         .toc-list li a:hover{color:#fff}
         .toc-list li a:hover::before{transform:translateX(-4px)}
-
-        /* ══ البطاقات ══ */
         .card{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);
             border-radius:20px;padding:28px;margin-bottom:20px;
             backdrop-filter:blur(10px);transition:border-color .3s ease}
@@ -108,21 +92,13 @@
         .card-text ul li{padding:8px 0 8px 26px;position:relative;color:#cbd5e1;font-size:.93rem}
         .card-text ul li::before{content:'✓';position:absolute;left:0;color:#34d399;
             font-weight:900;font-size:14px}
-
-        /* ══ تنبيهات ══ */
         .alert{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
             border-radius:14px;padding:16px 20px;margin:16px 0;
             display:flex;gap:12px;align-items:flex-start}
         .alert-icon{font-size:20px;flex:none}
         .alert-text{color:#fbbf24;font-size:13.5px;line-height:1.7}
-
-        .alert-danger{background:rgba(239,68,68,.08);border-color:rgba(239,68,68,.3)}
-        .alert-danger .alert-text{color:#fca5a5}
-
-        .alert-success{background:rgba(52,211,153,.08);border-color:rgba(52,211,153,.25)}
-        .alert-success .alert-text{color:#6ee7b7}
-
-        /* ══ التواصل ══ */
+        .alert-info{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.25)}
+        .alert-info .alert-text{color:#7dd3fc}
         .contact-box{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(59,130,246,.08));
             border:1px solid rgba(139,92,246,.3);border-radius:20px;
             padding:28px;text-align:center;margin-top:26px}
@@ -134,15 +110,11 @@
             font-size:13.5px;font-weight:700;transition:all .3s ease;
             box-shadow:0 8px 24px rgba(99,102,241,.3)}
         .contact-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(99,102,241,.5)}
-
-        /* ══ التذييل ══ */
         .page-footer{text-align:center;padding:30px 20px;color:#64748b;font-size:12.5px;
             border-top:1px solid rgba(255,255,255,.06);margin-top:40px}
         .footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:14px}
         .footer-links a{color:#a78bfa;text-decoration:none;transition:color .3s}
         .footer-links a:hover{color:#fff}
-
-        /* ══ جوال ══ */
         @media(max-width:600px){
             .page-header{padding:12px 16px}
             .page{padding:24px 16px 60px}
@@ -154,7 +126,6 @@
             .toc{padding:18px 20px}
             .contact-box{padding:22px 18px}
         }
-
         @media (prefers-reduced-motion: reduce) {
             * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
             .hero-emoji { animation: none; }
@@ -183,7 +154,7 @@
         <div class="hero-emoji">📜</div>
         <h1 class="hero-title" id="pageTitle">شروط الاستخدام</h1>
         <p class="hero-subtitle" id="pageSubtitle">
-            باستخدامك موقع Chronos Capsule، فأنت توافق على هذه الشروط. اقرأها بعناية.
+            شروط بسيطة وعادلة، صُمّمت لحماية تجربتك وتجربة الآخرين على المنصة.
         </p>
         <div class="hero-date">
             <span>📅</span>
@@ -197,13 +168,13 @@
             <span id="tocTitle">فهرس المحتويات</span>
         </div>
         <ul class="toc-list">
-            <li><a href="#t1" id="toc1">قبول الشروط</a></li>
+            <li><a href="#t1" id="toc1">مرحبًا بك</a></li>
             <li><a href="#t2" id="toc2">من يحق له الاستخدام</a></li>
-            <li><a href="#t3" id="toc3">قواعد المحتوى</a></li>
-            <li><a href="#t4" id="toc4">ما يُمنع نشره</a></li>
-            <li><a href="#t5" id="toc5">الملكية الفكرية</a></li>
-            <li><a href="#t6" id="toc6">إخلاء المسؤولية</a></li>
-            <li><a href="#t7" id="toc7">إنهاء الخدمة</a></li>
+            <li><a href="#t3" id="toc3">قواعد المجتمع</a></li>
+            <li><a href="#t4" id="toc4">ما لا نسمح به</a></li>
+            <li><a href="#t5" id="toc5">محتواك يبقى ملكك</a></li>
+            <li><a href="#t6" id="toc6">حدود المسؤولية</a></li>
+            <li><a href="#t7" id="toc7">إدارة المنصة</a></li>
             <li><a href="#t8" id="toc8">القانون المطبّق</a></li>
             <li><a href="#t9" id="toc9">تواصل معنا</a></li>
         </ul>
@@ -211,12 +182,12 @@
 
     <div class="card" id="t1">
         <h2 class="card-title">
-            <span class="card-title-icon">✅</span>
-            <span id="t1Title">1. قبول الشروط</span>
+            <span class="card-title-icon">👋</span>
+            <span id="t1Title">1. مرحبًا بك</span>
         </h2>
         <div class="card-text" id="t1Text">
-            <p>باستخدامك موقع <strong>Chronos Capsule</strong> (المشار إليه بـ "الموقع" أو "نحن" أو "الخدمة")، فإنك توافق على الالتزام بهذه الشروط.</p>
-            <p>إن لم توافق على أي جزء من هذه الشروط، يُرجى <strong>عدم استخدام الموقع</strong>.</p>
+            <p>أهلًا بك في <strong>Chronos Capsule</strong> — منصة عالمية تتيح لك إرسال رسائل إلى المستقبل.</p>
+            <p>باستخدامك للموقع، فأنت توافق على هذه الشروط البسيطة. إن لم توافق على أي جزء منها، يُفضّل عدم استخدام المنصة.</p>
         </div>
     </div>
 
@@ -226,55 +197,54 @@
             <span id="t2Title">2. من يحق له الاستخدام</span>
         </h2>
         <div class="card-text" id="t2Text">
-            <p>يُسمح باستخدام الموقع لكل من:</p>
+            <p>المنصة مفتوحة للجميع حول العالم، بشرط:</p>
             <ul>
-                <li>عمره <strong>13 سنة أو أكثر</strong>.</li>
-                <li>يستخدم الموقع لأغراض <strong>شخصية، غير تجارية</strong>.</li>
-                <li>يلتزم بهذه الشروط وجميع القوانين المطبّقة.</li>
+                <li>أن يكون عمرك <strong>13 سنة أو أكثر</strong>.</li>
+                <li>أن تستخدم المنصة لأغراض <strong>شخصية</strong>.</li>
+                <li>أن تحترم هذه الشروط والقوانين المحلية في بلدك.</li>
             </ul>
-            <p>للمستخدمين تحت 18 عامًا، يُفضّل الحصول على موافقة ولي الأمر.</p>
+            <p>نرحّب بمستخدمينا من كل دولة — من الجزائر إلى اليابان. المنصة عالمية بطبيعتها.</p>
         </div>
     </div>
 
     <div class="card" id="t3">
         <h2 class="card-title">
-            <span class="card-title-icon">💬</span>
-            <span id="t3Title">3. قواعد المحتوى</span>
+            <span class="card-title-icon">🤝</span>
+            <span id="t3Title">3. قواعد المجتمع</span>
         </h2>
         <div class="card-text" id="t3Text">
-            <p>أنت المسؤول الكامل عن المحتوى الذي تنشره في الموقع.</p>
-            <p>باستخدامك الموقع، أنت توافق على:</p>
+            <p>نؤمن أن الكلمات الجميلة تستحق مساحة نظيفة. لذلك، نسألك أن:</p>
             <ul>
-                <li>عدم نشر محتوى مخالف للقوانين أو مسيء.</li>
-                <li>احترام جميع المستخدمين والزوار.</li>
-                <li>عدم انتحال شخصية الآخرين.</li>
-                <li>عدم نشر رسائل تجارية أو إعلانية دون إذن.</li>
-                <li>تحمّل مسؤولية دقة المعلومات التي تشاركها.</li>
+                <li>تكتب رسائلك بنية طيبة واحترام.</li>
+                <li>تحترم الآخرين وتجاربهم.</li>
+                <li>تتجنّب نشر معلومات شخصية حساسة (كلمات مرور، أرقام بطاقات بنكية).</li>
+                <li>تتجنّب الرسائل التجارية أو الدعائية.</li>
+                <li>تتحمّل مسؤولية ما تكتبه.</li>
             </ul>
+            <p>التزامك بهذه القواعد يجعل المنصة مكانًا أفضل للجميع.</p>
         </div>
     </div>
 
     <div class="card" id="t4">
         <h2 class="card-title">
             <span class="card-title-icon">🚫</span>
-            <span id="t4Title">4. ما يُمنع نشره</span>
+            <span id="t4Title">4. ما لا نسمح به</span>
         </h2>
         <div class="card-text" id="t4Text">
-            <p>يُمنع منعًا باتًا نشر المحتوى التالي:</p>
+            <p>حفاظًا على سلامة المجتمع، لا نسمح بـ:</p>
             <ul>
-                <li>❌ <strong>الشتائم</strong> أو الألفاظ النابية.</li>
-                <li>❌ <strong>التحريض</strong> على الكراهية أو العنف.</li>
-                <li>❌ <strong>المحتوى الجنسي</strong> أو الإباحي.</li>
-                <li>❌ <strong>الانتحال</strong> أو سرقة الهوية.</li>
-                <li>❌ <strong>بيانات شخصية</strong> للآخرين (أرقام هواتف، عناوين، إلخ).</li>
-                <li>❌ <strong>الروابط الضارة</strong> أو الفيروسات.</li>
-                <li>❌ <strong>الإعلانات</strong> غير المرخّصة.</li>
-                <li>❌ <strong>التشهير</strong> بالأشخاص أو المؤسسات.</li>
-                <li>❌ <strong>المحتوى المخالف</strong> للقوانين الجزائرية أو الدولية.</li>
+                <li>الشتائم أو الألفاظ النابية.</li>
+                <li>خطاب الكراهية أو التحريض على العنف.</li>
+                <li>المحتوى الجنسي أو الإباحي.</li>
+                <li>انتحال شخصية الآخرين.</li>
+                <li>نشر بيانات شخصية لأشخاص آخرين.</li>
+                <li>الروابط الضارة أو الفيروسات.</li>
+                <li>الإعلانات أو الترويج التجاري.</li>
+                <li>المحتوى الذي يخالف القوانين الدولية.</li>
             </ul>
-            <div class="alert alert-danger">
-                <span class="alert-icon">⚠️</span>
-                <div class="alert-text" id="alertDanger">المخالفة قد تؤدي إلى حذف المحتوى، حظر الجهاز، أو اتخاذ إجراءات قانونية.</div>
+            <div class="alert alert-info">
+                <span class="alert-icon">💡</span>
+                <div class="alert-text" id="alertInfo">نستخدم فلترًا تلقائيًا لبعض الكلمات، وقد تُحجب رسالتك إن خالفت هذه القواعد. هذا لحماية الجميع، لا لتقييد حرية التعبير.</div>
             </div>
         </div>
     </div>
@@ -282,72 +252,70 @@
     <div class="card" id="t5">
         <h2 class="card-title">
             <span class="card-title-icon">©️</span>
-            <span id="t5Title">5. الملكية الفكرية</span>
+            <span id="t5Title">5. محتواك يبقى ملكك</span>
         </h2>
         <div class="card-text" id="t5Text">
-            <p><strong>محتواك يبقى ملكك:</strong></p>
+            <p><strong>كل كبسولة تكتبها تبقى ملكك الشخصي:</strong></p>
             <ul>
-                <li>أنت تحتفظ بحقوق ملكية كبسولاتك.</li>
+                <li>لا ندّعي أي حقوق على محتواك.</li>
                 <li>يمكنك حذف كبسولاتك في أي وقت.</li>
-                <li>لا نستخدم محتواك لأغراض تجارية.</li>
+                <li>لا نستخدم محتواك لأي غرض تجاري.</li>
+                <li>لا نشاركه مع أي طرف ثالث.</li>
             </ul>
-            <p><strong>الموقع نفسه محفوظ:</strong></p>
+            <p><strong>أما المنصة نفسها:</strong></p>
             <ul>
-                <li>الشعار والتصميم والكود = ملك لـ Chronos Capsule.</li>
-                <li>لا يُسمح بنسخ الموقع دون إذن.</li>
-                <li>يُسمح بمشاركة الروابط فقط.</li>
+                <li>الشعار، التصميم، والكود = ملك لـ Chronos Capsule.</li>
+                <li>نرحّب بمشاركة روابط الموقع بحرية.</li>
             </ul>
         </div>
     </div>
 
     <div class="card" id="t6">
         <h2 class="card-title">
-            <span class="card-title-icon">⚖️</span>
-            <span id="t6Title">6. إخلاء المسؤولية</span>
+            <span class="card-title-icon">🤲</span>
+            <span id="t6Title">6. حدود المسؤولية</span>
         </h2>
         <div class="card-text" id="t6Text">
-            <p>الموقع يُقدَّم <strong>"كما هو"</strong> دون أي ضمانات.</p>
-            <p>لا نتحمّل أي مسؤولية عن:</p>
+            <p>نبذل قصارى جهدنا لتشغيل المنصة بشكل موثوق، لكن:</p>
             <ul>
-                <li>انقطاع الخدمة أو فقدان البيانات.</li>
-                <li>أخطاء تقنية أو فقدان مؤقت للوصول.</li>
-                <li>المحتوى المنشور من المستخدمين.</li>
-                <li>استخدام الآخرين لمعلوماتك العامة.</li>
-                <li>أي أضرار مباشرة أو غير مباشرة.</li>
+                <li>قد تحدث انقطاعات تقنية من وقت لآخر.</li>
+                <li>لا نضمن عمل الخدمة بشكل دائم دون انقطاع.</li>
+                <li>لسنا مسؤولين عن محتوى ينشره المستخدمون الآخرون.</li>
             </ul>
-            <div class="alert">
-                <span class="alert-icon">💡</span>
-                <div class="alert-text" id="alert2">ننصحك بالاحتفاظ بنسخة من كبسولاتك المهمة — لأننا لا نضمن استمرارية الخدمة إلى الأبد.</div>
+            <div class="alert alert-info">
+                <span class="alert-icon">💾</span>
+                <div class="alert-text" id="alertInfo2">نصيحة ودّية: احتفظ بنسخة من كبسولاتك المهمة (لقطة، ملف نصي) — كإجراء احتياطي محبّب لأي خدمة رقمية.</div>
             </div>
         </div>
     </div>
 
     <div class="card" id="t7">
         <h2 class="card-title">
-            <span class="card-title-icon">🔒</span>
-            <span id="t7Title">7. إنهاء الخدمة</span>
+            <span class="card-title-icon">🛠️</span>
+            <span id="t7Title">7. إدارة المنصة</span>
         </h2>
         <div class="card-text" id="t7Text">
-            <p>نحتفظ بالحق في:</p>
+            <p>لضمان تجربة آمنة للجميع، قد نقوم بـ:</p>
             <ul>
-                <li>حذف أي محتوى يخالف هذه الشروط.</li>
-                <li>حظر المستخدمين المخالفين.</li>
-                <li>إيقاف الخدمة مؤقتًا أو نهائيًا.</li>
-                <li>تعديل أو إزالة أي ميزة.</li>
+                <li>حذف المحتوى المخالف للشروط.</li>
+                <li>حجب المستخدمين الذين يخالفون القواعد بشكل متكرر.</li>
+                <li>تعديل أو تطوير الميزات.</li>
+                <li>إيقاف الخدمة بشكل مؤقت للصيانة.</li>
             </ul>
-            <p>سنبلّغ المستخدمين بأي تغييرات جوهرية عند الإمكان.</p>
+            <p>سنبذل جهدنا لإبلاغ المستخدمين بأي تغييرات مهمة مسبقًا.</p>
         </div>
     </div>
 
     <div class="card" id="t8">
         <h2 class="card-title">
-            <span class="card-title-icon">🇩🇿</span>
+            <span class="card-title-icon">🌍</span>
             <span id="t8Title">8. القانون المطبّق</span>
         </h2>
         <div class="card-text" id="t8Text">
-            <p>هذه الشروط تخضع للقوانين <strong>الجزائرية</strong>.</p>
-            <p>أي نزاع يُحلّ وديًا أولاً. إن لم يُحل، يكون الاختصاص للمحاكم الجزائرية.</p>
-            <p>للمستخدمين من دول أخرى، تنطبق قوانينهم المحلية أيضًا بشكل متوازٍ.</p>
+            <p>المنصة <strong>عالمية</strong> — نرحّب بمستخدمين من كل الدول.</p>
+            <p>نعمل وفق <strong>المعايير الدولية</strong> لحماية البيانات والخصوصية (مثل GDPR للمستخدمين الأوروبيين).</p>
+            <p>أي نزاع يُحلّ وديًا أولاً. إن تعذّر ذلك، يُرجى التواصل معنا لدراسة الحل المناسب.</p>
+            <p>باستخدامك المنصة، فأنت توافق أيضًا على احترام قوانين بلدك المحلية.</p>
         </div>
     </div>
 
@@ -357,7 +325,7 @@
             <span id="t9Title">9. تواصل معنا</span>
         </h2>
         <div class="card-text" id="t9Text">
-            <p>لأي سؤال حول شروط الاستخدام، تواصل معنا:</p>
+            <p>لأي سؤال أو استفسار، نحن هنا:</p>
         </div>
     </div>
 
@@ -366,7 +334,7 @@
         <p class="contact-desc" id="contactDesc">
             نحن هنا للإجابة على أي استفسار حول الشروط.
         </p>
-        <a href="mailto:ziadamraoui83@gmail.com" class="contact-btn">
+        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ziadamraoui83@gmail.com" target="_blank" rel="noopener" class="contact-btn">
             <span>✉️</span>
             <span>ziadamraoui83@gmail.com</span>
         </a>
@@ -379,7 +347,7 @@
             <a href="privacy.html" id="footPrivacy">سياسة الخصوصية</a>
             <a href="archive.html" id="footArchive">الأرشيف</a>
         </div>
-        <div>© 2026 Chronos Capsule — <span id="footMade">صُنع بـ ❤️ في الجزائر</span></div>
+        <div>© 2026 Chronos Capsule — <span id="footMade">منصة عالمية 🌍</span></div>
     </footer>
 
 </main>
@@ -398,110 +366,224 @@
         ar: {
             toggle: 'EN', back: 'العودة للكوكب',
             title: 'شروط الاستخدام',
-            subtitle: 'باستخدامك موقع Chronos Capsule، فأنت توافق على هذه الشروط. اقرأها بعناية.',
+            subtitle: 'شروط بسيطة وعادلة، صُمّمت لحماية تجربتك وتجربة الآخرين على المنصة.',
             lastUpdated: 'آخر تحديث: 11 سبتمبر 2026',
             tocTitle: 'فهرس المحتويات',
-            toc1: 'قبول الشروط', toc2: 'من يحق له الاستخدام', toc3: 'قواعد المحتوى',
-            toc4: 'ما يُمنع نشره', toc5: 'الملكية الفكرية', toc6: 'إخلاء المسؤولية',
-            toc7: 'إنهاء الخدمة', toc8: 'القانون المطبّق', toc9: 'تواصل معنا',
-            t1Title: '1. قبول الشروط',
-            t1Text: `<p>باستخدامك موقع <strong>Chronos Capsule</strong> (المشار إليه بـ "الموقع" أو "نحن" أو "الخدمة")، فإنك توافق على الالتزام بهذه الشروط.</p>
-                <p>إن لم توافق على أي جزء من هذه الشروط، يُرجى <strong>عدم استخدام الموقع</strong>.</p>`,
+            toc1: 'مرحبًا بك', toc2: 'من يحق له الاستخدام', toc3: 'قواعد المجتمع',
+            toc4: 'ما لا نسمح به', toc5: 'محتواك يبقى ملكك', toc6: 'حدود المسؤولية',
+            toc7: 'إدارة المنصة', toc8: 'القانون المطبّق', toc9: 'تواصل معنا',
+            t1Title: '1. مرحبًا بك',
+            t1Text: `<p>أهلًا بك في <strong>Chronos Capsule</strong> — منصة عالمية تتيح لك إرسال رسائل إلى المستقبل.</p>
+                <p>باستخدامك للموقع، فأنت توافق على هذه الشروط البسيطة. إن لم توافق على أي جزء منها، يُفضّل عدم استخدام المنصة.</p>`,
             t2Title: '2. من يحق له الاستخدام',
-            t2Text: `<p>يُسمح باستخدام الموقع لكل من:</p>
+            t2Text: `<p>المنصة مفتوحة للجميع حول العالم، بشرط:</p>
                 <ul>
-                    <li>عمره <strong>13 سنة أو أكثر</strong>.</li>
-                    <li>يستخدم الموقع لأغراض <strong>شخصية، غير تجارية</strong>.</li>
-                    <li>يلتزم بهذه الشروط وجميع القوانين المطبّقة.</li>
+                    <li>أن يكون عمرك <strong>13 سنة أو أكثر</strong>.</li>
+                    <li>أن تستخدم المنصة لأغراض <strong>شخصية</strong>.</li>
+                    <li>أن تحترم هذه الشروط والقوانين المحلية في بلدك.</li>
                 </ul>
-                <p>للمستخدمين تحت 18 عامًا، يُفضّل الحصول على موافقة ولي الأمر.</p>`,
-            t3Title: '3. قواعد المحتوى',
-            t3Text: `<p>أنت المسؤول الكامل عن المحتوى الذي تنشره في الموقع.</p>
-                <p>باستخدامك الموقع، أنت توافق على:</p>
+                <p>نرحّب بمستخدمينا من كل دولة — من الجزائر إلى اليابان. المنصة عالمية بطبيعتها.</p>`,
+            t3Title: '3. قواعد المجتمع',
+            t3Text: `<p>نؤمن أن الكلمات الجميلة تستحق مساحة نظيفة. لذلك، نسألك أن:</p>
                 <ul>
-                    <li>عدم نشر محتوى مخالف للقوانين أو مسيء.</li>
-                    <li>احترام جميع المستخدمين والزوار.</li>
-                    <li>عدم انتحال شخصية الآخرين.</li>
-                    <li>عدم نشر رسائل تجارية أو إعلانية دون إذن.</li>
-                    <li>تحمّل مسؤولية دقة المعلومات التي تشاركها.</li>
+                    <li>تكتب رسائلك بنية طيبة واحترام.</li>
+                    <li>تحترم الآخرين وتجاربهم.</li>
+                    <li>تتجنّب نشر معلومات شخصية حساسة (كلمات مرور، أرقام بطاقات بنكية).</li>
+                    <li>تتجنّب الرسائل التجارية أو الدعائية.</li>
+                    <li>تتحمّل مسؤولية ما تكتبه.</li>
+                </ul>
+                <p>التزامك بهذه القواعد يجعل المنصة مكانًا أفضل للجميع.</p>`,
+            t4Title: '4. ما لا نسمح به',
+            t4Text: `<p>حفاظًا على سلامة المجتمع، لا نسمح بـ:</p>
+                <ul>
+                    <li>الشتائم أو الألفاظ النابية.</li>
+                    <li>خطاب الكراهية أو التحريض على العنف.</li>
+                    <li>المحتوى الجنسي أو الإباحي.</li>
+                    <li>انتحال شخصية الآخرين.</li>
+                    <li>نشر بيانات شخصية لأشخاص آخرين.</li>
+                    <li>الروابط الضارة أو الفيروسات.</li>
+                    <li>الإعلانات أو الترويج التجاري.</li>
+                    <li>المحتوى الذي يخالف القوانين الدولية.</li>
                 </ul>`,
-            t4Title: '4. ما يُمنع نشره',
-            t4Text: `<p>يُمنع منعًا باتًا نشر المحتوى التالي:</p>
+            alertInfo: 'نستخدم فلترًا تلقائيًا لبعض الكلمات، وقد تُحجب رسالتك إن خالفت هذه القواعد. هذا لحماية الجميع، لا لتقييد حرية التعبير.',
+            t5Title: '5. محتواك يبقى ملكك',
+            t5Text: `<p><strong>كل كبسولة تكتبها تبقى ملكك الشخصي:</strong></p>
                 <ul>
-                    <li>❌ <strong>الشتائم</strong> أو الألفاظ النابية.</li>
-                    <li>❌ <strong>التحريض</strong> على الكراهية أو العنف.</li>
-                    <li>❌ <strong>المحتوى الجنسي</strong> أو الإباحي.</li>
-                    <li>❌ <strong>الانتحال</strong> أو سرقة الهوية.</li>
-                    <li>❌ <strong>بيانات شخصية</strong> للآخرين (أرقام هواتف، عناوين، إلخ).</li>
-                    <li>❌ <strong>الروابط الضارة</strong> أو الفيروسات.</li>
-                    <li>❌ <strong>الإعلانات</strong> غير المرخّصة.</li>
-                    <li>❌ <strong>التشهير</strong> بالأشخاص أو المؤسسات.</li>
-                    <li>❌ <strong>المحتوى المخالف</strong> للقوانين الجزائرية أو الدولية.</li>
-                </ul>`,
-            alertDanger: 'المخالفة قد تؤدي إلى حذف المحتوى، حظر الجهاز، أو اتخاذ إجراءات قانونية.',
-            t5Title: '5. الملكية الفكرية',
-            t5Text: `<p><strong>محتواك يبقى ملكك:</strong></p>
-                <ul>
-                    <li>أنت تحتفظ بحقوق ملكية كبسولاتك.</li>
+                    <li>لا ندّعي أي حقوق على محتواك.</li>
                     <li>يمكنك حذف كبسولاتك في أي وقت.</li>
-                    <li>لا نستخدم محتواك لأغراض تجارية.</li>
+                    <li>لا نستخدم محتواك لأي غرض تجاري.</li>
+                    <li>لا نشاركه مع أي طرف ثالث.</li>
                 </ul>
-                <p><strong>الموقع نفسه محفوظ:</strong></p>
+                <p><strong>أما المنصة نفسها:</strong></p>
                 <ul>
-                    <li>الشعار والتصميم والكود = ملك لـ Chronos Capsule.</li>
-                    <li>لا يُسمح بنسخ الموقع دون إذن.</li>
-                    <li>يُسمح بمشاركة الروابط فقط.</li>
+                    <li>الشعار، التصميم، والكود = ملك لـ Chronos Capsule.</li>
+                    <li>نرحّب بمشاركة روابط الموقع بحرية.</li>
                 </ul>`,
-            t6Title: '6. إخلاء المسؤولية',
-            t6Text: `<p>الموقع يُقدَّم <strong>"كما هو"</strong> دون أي ضمانات.</p>
-                <p>لا نتحمّل أي مسؤولية عن:</p>
+            t6Title: '6. حدود المسؤولية',
+            t6Text: `<p>نبذل قصارى جهدنا لتشغيل المنصة بشكل موثوق، لكن:</p>
                 <ul>
-                    <li>انقطاع الخدمة أو فقدان البيانات.</li>
-                    <li>أخطاء تقنية أو فقدان مؤقت للوصول.</li>
-                    <li>المحتوى المنشور من المستخدمين.</li>
-                    <li>استخدام الآخرين لمعلوماتك العامة.</li>
-                    <li>أي أضرار مباشرة أو غير مباشرة.</li>
+                    <li>قد تحدث انقطاعات تقنية من وقت لآخر.</li>
+                    <li>لا نضمن عمل الخدمة بشكل دائم دون انقطاع.</li>
+                    <li>لسنا مسؤولين عن محتوى ينشره المستخدمون الآخرون.</li>
                 </ul>`,
-            alert2: 'ننصحك بالاحتفاظ بنسخة من كبسولاتك المهمة — لأننا لا نضمن استمرارية الخدمة إلى الأبد.',
-            t7Title: '7. إنهاء الخدمة',
-            t7Text: `<p>نحتفظ بالحق في:</p>
+            alertInfo2: 'نصيحة ودّية: احتفظ بنسخة من كبسولاتك المهمة (لقطة، ملف نصي) — كإجراء احتياطي محبّب لأي خدمة رقمية.',
+            t7Title: '7. إدارة المنصة',
+            t7Text: `<p>لضمان تجربة آمنة للجميع، قد نقوم بـ:</p>
                 <ul>
-                    <li>حذف أي محتوى يخالف هذه الشروط.</li>
-                    <li>حظر المستخدمين المخالفين.</li>
-                    <li>إيقاف الخدمة مؤقتًا أو نهائيًا.</li>
-                    <li>تعديل أو إزالة أي ميزة.</li>
+                    <li>حذف المحتوى المخالف للشروط.</li>
+                    <li>حجب المستخدمين الذين يخالفون القواعد بشكل متكرر.</li>
+                    <li>تعديل أو تطوير الميزات.</li>
+                    <li>إيقاف الخدمة بشكل مؤقت للصيانة.</li>
                 </ul>
-                <p>سنبلّغ المستخدمين بأي تغييرات جوهرية عند الإمكان.</p>`,
+                <p>سنبذل جهدنا لإبلاغ المستخدمين بأي تغييرات مهمة مسبقًا.</p>`,
             t8Title: '8. القانون المطبّق',
-            t8Text: `<p>هذه الشروط تخضع للقوانين <strong>الجزائرية</strong>.</p>
-                <p>أي نزاع يُحلّ وديًا أولاً. إن لم يُحل، يكون الاختصاص للمحاكم الجزائرية.</p>
-                <p>للمستخدمين من دول أخرى، تنطبق قوانينهم المحلية أيضًا بشكل متوازٍ.</p>`,
+            t8Text: `<p>المنصة <strong>عالمية</strong> — نرحّب بمستخدمين من كل الدول.</p>
+                <p>نعمل وفق <strong>المعايير الدولية</strong> لحماية البيانات والخصوصية (مثل GDPR للمستخدمين الأوروبيين).</p>
+                <p>أي نزاع يُحلّ وديًا أولاً. إن تعذّر ذلك، يُرجى التواصل معنا لدراسة الحل المناسب.</p>
+                <p>باستخدامك المنصة، فأنت توافق أيضًا على احترام قوانين بلدك المحلية.</p>`,
             t9Title: '9. تواصل معنا',
-            t9Text: '<p>لأي سؤال حول شروط الاستخدام، تواصل معنا:</p>',
+            t9Text: '<p>لأي سؤال أو استفسار، نحن هنا:</p>',
             contactTitle: 'هل لديك سؤال؟',
             contactDesc: 'نحن هنا للإجابة على أي استفسار حول الشروط.',
             footHome: 'الرئيسية', footAbout: 'من نحن',
             footPrivacy: 'سياسة الخصوصية', footArchive: 'الأرشيف',
-            footMade: 'صُنع بـ ❤️ في الجزائر'
+            footMade: 'منصة عالمية 🌍'
         },
         en: {
             toggle: 'عربي', back: 'Back to Planet',
             title: 'Terms of Use',
-            subtitle: 'By using Chronos Capsule, you agree to these terms. Please read carefully.',
+            subtitle: 'Simple, fair terms designed to protect your experience and everyone else\'s on the platform.',
             lastUpdated: 'Last updated: September 11, 2026',
             tocTitle: 'Table of Contents',
-            toc1: 'Acceptance of Terms', toc2: 'Who May Use', toc3: 'Content Rules',
-            toc4: 'Prohibited Content', toc5: 'Intellectual Property', toc6: 'Disclaimer',
-            toc7: 'Termination', toc8: 'Governing Law', toc9: 'Contact Us',
-            t1Title: '1. Acceptance of Terms',
-            t1Text: `<p>By using <strong>Chronos Capsule</strong> (referred to as "the Site", "we", or "the Service"), you agree to be bound by these terms.</p>
-                <p>If you do not agree with any part of these terms, please <strong>do not use the Site</strong>.</p>`,
+            toc1: 'Welcome', toc2: 'Who May Use', toc3: 'Community Rules',
+            toc4: 'What We Don\'t Allow', toc5: 'Your Content is Yours', toc6: 'Limits of Responsibility',
+            toc7: 'Platform Management', toc8: 'Governing Law', toc9: 'Contact Us',
+            t1Title: '1. Welcome',
+            t1Text: `<p>Welcome to <strong>Chronos Capsule</strong> — a global platform that lets you send messages to the future.</p>
+                <p>By using the site, you agree to these simple terms. If you don't agree with any part, please refrain from using the platform.</p>`,
             t2Title: '2. Who May Use',
-            t2Text: `<p>The Site may be used by anyone who:</p>
+            t2Text: `<p>The platform is open to everyone around the world, as long as:</p>
                 <ul>
-                    <li>Is <strong>13 years or older</strong>.</li>
-                    <li>Uses the Site for <strong>personal, non-commercial</strong> purposes.</li>
-                    <li>Agrees to these terms and all applicable laws.</li>
+                    <li>You are <strong>13 years or older</strong>.</li>
+                    <li>You use the platform for <strong>personal</strong> purposes.</li>
+                    <li>You respect these terms and your local laws.</li>
                 </ul>
-                <p>For users under 18, parental consent is recommended.</p>`,
-            t3
+                <p>We welcome users from every country — from Algeria to Japan. The platform is global by nature.</p>`,
+            t3Title: '3. Community Rules',
+            t3Text: `<p>We believe beautiful words deserve a clean space. So, we ask you to:</p>
+                <ul>
+                    <li>Write with kindness and respect.</li>
+                    <li>Respect others and their experiences.</li>
+                    <li>Avoid sharing sensitive personal info (passwords, card numbers).</li>
+                    <li>Avoid commercial or promotional messages.</li>
+                    <li>Take responsibility for what you write.</li>
+                </ul>
+                <p>Your commitment makes the platform a better place for everyone.</p>`,
+            t4Title: '4. What We Don\'t Allow',
+            t4Text: `<p>To keep the community safe, we don't allow:</p>
+                <ul>
+                    <li>Insults or profanity.</li>
+                    <li>Hate speech or incitement to violence.</li>
+                    <li>Sexual or pornographic content.</li>
+                    <li>Impersonation of others.</li>
+                    <li>Sharing personal data of others.</li>
+                    <li>Malicious links or viruses.</li>
+                    <li>Commercial advertising.</li>
+                    <li>Content that violates international laws.</li>
+                </ul>`,
+            alertInfo: 'We use an automatic filter for some words, and your message may be blocked if it violates these rules. This is to protect everyone, not to limit free expression.',
+            t5Title: '5. Your Content is Yours',
+            t5Text: `<p><strong>Every capsule you write remains your personal property:</strong></p>
+                <ul>
+                    <li>We claim no rights over your content.</li>
+                    <li>You can delete your capsules anytime.</li>
+                    <li>We don't use your content commercially.</li>
+                    <li>We don't share it with third parties.</li>
+                </ul>
+                <p><strong>As for the platform itself:</strong></p>
+                <ul>
+                    <li>Logo, design, and code = property of Chronos Capsule.</li>
+                    <li>We welcome sharing site links freely.</li>
+                </ul>`,
+            t6Title: '6. Limits of Responsibility',
+            t6Text: `<p>We do our best to run the platform reliably, but:</p>
+                <ul>
+                    <li>Technical interruptions may occur occasionally.</li>
+                    <li>We don't guarantee uninterrupted service.</li>
+                    <li>We aren't responsible for content posted by other users.</li>
+                </ul>`,
+            alertInfo2: 'Friendly advice: keep a copy of your important capsules (screenshot, text file) — a helpful precaution for any digital service.',
+            t7Title: '7. Platform Management',
+            t7Text: `<p>To ensure a safe experience for all, we may:</p>
+                <ul>
+                    <li>Remove content that violates the terms.</li>
+                    <li>Block users who repeatedly break the rules.</li>
+                    <li>Modify or develop features.</li>
+                    <li>Temporarily pause the service for maintenance.</li>
+                </ul>
+                <p>We'll try our best to notify users of important changes in advance.</p>`,
+            t8Title: '8. Governing Law',
+            t8Text: `<p>The platform is <strong>global</strong> — welcoming users from every country.</p>
+                <p>We operate according to <strong>international standards</strong> for data protection and privacy (such as GDPR for European users).</p>
+                <p>Any dispute is resolved amicably first. If that's not possible, please contact us to discuss an appropriate solution.</p>
+                <p>By using the platform, you also agree to respect your country's local laws.</p>`,
+            t9Title: '9. Contact Us',
+            t9Text: '<p>For any question or inquiry, we\'re here:</p>',
+            contactTitle: 'Have a question?',
+            contactDesc: 'We\'re here to answer any inquiry about the terms.',
+            footHome: 'Home', footAbout: 'About',
+            footPrivacy: 'Privacy Policy', footArchive: 'Archive',
+            footMade: 'Global platform 🌍'
+        }
+    };
+
+    function applyLang(l) {
+        termsLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+
+        const D = LANGS[l] || LANGS.ar;
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+
+        const $ = id => document.getElementById(id);
+
+        $('termsLangToggle').textContent = D.toggle;
+        $('backLinkText').textContent = D.back;
+        $('pageTitle').textContent = D.title;
+        $('pageSubtitle').textContent = D.subtitle;
+        $('lastUpdated').textContent = D.lastUpdated;
+        $('tocTitle').textContent = D.tocTitle;
+        $('toc1').textContent = D.toc1; $('toc2').textContent = D.toc2; $('toc3').textContent = D.toc3;
+        $('toc4').textContent = D.toc4; $('toc5').textContent = D.toc5; $('toc6').textContent = D.toc6;
+        $('toc7').textContent = D.toc7; $('toc8').textContent = D.toc8; $('toc9').textContent = D.toc9;
+        $('t1Title').textContent = D.t1Title; $('t1Text').innerHTML = D.t1Text;
+        $('t2Title').textContent = D.t2Title; $('t2Text').innerHTML = D.t2Text;
+        $('t3Title').textContent = D.t3Title; $('t3Text').innerHTML = D.t3Text;
+        $('t4Title').textContent = D.t4Title; $('t4Text').innerHTML = D.t4Text;
+        $('alertInfo').textContent = D.alertInfo;
+        $('t5Title').textContent = D.t5Title; $('t5Text').innerHTML = D.t5Text;
+        $('t6Title').textContent = D.t6Title; $('t6Text').innerHTML = D.t6Text;
+        $('alertInfo2').textContent = D.alertInfo2;
+        $('t7Title').textContent = D.t7Title; $('t7Text').innerHTML = D.t7Text;
+        $('t8Title').textContent = D.t8Title; $('t8Text').innerHTML = D.t8Text;
+        $('t9Title').textContent = D.t9Title; $('t9Text').innerHTML = D.t9Text;
+        $('contactTitle').textContent = D.contactTitle;
+        $('contactDesc').textContent = D.contactDesc;
+        $('footHome').textContent = D.footHome;
+        $('footAbout').textContent = D.footAbout;
+        $('footPrivacy').textContent = D.footPrivacy;
+        $('footArchive').textContent = D.footArchive;
+        $('footMade').textContent = D.footMade;
+
+        document.title = (l === 'ar' ? 'شروط الاستخدام' : 'Terms of Use') + ' | Chronos Capsule';
+    }
+
+    document.getElementById('termsLangToggle').addEventListener('click', () => {
+        applyLang(termsLang === 'ar' ? 'en' : 'ar');
+    });
+
+    applyLang(termsLang);
+})();
+</script>
+</body>
+</html>
