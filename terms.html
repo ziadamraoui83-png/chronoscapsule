@@ -3,6 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ⚡ تحديد اللغة فورًا قبل تحميل أي شيء -->
+    <script>
+    (function() {
+        try {
+            var lang = localStorage.getItem('cc_lang') || 'ar';
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') lang = urlLang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch(e) {}
+    })();
+    </script>
+
     <title>شروط الاستخدام | Chronos Capsule</title>
     <meta name="description" content="شروط استخدام موقع Chronos Capsule — القواعد والالتزامات لاستخدام المنصة بأمان واحترام.">
     <meta name="theme-color" content="#010103">
@@ -17,6 +31,13 @@
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
         body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
         a,button{cursor:pointer}
+
+        /* ═══════════════════════════════════════════════════════════
+           🌐 إظهار/إخفاء حسب اللغة — يمنع أي خلط
+           ═══════════════════════════════════════════════════════════ */
+        html[lang="ar"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-ar { display: none !important; }
+
         body::before{content:'';position:fixed;inset:0;
             background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
                         radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
@@ -85,31 +106,33 @@
         .card-text p{margin-bottom:14px}
         .card-text p:last-child{margin-bottom:0}
         .card-text strong{color:#a78bfa;font-weight:700}
-        .card-text a{color:#3AE1FF;text-decoration:none;border-bottom:1px dashed rgba(58,225,255,.3);
-            transition:all .3s ease}
+        .card-text a{color:#3AE1FF;text-decoration:none;border-bottom:1px dashed rgba(58,225,255,.3);transition:all .3s ease}
         .card-text a:hover{color:#fff;border-bottom-color:#3AE1FF}
         .card-text ul{list-style:none;margin:14px 0;padding:0}
         .card-text ul li{padding:8px 0 8px 26px;position:relative;color:#cbd5e1;font-size:.93rem}
-        .card-text ul li::before{content:'✓';position:absolute;left:0;color:#34d399;
-            font-weight:900;font-size:14px}
-        .alert{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
+        .card-text ul li::before{content:'✓';position:absolute;left:0;color:#34d399;font-weight:900;font-size:14px}
+        html[dir="ltr"] .card-text ul li{padding:8px 0 8px 26px}
+        .alert{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);
             border-radius:14px;padding:16px 20px;margin:16px 0;
             display:flex;gap:12px;align-items:flex-start}
         .alert-icon{font-size:20px;flex:none}
-        .alert-text{color:#fbbf24;font-size:13.5px;line-height:1.7}
-        .alert-info{background:rgba(56,189,248,.08);border-color:rgba(56,189,248,.25)}
-        .alert-info .alert-text{color:#7dd3fc}
+        .alert-text{color:#7dd3fc;font-size:13.5px;line-height:1.7}
         .contact-box{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(59,130,246,.08));
             border:1px solid rgba(139,92,246,.3);border-radius:20px;
             padding:28px;text-align:center;margin-top:26px}
         .contact-title{font-size:1.1rem;font-weight:900;margin-bottom:8px}
         .contact-desc{font-size:.9rem;color:#94a3b8;margin-bottom:18px;line-height:1.7}
+        .contact-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
         .contact-btn{display:inline-flex;align-items:center;gap:8px;
             padding:11px 22px;background:linear-gradient(135deg,#6d28d9,#2563eb);
-            color:#fff;text-decoration:none;border-radius:12px;
-            font-size:13.5px;font-weight:700;transition:all .3s ease;
-            box-shadow:0 8px 24px rgba(99,102,241,.3)}
+            color:#fff;text-decoration:none;border-radius:12px;border:none;
+            font-family:inherit;font-size:13.5px;font-weight:700;transition:all .3s ease;
+            box-shadow:0 8px 24px rgba(99,102,241,.3);cursor:pointer}
         .contact-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(99,102,241,.5)}
+        .contact-btn.secondary{background:rgba(139,92,246,.15);
+            border:1px solid rgba(139,92,246,.4);box-shadow:none}
+        .contact-btn.secondary:hover{background:rgba(139,92,246,.25);
+            box-shadow:0 8px 24px rgba(99,102,241,.2)}
         .page-footer{text-align:center;padding:30px 20px;color:#64748b;font-size:12.5px;
             border-top:1px solid rgba(255,255,255,.06);margin-top:40px}
         .footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:14px}
@@ -125,6 +148,7 @@
             .card-title{font-size:1.05rem}
             .toc{padding:18px 20px}
             .contact-box{padding:22px 18px}
+            .contact-actions{flex-direction:column;align-items:stretch}
         }
         @media (prefers-reduced-motion: reduce) {
             * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
@@ -143,7 +167,8 @@
         <button class="lang-toggle-cap" id="termsLangToggle">EN</button>
         <a href="index.html" class="back-link">
             <span>←</span>
-            <span id="backLinkText">العودة للكوكب</span>
+            <span class="lang-ar">العودة للكوكب</span>
+            <span class="lang-en">Back to Planet</span>
         </a>
     </div>
 </header>
@@ -152,239 +177,98 @@
 
     <section class="hero">
         <div class="hero-emoji">📜</div>
-        <h1 class="hero-title" id="pageTitle">شروط الاستخدام</h1>
-        <p class="hero-subtitle" id="pageSubtitle">
-            شروط بسيطة وعادلة، صُمّمت لحماية تجربتك وتجربة الآخرين على المنصة.
+        <h1 class="hero-title">
+            <span class="lang-ar">شروط الاستخدام</span>
+            <span class="lang-en">Terms of Use</span>
+        </h1>
+        <p class="hero-subtitle">
+            <span class="lang-ar">شروط بسيطة وعادلة، صُمّمت لحماية تجربتك وتجربة الآخرين على المنصة.</span>
+            <span class="lang-en">Simple, fair terms designed to protect your experience and everyone else's on the platform.</span>
         </p>
         <div class="hero-date">
             <span>📅</span>
-            <span id="lastUpdated">آخر تحديث: 11 سبتمبر 2026</span>
+            <span class="lang-ar">آخر تحديث: 11 سبتمبر 2026</span>
+            <span class="lang-en">Last updated: September 11, 2026</span>
         </div>
     </section>
 
     <nav class="toc">
         <div class="toc-title">
             <span>📋</span>
-            <span id="tocTitle">فهرس المحتويات</span>
+            <span class="lang-ar">فهرس المحتويات</span>
+            <span class="lang-en">Table of Contents</span>
         </div>
         <ul class="toc-list">
-            <li><a href="#t1" id="toc1">مرحبًا بك</a></li>
-            <li><a href="#t2" id="toc2">من يحق له الاستخدام</a></li>
-            <li><a href="#t3" id="toc3">قواعد المجتمع</a></li>
-            <li><a href="#t4" id="toc4">ما لا نسمح به</a></li>
-            <li><a href="#t5" id="toc5">محتواك يبقى ملكك</a></li>
-            <li><a href="#t6" id="toc6">حدود المسؤولية</a></li>
-            <li><a href="#t7" id="toc7">إدارة المنصة</a></li>
-            <li><a href="#t8" id="toc8">القانون المطبّق</a></li>
-            <li><a href="#t9" id="toc9">تواصل معنا</a></li>
+            <li><a href="#t1"><span class="lang-ar">مرحبًا بك</span><span class="lang-en">Welcome</span></a></li>
+            <li><a href="#t2"><span class="lang-ar">من يحق له الاستخدام</span><span class="lang-en">Who May Use</span></a></li>
+            <li><a href="#t3"><span class="lang-ar">قواعد المجتمع</span><span class="lang-en">Community Rules</span></a></li>
+            <li><a href="#t4"><span class="lang-ar">ما لا نسمح به</span><span class="lang-en">What We Don't Allow</span></a></li>
+            <li><a href="#t5"><span class="lang-ar">محتواك يبقى ملكك</span><span class="lang-en">Your Content is Yours</span></a></li>
+            <li><a href="#t6"><span class="lang-ar">حدود المسؤولية</span><span class="lang-en">Limits of Responsibility</span></a></li>
+            <li><a href="#t7"><span class="lang-ar">إدارة المنصة</span><span class="lang-en">Platform Management</span></a></li>
+            <li><a href="#t8"><span class="lang-ar">القانون المطبّق</span><span class="lang-en">Governing Law</span></a></li>
+            <li><a href="#t9"><span class="lang-ar">تواصل معنا</span><span class="lang-en">Contact Us</span></a></li>
         </ul>
     </nav>
 
+    <!-- ═══ 1 ═══ -->
     <div class="card" id="t1">
         <h2 class="card-title">
             <span class="card-title-icon">👋</span>
-            <span id="t1Title">1. مرحبًا بك</span>
+            <span class="lang-ar">1. مرحبًا بك</span>
+            <span class="lang-en">1. Welcome</span>
         </h2>
-        <div class="card-text" id="t1Text">
-            <p>أهلًا بك في <strong>Chronos Capsule</strong> — منصة عالمية تتيح لك إرسال رسائل إلى المستقبل.</p>
-            <p>باستخدامك للموقع، فأنت توافق على هذه الشروط البسيطة. إن لم توافق على أي جزء منها، يُفضّل عدم استخدام المنصة.</p>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>أهلًا بك في <strong>Chronos Capsule</strong> — منصة عالمية تتيح لك إرسال رسائل إلى المستقبل.</p>
+                <p>باستخدامك للموقع، فأنت توافق على هذه الشروط البسيطة. إن لم توافق على أي جزء منها، يُفضّل عدم استخدام المنصة.</p>
+            </div>
+            <div class="lang-en">
+                <p>Welcome to <strong>Chronos Capsule</strong> — a global platform that lets you send messages to the future.</p>
+                <p>By using the site, you agree to these simple terms. If you don't agree with any part, please refrain from using the platform.</p>
+            </div>
         </div>
     </div>
 
+    <!-- ═══ 2 ═══ -->
     <div class="card" id="t2">
         <h2 class="card-title">
             <span class="card-title-icon">👤</span>
-            <span id="t2Title">2. من يحق له الاستخدام</span>
+            <span class="lang-ar">2. من يحق له الاستخدام</span>
+            <span class="lang-en">2. Who May Use</span>
         </h2>
-        <div class="card-text" id="t2Text">
-            <p>المنصة مفتوحة للجميع حول العالم، بشرط:</p>
-            <ul>
-                <li>أن يكون عمرك <strong>13 سنة أو أكثر</strong>.</li>
-                <li>أن تستخدم المنصة لأغراض <strong>شخصية</strong>.</li>
-                <li>أن تحترم هذه الشروط والقوانين المحلية في بلدك.</li>
-            </ul>
-            <p>نرحّب بمستخدمينا من كل دولة — من الجزائر إلى اليابان. المنصة عالمية بطبيعتها.</p>
-        </div>
-    </div>
-
-    <div class="card" id="t3">
-        <h2 class="card-title">
-            <span class="card-title-icon">🤝</span>
-            <span id="t3Title">3. قواعد المجتمع</span>
-        </h2>
-        <div class="card-text" id="t3Text">
-            <p>نؤمن أن الكلمات الجميلة تستحق مساحة نظيفة. لذلك، نسألك أن:</p>
-            <ul>
-                <li>تكتب رسائلك بنية طيبة واحترام.</li>
-                <li>تحترم الآخرين وتجاربهم.</li>
-                <li>تتجنّب نشر معلومات شخصية حساسة (كلمات مرور، أرقام بطاقات بنكية).</li>
-                <li>تتجنّب الرسائل التجارية أو الدعائية.</li>
-                <li>تتحمّل مسؤولية ما تكتبه.</li>
-            </ul>
-            <p>التزامك بهذه القواعد يجعل المنصة مكانًا أفضل للجميع.</p>
-        </div>
-    </div>
-
-    <div class="card" id="t4">
-        <h2 class="card-title">
-            <span class="card-title-icon">🚫</span>
-            <span id="t4Title">4. ما لا نسمح به</span>
-        </h2>
-        <div class="card-text" id="t4Text">
-            <p>حفاظًا على سلامة المجتمع، لا نسمح بـ:</p>
-            <ul>
-                <li>الشتائم أو الألفاظ النابية.</li>
-                <li>خطاب الكراهية أو التحريض على العنف.</li>
-                <li>المحتوى الجنسي أو الإباحي.</li>
-                <li>انتحال شخصية الآخرين.</li>
-                <li>نشر بيانات شخصية لأشخاص آخرين.</li>
-                <li>الروابط الضارة أو الفيروسات.</li>
-                <li>الإعلانات أو الترويج التجاري.</li>
-                <li>المحتوى الذي يخالف القوانين الدولية.</li>
-            </ul>
-            <div class="alert alert-info">
-                <span class="alert-icon">💡</span>
-                <div class="alert-text" id="alertInfo">نستخدم فلترًا تلقائيًا لبعض الكلمات، وقد تُحجب رسالتك إن خالفت هذه القواعد. هذا لحماية الجميع، لا لتقييد حرية التعبير.</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" id="t5">
-        <h2 class="card-title">
-            <span class="card-title-icon">©️</span>
-            <span id="t5Title">5. محتواك يبقى ملكك</span>
-        </h2>
-        <div class="card-text" id="t5Text">
-            <p><strong>كل كبسولة تكتبها تبقى ملكك الشخصي:</strong></p>
-            <ul>
-                <li>لا ندّعي أي حقوق على محتواك.</li>
-                <li>يمكنك حذف كبسولاتك في أي وقت.</li>
-                <li>لا نستخدم محتواك لأي غرض تجاري.</li>
-                <li>لا نشاركه مع أي طرف ثالث.</li>
-            </ul>
-            <p><strong>أما المنصة نفسها:</strong></p>
-            <ul>
-                <li>الشعار، التصميم، والكود = ملك لـ Chronos Capsule.</li>
-                <li>نرحّب بمشاركة روابط الموقع بحرية.</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="card" id="t6">
-        <h2 class="card-title">
-            <span class="card-title-icon">🤲</span>
-            <span id="t6Title">6. حدود المسؤولية</span>
-        </h2>
-        <div class="card-text" id="t6Text">
-            <p>نبذل قصارى جهدنا لتشغيل المنصة بشكل موثوق، لكن:</p>
-            <ul>
-                <li>قد تحدث انقطاعات تقنية من وقت لآخر.</li>
-                <li>لا نضمن عمل الخدمة بشكل دائم دون انقطاع.</li>
-                <li>لسنا مسؤولين عن محتوى ينشره المستخدمون الآخرون.</li>
-            </ul>
-            <div class="alert alert-info">
-                <span class="alert-icon">💾</span>
-                <div class="alert-text" id="alertInfo2">نصيحة ودّية: احتفظ بنسخة من كبسولاتك المهمة (لقطة، ملف نصي) — كإجراء احتياطي محبّب لأي خدمة رقمية.</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card" id="t7">
-        <h2 class="card-title">
-            <span class="card-title-icon">🛠️</span>
-            <span id="t7Title">7. إدارة المنصة</span>
-        </h2>
-        <div class="card-text" id="t7Text">
-            <p>لضمان تجربة آمنة للجميع، قد نقوم بـ:</p>
-            <ul>
-                <li>حذف المحتوى المخالف للشروط.</li>
-                <li>حجب المستخدمين الذين يخالفون القواعد بشكل متكرر.</li>
-                <li>تعديل أو تطوير الميزات.</li>
-                <li>إيقاف الخدمة بشكل مؤقت للصيانة.</li>
-            </ul>
-            <p>سنبذل جهدنا لإبلاغ المستخدمين بأي تغييرات مهمة مسبقًا.</p>
-        </div>
-    </div>
-
-    <div class="card" id="t8">
-        <h2 class="card-title">
-            <span class="card-title-icon">🌍</span>
-            <span id="t8Title">8. القانون المطبّق</span>
-        </h2>
-        <div class="card-text" id="t8Text">
-            <p>المنصة <strong>عالمية</strong> — نرحّب بمستخدمين من كل الدول.</p>
-            <p>نعمل وفق <strong>المعايير الدولية</strong> لحماية البيانات والخصوصية (مثل GDPR للمستخدمين الأوروبيين).</p>
-            <p>أي نزاع يُحلّ وديًا أولاً. إن تعذّر ذلك، يُرجى التواصل معنا لدراسة الحل المناسب.</p>
-            <p>باستخدامك المنصة، فأنت توافق أيضًا على احترام قوانين بلدك المحلية.</p>
-        </div>
-    </div>
-
-    <div class="card" id="t9">
-        <h2 class="card-title">
-            <span class="card-title-icon">✉️</span>
-            <span id="t9Title">9. تواصل معنا</span>
-        </h2>
-        <div class="card-text" id="t9Text">
-            <p>لأي سؤال أو استفسار، نحن هنا:</p>
-        </div>
-    </div>
-
-    <div class="contact-box">
-        <h2 class="contact-title" id="contactTitle">هل لديك سؤال؟</h2>
-        <p class="contact-desc" id="contactDesc">
-            نحن هنا للإجابة على أي استفسار حول الشروط.
-        </p>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ziadamraoui83@gmail.com" target="_blank" rel="noopener" class="contact-btn">
-            <span>✉️</span>
-            <span>ziadamraoui83@gmail.com</span>
-        </a>
-    </div>
-
-    <footer class="page-footer">
-        <div class="footer-links">
-            <a href="index.html" id="footHome">الرئيسية</a>
-            <a href="about.html" id="footAbout">من نحن</a>
-            <a href="privacy.html" id="footPrivacy">سياسة الخصوصية</a>
-            <a href="archive.html" id="footArchive">الأرشيف</a>
-        </div>
-        <div>© 2026 Chronos Capsule — <span id="footMade">منصة عالمية 🌍</span></div>
-    </footer>
-
-</main>
-
-<script>
-(function(){
-    'use strict';
-
-    let termsLang = (() => { try { return localStorage.getItem('cc_lang') || 'ar'; } catch (e) { return 'ar'; } })();
-    try {
-        const urlLang = new URLSearchParams(location.search).get('lang');
-        if (urlLang === 'ar' || urlLang === 'en') termsLang = urlLang;
-    } catch (e) {}
-
-    const LANGS = {
-        ar: {
-            toggle: 'EN', back: 'العودة للكوكب',
-            title: 'شروط الاستخدام',
-            subtitle: 'شروط بسيطة وعادلة، صُمّمت لحماية تجربتك وتجربة الآخرين على المنصة.',
-            lastUpdated: 'آخر تحديث: 11 سبتمبر 2026',
-            tocTitle: 'فهرس المحتويات',
-            toc1: 'مرحبًا بك', toc2: 'من يحق له الاستخدام', toc3: 'قواعد المجتمع',
-            toc4: 'ما لا نسمح به', toc5: 'محتواك يبقى ملكك', toc6: 'حدود المسؤولية',
-            toc7: 'إدارة المنصة', toc8: 'القانون المطبّق', toc9: 'تواصل معنا',
-            t1Title: '1. مرحبًا بك',
-            t1Text: `<p>أهلًا بك في <strong>Chronos Capsule</strong> — منصة عالمية تتيح لك إرسال رسائل إلى المستقبل.</p>
-                <p>باستخدامك للموقع، فأنت توافق على هذه الشروط البسيطة. إن لم توافق على أي جزء منها، يُفضّل عدم استخدام المنصة.</p>`,
-            t2Title: '2. من يحق له الاستخدام',
-            t2Text: `<p>المنصة مفتوحة للجميع حول العالم، بشرط:</p>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>المنصة مفتوحة للجميع حول العالم، بشرط:</p>
                 <ul>
                     <li>أن يكون عمرك <strong>13 سنة أو أكثر</strong>.</li>
                     <li>أن تستخدم المنصة لأغراض <strong>شخصية</strong>.</li>
                     <li>أن تحترم هذه الشروط والقوانين المحلية في بلدك.</li>
                 </ul>
-                <p>نرحّب بمستخدمينا من كل دولة — من الجزائر إلى اليابان. المنصة عالمية بطبيعتها.</p>`,
-            t3Title: '3. قواعد المجتمع',
-            t3Text: `<p>نؤمن أن الكلمات الجميلة تستحق مساحة نظيفة. لذلك، نسألك أن:</p>
+                <p>نرحّب بمستخدمينا من كل دولة. المنصة عالمية بطبيعتها.</p>
+            </div>
+            <div class="lang-en">
+                <p>The platform is open to everyone around the world, as long as:</p>
+                <ul>
+                    <li>You are <strong>13 years or older</strong>.</li>
+                    <li>You use the platform for <strong>personal</strong> purposes.</li>
+                    <li>You respect these terms and your local laws.</li>
+                </ul>
+                <p>We welcome users from every country. The platform is global by nature.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ 3 ═══ -->
+    <div class="card" id="t3">
+        <h2 class="card-title">
+            <span class="card-title-icon">🤝</span>
+            <span class="lang-ar">3. قواعد المجتمع</span>
+            <span class="lang-en">3. Community Rules</span>
+        </h2>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>نؤمن أن الكلمات الجميلة تستحق مساحة نظيفة. لذلك، نسألك أن:</p>
                 <ul>
                     <li>تكتب رسائلك بنية طيبة واحترام.</li>
                     <li>تحترم الآخرين وتجاربهم.</li>
@@ -392,9 +276,32 @@
                     <li>تتجنّب الرسائل التجارية أو الدعائية.</li>
                     <li>تتحمّل مسؤولية ما تكتبه.</li>
                 </ul>
-                <p>التزامك بهذه القواعد يجعل المنصة مكانًا أفضل للجميع.</p>`,
-            t4Title: '4. ما لا نسمح به',
-            t4Text: `<p>حفاظًا على سلامة المجتمع، لا نسمح بـ:</p>
+                <p>التزامك بهذه القواعد يجعل المنصة مكانًا أفضل للجميع.</p>
+            </div>
+            <div class="lang-en">
+                <p>We believe beautiful words deserve a clean space. So, we ask you to:</p>
+                <ul>
+                    <li>Write with kindness and respect.</li>
+                    <li>Respect others and their experiences.</li>
+                    <li>Avoid sharing sensitive personal info (passwords, card numbers).</li>
+                    <li>Avoid commercial or promotional messages.</li>
+                    <li>Take responsibility for what you write.</li>
+                </ul>
+                <p>Your commitment makes the platform a better place for everyone.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ 4 ═══ -->
+    <div class="card" id="t4">
+        <h2 class="card-title">
+            <span class="card-title-icon">🚫</span>
+            <span class="lang-ar">4. ما لا نسمح به</span>
+            <span class="lang-en">4. What We Don't Allow</span>
+        </h2>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>حفاظًا على سلامة المجتمع، لا نسمح بـ:</p>
                 <ul>
                     <li>الشتائم أو الألفاظ النابية.</li>
                     <li>خطاب الكراهية أو التحريض على العنف.</li>
@@ -404,10 +311,42 @@
                     <li>الروابط الضارة أو الفيروسات.</li>
                     <li>الإعلانات أو الترويج التجاري.</li>
                     <li>المحتوى الذي يخالف القوانين الدولية.</li>
-                </ul>`,
-            alertInfo: 'نستخدم فلترًا تلقائيًا لبعض الكلمات، وقد تُحجب رسالتك إن خالفت هذه القواعد. هذا لحماية الجميع، لا لتقييد حرية التعبير.',
-            t5Title: '5. محتواك يبقى ملكك',
-            t5Text: `<p><strong>كل كبسولة تكتبها تبقى ملكك الشخصي:</strong></p>
+                </ul>
+                <div class="alert">
+                    <span class="alert-icon">💡</span>
+                    <div class="alert-text">نستخدم فلترًا تلقائيًا لبعض الكلمات، وقد تُحجب رسالتك إن خالفت هذه القواعد. هذا لحماية الجميع، لا لتقييد حرية التعبير.</div>
+                </div>
+            </div>
+            <div class="lang-en">
+                <p>To keep the community safe, we don't allow:</p>
+                <ul>
+                    <li>Insults or profanity.</li>
+                    <li>Hate speech or incitement to violence.</li>
+                    <li>Sexual or pornographic content.</li>
+                    <li>Impersonation of others.</li>
+                    <li>Sharing personal data of others.</li>
+                    <li>Malicious links or viruses.</li>
+                    <li>Commercial advertising.</li>
+                    <li>Content that violates international laws.</li>
+                </ul>
+                <div class="alert">
+                    <span class="alert-icon">💡</span>
+                    <div class="alert-text">We use an automatic filter for some words. This is to protect everyone, not to limit free expression.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ 5 ═══ -->
+    <div class="card" id="t5">
+        <h2 class="card-title">
+            <span class="card-title-icon">©️</span>
+            <span class="lang-ar">5. محتواك يبقى ملكك</span>
+            <span class="lang-en">5. Your Content is Yours</span>
+        </h2>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p><strong>كل كبسولة تكتبها تبقى ملكك الشخصي:</strong></p>
                 <ul>
                     <li>لا ندّعي أي حقوق على محتواك.</li>
                     <li>يمكنك حذف كبسولاتك في أي وقت.</li>
@@ -418,82 +357,10 @@
                 <ul>
                     <li>الشعار، التصميم، والكود = ملك لـ Chronos Capsule.</li>
                     <li>نرحّب بمشاركة روابط الموقع بحرية.</li>
-                </ul>`,
-            t6Title: '6. حدود المسؤولية',
-            t6Text: `<p>نبذل قصارى جهدنا لتشغيل المنصة بشكل موثوق، لكن:</p>
-                <ul>
-                    <li>قد تحدث انقطاعات تقنية من وقت لآخر.</li>
-                    <li>لا نضمن عمل الخدمة بشكل دائم دون انقطاع.</li>
-                    <li>لسنا مسؤولين عن محتوى ينشره المستخدمون الآخرون.</li>
-                </ul>`,
-            alertInfo2: 'نصيحة ودّية: احتفظ بنسخة من كبسولاتك المهمة (لقطة، ملف نصي) — كإجراء احتياطي محبّب لأي خدمة رقمية.',
-            t7Title: '7. إدارة المنصة',
-            t7Text: `<p>لضمان تجربة آمنة للجميع، قد نقوم بـ:</p>
-                <ul>
-                    <li>حذف المحتوى المخالف للشروط.</li>
-                    <li>حجب المستخدمين الذين يخالفون القواعد بشكل متكرر.</li>
-                    <li>تعديل أو تطوير الميزات.</li>
-                    <li>إيقاف الخدمة بشكل مؤقت للصيانة.</li>
                 </ul>
-                <p>سنبذل جهدنا لإبلاغ المستخدمين بأي تغييرات مهمة مسبقًا.</p>`,
-            t8Title: '8. القانون المطبّق',
-            t8Text: `<p>المنصة <strong>عالمية</strong> — نرحّب بمستخدمين من كل الدول.</p>
-                <p>نعمل وفق <strong>المعايير الدولية</strong> لحماية البيانات والخصوصية (مثل GDPR للمستخدمين الأوروبيين).</p>
-                <p>أي نزاع يُحلّ وديًا أولاً. إن تعذّر ذلك، يُرجى التواصل معنا لدراسة الحل المناسب.</p>
-                <p>باستخدامك المنصة، فأنت توافق أيضًا على احترام قوانين بلدك المحلية.</p>`,
-            t9Title: '9. تواصل معنا',
-            t9Text: '<p>لأي سؤال أو استفسار، نحن هنا:</p>',
-            contactTitle: 'هل لديك سؤال؟',
-            contactDesc: 'نحن هنا للإجابة على أي استفسار حول الشروط.',
-            footHome: 'الرئيسية', footAbout: 'من نحن',
-            footPrivacy: 'سياسة الخصوصية', footArchive: 'الأرشيف',
-            footMade: 'منصة عالمية 🌍'
-        },
-        en: {
-            toggle: 'عربي', back: 'Back to Planet',
-            title: 'Terms of Use',
-            subtitle: 'Simple, fair terms designed to protect your experience and everyone else\'s on the platform.',
-            lastUpdated: 'Last updated: September 11, 2026',
-            tocTitle: 'Table of Contents',
-            toc1: 'Welcome', toc2: 'Who May Use', toc3: 'Community Rules',
-            toc4: 'What We Don\'t Allow', toc5: 'Your Content is Yours', toc6: 'Limits of Responsibility',
-            toc7: 'Platform Management', toc8: 'Governing Law', toc9: 'Contact Us',
-            t1Title: '1. Welcome',
-            t1Text: `<p>Welcome to <strong>Chronos Capsule</strong> — a global platform that lets you send messages to the future.</p>
-                <p>By using the site, you agree to these simple terms. If you don't agree with any part, please refrain from using the platform.</p>`,
-            t2Title: '2. Who May Use',
-            t2Text: `<p>The platform is open to everyone around the world, as long as:</p>
-                <ul>
-                    <li>You are <strong>13 years or older</strong>.</li>
-                    <li>You use the platform for <strong>personal</strong> purposes.</li>
-                    <li>You respect these terms and your local laws.</li>
-                </ul>
-                <p>We welcome users from every country — from Algeria to Japan. The platform is global by nature.</p>`,
-            t3Title: '3. Community Rules',
-            t3Text: `<p>We believe beautiful words deserve a clean space. So, we ask you to:</p>
-                <ul>
-                    <li>Write with kindness and respect.</li>
-                    <li>Respect others and their experiences.</li>
-                    <li>Avoid sharing sensitive personal info (passwords, card numbers).</li>
-                    <li>Avoid commercial or promotional messages.</li>
-                    <li>Take responsibility for what you write.</li>
-                </ul>
-                <p>Your commitment makes the platform a better place for everyone.</p>`,
-            t4Title: '4. What We Don\'t Allow',
-            t4Text: `<p>To keep the community safe, we don't allow:</p>
-                <ul>
-                    <li>Insults or profanity.</li>
-                    <li>Hate speech or incitement to violence.</li>
-                    <li>Sexual or pornographic content.</li>
-                    <li>Impersonation of others.</li>
-                    <li>Sharing personal data of others.</li>
-                    <li>Malicious links or viruses.</li>
-                    <li>Commercial advertising.</li>
-                    <li>Content that violates international laws.</li>
-                </ul>`,
-            alertInfo: 'We use an automatic filter for some words, and your message may be blocked if it violates these rules. This is to protect everyone, not to limit free expression.',
-            t5Title: '5. Your Content is Yours',
-            t5Text: `<p><strong>Every capsule you write remains your personal property:</strong></p>
+            </div>
+            <div class="lang-en">
+                <p><strong>Every capsule you write remains your personal property:</strong></p>
                 <ul>
                     <li>We claim no rights over your content.</li>
                     <li>You can delete your capsules anytime.</li>
@@ -504,85 +371,208 @@
                 <ul>
                     <li>Logo, design, and code = property of Chronos Capsule.</li>
                     <li>We welcome sharing site links freely.</li>
-                </ul>`,
-            t6Title: '6. Limits of Responsibility',
-            t6Text: `<p>We do our best to run the platform reliably, but:</p>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ 6 ═══ -->
+    <div class="card" id="t6">
+        <h2 class="card-title">
+            <span class="card-title-icon">🤲</span>
+            <span class="lang-ar">6. حدود المسؤولية</span>
+            <span class="lang-en">6. Limits of Responsibility</span>
+        </h2>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>نبذل قصارى جهدنا لتشغيل المنصة بشكل موثوق، لكن:</p>
+                <ul>
+                    <li>قد تحدث انقطاعات تقنية من وقت لآخر.</li>
+                    <li>لا نضمن عمل الخدمة بشكل دائم دون انقطاع.</li>
+                    <li>لسنا مسؤولين عن محتوى ينشره المستخدمون الآخرون.</li>
+                </ul>
+                <div class="alert">
+                    <span class="alert-icon">💾</span>
+                    <div class="alert-text">نصيحة ودّية: احتفظ بنسخة من كبسولاتك المهمة (لقطة، ملف نصي) — كإجراء احتياطي محبّب لأي خدمة رقمية.</div>
+                </div>
+            </div>
+            <div class="lang-en">
+                <p>We do our best to run the platform reliably, but:</p>
                 <ul>
                     <li>Technical interruptions may occur occasionally.</li>
                     <li>We don't guarantee uninterrupted service.</li>
                     <li>We aren't responsible for content posted by other users.</li>
-                </ul>`,
-            alertInfo2: 'Friendly advice: keep a copy of your important capsules (screenshot, text file) — a helpful precaution for any digital service.',
-            t7Title: '7. Platform Management',
-            t7Text: `<p>To ensure a safe experience for all, we may:</p>
+                </ul>
+                <div class="alert">
+                    <span class="alert-icon">💾</span>
+                    <div class="alert-text">Friendly advice: keep a copy of your important capsules (screenshot, text file) — a helpful precaution for any digital service.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ 7 ═══ -->
+    <div class="card" id="t7">
+        <h2 class="card-title">
+            <span class="card-title-icon">🛠️</span>
+            <span class="lang-ar">7. إدارة المنصة</span>
+            <span class="lang-en">7. Platform Management</span>
+        </h2>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>لضمان تجربة آمنة للجميع، قد نقوم بـ:</p>
+                <ul>
+                    <li>حذف المحتوى المخالف للشروط.</li>
+                    <li>حجب المستخدمين الذين يخالفون القواعد بشكل متكرر.</li>
+                    <li>تعديل أو تطوير الميزات.</li>
+                    <li>إيقاف الخدمة بشكل مؤقت للصيانة.</li>
+                </ul>
+                <p>سنبذل جهدنا لإبلاغ المستخدمين بأي تغييرات مهمة مسبقًا.</p>
+            </div>
+            <div class="lang-en">
+                <p>To ensure a safe experience for all, we may:</p>
                 <ul>
                     <li>Remove content that violates the terms.</li>
                     <li>Block users who repeatedly break the rules.</li>
                     <li>Modify or develop features.</li>
                     <li>Temporarily pause the service for maintenance.</li>
                 </ul>
-                <p>We'll try our best to notify users of important changes in advance.</p>`,
-            t8Title: '8. Governing Law',
-            t8Text: `<p>The platform is <strong>global</strong> — welcoming users from every country.</p>
+                <p>We'll try our best to notify users of important changes in advance.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ 8 ═══ -->
+    <div class="card" id="t8">
+        <h2 class="card-title">
+            <span class="card-title-icon">🌍</span>
+            <span class="lang-ar">8. القانون المطبّق</span>
+            <span class="lang-en">8. Governing Law</span>
+        </h2>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>المنصة <strong>عالمية</strong> — نرحّب بمستخدمين من كل الدول.</p>
+                <p>نعمل وفق <strong>المعايير الدولية</strong> لحماية البيانات والخصوصية (مثل GDPR للمستخدمين الأوروبيين).</p>
+                <p>أي نزاع يُحلّ وديًا أولاً. إن تعذّر ذلك، يُرجى التواصل معنا لدراسة الحل المناسب.</p>
+                <p>باستخدامك المنصة، فأنت توافق أيضًا على احترام قوانين بلدك المحلية.</p>
+            </div>
+            <div class="lang-en">
+                <p>The platform is <strong>global</strong> — welcoming users from every country.</p>
                 <p>We operate according to <strong>international standards</strong> for data protection and privacy (such as GDPR for European users).</p>
                 <p>Any dispute is resolved amicably first. If that's not possible, please contact us to discuss an appropriate solution.</p>
-                <p>By using the platform, you also agree to respect your country's local laws.</p>`,
-            t9Title: '9. Contact Us',
-            t9Text: '<p>For any question or inquiry, we\'re here:</p>',
-            contactTitle: 'Have a question?',
-            contactDesc: 'We\'re here to answer any inquiry about the terms.',
-            footHome: 'Home', footAbout: 'About',
-            footPrivacy: 'Privacy Policy', footArchive: 'Archive',
-            footMade: 'Global platform 🌍'
-        }
-    };
+                <p>By using the platform, you also agree to respect your country's local laws.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ 9 ═══ -->
+    <div class="card" id="t9">
+        <h2 class="card-title">
+            <span class="card-title-icon">✉️</span>
+            <span class="lang-ar">9. تواصل معنا</span>
+            <span class="lang-en">9. Contact Us</span>
+        </h2>
+        <div class="card-text">
+            <div class="lang-ar">
+                <p>لأي سؤال أو استفسار، نحن هنا:</p>
+            </div>
+            <div class="lang-en">
+                <p>For any question or inquiry, we're here:</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-box">
+        <h2 class="contact-title">
+            <span class="lang-ar">هل لديك سؤال؟</span>
+            <span class="lang-en">Have a question?</span>
+        </h2>
+        <p class="contact-desc">
+            <span class="lang-ar">نحن هنا للإجابة على أي استفسار حول الشروط.</span>
+            <span class="lang-en">We're here to answer any inquiry about the terms.</span>
+        </p>
+        <div class="contact-actions">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ziadamraoui83@gmail.com"
+               target="_blank" rel="noopener" class="contact-btn">
+                <span>✉️</span>
+                <span class="lang-ar">راسلنا عبر Gmail</span>
+                <span class="lang-en">Contact via Gmail</span>
+            </a>
+            <button onclick="copyEmail(this)" class="contact-btn secondary" type="button">
+                <span>📋</span>
+                <span class="lang-ar">انسخ البريد</span>
+                <span class="lang-en">Copy email</span>
+            </button>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <div class="footer-links">
+            <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+            <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
+            <a href="privacy.html"><span class="lang-ar">سياسة الخصوصية</span><span class="lang-en">Privacy Policy</span></a>
+            <a href="archive.html"><span class="lang-ar">الأرشيف</span><span class="lang-en">Archive</span></a>
+        </div>
+        <div>© 2026 Chronos Capsule — <span class="lang-ar">منصة عالمية 🌍</span><span class="lang-en">Global platform 🌍</span></div>
+    </footer>
+
+</main>
+
+<script>
+/* ═══ زر نسخ البريد ═══ */
+function copyEmail(btn) {
+    const email = 'ziadamiraoui83@gmail.com'.replace('ziadamiraoui', 'ziadamraoui');
+    navigator.clipboard.writeText(email).then(() => {
+        const span = btn.querySelector('span:last-child');
+        const original = span.textContent;
+        span.textContent = '✅';
+        setTimeout(() => { span.textContent = original; }, 1500);
+    }).catch(() => { prompt('Copy email:', email); });
+}
+
+(function(){
+    'use strict';
+
+    /* ═══ اللغة ═══ */
+    function getCurrentLang() {
+        try {
+            const urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') return urlLang;
+            return localStorage.getItem('cc_lang') || 'ar';
+        } catch (e) { return 'ar'; }
+    }
+
+    let currentLang = getCurrentLang();
 
     function applyLang(l) {
-        termsLang = l;
+        currentLang = l;
         try { localStorage.setItem('cc_lang', l); } catch (e) {}
 
-        const D = LANGS[l] || LANGS.ar;
         document.documentElement.lang = l;
         document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
 
-        const $ = id => document.getElementById(id);
+        /* زر التبديل */
+        const toggleBtn = document.getElementById('termsLangToggle');
+        if (toggleBtn) toggleBtn.textContent = (l === 'ar') ? 'EN' : 'عربي';
 
-        $('termsLangToggle').textContent = D.toggle;
-        $('backLinkText').textContent = D.back;
-        $('pageTitle').textContent = D.title;
-        $('pageSubtitle').textContent = D.subtitle;
-        $('lastUpdated').textContent = D.lastUpdated;
-        $('tocTitle').textContent = D.tocTitle;
-        $('toc1').textContent = D.toc1; $('toc2').textContent = D.toc2; $('toc3').textContent = D.toc3;
-        $('toc4').textContent = D.toc4; $('toc5').textContent = D.toc5; $('toc6').textContent = D.toc6;
-        $('toc7').textContent = D.toc7; $('toc8').textContent = D.toc8; $('toc9').textContent = D.toc9;
-        $('t1Title').textContent = D.t1Title; $('t1Text').innerHTML = D.t1Text;
-        $('t2Title').textContent = D.t2Title; $('t2Text').innerHTML = D.t2Text;
-        $('t3Title').textContent = D.t3Title; $('t3Text').innerHTML = D.t3Text;
-        $('t4Title').textContent = D.t4Title; $('t4Text').innerHTML = D.t4Text;
-        $('alertInfo').textContent = D.alertInfo;
-        $('t5Title').textContent = D.t5Title; $('t5Text').innerHTML = D.t5Text;
-        $('t6Title').textContent = D.t6Title; $('t6Text').innerHTML = D.t6Text;
-        $('alertInfo2').textContent = D.alertInfo2;
-        $('t7Title').textContent = D.t7Title; $('t7Text').innerHTML = D.t7Text;
-        $('t8Title').textContent = D.t8Title; $('t8Text').innerHTML = D.t8Text;
-        $('t9Title').textContent = D.t9Title; $('t9Text').innerHTML = D.t9Text;
-        $('contactTitle').textContent = D.contactTitle;
-        $('contactDesc').textContent = D.contactDesc;
-        $('footHome').textContent = D.footHome;
-        $('footAbout').textContent = D.footAbout;
-        $('footPrivacy').textContent = D.footPrivacy;
-        $('footArchive').textContent = D.footArchive;
-        $('footMade').textContent = D.footMade;
-
+        /* العنوان */
         document.title = (l === 'ar' ? 'شروط الاستخدام' : 'Terms of Use') + ' | Chronos Capsule';
+
+        /* تحديث meta description */
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+            metaDesc.content = (l === 'ar')
+                ? 'شروط استخدام موقع Chronos Capsule — القواعد والالتزامات لاستخدام المنصة بأمان واحترام.'
+                : 'Terms of use for Chronos Capsule — rules and commitments for using the platform safely and respectfully.';
+        }
     }
 
     document.getElementById('termsLangToggle').addEventListener('click', () => {
-        applyLang(termsLang === 'ar' ? 'en' : 'ar');
+        applyLang(currentLang === 'ar' ? 'en' : 'ar');
     });
 
-    applyLang(termsLang);
+    /* تطبيق اللغة الحالية على أي حال */
+    applyLang(currentLang);
 })();
 </script>
 </body>
