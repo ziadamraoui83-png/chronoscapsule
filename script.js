@@ -141,8 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (e) {}
                 return { code: null };
             }
-            const isPriv = !!msg.arrivalISO;
-                        /* ✅ جلب user_id إن كان المستخدم مسجلاً */
+                        const isPriv = !!msg.arrivalISO;
+
+            /* ✅ جلب user_id من الجلسة */
             let userId = null;
             try {
                 const { data: sessionData } = await sb.auth.getSession();
@@ -987,7 +988,7 @@ scene.add(bottomLight);
         btn.disabled = true; btn.textContent = CCI18N.t('preparing');
 
         try {
-                        const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
+        const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
             launchMessage(country, text, author, mood);
              showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
 
