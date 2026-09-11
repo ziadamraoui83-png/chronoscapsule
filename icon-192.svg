@@ -1,26 +1,80 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" width="192" height="192">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="192" height="192" role="img" aria-label="Chronos Capsule">
   <defs>
-    <linearGradient id="capsuleGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#FAFCFF"/>
-      <stop offset="0.5" stop-color="#F4F8FF"/>
-      <stop offset="1" stop-color="#96A2BE"/>
-    </linearGradient>
-    <linearGradient id="ringGrad" x1="0" y1="0" x2="1" y2="1">
+    <clipPath id="ccFrame"><rect width="1024" height="1024" rx="229"/></clipPath>
+    <radialGradient id="ccAmb" cx="50%" cy="45%" r="58%">
+      <stop offset="0" stop-color="#0D1B2E"/>
+      <stop offset=".55" stop-color="#050D19"/>
+      <stop offset="1" stop-color="#010103"/>
+    </radialGradient>
+    <linearGradient id="ccRingGrad" gradientUnits="userSpaceOnUse" x1="843" y1="351" x2="181" y2="673">
       <stop offset="0" stop-color="#3AE1FF"/>
       <stop offset="1" stop-color="#D355FF"/>
     </linearGradient>
-    <radialGradient id="glowGrad" cx="0.5" cy="0.5" r="0.5">
-      <stop offset="0" stop-color="#3AE1FF" stop-opacity="0.4"/>
+    <linearGradient id="ccChrome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".40" stop-color="#F0F9FF"/>
+      <stop offset=".55" stop-color="#C6E7FF"/>
+      <stop offset=".78" stop-color="#9ED3F9"/>
+      <stop offset="1" stop-color="#7FBFF0"/>
+    </linearGradient>
+    <linearGradient id="ccSheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/>
+      <stop offset=".13" stop-color="#FFFFFF" stop-opacity=".07"/>
+      <stop offset=".34" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset=".74" stop-color="#DFF3FF" stop-opacity="0"/>
+      <stop offset="1" stop-color="#DFF3FF" stop-opacity=".38"/>
+    </linearGradient>
+    <radialGradient id="ccDotCore" cx="50%" cy="40%" r="62%">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset=".5" stop-color="#BDF6FF"/>
+      <stop offset="1" stop-color="#45DBFF"/>
+    </radialGradient>
+    <radialGradient id="ccDotGlow">
+      <stop offset="0" stop-color="#3AE1FF" stop-opacity=".9"/>
+      <stop offset=".38" stop-color="#3AE1FF" stop-opacity=".3"/>
       <stop offset="1" stop-color="#3AE1FF" stop-opacity="0"/>
     </radialGradient>
+    <clipPath id="ccHull"><rect x="420" y="280" width="184" height="472" rx="92"/></clipPath>
   </defs>
-  <rect width="192" height="192" rx="42" fill="#010103"/>
-  <circle cx="96" cy="96" r="80" fill="url(#glowGrad)"/>
-  <g transform="translate(96,96)">
-    <ellipse cx="0" cy="0" rx="72" ry="24" fill="none" stroke="url(#ringGrad)" stroke-width="3" transform="rotate(-22)"/>
-    <path d="M0,-58 C-18,-58 -26,-44 -26,-26 C-26,0 -10,10 -10,26 C-10,44 -18,58 0,58 C18,58 26,44 26,26 C26,10 10,0 10,-26 C10,-44 18,-58 0,-58 Z"
-          fill="none" stroke="url(#capsuleGrad)" stroke-width="5" stroke-linejoin="round"/>
-    <circle cx="0" cy="0" r="6" fill="#3AE1FF"/>
-    <circle cx="0" cy="0" r="12" fill="none" stroke="#3AE1FF" stroke-width="2" opacity="0.4"/>
+  <g clip-path="url(#ccFrame)">
+    <rect width="1024" height="1024" fill="#010103"/>
+    <rect width="1024" height="1024" fill="url(#ccAmb)"/>
+    <g fill="#FFFFFF">
+      <circle cx="120" cy="180" r="1.5" opacity=".5"/>
+      <circle cx="280" cy="90" r="1.2" opacity=".4"/>
+      <circle cx="450" cy="150" r="1.8" opacity=".6"/>
+      <circle cx="680" cy="120" r="1.3" opacity=".45"/>
+      <circle cx="850" cy="200" r="1.6" opacity=".55"/>
+      <circle cx="920" cy="380" r="1.4" opacity=".5"/>
+      <circle cx="780" cy="480" r="1.2" opacity=".4"/>
+      <circle cx="150" cy="420" r="1.5" opacity=".5"/>
+      <circle cx="80" cy="620" r="1.3" opacity=".45"/>
+      <circle cx="200" cy="780" r="1.7" opacity=".55"/>
+      <circle cx="420" cy="850" r="1.4" opacity=".5"/>
+      <circle cx="640" cy="820" r="1.5" opacity=".5"/>
+      <circle cx="820" cy="750" r="1.2" opacity=".4"/>
+      <circle cx="930" cy="620" r="1.6" opacity=".55"/>
+      <circle cx="70" cy="90" r="1.1" opacity=".35"/>
+      <circle cx="340" cy="290" r="1.3" opacity=".42"/>
+      <circle cx="700" cy="290" r="1.4" opacity=".48"/>
+      <circle cx="160" cy="340" r="1.2" opacity=".4"/>
+      <circle cx="880" cy="470" r="1.3" opacity=".45"/>
+      <circle cx="260" cy="600" r="1.1" opacity=".38"/>
+      <circle cx="500" cy="700" r="1.2" opacity=".4"/>
+      <circle cx="740" cy="680" r="1.3" opacity=".45"/>
+      <circle cx="380" cy="760" r="1.4" opacity=".48"/>
+      <circle cx="60" cy="500" r="1.2" opacity=".4"/>
+    </g>
+    <ellipse cx="512" cy="512" rx="368" ry="132" transform="rotate(-26 512 512)"
+             fill="none" stroke="url(#ccRingGrad)" stroke-width="11"/>
+    <g transform="rotate(10 512 516)">
+      <rect x="420" y="280" width="184" height="472" rx="92" fill="url(#ccChrome)"/>
+      <rect x="420" y="280" width="184" height="472" rx="92" fill="url(#ccSheen)"/>
+      <g clip-path="url(#ccHull)">
+        <line x1="410" y1="378" x2="614" y2="378" stroke="#7FB8E8" stroke-width="4" opacity=".55"/>
+      </g>
+      <circle cx="512" cy="280" r="62" fill="url(#ccDotGlow)"/>
+      <circle cx="512" cy="280" r="16" fill="url(#ccDotCore)"/>
+    </g>
   </g>
 </svg>
