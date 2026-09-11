@@ -465,3 +465,21 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
   .deep-btn{ padding:11px 16px; font-size:0.9rem }
   .deep-text{ font-size:1.02rem }
 }
+
+/* ═══ ترتيب الترويسة ═══ */
+.site-header {
+    flex-wrap: wrap;
+}
+
+/* زر اللغة — فصل بصري */
+.lang-toggle {
+    margin-inline-start: 8px;
+    border-color: rgba(139, 92, 246, 0.4) !important;
+    background: rgba(139, 92, 246, 0.12) !important;
+    color: #c4b5fd !important;
+}
+.lang-toggle:hover {
+    background: rgba(139, 92, 246, 0.25) !important;
+    border-color: #8b5cf6 !important;
+    color: #fff !important;
+}
