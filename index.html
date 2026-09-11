@@ -45,7 +45,42 @@
     <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/?lang=en">
     <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/">
 
+    <!-- ✅ Favicon كامل -->
     <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="icon" type="image/svg+xml" sizes="192x192" href="/icon-192.svg">
+    <link rel="icon" type="image/svg+xml" sizes="512x512" href="/icon-512.svg">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.svg">
+    <link rel="shortcut icon" href="/icon-192.svg">
+    <link rel="shortcut icon" href="/favicon.ico">
+
+    <!-- ✅ Schema.org — WebSite (يُخبر Google باسم الموقع) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Chronos Capsule",
+      "alternateName": ["كبسولة الزمن", "Chronos Capsule", "كبسولة الزمن الكونية"],
+      "url": "https://chronoscapsule.vercel.app/",
+      "description": "أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية.",
+      "inLanguage": ["ar", "en"],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Chronos Capsule",
+        "url": "https://chronoscapsule.vercel.app/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://chronoscapsule.vercel.app/icon-512.svg",
+          "width": 512,
+          "height": 512
+        }
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://chronoscapsule.vercel.app/archive.html?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -103,8 +138,6 @@
         .google-auth-btn.signed-in {
             padding: 4px 12px 4px 4px;
         }
-
-        /* ═══ الشعار الجديد ═══ */
         .cc-logo-wrap {
             display: inline-flex;
             align-items: center;
