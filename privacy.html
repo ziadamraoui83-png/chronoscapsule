@@ -17,8 +17,6 @@
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
         body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
         a,button{cursor:pointer}
-
-        /* ══ خلفية الفضاء ══ */
         body::before{content:'';position:fixed;inset:0;
             background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
                         radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
@@ -30,8 +28,6 @@
                 radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
                 radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
             z-index:0;pointer-events:none}
-
-        /* ══ الترويسة ══ */
         .page-header{position:sticky;top:0;z-index:50;
             background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
             border-bottom:1px solid rgba(255,255,255,.07);
@@ -48,11 +44,7 @@
         .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
             border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
         .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
-
-        /* ══ الصفحة ══ */
         .page{max-width:760px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
-
-        /* ══ البطل ══ */
         .hero{text-align:center;padding:20px 0 40px;position:relative}
         .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);
             width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);
@@ -60,10 +52,7 @@
         .hero-emoji{font-size:56px;margin-bottom:18px;
             filter:drop-shadow(0 0 20px rgba(139,92,246,.4));
             animation:floatEmoji 4s ease-in-out infinite}
-        @keyframes floatEmoji{
-            0%,100%{transform:translateY(0)}
-            50%{transform:translateY(-8px)}
-        }
+        @keyframes floatEmoji{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
         .hero-title{font-size:2.2rem;font-weight:900;margin-bottom:12px;line-height:1.2;
             background:linear-gradient(135deg,#a78bfa,#3b82f6,#3AE1FF);
             -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -72,11 +61,8 @@
             display:inline-flex;align-items:center;gap:6px;
             padding:5px 12px;background:rgba(139,92,246,.08);
             border:1px solid rgba(139,92,246,.2);border-radius:999px}
-
-        /* ══ فهرس المحتويات ══ */
         .toc{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);
-            border-radius:18px;padding:22px 26px;margin-bottom:24px;
-            backdrop-filter:blur(10px)}
+            border-radius:18px;padding:22px 26px;margin-bottom:24px;backdrop-filter:blur(10px)}
         .toc-title{font-size:13px;font-weight:900;color:#a78bfa;
             letter-spacing:0.12em;text-transform:uppercase;margin-bottom:14px;
             display:flex;align-items:center;gap:8px}
@@ -87,8 +73,6 @@
             transition:transform .3s ease;display:inline-block}
         .toc-list li a:hover{color:#fff}
         .toc-list li a:hover::before{transform:translateX(-4px)}
-
-        /* ══ البطاقات ══ */
         .card{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);
             border-radius:20px;padding:28px;margin-bottom:20px;
             backdrop-filter:blur(10px);transition:border-color .3s ease}
@@ -101,42 +85,37 @@
         .card-text p{margin-bottom:14px}
         .card-text p:last-child{margin-bottom:0}
         .card-text strong{color:#a78bfa;font-weight:700}
-        .card-text a{color:#3AE1FF;text-decoration:none;border-bottom:1px dashed rgba(58,225,255,.3);
-            transition:all .3s ease}
+        .card-text a{color:#3AE1FF;text-decoration:none;border-bottom:1px dashed rgba(58,225,255,.3);transition:all .3s ease}
         .card-text a:hover{color:#fff;border-bottom-color:#3AE1FF}
         .card-text ul{list-style:none;margin:14px 0;padding:0}
         .card-text ul li{padding:8px 0 8px 26px;position:relative;color:#cbd5e1;font-size:.93rem}
-        .card-text ul li::before{content:'✓';position:absolute;left:0;color:#34d399;
-            font-weight:900;font-size:14px}
-
-        /* ══ تنبيه ══ */
-        .alert{background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);
+        .card-text ul li::before{content:'✓';position:absolute;left:0;color:#34d399;font-weight:900;font-size:14px}
+        .alert{background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);
             border-radius:14px;padding:16px 20px;margin:16px 0;
             display:flex;gap:12px;align-items:flex-start}
         .alert-icon{font-size:20px;flex:none}
-        .alert-text{color:#fbbf24;font-size:13.5px;line-height:1.7}
-
-        /* ══ التواصل ══ */
+        .alert-text{color:#7dd3fc;font-size:13.5px;line-height:1.7}
         .contact-box{background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(59,130,246,.08));
             border:1px solid rgba(139,92,246,.3);border-radius:20px;
             padding:28px;text-align:center;margin-top:26px}
         .contact-title{font-size:1.1rem;font-weight:900;margin-bottom:8px}
         .contact-desc{font-size:.9rem;color:#94a3b8;margin-bottom:18px;line-height:1.7}
+        .contact-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
         .contact-btn{display:inline-flex;align-items:center;gap:8px;
             padding:11px 22px;background:linear-gradient(135deg,#6d28d9,#2563eb);
-            color:#fff;text-decoration:none;border-radius:12px;
-            font-size:13.5px;font-weight:700;transition:all .3s ease;
-            box-shadow:0 8px 24px rgba(99,102,241,.3)}
+            color:#fff;text-decoration:none;border-radius:12px;border:none;
+            font-family:inherit;font-size:13.5px;font-weight:700;transition:all .3s ease;
+            box-shadow:0 8px 24px rgba(99,102,241,.3);cursor:pointer}
         .contact-btn:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(99,102,241,.5)}
-
-        /* ══ التذييل ══ */
+        .contact-btn.secondary{background:rgba(139,92,246,.15);
+            border:1px solid rgba(139,92,246,.4);box-shadow:none}
+        .contact-btn.secondary:hover{background:rgba(139,92,246,.25);
+            box-shadow:0 8px 24px rgba(99,102,241,.2)}
         .page-footer{text-align:center;padding:30px 20px;color:#64748b;font-size:12.5px;
             border-top:1px solid rgba(255,255,255,.06);margin-top:40px}
         .footer-links{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-bottom:14px}
         .footer-links a{color:#a78bfa;text-decoration:none;transition:color .3s}
         .footer-links a:hover{color:#fff}
-
-        /* ══ جوال ══ */
         @media(max-width:600px){
             .page-header{padding:12px 16px}
             .page{padding:24px 16px 60px}
@@ -147,9 +126,8 @@
             .card-title{font-size:1.05rem}
             .toc{padding:18px 20px}
             .contact-box{padding:22px 18px}
+            .contact-actions{flex-direction:column;align-items:stretch}
         }
-
-        /* ══ تقليل الحركة ══ */
         @media (prefers-reduced-motion: reduce) {
             * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
             .hero-emoji { animation: none; }
@@ -158,7 +136,6 @@
 </head>
 <body>
 
-<!-- ══ الترويسة ══ -->
 <header class="page-header">
     <a href="index.html" class="header-logo">
         <span class="header-logo-icon">🚀</span>
@@ -173,14 +150,13 @@
     </div>
 </header>
 
-<!-- ══ المحتوى ══ -->
 <main class="page">
 
     <section class="hero">
         <div class="hero-emoji">🔒</div>
         <h1 class="hero-title" id="pageTitle">سياسة الخصوصية</h1>
         <p class="hero-subtitle" id="pageSubtitle">
-            نحن نحترم خصوصيتك ونحمي بياناتك. هذه الصفحة توضّح ما نجمعه، كيف نستخدمه، وكيف نحميه.
+            نحترم خصوصيتك ونحمي بياناتك. هذه الصفحة توضّح ما نجمعه، وكيف نستخدمه، وكيف نحميه.
         </p>
         <div class="hero-date">
             <span>📅</span>
@@ -188,7 +164,6 @@
         </div>
     </section>
 
-    <!-- ═══ فهرس المحتويات ═══ -->
     <nav class="toc">
         <div class="toc-title">
             <span>📋</span>
@@ -197,181 +172,77 @@
         <ul class="toc-list">
             <li><a href="#s1" id="toc1">المعلومات التي نجمعها</a></li>
             <li><a href="#s2" id="toc2">كيف نستخدم معلوماتك</a></li>
-            <li><a href="#s3" id="toc3">ملفات تعريف الارتباط (Cookies)</a></li>
+            <li><a href="#s3" id="toc3">ملفات تعريف الارتباط</a></li>
             <li><a href="#s4" id="toc4">خدمات الطرف الثالث</a></li>
             <li><a href="#s5" id="toc5">أمان البيانات</a></li>
             <li><a href="#s6" id="toc6">حقوقك</a></li>
             <li><a href="#s7" id="toc7">خصوصية الأطفال</a></li>
-            <li><a href="#s8" id="toc8">التغييرات على هذه السياسة</a></li>
+            <li><a href="#s8" id="toc8">تحديثات السياسة</a></li>
             <li><a href="#s9" id="toc9">تواصل معنا</a></li>
         </ul>
     </nav>
 
-    <!-- ═══ 1 ═══ -->
     <div class="card" id="s1">
-        <h2 class="card-title">
-            <span class="card-title-icon">📥</span>
-            <span id="s1Title">1. المعلومات التي نجمعها</span>
-        </h2>
-        <div class="card-text" id="s1Text">
-            <p><strong>لا نطلب منك أي معلومات شخصية إلزامية</strong> لاستخدام الموقع. جميع الكبسولات مجهولة افتراضيًا.</p>
-            <p>مع ذلك، نجمع الأنواع التالية من المعلومات:</p>
-            <ul>
-                <li><strong>نص الكبسولة:</strong> الذي تكتبه بإرادتك.</li>
-                <li><strong>الاسم أو اللقب:</strong> اختياري — إن كتبته.</li>
-                <li><strong>الدولة:</strong> لتحديد نقطة الانطلاق على الكوكب.</li>
-                <li><strong>الشعور (Mood):</strong> الذي تختاره لرسالتك.</li>
-                <li><strong>معرّف الجهاز (Device Hash):</strong> رقم عشوائي فريد يُولّد على جهازك، يُستخدم لمنع الإساءة وتحديد كبسولاتك.</li>
-                <li><strong>معلومات حساب Google (اختياري):</strong> إن سجّلت الدخول بحسابك — نحصل على اسمك، بريدك الإلكتروني، وصورتك فقط.</li>
-            </ul>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">📥</span><span id="s1Title">1. المعلومات التي نجمعها</span></h2>
+        <div class="card-text" id="s1Text"></div>
     </div>
 
-    <!-- ═══ 2 ═══ -->
     <div class="card" id="s2">
-        <h2 class="card-title">
-            <span class="card-title-icon">🎯</span>
-            <span id="s2Title">2. كيف نستخدم معلوماتك</span>
-        </h2>
-        <div class="card-text" id="s2Text">
-            <p>نستخدم المعلومات التي نجمعها للأغراض التالية <strong>فقط</strong>:</p>
-            <ul>
-                <li>عرض كبسولاتك الخاصة (إن كانت "خاصة" فلن يراها أحد).</li>
-                <li>عرض كبسولاتك العامة في الأرشيف العام.</li>
-                <li>منع الإساءة والرسائل المتكررة (Rate Limiting).</li>
-                <li>تحسين تجربة الموقع بشكل عام.</li>
-                <li>إحصائيات مجهولة (كم كبسولة، كم قراءة).</li>
-            </ul>
-            <div class="alert">
-                <span class="alert-icon">⚠️</span>
-                <div class="alert-text" id="alert2">لا نبيع معلوماتك، ولا نشاركها مع أي طرف ثالث لأغراض تجارية.</div>
-            </div>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">🎯</span><span id="s2Title">2. كيف نستخدم معلوماتك</span></h2>
+        <div class="card-text" id="s2Text"></div>
     </div>
 
-    <!-- ═══ 3 ═══ -->
     <div class="card" id="s3">
-        <h2 class="card-title">
-            <span class="card-title-icon">🍪</span>
-            <span id="s3Title">3. ملفات تعريف الارتباط (Cookies)</span>
-        </h2>
-        <div class="card-text" id="s3Text">
-            <p>نستخدم التقنيات التالية لتخزين بيانات محلية على جهازك:</p>
-            <ul>
-                <li><strong>LocalStorage:</strong> لتخزين معرّف جهازك، كبسولاتك، واختيار اللغة.</li>
-                <li><strong>Service Worker:</strong> لتمكين العمل بدون إنترنت (PWA).</li>
-                <li><strong>Cookies من Google Analytics:</strong> لإحصائيات مجهولة عن الزوار.</li>
-                <li><strong>Cookies من Google Auth:</strong> عند تسجيل الدخول (اختياري).</li>
-            </ul>
-            <p>يمكنك حذف هذه البيانات في أي وقت من إعدادات المتصفح.</p>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">🍪</span><span id="s3Title">3. ملفات تعريف الارتباط</span></h2>
+        <div class="card-text" id="s3Text"></div>
     </div>
 
-    <!-- ═══ 4 ═══ -->
     <div class="card" id="s4">
-        <h2 class="card-title">
-            <span class="card-title-icon">🔗</span>
-            <span id="s4Title">4. خدمات الطرف الثالث</span>
-        </h2>
-        <div class="card-text" id="s4Text">
-            <p>نستخدم الخدمات التالية لتشغيل الموقع:</p>
-            <ul>
-                <li><strong>Supabase:</strong> لتخزين الكبسولات. (<a href="https://supabase.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-                <li><strong>Vercel:</strong> لاستضافة الموقع. (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-                <li><strong>Google Analytics:</strong> لإحصائيات مجهولة. (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-                <li><strong>Google Sign-In:</strong> لتسجيل الدخول الاختياري. (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-                <li><strong>jsDelivr / Cloudflare:</strong> لتوصيل الملفات بسرعة. (<a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-            </ul>
-            <p>كل خدمة لها سياسة خصوصية مستقلة — ننصحك بمراجعتها.</p>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">🔗</span><span id="s4Title">4. خدمات الطرف الثالث</span></h2>
+        <div class="card-text" id="s4Text"></div>
     </div>
 
-    <!-- ═══ 5 ═══ -->
     <div class="card" id="s5">
-        <h2 class="card-title">
-            <span class="card-title-icon">🛡️</span>
-            <span id="s5Title">5. أمان البيانات</span>
-        </h2>
-        <div class="card-text" id="s5Text">
-            <p>نتّخذ الإجراءات التالية لحماية بياناتك:</p>
-            <ul>
-                <li><strong>اتصال مشفّر (HTTPS)</strong> في جميع الصفحات.</li>
-                <li><strong>Row Level Security (RLS)</strong> في قاعدة البيانات.</li>
-                <li><strong>حماية من XSS</strong> (تشفير المدخلات).</li>
-                <li><strong>حماية من Spam</strong> (فلتر كلمات + Rate Limiting).</li>
-                <li><strong>حماية من CSP</strong> (Content Security Policy).</li>
-            </ul>
-            <p>رغم ذلك، <strong>لا يوجد نظام آمن 100%</strong>. ننصحك بعدم كتابة معلومات شخصية حساسة (كلمات مرور، أرقام بطاقات بنكية) في الكبسولات.</p>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">🛡️</span><span id="s5Title">5. أمان البيانات</span></h2>
+        <div class="card-text" id="s5Text"></div>
     </div>
 
-    <!-- ═══ 6 ═══ -->
     <div class="card" id="s6">
-        <h2 class="card-title">
-            <span class="card-title-icon">⚖️</span>
-            <span id="s6Title">6. حقوقك</span>
-        </h2>
-        <div class="card-text" id="s6Text">
-            <p>لديك الحق في:</p>
-            <ul>
-                <li><strong>الوصول:</strong> معرفة ما هي البيانات المخزنة عنك.</li>
-                <li><strong>الحذف:</strong> حذف كبسولاتك في أي وقت (زر 🗑️).</li>
-                <li><strong>التصحيح:</strong> تعديل بياناتك.</li>
-                <li><strong>الاعتراض:</strong> على معالجة بياناتك.</li>
-                <li><strong>الانسحاب:</strong> من أي خدمة في أي وقت.</li>
-            </ul>
-            <p>لممارسة هذه الحقوق، تواصل معنا عبر البريد الإلكتروني أدناه.</p>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">⚖️</span><span id="s6Title">6. حقوقك</span></h2>
+        <div class="card-text" id="s6Text"></div>
     </div>
 
-    <!-- ═══ 7 ═══ -->
     <div class="card" id="s7">
-        <h2 class="card-title">
-            <span class="card-title-icon">👶</span>
-            <span id="s7Title">7. خصوصية الأطفال</span>
-        </h2>
-        <div class="card-text" id="s7Text">
-            <p>موقعنا مخصّص لمن عمرهم <strong>13 سنة أو أكثر</strong>.</p>
-            <p>لا نجمع معلومات من الأطفال دون 13 عامًا بشكل متعمد. إن كنت والدًا وتعتقد أن طفلك قدّم لنا معلومات، تواصل معنا لحذفها.</p>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">👶</span><span id="s7Title">7. خصوصية الأطفال</span></h2>
+        <div class="card-text" id="s7Text"></div>
     </div>
 
-    <!-- ═══ 8 ═══ -->
     <div class="card" id="s8">
-        <h2 class="card-title">
-            <span class="card-title-icon">📝</span>
-            <span id="s8Title">8. التغييرات على هذه السياسة</span>
-        </h2>
-        <div class="card-text" id="s8Text">
-            <p>قد نقوم بتحديث هذه السياسة من وقت لآخر. أي تغييرات جوهرية ستُعلن على الموقع.</p>
-            <p>استمرارك في استخدام الموقع بعد التغييرات يعني موافقتك على السياسة المُحدّثة.</p>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">📝</span><span id="s8Title">8. تحديثات السياسة</span></h2>
+        <div class="card-text" id="s8Text"></div>
     </div>
 
-    <!-- ═══ 9 ═══ -->
     <div class="card" id="s9">
-        <h2 class="card-title">
-            <span class="card-title-icon">✉️</span>
-            <span id="s9Title">9. تواصل معنا</span>
-        </h2>
-        <div class="card-text" id="s9Text">
-            <p>لأي سؤال حول سياسة الخصوصية، أو لممارسة حقوقك، تواصل معنا:</p>
-        </div>
+        <h2 class="card-title"><span class="card-title-icon">✉️</span><span id="s9Title">9. تواصل معنا</span></h2>
+        <div class="card-text" id="s9Text"></div>
     </div>
 
-    <!-- ═══ التواصل ═══ -->
     <div class="contact-box">
         <h2 class="contact-title" id="contactTitle">هل لديك سؤال؟</h2>
-        <p class="contact-desc" id="contactDesc">
-            نحن هنا للإجابة على أي استفسار حول خصوصيتك.
-        </p>
-        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ziadamraoui83@gmail.com" target="_blank" rel="noopener" class="contact-btn">
-            <span>✉️</span>
-            <span id="contactBtn">ziadamraoui83@gmail.com</span>
-        </a>
+        <p class="contact-desc" id="contactDesc">نحن هنا للإجابة على أي استفسار حول خصوصيتك.</p>
+        <div class="contact-actions">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=ziadamraoui83@gmail.com"
+               target="_blank" rel="noopener" class="contact-btn">
+                <span>✉️</span>
+                <span id="contactBtn">راسلنا عبر Gmail</span>
+            </a>
+            <button onclick="copyEmail(this)" class="contact-btn secondary" type="button">
+                <span>📋</span>
+                <span id="copyBtn">انسخ البريد</span>
+            </button>
+        </div>
     </div>
 
-    <!-- ═══ التذييل ═══ -->
     <footer class="page-footer">
         <div class="footer-links">
             <a href="index.html" id="footHome">الرئيسية</a>
@@ -379,12 +250,22 @@
             <a href="terms.html" id="footTerms">شروط الاستخدام</a>
             <a href="archive.html" id="footArchive">الأرشيف</a>
         </div>
-        <div>© 2026 Chronos Capsule — <span id="footMade">صُنع بـ ❤️ في الجزائر</span></div>
+        <div>© 2026 Chronos Capsule — <span id="footMade">منصة عالمية 🌍</span></div>
     </footer>
 
 </main>
 
 <script>
+function copyEmail(btn) {
+    const email = 'ziadamraoui83@gmail.com';
+    navigator.clipboard.writeText(email).then(() => {
+        const span = btn.querySelector('span:last-child');
+        const original = span.textContent;
+        span.textContent = '✅ تم النسخ!';
+        setTimeout(() => { span.textContent = original; }, 2000);
+    }).catch(() => { prompt('انسخ البريد:', email); });
+}
+
 (function(){
     'use strict';
 
@@ -398,39 +279,39 @@
         ar: {
             toggle: 'EN', back: 'العودة للكوكب',
             title: 'سياسة الخصوصية',
-            subtitle: 'نحن نحترم خصوصيتك ونحمي بياناتك. هذه الصفحة توضّح ما نجمعه، كيف نستخدمه، وكيف نحميه.',
+            subtitle: 'نحترم خصوصيتك ونحمي بياناتك. هذه الصفحة توضّح ما نجمعه، وكيف نستخدمه، وكيف نحميه.',
             lastUpdated: 'آخر تحديث: 11 سبتمبر 2026',
             tocTitle: 'فهرس المحتويات',
-            toc1: 'المعلومات التي نجمعها', toc2: 'كيف نستخدم معلوماتك', toc3: 'ملفات تعريف الارتباط (Cookies)',
-            toc4: 'خدمات الطرف الثالث', toc5: 'أمان البيانات', toc6: 'حقوقك', toc7: 'خصوصية الأطفال',
-            toc8: 'التغييرات على هذه السياسة', toc9: 'تواصل معنا',
+            toc1: 'المعلومات التي نجمعها', toc2: 'كيف نستخدم معلوماتك', toc3: 'ملفات تعريف الارتباط',
+            toc4: 'خدمات الطرف الثالث', toc5: 'أمان البيانات', toc6: 'حقوقك',
+            toc7: 'خصوصية الأطفال', toc8: 'تحديثات السياسة', toc9: 'تواصل معنا',
             s1Title: '1. المعلومات التي نجمعها',
-            s1Text: `<p><strong>لا نطلب منك أي معلومات شخصية إلزامية</strong> لاستخدام الموقع. جميع الكبسولات مجهولة افتراضيًا.</p>
+            s1Text: `<p>لا نطلب منك أي معلومات شخصية إلزامية. جميع الكبسولات مجهولة افتراضيًا.</p>
                 <p>مع ذلك، نجمع الأنواع التالية من المعلومات:</p>
                 <ul>
                     <li><strong>نص الكبسولة:</strong> الذي تكتبه بإرادتك.</li>
-                    <li><strong>الاسم أو اللقب:</strong> اختياري — إن كتبته.</li>
+                    <li><strong>الاسم أو اللقب:</strong> اختياري.</li>
                     <li><strong>الدولة:</strong> لتحديد نقطة الانطلاق على الكوكب.</li>
                     <li><strong>الشعور (Mood):</strong> الذي تختاره لرسالتك.</li>
-                    <li><strong>معرّف الجهاز (Device Hash):</strong> رقم عشوائي فريد يُولّد على جهازك، يُستخدم لمنع الإساءة وتحديد كبسولاتك.</li>
-                    <li><strong>معلومات حساب Google (اختياري):</strong> إن سجّلت الدخول بحسابك — نحصل على اسمك، بريدك الإلكتروني، وصورتك فقط.</li>
+                    <li><strong>معرّف الجهاز:</strong> رقم عشوائي فريد لمنع الإساءة.</li>
+                    <li><strong>معلومات Google (اختياري):</strong> إن سجّلت الدخول — نحصل على اسمك، بريدك، وصورتك فقط.</li>
                 </ul>`,
             s2Title: '2. كيف نستخدم معلوماتك',
-            s2Text: `<p>نستخدم المعلومات التي نجمعها للأغراض التالية <strong>فقط</strong>:</p>
+            s2Text: `<p>نستخدم المعلومات للأغراض التالية فقط:</p>
                 <ul>
                     <li>عرض كبسولاتك الخاصة (إن كانت "خاصة" فلن يراها أحد).</li>
-                    <li>عرض كبسولاتك العامة في الأرشيف العام.</li>
-                    <li>منع الإساءة والرسائل المتكررة (Rate Limiting).</li>
-                    <li>تحسين تجربة الموقع بشكل عام.</li>
+                    <li>عرض كبسولاتك العامة في الأرشيف.</li>
+                    <li>منع الإساءة والرسائل المتكررة.</li>
+                    <li>تحسين تجربة الموقع.</li>
                     <li>إحصائيات مجهولة (كم كبسولة، كم قراءة).</li>
-                </ul>`,
-            alert2: 'لا نبيع معلوماتك، ولا نشاركها مع أي طرف ثالث لأغراض تجارية.',
-            s3Title: '3. ملفات تعريف الارتباط (Cookies)',
+                </ul>
+                <div class="alert"><span class="alert-icon">💡</span><div class="alert-text">لا نبيع معلوماتك، ولا نشاركها مع أي طرف ثالث لأغراض تجارية.</div></div>`,
+            s3Title: '3. ملفات تعريف الارتباط',
             s3Text: `<p>نستخدم التقنيات التالية لتخزين بيانات محلية على جهازك:</p>
                 <ul>
-                    <li><strong>LocalStorage:</strong> لتخزين معرّف جهازك، كبسولاتك، واختيار اللغة.</li>
+                    <li><strong>LocalStorage:</strong> لتخزين معرّف جهازك واختيار اللغة.</li>
                     <li><strong>Service Worker:</strong> لتمكين العمل بدون إنترنت (PWA).</li>
-                    <li><strong>Cookies من Google Analytics:</strong> لإحصائيات مجهولة عن الزوار.</li>
+                    <li><strong>Cookies من Google Analytics:</strong> لإحصائيات مجهولة.</li>
                     <li><strong>Cookies من Google Auth:</strong> عند تسجيل الدخول (اختياري).</li>
                 </ul>
                 <p>يمكنك حذف هذه البيانات في أي وقت من إعدادات المتصفح.</p>`,
@@ -440,25 +321,24 @@
                     <li><strong>Supabase:</strong> لتخزين الكبسولات. (<a href="https://supabase.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
                     <li><strong>Vercel:</strong> لاستضافة الموقع. (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
                     <li><strong>Google Analytics:</strong> لإحصائيات مجهولة. (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-                    <li><strong>Google Sign-In:</strong> لتسجيل الدخول الاختياري. (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-                    <li><strong>jsDelivr / Cloudflare:</strong> لتوصيل الملفات بسرعة. (<a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
-                </ul>
-                <p>كل خدمة لها سياسة خصوصية مستقلة — ننصحك بمراجعتها.</p>`,
+                    <li><strong>Google Sign-In:</strong> لتسجيل الدخول. (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
+                    <li><strong>jsDelivr:</strong> لتوصيل الملفات بسرعة. (<a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">سياسة الخصوصية</a>)</li>
+                </ul>`,
             s5Title: '5. أمان البيانات',
             s5Text: `<p>نتّخذ الإجراءات التالية لحماية بياناتك:</p>
                 <ul>
-                    <li><strong>اتصال مشفّر (HTTPS)</strong> في جميع الصفحات.</li>
-                    <li><strong>Row Level Security (RLS)</strong> في قاعدة البيانات.</li>
-                    <li><strong>حماية من XSS</strong> (تشفير المدخلات).</li>
-                    <li><strong>حماية من Spam</strong> (فلتر كلمات + Rate Limiting).</li>
-                    <li><strong>حماية من CSP</strong> (Content Security Policy).</li>
+                    <li>اتصال مشفّر (HTTPS) في جميع الصفحات.</li>
+                    <li>Row Level Security (RLS) في قاعدة البيانات.</li>
+                    <li>حماية من XSS (تشفير المدخلات).</li>
+                    <li>حماية من Spam (فلتر كلمات + Rate Limiting).</li>
+                    <li>Content Security Policy (CSP).</li>
                 </ul>
-                <p>رغم ذلك، <strong>لا يوجد نظام آمن 100%</strong>. ننصحك بعدم كتابة معلومات شخصية حساسة (كلمات مرور، أرقام بطاقات بنكية) في الكبسولات.</p>`,
+                <p>رغم ذلك، لا يوجد نظام آمن 100%. ننصحك بعدم كتابة معلومات شخصية حساسة (كلمات مرور، أرقام بطاقات بنكية) في الكبسولات.</p>`,
             s6Title: '6. حقوقك',
             s6Text: `<p>لديك الحق في:</p>
                 <ul>
                     <li><strong>الوصول:</strong> معرفة ما هي البيانات المخزنة عنك.</li>
-                    <li><strong>الحذف:</strong> حذف كبسولاتك في أي وقت (زر 🗑️).</li>
+                    <li><strong>الحذف:</strong> حذف كبسولاتك في أي وقت.</li>
                     <li><strong>التصحيح:</strong> تعديل بياناتك.</li>
                     <li><strong>الاعتراض:</strong> على معالجة بياناتك.</li>
                     <li><strong>الانسحاب:</strong> من أي خدمة في أي وقت.</li>
@@ -466,4 +346,151 @@
                 <p>لممارسة هذه الحقوق، تواصل معنا عبر البريد الإلكتروني أدناه.</p>`,
             s7Title: '7. خصوصية الأطفال',
             s7Text: `<p>موقعنا مخصّص لمن عمرهم <strong>13 سنة أو أكثر</strong>.</p>
-                <p>لا نجمع معلومات من الأطفال دون 13 عامًا بشكل متعمد. إن كنت والدًا وتعتقد أن طفلك قدّم لنا معلومات، تواصل
+                <p>لا نجمع معلومات من الأطفال دون 13 عامًا بشكل متعمد. إن كنت والدًا وتعتقد أن طفلك قدّم لنا معلومات، تواصل معنا لحذفها.</p>`,
+            s8Title: '8. تحديثات السياسة',
+            s8Text: `<p>قد نقوم بتحديث هذه السياسة من وقت لآخر. أي تغييرات جوهرية ستُعلن على الموقع.</p>
+                <p>استمرارك في استخدام الموقع بعد التغييرات يعني موافقتك على السياسة المُحدّثة.</p>`,
+            s9Title: '9. تواصل معنا',
+            s9Text: '<p>لأي سؤال حول سياسة الخصوصية، أو لممارسة حقوقك، تواصل معنا:</p>',
+            contactTitle: 'هل لديك سؤال؟',
+            contactDesc: 'نحن هنا للإجابة على أي استفسار حول خصوصيتك.',
+            contactBtn: 'راسلنا عبر Gmail',
+            copyBtn: 'انسخ البريد',
+            footHome: 'الرئيسية', footAbout: 'من نحن',
+            footTerms: 'شروط الاستخدام', footArchive: 'الأرشيف',
+            footMade: 'منصة عالمية 🌍'
+        },
+        en: {
+            toggle: 'عربي', back: 'Back to Planet',
+            title: 'Privacy Policy',
+            subtitle: 'We respect your privacy and protect your data. This page explains what we collect, how we use it, and how we protect it.',
+            lastUpdated: 'Last updated: September 11, 2026',
+            tocTitle: 'Table of Contents',
+            toc1: 'Information We Collect', toc2: 'How We Use It', toc3: 'Cookies',
+            toc4: 'Third-Party Services', toc5: 'Data Security', toc6: 'Your Rights',
+            toc7: 'Children\'s Privacy', toc8: 'Policy Updates', toc9: 'Contact Us',
+            s1Title: '1. Information We Collect',
+            s1Text: `<p>We don't require any mandatory personal information. All capsules are anonymous by default.</p>
+                <p>However, we collect the following types of information:</p>
+                <ul>
+                    <li><strong>Capsule text:</strong> that you voluntarily write.</li>
+                    <li><strong>Name or alias:</strong> optional.</li>
+                    <li><strong>Country:</strong> to determine the launch point on the planet.</li>
+                    <li><strong>Mood:</strong> that you choose for your message.</li>
+                    <li><strong>Device Hash:</strong> a unique random ID to prevent abuse.</li>
+                    <li><strong>Google info (optional):</strong> if you sign in — we get your name, email, and picture only.</li>
+                </ul>`,
+            s2Title: '2. How We Use It',
+            s2Text: `<p>We use the information only for the following purposes:</p>
+                <ul>
+                    <li>Displaying your private capsules (if "private" no one can see them).</li>
+                    <li>Displaying your public capsules in the archive.</li>
+                    <li>Preventing abuse and spam.</li>
+                    <li>Improving the site experience.</li>
+                    <li>Anonymous statistics (capsule count, reads).</li>
+                </ul>
+                <div class="alert"><span class="alert-icon">💡</span><div class="alert-text">We never sell your information, nor share it with third parties for commercial purposes.</div></div>`,
+            s3Title: '3. Cookies',
+            s3Text: `<p>We use the following technologies to store local data on your device:</p>
+                <ul>
+                    <li><strong>LocalStorage:</strong> to store your device ID and language choice.</li>
+                    <li><strong>Service Worker:</strong> to enable offline work (PWA).</li>
+                    <li><strong>Google Analytics cookies:</strong> for anonymous statistics.</li>
+                    <li><strong>Google Auth cookies:</strong> when signing in (optional).</li>
+                </ul>
+                <p>You can delete this data anytime from your browser settings.</p>`,
+            s4Title: '4. Third-Party Services',
+            s4Text: `<p>We use the following services to run the site:</p>
+                <ul>
+                    <li><strong>Supabase:</strong> for storing capsules. (<a href="https://supabase.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>)</li>
+                    <li><strong>Vercel:</strong> for hosting. (<a href="https://vercel.com/legal/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a>)</li>
+                    <li><strong>Google Analytics:</strong> for anonymous statistics. (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>)</li>
+                    <li><strong>Google Sign-In:</strong> for sign-in. (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Privacy Policy</a>)</li>
+                    <li><strong>jsDelivr:</strong> for fast file delivery. (<a href="https://www.jsdelivr.com/privacy-policy-jsdelivr-net" target="_blank" rel="noopener">Privacy Policy</a>)</li>
+                </ul>`,
+            s5Title: '5. Data Security',
+            s5Text: `<p>We take the following measures to protect your data:</p>
+                <ul>
+                    <li>Encrypted connection (HTTPS) on all pages.</li>
+                    <li>Row Level Security (RLS) in the database.</li>
+                    <li>XSS protection (input encoding).</li>
+                    <li>Spam protection (word filter + Rate Limiting).</li>
+                    <li>Content Security Policy (CSP).</li>
+                </ul>
+                <p>However, no system is 100% secure. We advise you not to write sensitive personal information (passwords, credit card numbers) in capsules.</p>`,
+            s6Title: '6. Your Rights',
+            s6Text: `<p>You have the right to:</p>
+                <ul>
+                    <li><strong>Access:</strong> know what data is stored about you.</li>
+                    <li><strong>Deletion:</strong> delete your capsules anytime.</li>
+                    <li><strong>Correction:</strong> edit your data.</li>
+                    <li><strong>Objection:</strong> to the processing of your data.</li>
+                    <li><strong>Withdrawal:</strong> from any service at any time.</li>
+                </ul>
+                <p>To exercise these rights, contact us via email below.</p>`,
+            s7Title: '7. Children\'s Privacy',
+            s7Text: `<p>Our site is for those <strong>13 years or older</strong>.</p>
+                <p>We don't knowingly collect information from children under 13. If you're a parent and believe your child provided us with information, contact us to delete it.</p>`,
+            s8Title: '8. Policy Updates',
+            s8Text: `<p>We may update this policy from time to time. Any substantial changes will be announced on the site.</p>
+                <p>Your continued use of the site after changes means you accept the updated policy.</p>`,
+            s9Title: '9. Contact Us',
+            s9Text: '<p>For any privacy question or to exercise your rights, contact us:</p>',
+            contactTitle: 'Have a question?',
+            contactDesc: 'We\'re here to answer any inquiry about your privacy.',
+            contactBtn: 'Contact via Gmail',
+            copyBtn: 'Copy email',
+            footHome: 'Home', footAbout: 'About',
+            footTerms: 'Terms of Use', footArchive: 'Archive',
+            footMade: 'Global platform 🌍'
+        }
+    };
+
+    function applyLang(l) {
+        privLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+        const D = LANGS[l] || LANGS.ar;
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+        const $ = id => document.getElementById(id);
+
+        $('privLangToggle').textContent = D.toggle;
+        $('backLinkText').textContent = D.back;
+        $('pageTitle').textContent = D.title;
+        $('pageSubtitle').textContent = D.subtitle;
+        $('lastUpdated').textContent = D.lastUpdated;
+        $('tocTitle').textContent = D.tocTitle;
+        $('toc1').textContent = D.toc1; $('toc2').textContent = D.toc2; $('toc3').textContent = D.toc3;
+        $('toc4').textContent = D.toc4; $('toc5').textContent = D.toc5; $('toc6').textContent = D.toc6;
+        $('toc7').textContent = D.toc7; $('toc8').textContent = D.toc8; $('toc9').textContent = D.toc9;
+        $('s1Title').textContent = D.s1Title; $('s1Text').innerHTML = D.s1Text;
+        $('s2Title').textContent = D.s2Title; $('s2Text').innerHTML = D.s2Text;
+        $('s3Title').textContent = D.s3Title; $('s3Text').innerHTML = D.s3Text;
+        $('s4Title').textContent = D.s4Title; $('s4Text').innerHTML = D.s4Text;
+        $('s5Title').textContent = D.s5Title; $('s5Text').innerHTML = D.s5Text;
+        $('s6Title').textContent = D.s6Title; $('s6Text').innerHTML = D.s6Text;
+        $('s7Title').textContent = D.s7Title; $('s7Text').innerHTML = D.s7Text;
+        $('s8Title').textContent = D.s8Title; $('s8Text').innerHTML = D.s8Text;
+        $('s9Title').textContent = D.s9Title; $('s9Text').innerHTML = D.s9Text;
+        $('contactTitle').textContent = D.contactTitle;
+        $('contactDesc').textContent = D.contactDesc;
+        $('contactBtn').textContent = D.contactBtn;
+        $('copyBtn').textContent = D.copyBtn;
+        $('footHome').textContent = D.footHome;
+        $('footAbout').textContent = D.footAbout;
+        $('footTerms').textContent = D.footTerms;
+        $('footArchive').textContent = D.footArchive;
+        $('footMade').textContent = D.footMade;
+
+        document.title = (l === 'ar' ? 'سياسة الخصوصية' : 'Privacy Policy') + ' | Chronos Capsule';
+    }
+
+    document.getElementById('privLangToggle').addEventListener('click', () => {
+        applyLang(privLang === 'ar' ? 'en' : 'ar');
+    });
+
+    applyLang(privLang);
+})();
+</script>
+</body>
+</html>
