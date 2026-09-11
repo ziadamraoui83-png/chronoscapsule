@@ -8,7 +8,6 @@
     <meta name="theme-color" content="#010103">
     <meta name="robots" content="noindex, follow">
 
-    <!-- ✅ Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -17,7 +16,7 @@
       gtag('config', 'G-Z872SS657T');
     </script>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
@@ -53,6 +52,8 @@
         .page{max-width:760px;margin:0 auto;padding:34px 20px 80px;min-height:calc(100vh - 56px);position:relative;z-index:1}
         .page-title{font-size:1.7rem;font-weight:900;color:#fff;margin-bottom:4px}
         .page-subtitle{font-size:.88rem;color:#64748b;margin-bottom:26px}
+
+        /* صندوق المفتاح */
         .code-box{background:rgba(15,23,42,.6);border:1px solid rgba(139,92,246,.3);border-radius:16px;
             padding:18px 20px;margin-bottom:22px;backdrop-filter:blur(8px)}
         .code-box-title{font-size:14px;font-weight:700;color:#a78bfa;margin-bottom:12px;
@@ -68,7 +69,8 @@
             cursor:pointer;transition:transform .25s,box-shadow .25s;white-space:nowrap;
             display:inline-flex;align-items:center;gap:6px}
         .code-box-row button:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(99,102,241,.4)}
-        .code-box-row button:active{transform:translateY(0)}
+
+        /* فلتر وبحث */
         .filter-bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:20px}
         .search-input{flex:1;min-width:180px;padding:10px 14px;background:rgba(15,23,42,.6);
             border:1px solid rgba(255,255,255,.15);border-radius:12px;color:#fff;font-size:.9rem;outline:none;
@@ -80,9 +82,11 @@
             border:1px solid rgba(255,255,255,.15);background:rgba(15,23,42,.6);color:#94a3b8;transition:all .3s}
         .filter-chip:hover{border-color:#8b5cf6;color:#fff}
         .filter-chip.active{background:rgba(139,92,246,.25);border-color:#8b5cf6;color:#fff}
+
+        /* بطاقات الكبسولات */
         .capsule-list{display:flex;flex-direction:column;gap:14px}
         .cap-card{background:rgba(15,23,42,.65);border:1px solid rgba(255,255,255,.1);border-radius:16px;
-            padding:20px 22px;backdrop-filter:blur(10px);transition:border-color .3s,transform .3s,box-shadow .3s}
+            padding:20px 22px;backdrop-filter:blur(10px);transition:border-color .3s,transform .3s,box-shadow .3s;position:relative}
         .cap-card:hover{border-color:rgba(139,92,246,.5);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.3)}
         .cap-card.in-orbit{border-inline-start:3px solid #fbbf24}
         .cap-card.arrived{border-inline-start:3px solid #34d399}
@@ -100,14 +104,26 @@
         .cap-countdown{font-size:13px;color:#fbbf24;margin-top:10px;direction:ltr;
             font-family:monospace;background:rgba(251,191,36,.06);border-radius:8px;padding:6px 10px;display:inline-block}
         .cap-countdown.done-label{color:#34d399;background:rgba(52,211,153,.06)}
-        .cap-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+        .cap-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center}
         .btn-share{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;
             background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:#60a5fa;transition:all .3s}
         .btn-share:hover{background:rgba(59,130,246,.25);color:#fff}
         .btn-copy-code{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;
             background:rgba(139,92,246,.1);border:1px solid rgba(139,92,246,.3);color:#a78bfa;transition:all .3s}
         .btn-copy-code:hover{background:rgba(139,92,246,.25);color:#fff}
-        /* ══ أزرار المشاركة الاجتماعية ══ */
+
+        /* ✅ زر الحذف */
+        .btn-delete{
+            padding:6px 12px;border-radius:8px;font-size:12px;font-weight:700;
+            background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);color:#f87171;
+            transition:all .3s;margin-inline-start:auto;
+            display:inline-flex;align-items:center;gap:5px;
+        }
+        .btn-delete:hover{background:rgba(239,68,68,.25);color:#fff;border-color:#ef4444}
+        .btn-delete:disabled{opacity:.5;cursor:not-allowed}
+        .btn-delete.confirming{background:#ef4444;color:#fff;border-color:#ef4444}
+
+        /* أزرار المشاركة الاجتماعية */
         .social-row{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;align-items:center;
             padding-top:10px;border-top:1px dashed rgba(255,255,255,.08)}
         .social-label{font-size:11px;color:#64748b;margin-inline-end:4px}
@@ -125,13 +141,15 @@
         .social-btn.telegram:hover{background:#0088cc;color:#fff;transform:translateY(-2px)}
         .social-btn.copy-link{background:rgba(139,92,246,.12);color:#a78bfa;border-color:rgba(139,92,246,.3)}
         .social-btn.copy-link:hover{background:#8b5cf6;color:#fff;transform:translateY(-2px)}
-        /* ══ زر إنشاء البطاقة ══ */
+
+        /* زر إنشاء البطاقة */
         .card-actions-row{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
         .btn-create-card{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;
             font-family:inherit;background:linear-gradient(135deg,rgba(139,92,246,.15),rgba(59,130,246,.15));
             border:1px solid rgba(139,92,246,.4);color:#c4b5fd;cursor:pointer;transition:all .3s ease}
         .btn-create-card:hover{background:linear-gradient(135deg,#6d28d9,#2563eb);color:#fff;
             border-color:transparent;transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,.4)}
+
         @keyframes capsuleArrive{
             0%{transform:scale(.8) translateY(-20px);opacity:0}
             60%{transform:scale(1.04) translateY(4px);opacity:1}
@@ -143,6 +161,12 @@
             50%{box-shadow:0 0 0 14px rgba(52,211,153,0)}}
         .cap-card.arrived.just-arrived{animation:capsuleArrive .7s cubic-bezier(.34,1.56,.64,1) forwards,
             openPulse 1.2s ease .5s}
+
+        @keyframes cardFadeOut{
+            0%{opacity:1;transform:scale(1)}
+            100%{opacity:0;transform:scale(.9) translateX(-30px)}}
+        .cap-card.deleting{animation:cardFadeOut .4s ease forwards}
+
         .empty-state{text-align:center;padding:70px 20px;color:#94a3b8}
         .empty-state .ico{font-size:52px;margin-bottom:16px;opacity:.7}
         .empty-state p{margin-bottom:22px;line-height:1.7}
@@ -150,12 +174,14 @@
             color:#fff;border-radius:12px;text-decoration:none;font-weight:700;transition:transform .3s}
         .empty-state a:hover{transform:translateY(-3px)}
         .hint{font-size:12px;color:#64748b;margin-top:12px;line-height:1.6}
+
         .cc-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
             background:rgba(15,23,42,.95);border:1px solid rgba(139,92,246,.4);border-radius:14px;
             padding:12px 20px;display:flex;align-items:center;gap:10px;font-size:14px;
             backdrop-filter:blur(16px);z-index:9999;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);
             pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
         .cc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
         @media(max-width:600px){
             .page-header{padding:12px 16px}
             .page{padding:24px 14px 60px}
@@ -188,7 +214,7 @@
 
 <main class="page">
     <h1 class="page-title" id="pageTitle">🛸 كبسولاتي</h1>
-    <p class="page-subtitle" id="pageSubtitle">جميع الكبسولات المرتبطة بجهازك</p>
+    <p class="page-subtitle" id="pageSubtitle">جميع الكبسولات المرتبطة بجهازك أو حسابك</p>
 
     <div class="code-box">
         <div class="code-box-title">🔑 <span id="codeBoxTitle">افتح كبسولة بالمفتاح السري</span></div>
@@ -234,7 +260,6 @@
         '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
     }[c]));
 
-    /* ═══ GA4 Event Tracker ═══ */
     function trackEvent(eventName, params = {}) {
         try { if (typeof gtag === 'function') gtag('event', eventName, params); } catch (e) {}
     }
@@ -247,15 +272,14 @@
         if (urlLang === 'ar' || urlLang === 'en') capLang = urlLang;
     } catch (e) {}
 
-    /* ═══ الإشعار ═══ */
+    let currentUserId = null;
+
     let _toastTimer;
     function toast(msg, ico = '🚀'){
         const el = $('capToast');
         if (!el) return;
-        const icoEl = el.querySelector('.ico');
-        const txtEl = el.querySelector('.txt');
-        if (icoEl && txtEl) { icoEl.textContent = ico; txtEl.textContent = msg; }
-        else { el.textContent = ico + ' ' + msg; }
+        el.querySelector('.ico').textContent = ico;
+        el.querySelector('.txt').textContent = msg;
         el.classList.add('show');
         clearTimeout(_toastTimer);
         _toastTimer = setTimeout(() => el.classList.remove('show'), 3500);
@@ -298,7 +322,6 @@
         $('emptyState').style.display = visible === 0 ? 'block' : 'none';
     }
 
-    /* ═══ روابط المشاركة الاجتماعية ═══ */
     function buildSocialRow(code, text) {
         const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
         const shortText = text.slice(0, 100);
@@ -321,7 +344,6 @@
             </div>`;
     }
 
-    /* ═══ زر إنشاء البطاقة ═══ */
     function buildCardButton(c) {
         const codeVal = c.o_code || c.code || '';
         if (!codeVal) return '';
@@ -366,7 +388,41 @@
             .catch(() => toast(text, '🔗'));
     }
 
-    /* ═══ بطاقة كبسولة ═══ */
+    /* ═══ حذف كبسولة ═══ */
+    async function deleteCapsule(capId, cardEl) {
+        if (!capId || !sb) return false;
+
+        const deviceHash = localStorage.getItem('cc_device') || '';
+
+        try {
+            const { data, error } = await sb.rpc('delete_capsule', {
+                p_id: capId,
+                p_device_hash: deviceHash,
+                p_user_id: currentUserId
+            });
+
+            if (error || !data) {
+                toast(capLang === 'ar' ? 'تعذر حذف الكبسولة' : 'Failed to delete capsule', '⚠️');
+                return false;
+            }
+
+            /* رسوم متحركة للحذف */
+            cardEl.classList.add('deleting');
+            setTimeout(() => {
+                cardEl.remove();
+                allCards = allCards.filter(c => c.el !== cardEl);
+                applyFilters();
+            }, 400);
+
+            toast(capLang === 'ar' ? 'تم حذف الكبسولة' : 'Capsule deleted', '🗑️');
+            trackEvent('capsule_deleted', { lang: capLang });
+            return true;
+        } catch (e) {
+            toast(capLang === 'ar' ? 'حدث خطأ' : 'Something went wrong', '⚠️');
+            return false;
+        }
+    }
+
     function card(c, animate){
         animate = !!animate;
         const arrived = !c.arrival_at || new Date(c.arrival_at) <= new Date();
@@ -375,6 +431,7 @@
         const el = document.createElement('div');
         el.className = 'cap-card ' + (arrived ? 'arrived' : 'in-orbit') + (animate ? ' just-arrived' : '');
         const codeVal = c.o_code || c.code || '';
+        const capId = c.o_id || c.id || null;
 
         const lockedHtml = !arrived
             ? `<div class="cap-text locked">🔒 ${isAr ? 'الرسالة مقفلة حتى موعد الوصول' : 'Message locked until arrival'}</div>`
@@ -391,6 +448,7 @@
         const readsLabel = isAr ? 'قراءة' : 'reads';
         const copyLabel = isAr ? '🔑 نسخ المفتاح' : '🔑 Copy key';
         const shareLabel = isAr ? '🔗 مشاركة' : '🔗 Share';
+        const deleteLabel = isAr ? 'حذف' : 'Delete';
 
         el.innerHTML = `
             <div class="cap-top">
@@ -407,6 +465,7 @@
             <div class="cap-actions">
                 ${codeVal ? `<button class="btn-copy-code" data-code="${esc(codeVal)}">${copyLabel}</button>` : ''}
                 ${arrived && codeVal ? `<button class="btn-share" data-code="${esc(codeVal)}" data-text="${esc(rawText.slice(0, 80))}">${shareLabel}</button>` : ''}
+                ${capId ? `<button class="btn-delete" data-delete-id="${capId}" type="button">🗑️ ${deleteLabel}</button>` : ''}
             </div>
             ${arrived && codeVal ? buildSocialRow(codeVal, rawText) : ''}
             ${buildCardButton(c)}`;
@@ -414,7 +473,6 @@
         el.querySelector('.btn-copy-code')?.addEventListener('click', () => copyCode(codeVal));
         el.querySelector('.btn-share')?.addEventListener('click', () => shareCapsule(codeVal, rawText));
 
-        /* تتبّع المشاركة الاجتماعية */
         el.querySelectorAll('[data-social]').forEach(btn => {
             btn.addEventListener('click', () => {
                 trackEvent('capsule_shared', {
@@ -424,7 +482,6 @@
             });
         });
 
-        /* نسخ الرابط */
         const copyBtn = el.querySelector('[data-copy-url]');
         if (copyBtn) {
             copyBtn.addEventListener('click', () => {
@@ -434,7 +491,6 @@
             });
         }
 
-        /* زر إنشاء البطاقة */
         const cardBtn = el.querySelector('.btn-create-card');
         if (cardBtn) {
             cardBtn.addEventListener('click', () => {
@@ -455,12 +511,36 @@
             });
         }
 
+        /* ✅ زر الحذف - مع تأكيد بالنقر مرتين */
+        const deleteBtn = el.querySelector('.btn-delete');
+        if (deleteBtn) {
+            let confirmTimeout = null;
+            deleteBtn.addEventListener('click', async () => {
+                if (!deleteBtn.classList.contains('confirming')) {
+                    /* أول نقرة: اطلب تأكيدًا */
+                    deleteBtn.classList.add('confirming');
+                    deleteBtn.innerHTML = capLang === 'ar' ? '⚠️ متأكد؟' : '⚠️ Sure?';
+                    confirmTimeout = setTimeout(() => {
+                        deleteBtn.classList.remove('confirming');
+                        deleteBtn.innerHTML = `🗑️ ${deleteLabel}`;
+                    }, 3000);
+                    return;
+                }
+
+                /* ثاني نقرة: تأكيد */
+                clearTimeout(confirmTimeout);
+                deleteBtn.disabled = true;
+                deleteBtn.innerHTML = '⏳ ...';
+
+                await deleteCapsule(capId, el);
+            });
+        }
+
         if (animate) setTimeout(() => el.classList.remove('just-arrived'), 1500);
 
         return {el, arrived, text: rawText};
     }
 
-    /* ═══ العد التنازلي الحي ═══ */
     setInterval(() => {
         document.querySelectorAll('.cap-countdown[data-arrival]').forEach(el => {
             const cd = countdown(el.dataset.arrival);
@@ -469,31 +549,35 @@
         });
     }, 1000);
 
-    /* ═══ تحميل كبسولاتي ═══ */
+    /* ═══ تحميل كبسولاتي — جهاز + حساب ═══ */
     async function loadMine(){
         const list = $('capList');
         list.innerHTML = '';
         allCards = [];
         let items = [];
 
-        if (sb){
-            const dev = localStorage.getItem('cc_device');
-            if (dev){
-                try {
-                    const { data, error } = await sb.rpc('get_my_capsules', { p_device_hash: dev });
-                    if (!error && data) items = data.map(r => ({
-                        o_code: r.o_code,
-                        o_text: r.o_text,
-                        o_mood: r.o_mood,
-                        o_country: r.o_country,
-                        arrival_at: r.o_arrival_at,
-                        created_at: r.o_created,
-                        o_reads: r.o_reads
-                    }));
-                } catch (e) {}
-            }
+        /* جلب user_id من الجلسة */
+        if (sb) {
+            try {
+                const { data: sessionData } = await sb.auth.getSession();
+                if (sessionData && sessionData.session && sessionData.session.user) {
+                    currentUserId = sessionData.session.user.id;
+                }
+            } catch (e) {}
         }
 
+        if (sb){
+            const dev = localStorage.getItem('cc_device');
+            try {
+                const { data, error } = await sb.rpc('get_my_capsules', {
+                    p_device_hash: dev || null,
+                    p_user_id: currentUserId
+                });
+                if (!error && data) items = data;
+            } catch (e) {}
+        }
+
+        /* fallback: localStorage */
         if (!items.length){
             try {
                 items = (JSON.parse(localStorage.getItem('chronos_capsules_v1')) || [])
@@ -510,7 +594,7 @@
 
         if (!items.length){ $('emptyState').style.display = 'block'; return; }
 
-        items.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+        items.sort((a, b) => new Date(b.o_created || b.created_at) - new Date(a.o_created || a.created_at));
         items.forEach(c => {
             const cardObj = card(c);
             allCards.push(cardObj);
@@ -519,7 +603,6 @@
         applyFilters();
     }
 
-    /* ═══ فتح كبسولة بالمفتاح ═══ */
     async function openByCode(code){
         const trimmed = String(code || '').trim();
         if (!trimmed){ toast(capLang === 'ar' ? 'أدخل المفتاح أولاً' : 'Enter the key first', '⚠️'); return; }
@@ -534,6 +617,7 @@
             const r = data[0];
             const list = $('capList');
             const cardObj = card({
+                o_id: r.o_id,
                 o_code: r.o_code,
                 o_text: r.o_text,
                 o_mood: r.o_mood,
@@ -581,11 +665,10 @@
         });
     });
 
-    /* ═══ الترجمة ═══ */
     const LANGS = {
         ar: {
             toggle: 'EN', back: 'العودة للكوكب', title: '🛸 كبسولاتي',
-            subtitle: 'جميع الكبسولات المرتبطة بجهازك',
+            subtitle: 'جميع الكبسولات المرتبطة بجهازك أو حسابك',
             codeBoxTitle: 'افتح كبسولة بالمفتاح السري',
             openBtn: 'فتح',
             codeHint: 'أدخل مفتاح الكبسولة الذي وصلك — يعمل حتى قبل موعد الوصول',
@@ -598,7 +681,7 @@
         },
         en: {
             toggle: 'AR', back: '← Back to Planet', title: '🛸 My Capsules',
-            subtitle: 'All capsules linked to your device',
+            subtitle: 'All capsules linked to your device or account',
             codeBoxTitle: 'Open a capsule with secret key',
             openBtn: 'Open',
             codeHint: 'Enter the capsule key you received — works even before arrival',
@@ -648,6 +731,13 @@
     }
 
     $('capLangToggle').addEventListener('click', () => applyCapLang(capLang === 'ar' ? 'en' : 'ar'));
+
+    /* الاستماع لتغيرات تسجيل الدخول — إعادة التحميل */
+    if (sb) {
+        sb.auth.onAuthStateChange(() => {
+            loadMine();
+        });
+    }
 
     applyCapLang(capLang);
 })();

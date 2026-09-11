@@ -142,11 +142,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 return { code: null };
             }
             const isPriv = !!msg.arrivalISO;
+                        /* ✅ جلب user_id إن كان المستخدم مسجلاً */
+            let userId = null;
+            try {
+                const { data: sessionData } = await sb.auth.getSession();
+                if (sessionData && sessionData.session && sessionData.session.user) {
+                    userId = sessionData.session.user.id;
+                }
+            } catch (e) {}
+
             const { data, error } = await sb.rpc('create_capsule', {
                 p_text: msg.text, p_author: msg.author, p_country: msg.country,
                 p_mood: msg.mood || 'hope', p_mode: isPriv ? 'private' : 'public',
                 p_lang: detectLang(msg.text), p_arrival_at: msg.arrivalISO || null,
-                p_theme_id: null, p_device_hash: getDeviceHash()
+                p_theme_id: null, p_device_hash: getDeviceHash(),
+                p_user_id: userId
             });
             if (error) { console.error('CC:', error); throw new Error(CCI18N.err(error.message)); }
             try {
