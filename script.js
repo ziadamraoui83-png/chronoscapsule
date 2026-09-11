@@ -432,9 +432,18 @@ document.addEventListener('DOMContentLoaded', () => {
         addCosmicDecorations();
 
         controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true; controls.dampingFactor = 0.05;
-        controls.enableZoom = true; controls.enablePan = false;
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.08;      /* ✅ نعومة أعلى */
+        controls.enableZoom = true;
+        controls.enablePan = false;
         controls.enableRotate = true;
+
+        /* ✅ دوران حر في كل الاتجاهات */
+        controls.minPolarAngle = 0.05;
+        controls.maxPolarAngle = Math.PI - 0.05;
+
+        /* ✅ حدود التكبير/التصغير */
+        controls.zoomSpeed = 0.6;
 
         controls.addEventListener('start', () => { isZooming = false; hideTooltip(); });
 
@@ -444,8 +453,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const fov = Math.min(vFov, hFov);
             const dist = 5.6 / Math.sin(fov * 0.34);
             fitDist = dist;
-            controls.minDistance = dist * 0.45;
-            controls.maxDistance = dist * 2.2;
+            /* ✅ تقريب أقل — حتى لا يصبح الكوكب ضخمًا */
+            controls.minDistance = dist * 0.68;
+            /* ✅ تبعيد أكبر — مساحة أوسع للتنقل */
+            controls.maxDistance = dist * 2.5;
             return dist;
         }
 
@@ -523,12 +534,19 @@ document.addEventListener('DOMContentLoaded', () => {
             updateCosmicDecorations(dt, elapsed);
 
             const d = camera.position.distanceTo(controls.target);
-            const t = THREE.MathUtils.clamp((d - controls.minDistance) / (controls.maxDistance - controls.minDistance), 0, 1);
-            rotTarget = 0.05 + 0.95 * (t * t * (3 - 2 * t));
-            rotFactor += (rotTarget - rotFactor) * 0.06;
+            const t = THREE.MathUtils.clamp(
+                (d - controls.minDistance) / (controls.maxDistance - controls.minDistance),
+                0, 1
+            );
 
+            /* ✅ دوران الكوكب على نفسه — ثابت وبطيء */
+            rotTarget = 1;
+            rotFactor += (rotTarget - rotFactor) * 0.06;
             planet.rotation.y += 0.0006 * rotFactor;
             stars.rotation.y += 0.00003 * rotFactor;
+
+            /* ✅ سرعة السحب تتكيّف مع التقريب — عند الاقتراب أبطأ */
+            controls.rotateSpeed = 0.35 + t * 0.75;
 
             if (isZooming) {
                 camera.position.lerp(zoomTargetVector, 0.08);
