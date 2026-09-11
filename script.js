@@ -244,10 +244,23 @@ document.addEventListener('DOMContentLoaded', () => {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('planet-viewport').appendChild(renderer.domElement);
 
-        scene.add(new THREE.AmbientLight(0xffffff, 0.6));
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1.8);
-        dirLight.position.set(5, 3, 5);
-        scene.add(dirLight);
+        /* ═══ إضاءة محسّنة — النصف المظلم مرئي أكثر ═══ */
+scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+
+/* ضوء رئيسي (من الأمام-يمين) */
+const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
+dirLight.position.set(5, 3, 5);
+scene.add(dirLight);
+
+/* ضوء مُكمّل (من الخلف-يسار) — يُنير الجانب المظلم */
+const fillLight = new THREE.DirectionalLight(0x88aaff, 0.7);
+fillLight.position.set(-5, -2, -3);
+scene.add(fillLight);
+
+/* ضوء خفيف من الأسفل — يوحي بانعكاس الغلاف الجوي */
+const bottomLight = new THREE.PointLight(0x3AE1FF, 0.4, 30);
+bottomLight.position.set(0, -8, 0);
+scene.add(bottomLight);
 
         const textureLoader = new THREE.TextureLoader();
         let earthTexture = null;
