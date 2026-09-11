@@ -236,6 +236,171 @@ document.addEventListener('DOMContentLoaded', () => {
         toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
     }
     function hideTooltip() { tooltip.classList.remove('show'); tooltipTarget = null; }
+        /* ═══════════════════════════════════════════════════════════
+       🎉 Confetti — انفجار نجوم عند إرسال كبسولة
+       ═══════════════════════════════════════════════════════════ */
+    function launchConfetti(options = {}) {
+        const {
+            colors = ['#a78bfa', '#3b82f6', '#3AE1FF', '#D355FF', '#fbbf24', '#34d399'],
+            count = 120,
+            duration = 2800,
+            originX = window.innerWidth / 2,
+            originY = window.innerHeight * 0.6
+        } = options;
+
+        /* احترام وضع تقليل الحركة */
+        if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        /* إنشاء Canvas */
+        const canvas = document.createElement('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.cssText = `
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 9998;
+        `;
+        document.body.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+
+        /* ═══ إنشاء الجزيئات ═══ */
+        const particles = [];
+        const shapes = ['circle', 'star', 'square', 'line'];
+
+        for (let i = 0; i < count; i++) {
+            const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.8;
+            const speed = 4 + Math.random() * 9;
+            const isSpark = Math.random() < 0.4;
+
+            particles.push({
+                x: originX,
+                y: originY,
+                vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 2,
+                vy: Math.sin(angle) * speed - 4 - Math.random() * 4,
+                size: 3 + Math.random() * 5,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                shape: isSpark ? 'star' : shapes[Math.floor(Math.random() * shapes.length)],
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: (Math.random() - 0.5) * 0.25,
+                life: 1,
+                decay: 0.008 + Math.random() * 0.008,
+                gravity: 0.22,
+                friction: 0.985,
+                isSpark: isSpark
+            });
+        }
+
+        /* ═══ الرسم ═══ */
+        let animationId;
+        const startTime = performance.now();
+
+        function drawStar(x, y, size, color, rotation) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+            ctx.fillStyle = color;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = color;
+            ctx.beginPath();
+            for (let i = 0; i < 5; i++) {
+                const outerAngle = (Math.PI * 2 * i) / 5 - Math.PI / 2;
+                const innerAngle = outerAngle + Math.PI / 5;
+                const outerX = Math.cos(outerAngle) * size;
+                const outerY = Math.sin(outerAngle) * size;
+                const innerX = Math.cos(innerAngle) * size * 0.45;
+                const innerY = Math.sin(innerAngle) * size * 0.45;
+                if (i === 0) ctx.moveTo(outerX, outerY);
+                else ctx.lineTo(outerX, outerY);
+                ctx.lineTo(innerX, innerY);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function drawShape(p) {
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+
+            if (p.shape === 'star') {
+                drawStar(0, 0, p.size, p.color, 0);
+            } else if (p.shape === 'circle') {
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = p.color;
+                ctx.beginPath();
+                ctx.arc(0, 0, p.size * 0.6, 0, Math.PI * 2);
+                ctx.fill();
+            } else if (p.shape === 'square') {
+                ctx.fillStyle = p.color;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = p.color;
+                ctx.fillRect(-p.size * 0.5, -p.size * 0.5, p.size, p.size);
+            } else if (p.shape === 'line') {
+                ctx.strokeStyle = p.color;
+                ctx.lineWidth = p.size * 0.4;
+                ctx.shadowBlur = 8;
+                ctx.shadowColor = p.color;
+                ctx.beginPath();
+                ctx.moveTo(-p.size, 0);
+                ctx.lineTo(p.size, 0);
+                ctx.stroke();
+            }
+
+            ctx.restore();
+        }
+
+        function animate() {
+            const elapsed = performance.now() - startTime;
+
+            /* مسح الشاشة بتأثير تلاشي بسيط */
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            let stillAlive = 0;
+
+            particles.forEach(p => {
+                if (p.life <= 0) return;
+
+                /* الفيزياء */
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.vx *= p.friction;
+                p.vy *= p.friction;
+                p.rotation += p.rotationSpeed;
+                p.life -= p.decay;
+
+                if (p.life > 0) {
+                    stillAlive++;
+                    /* الشفافية عند النهاية */
+                    ctx.globalAlpha = Math.min(1, p.life * 1.4);
+
+                    if (p.isSpark) {
+                        /* نجوم متلألئة */
+                        drawStar(p.x, p.y, p.size * p.life, p.color, p.rotation);
+                    } else {
+                        drawShape(p);
+                    }
+                }
+            });
+
+            ctx.globalAlpha = 1;
+
+            /* استمر أو توقف */
+            if (stillAlive > 0 && elapsed < duration) {
+                animationId = requestAnimationFrame(animate);
+            } else {
+                cancelAnimationFrame(animationId);
+                canvas.remove();
+            }
+        }
+
+        animate();
+    }
     function updateCounter() {
         document.getElementById('capsuleCount').textContent = activeMessages.length;
     }
@@ -990,7 +1155,18 @@ scene.add(bottomLight);
         try {
         const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
             launchMessage(country, text, author, mood);
-             showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
+                         showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
+
+            /* 🎉 انفجار النجوم! */
+            launchConfetti({
+                colors: [
+                    MOOD_CSS[mood] || '#a78bfa',
+                    '#a78bfa', '#3b82f6', '#3AE1FF', '#D355FF',
+                    '#fbbf24', '#34d399'
+                ],
+                count: 150,
+                duration: 3000
+            });
 
             /* ✅ تتبّع الإرسال */
             trackEvent('capsule_sent', {
@@ -1147,4 +1323,6 @@ scene.add(bottomLight);
             requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add('live')));
         }
     }
+    /* تصدير Confetti للاستخدام من ملفات أخرى */
+    window.launchConfetti = launchConfetti;
 });

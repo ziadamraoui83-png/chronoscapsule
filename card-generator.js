@@ -405,6 +405,10 @@
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+                                /* 🎉 Confetti صغير عند التحميل */
+                if (window.launchConfetti) {
+                    window.launchConfetti({ count: 60, duration: 1800 });
+                }
                 if (typeof gtag === 'function') gtag('event', 'card_downloaded', { mood: options.mood, lang: options.lang });
             });
 
