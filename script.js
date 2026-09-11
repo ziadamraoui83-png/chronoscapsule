@@ -454,17 +454,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         controls.addEventListener('start', () => { isZooming = false; hideTooltip(); });
 
-                function applyFit() {
+            function applyFit() {
             const vFov = THREE.MathUtils.degToRad(camera.fov);
             const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
             const fov = Math.min(vFov, hFov);
-            /* ✅ dist أكبر → الكوكب أصغر (كما في صورة البداية) */
-            const dist = 5.6 / Math.sin(fov * 0.18);
+            /* ✅ حجم كوكب متوسط — مثل الصورة التي أعجبتك */
+            const dist = 5.6 / Math.sin(fov * 0.25);
             fitDist = dist;
-            /* ✅ minDistance أكبر → لا يقترب كثيرًا */
-            controls.minDistance = dist * 0.88;
-            /* ✅ maxDistance أوسع → تبعيد مريح */
-            controls.maxDistance = dist * 2.5;
+            /* ✅ تقريب معتدل — يقترب بدرجة مفيدة */
+            controls.minDistance = dist * 0.68;
+            /* ✅ تبعيد معتدل */
+            controls.maxDistance = dist * 2.0;
             return dist;
         }
 
