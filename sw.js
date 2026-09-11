@@ -1,21 +1,25 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — Service Worker (v1.0.1)
-   يحتفظ فقط بالملفات المحلية — لا يعترض الطلبات الخارجية
+   CHRONOS CAPSULE — Service Worker (v1.1.0)
+   يخزّن الملفات المحلية فقط — لا يعترض الطلبات الخارجية
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.0.14';
+const CACHE_VERSION = 'cc-v1.1.0';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
-/* ═══ الملفات المحلية فقط (نفس الأصل) ═══ */
+/* ═══ الملفات المحلية فقط ═══ */
 const STATIC_ASSETS = [
     '/',
     '/index.html',
     '/archive.html',
     '/capsules.html',
     '/profile.html',
+    '/about.html',
+    '/privacy.html',
+    '/terms.html',
     '/style.css',
     '/archive.css',
+    '/config.js',
     '/i18n.js',
     '/script.js',
     '/archive.js',
@@ -24,6 +28,7 @@ const STATIC_ASSETS = [
     '/icon-192.svg',
     '/icon-512.svg',
     '/icon-maskable.svg',
+    '/favicon.ico',
     '/robots.txt',
     '/sitemap.xml'
 ];
@@ -42,7 +47,7 @@ self.addEventListener('install', (event) => {
     );
 });
 
-/* ═══ التفعيل ═══ */
+/* ═══ التفعيل — حذف cache القديم ═══ */
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) => {
@@ -58,10 +63,20 @@ self.addEventListener('activate', (event) => {
 /* ═══ الجلب ═══ */
 self.addEventListener('fetch', (event) => {
     const { request } = event;
-    const url = new URL(request.url);
+
+    /* تجاهل الطلبات بدون URL صالح */
+    if (!request.url || !request.url.startsWith('http')) {
+        return;
+    }
+
+    let url;
+    try {
+        url = new URL(request.url);
+    } catch (e) {
+        return;
+    }
 
     /* ⚠️ الأهم: تجاهل كل الطلبات الخارجية */
-    /* المتصفح يتولّاها مباشرة — بدون تدخل SW */
     if (url.origin !== self.location.origin) {
         return;
     }

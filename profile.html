@@ -17,7 +17,9 @@
       gtag('config', 'G-Z872SS657T');
     </script>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
@@ -88,9 +90,7 @@
             filter:blur(2px);
             opacity:.7;
         }
-        @keyframes spinRing{
-            to{transform:rotate(360deg)}
-        }
+        @keyframes spinRing{to{transform:rotate(360deg)}}
         .avatar-inner{
             position:relative;
             width:120px;height:120px;
@@ -100,26 +100,16 @@
             background:#0f172a;
             z-index:2;
         }
-        .avatar-inner img{
-            width:100%;height:100%;object-fit:cover;display:block;
-        }
+        .avatar-inner img{width:100%;height:100%;object-fit:cover;display:block}
         .avatar-placeholder{
             display:flex;align-items:center;justify-content:center;
             width:100%;height:100%;
             font-size:48px;
             background:linear-gradient(135deg,#6d28d9,#2563eb);
-            color:#fff;
-            font-weight:900;
+            color:#fff;font-weight:900;
         }
-        .profile-name{
-            font-size:1.6rem;font-weight:900;color:#fff;
-            margin-bottom:6px;line-height:1.2;
-            word-break:break-word;
-        }
-        .profile-email{
-            font-size:.9rem;color:#94a3b8;margin-bottom:14px;
-            word-break:break-all;
-        }
+        .profile-name{font-size:1.6rem;font-weight:900;color:#fff;margin-bottom:6px;line-height:1.2;word-break:break-word}
+        .profile-email{font-size:.9rem;color:#94a3b8;margin-bottom:14px;word-break:break-all}
         .verified-badge{
             display:inline-flex;align-items:center;gap:6px;
             background:rgba(52,211,153,.12);
@@ -131,10 +121,7 @@
         .verified-badge svg{flex:none}
 
         /* ══ شبكة الإحصائيات ══ */
-        .stats-grid{
-            display:grid;grid-template-columns:repeat(3,1fr);
-            gap:12px;margin-bottom:22px;
-        }
+        .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:22px}
         .stat-card{
             background:rgba(15,23,42,.6);
             border:1px solid rgba(255,255,255,.08);
@@ -149,19 +136,9 @@
             transform:translateY(-2px);
             background:rgba(15,23,42,.8);
         }
-        .stat-icon{
-            font-size:22px;margin-bottom:8px;
-            filter:drop-shadow(0 0 8px rgba(139,92,246,.4));
-        }
-        .stat-value{
-            font-size:1.4rem;font-weight:900;color:#a78bfa;
-            direction:ltr;margin-bottom:4px;
-            font-variant-numeric:tabular-nums;
-        }
-        .stat-label{
-            font-size:11px;color:#64748b;font-weight:600;
-            letter-spacing:.03em;
-        }
+        .stat-icon{font-size:22px;margin-bottom:8px;filter:drop-shadow(0 0 8px rgba(139,92,246,.4))}
+        .stat-value{font-size:1.4rem;font-weight:900;color:#a78bfa;direction:ltr;margin-bottom:4px;font-variant-numeric:tabular-nums}
+        .stat-label{font-size:11px;color:#64748b;font-weight:600;letter-spacing:.03em}
 
         /* ══ قسم الإعدادات ══ */
         .section-title{
@@ -221,18 +198,13 @@
             border-radius:24px;
             backdrop-filter:blur(12px);
         }
-        .not-signed-in .big-ico{
-            font-size:64px;margin-bottom:20px;
-            filter:drop-shadow(0 0 20px rgba(139,92,246,.3));
-        }
+        .not-signed-in .big-ico{font-size:64px;margin-bottom:20px;filter:drop-shadow(0 0 20px rgba(139,92,246,.3))}
         .not-signed-in h2{
             font-size:1.4rem;font-weight:900;margin-bottom:10px;
             background:linear-gradient(135deg,#a78bfa,#3b82f6);
             -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
         }
-        .not-signed-in p{
-            font-size:.95rem;color:#94a3b8;margin-bottom:26px;line-height:1.7;
-        }
+        .not-signed-in p{font-size:.95rem;color:#94a3b8;margin-bottom:26px;line-height:1.7}
         .google-btn-big{
             display:inline-flex;align-items:center;gap:10px;
             background:#fff;color:#1f2937;
@@ -244,10 +216,7 @@
             transition:all .3s ease;
             box-shadow:0 8px 24px rgba(255,255,255,.15);
         }
-        .google-btn-big:hover{
-            transform:translateY(-2px);
-            box-shadow:0 12px 30px rgba(255,255,255,.25);
-        }
+        .google-btn-big:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(255,255,255,.25)}
         .google-btn-big svg{flex:none}
 
         /* ══ Modal تعديل الاسم ══ */
@@ -273,9 +242,7 @@
             transition:all .3s cubic-bezier(.34,1.56,.64,1);
         }
         .modal-overlay.active .modal-card{transform:scale(1);opacity:1}
-        .modal-title{
-            font-size:1.15rem;font-weight:900;margin-bottom:6px;
-        }
+        .modal-title{font-size:1.15rem;font-weight:900;margin-bottom:6px}
         .modal-subtitle{font-size:12.5px;color:#64748b;margin-bottom:20px}
         .modal-input{
             width:100%;padding:12px 14px;
@@ -287,9 +254,7 @@
             transition:border-color .3s;
         }
         .modal-input:focus{border-color:#8b5cf6}
-        .modal-actions{
-            display:flex;gap:10px;margin-top:20px;
-        }
+        .modal-actions{display:flex;gap:10px;margin-top:20px}
         .btn-modal{
             flex:1;
             padding:12px 18px;
@@ -300,15 +265,9 @@
             transition:all .25s ease;
             border:none;
         }
-        .btn-cancel{
-            background:rgba(255,255,255,.08);
-            color:#cbd5e1;
-        }
+        .btn-cancel{background:rgba(255,255,255,.08);color:#cbd5e1}
         .btn-cancel:hover{background:rgba(255,255,255,.14)}
-        .btn-save{
-            background:linear-gradient(135deg,#6d28d9,#2563eb);
-            color:#fff;
-        }
+        .btn-save{background:linear-gradient(135deg,#6d28d9,#2563eb);color:#fff}
         .btn-save:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(99,102,241,.4)}
         .btn-save:disabled{opacity:.6;cursor:not-allowed;transform:none}
 
@@ -388,7 +347,7 @@
         <div class="big-ico">🛸</div>
         <h2 id="nsTitle">لم تسجّل الدخول بعد</h2>
         <p id="nsDesc">سجّل الدخول بحساب Google لعرض ملفك الشخصي وإدارة إعداداتك</p>
-        <button class="google-btn-big" id="signInBigBtn">
+        <button class="google-btn-big" id="signInBigBtn" type="button">
             <svg viewBox="0 0 48 48" width="20" height="20" aria-hidden="true">
                 <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
                 <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
@@ -402,7 +361,6 @@
     <!-- مسجل دخول — البروفايل -->
     <div id="profileContent" style="display:none">
 
-        <!-- البطاقة الرئيسية -->
         <div class="profile-hero">
             <div class="avatar-wrap">
                 <div class="avatar-ring"></div>
@@ -418,7 +376,6 @@
             </div>
         </div>
 
-        <!-- الإحصائيات -->
         <div class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon">🛸</div>
@@ -437,7 +394,6 @@
             </div>
         </div>
 
-        <!-- قسم الحساب -->
         <div class="section-title" id="sectionAccount">الحساب</div>
         <div class="settings-list">
             <button class="setting-item" id="editNameBtn" type="button">
@@ -460,7 +416,6 @@
             </a>
         </div>
 
-        <!-- قسم الخروج -->
         <div class="section-title" id="sectionDanger">منطقة الخروج</div>
         <div class="settings-list">
             <button class="setting-item" id="signOutBtn" type="button">
@@ -500,13 +455,15 @@
 
 <!-- ══ السكربتات ══ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
 <script>
 (function(){
     "use strict";
 
-    const SB_URL = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
-    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
-    const sb = (window.supabase) ? supabase.createClient(SB_URL, SB_KEY) : null;
+    /* ═══ الإعدادات المركزية ═══ */
+    const cfg = window.CC_CONFIG || { SUPABASE_URL: '', SUPABASE_ANON_KEY: '' };
+    const sb = (cfg.SUPABASE_URL && window.supabase)
+        ? supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
 
     const $ = id => document.getElementById(id);
 
@@ -518,7 +475,7 @@
         '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
     }[c]));
 
-    /* ══ اللغة ══ */
+    /* ═══ اللغة ═══ */
     const LANGS = {
         ar: {
             toggle: 'EN', back: 'العودة للكوكب',
@@ -579,6 +536,10 @@
     };
 
     let profLang = (() => { try { return localStorage.getItem('cc_lang') || 'ar'; } catch (e) { return 'ar'; } })();
+    try {
+        const urlLang = new URLSearchParams(location.search).get('lang');
+        if (urlLang === 'ar' || urlLang === 'en') profLang = urlLang;
+    } catch (e) {}
 
     function applyLang(l) {
         profLang = l;
@@ -666,7 +627,10 @@
     async function loadStats(user) {
         if (!sb) return;
         try {
-            const { data, error } = await sb.rpc('get_my_capsules', { p_device_hash: localStorage.getItem('cc_device') || '' });
+            const { data, error } = await sb.rpc('get_my_capsules', {
+                p_device_hash: localStorage.getItem('cc_device') || null,
+                p_user_id: user ? user.id : null
+            });
             if (!error && data) {
                 const count = data.length;
                 const reads = data.reduce((s, r) => s + (r.o_reads || 0), 0);
@@ -675,14 +639,12 @@
             }
         } catch (e) {}
 
-        // أيام منذ الانضمام
         if (user && user.created_at) {
             const days = Math.max(1, Math.floor((Date.now() - new Date(user.created_at).getTime()) / 864e5));
             $('statDays').textContent = days;
         }
     }
 
-    /* ══ عرض الحالة ══ */
     function showProfile(user) {
         currentUser = user;
         $('loadingState').style.display = 'none';

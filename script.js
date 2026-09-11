@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — script.js (نسخة مصحّحة شاملة)
+   CHRONOS CAPSULE — script.js (نسخة نهائية مركزية)
    ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
     let scene, camera, renderer, controls, planet, stars;
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /* ═══ أدوات مساعدة ═══ */
     const $ = id => document.getElementById(id);
-        /* ═══ Google Analytics Event Tracker ═══ */
+
     function trackEvent(eventName, params = {}) {
         try {
             if (typeof gtag === 'function') {
@@ -22,7 +22,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (e) {}
     }
 
-    /* حماية كاملة من XSS — تهرّب كل الرموز الخطرة */
     const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({
         '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
     }[c]));
@@ -31,10 +30,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const MOOD_COLORS = { hope: 0x38bdf8, nostalgia: 0xa78bfa, secret: 0x34d399, confession: 0xfbbf24, bold: 0xf87171 };
     const MOOD_CSS    = { hope: '#38bdf8', nostalgia: '#a78bfa', secret: '#34d399', confession: '#fbbf24', bold: '#f87171' };
 
-    /* ═══ إعدادات الاتصال — مفاتيح حقيقية ═══ */
-    const CC_CONFIG = {
-        SUPABASE_URL: 'https://sylnhrtgrxfacskjaxlq.supabase.co',
-        SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ'
+    /* ═══ الإعدادات المركزية ═══ */
+    const CC_CONFIG = window.CC_CONFIG || {
+        SUPABASE_URL: '',
+        SUPABASE_ANON_KEY: ''
     };
     const sb = (CC_CONFIG.SUPABASE_URL && window.supabase)
         ? supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY) : null;
@@ -81,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const countryInfo = c => COUNTRY_INFO[c] || COUNTRY_INFO.OTHER;
     window.COUNTRY_INFO = COUNTRY_INFO;
 
-    /* آمن: تطبيق الدول عبر i18n.js إن كان متاحًا */
     if (window.CCI18N && typeof window.CCI18N.applyCountries === 'function') {
         window.CCI18N.applyCountries();
     }
@@ -141,9 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 } catch (e) {}
                 return { code: null };
             }
-                        const isPriv = !!msg.arrivalISO;
+            const isPriv = !!msg.arrivalISO;
 
-            /* ✅ جلب user_id من الجلسة */
             let userId = null;
             try {
                 const { data: sessionData } = await sb.auth.getSession();
@@ -188,9 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    /* ملاحظة: طبقة الصوت المحيطي (AudioContext) أُزيلت لأنها لم تكن تُنتج صوتًا فعليًا.
-       إن أردت إضافتها لاحقًا، استخدم <audio> element أو Tone.js بشكل صريح. */
-
     /* ═══ الرسائل الابتدائية ═══ */
     const seedMessages = [
         { id: 1, country: 'DZ', name: 'الجزائر 🇩🇿', text: 'سلام من أرض الشهداء والمحبة إلى جميع سكان الأرض!', author: 'رياض', lat: 28.0339, lng: 1.6596 },
@@ -221,7 +215,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const tooltip = document.getElementById('msgTooltip');
     const labelsContainer = document.getElementById('labels-container');
 
-    /* ═══ مراجع DOM مبكّرة (لتجنّب TDZ) ═══ */
     const messageModal = document.getElementById('messageModal');
     const deepModal = document.getElementById('deepModal');
 
@@ -236,7 +229,11 @@ document.addEventListener('DOMContentLoaded', () => {
         toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
     }
     function hideTooltip() { tooltip.classList.remove('show'); tooltipTarget = null; }
-        /* ═══════════════════════════════════════════════════════════
+    function updateCounter() {
+        document.getElementById('capsuleCount').textContent = activeMessages.length;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
        🎉 Confetti — انفجار نجوم عند إرسال كبسولة
        ═══════════════════════════════════════════════════════════ */
     function launchConfetti(options = {}) {
@@ -248,25 +245,15 @@ document.addEventListener('DOMContentLoaded', () => {
             originY = window.innerHeight * 0.6
         } = options;
 
-        /* احترام وضع تقليل الحركة */
         if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-        /* إنشاء Canvas */
         const canvas = document.createElement('canvas');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        canvas.style.cssText = `
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            pointer-events: none;
-            z-index: 9998;
-        `;
+        canvas.style.cssText = `position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9998;`;
         document.body.appendChild(canvas);
         const ctx = canvas.getContext('2d');
 
-        /* ═══ إنشاء الجزيئات ═══ */
         const particles = [];
         const shapes = ['circle', 'star', 'square', 'line'];
 
@@ -276,8 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const isSpark = Math.random() < 0.4;
 
             particles.push({
-                x: originX,
-                y: originY,
+                x: originX, y: originY,
                 vx: Math.cos(angle) * speed + (Math.random() - 0.5) * 2,
                 vy: Math.sin(angle) * speed - 4 - Math.random() * 4,
                 size: 3 + Math.random() * 5,
@@ -293,7 +279,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
-        /* ═══ الرسم ═══ */
         let animationId;
         const startTime = performance.now();
 
@@ -325,7 +310,6 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.save();
             ctx.translate(p.x, p.y);
             ctx.rotate(p.rotation);
-
             if (p.shape === 'star') {
                 drawStar(0, 0, p.size, p.color, 0);
             } else if (p.shape === 'circle') {
@@ -350,22 +334,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 ctx.lineTo(p.size, 0);
                 ctx.stroke();
             }
-
             ctx.restore();
         }
 
         function animate() {
             const elapsed = performance.now() - startTime;
-
-            /* مسح الشاشة بتأثير تلاشي بسيط */
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
             let stillAlive = 0;
-
             particles.forEach(p => {
                 if (p.life <= 0) return;
-
-                /* الفيزياء */
                 p.x += p.vx;
                 p.y += p.vy;
                 p.vy += p.gravity;
@@ -373,24 +350,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 p.vy *= p.friction;
                 p.rotation += p.rotationSpeed;
                 p.life -= p.decay;
-
                 if (p.life > 0) {
                     stillAlive++;
-                    /* الشفافية عند النهاية */
                     ctx.globalAlpha = Math.min(1, p.life * 1.4);
-
-                    if (p.isSpark) {
-                        /* نجوم متلألئة */
-                        drawStar(p.x, p.y, p.size * p.life, p.color, p.rotation);
-                    } else {
-                        drawShape(p);
-                    }
+                    if (p.isSpark) drawStar(p.x, p.y, p.size * p.life, p.color, p.rotation);
+                    else drawShape(p);
                 }
             });
-
             ctx.globalAlpha = 1;
-
-            /* استمر أو توقف */
             if (stillAlive > 0 && elapsed < duration) {
                 animationId = requestAnimationFrame(animate);
             } else {
@@ -398,12 +365,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 canvas.remove();
             }
         }
-
         animate();
     }
-    function updateCounter() {
-        document.getElementById('capsuleCount').textContent = activeMessages.length;
-    }
+    window.launchConfetti = launchConfetti;
 
     /* ═══════════════════════════════════════════════════════════
        إعداد Three.js
@@ -420,23 +384,17 @@ document.addEventListener('DOMContentLoaded', () => {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('planet-viewport').appendChild(renderer.domElement);
 
-        /* ═══ إضاءة محسّنة — النصف المظلم مرئي أكثر ═══ */
-scene.add(new THREE.AmbientLight(0xffffff, 1.1));
-
-/* ضوء رئيسي (من الأمام-يمين) */
-const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
-dirLight.position.set(5, 3, 5);
-scene.add(dirLight);
-
-/* ضوء مُكمّل (من الخلف-يسار) — يُنير الجانب المظلم */
-const fillLight = new THREE.DirectionalLight(0x88aaff, 0.7);
-fillLight.position.set(-5, -2, -3);
-scene.add(fillLight);
-
-/* ضوء خفيف من الأسفل — يوحي بانعكاس الغلاف الجوي */
-const bottomLight = new THREE.PointLight(0x3AE1FF, 0.4, 30);
-bottomLight.position.set(0, -8, 0);
-scene.add(bottomLight);
+        /* ═══ إضاءة محسّنة ═══ */
+        scene.add(new THREE.AmbientLight(0xffffff, 1.1));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
+        dirLight.position.set(5, 3, 5);
+        scene.add(dirLight);
+        const fillLight = new THREE.DirectionalLight(0x88aaff, 0.7);
+        fillLight.position.set(-5, -2, -3);
+        scene.add(fillLight);
+        const bottomLight = new THREE.PointLight(0x3AE1FF, 0.4, 30);
+        bottomLight.position.set(0, -8, 0);
+        scene.add(bottomLight);
 
         const textureLoader = new THREE.TextureLoader();
         let earthTexture = null;
@@ -470,7 +428,7 @@ scene.add(bottomLight);
         const starsMat = new THREE.PointsMaterial({ size: 0.35, vertexColors: true, transparent: true, opacity: 0.9 });
         stars = new THREE.Points(starsGeom, starsMat);
         scene.add(stars);
-                /* 🌌 تحسينات الكون */
+
         addCosmicDecorations();
 
         controls = new THREE.OrbitControls(camera, renderer.domElement);
@@ -487,7 +445,7 @@ scene.add(bottomLight);
             const dist = 5.6 / Math.sin(fov * 0.34);
             fitDist = dist;
             controls.minDistance = dist * 0.45;
-            controls.maxDistance = dist * 1.5;
+            controls.maxDistance = dist * 2.2;
             return dist;
         }
 
@@ -497,18 +455,48 @@ scene.add(bottomLight);
         else camera.position.set(0, 0, baseDist);
         let prevFit = baseDist;
 
+        /* ═══ أزرار التقريب/التبعيد — v2 ═══ */
+        let targetDist = null;
+
+        function startZoom(factor) {
+            const currentDist = camera.position.distanceTo(controls.target);
+            const newDist = THREE.MathUtils.clamp(
+                currentDist * factor,
+                controls.minDistance,
+                controls.maxDistance
+            );
+            if (Math.abs(newDist - currentDist) < 0.5) {
+                targetDist = null;
+                return;
+            }
+            targetDist = newDist;
+            isZooming = false;
+        }
+
         document.getElementById('zoomInBtn').addEventListener('click', () => {
-            const dist = Math.max(controls.minDistance, camera.position.distanceTo(controls.target) * 0.7);
-            const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
-            zoomTargetVector.copy(controls.target).add(dir.multiplyScalar(dist));
-            isZooming = true;
+            startZoom(0.65);
+            hideTooltip();
         });
+
         document.getElementById('zoomOutBtn').addEventListener('click', () => {
-            const dist = Math.min(controls.maxDistance, camera.position.distanceTo(controls.target) * 1.4);
-            const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
-            zoomTargetVector.copy(controls.target).add(dir.multiplyScalar(dist));
-            isZooming = true;
+            startZoom(1.55);
+            hideTooltip();
         });
+
+        function updateZoomAnimation() {
+            if (targetDist === null) return;
+            const currentDist = camera.position.distanceTo(controls.target);
+            const diff = targetDist - currentDist;
+            if (Math.abs(diff) < 0.15) {
+                const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+                camera.position.copy(controls.target).add(dir.multiplyScalar(targetDist));
+                targetDist = null;
+                return;
+            }
+            const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+            const step = diff * 0.12;
+            camera.position.addScaledVector(dir, step);
+        }
 
         activeMessages.forEach(msg => createMessageMarker(msg));
         updateCounter();
@@ -546,6 +534,7 @@ scene.add(bottomLight);
                 camera.position.lerp(zoomTargetVector, 0.08);
                 if (camera.position.distanceTo(zoomTargetVector) < 0.1) isZooming = false;
             }
+            updateZoomAnimation();
 
             for (let i = meteors.length - 1; i >= 0; i--) {
                 const m = meteors[i];
@@ -562,23 +551,20 @@ scene.add(bottomLight);
             }
 
             controls.update();
-
-            /* تحسين الأداء: تحديث المواضع كل إطارين فقط */
             if (frameCount % 2 === 0) updateLabelsPosition();
-
             renderer.render(scene, camera);
         }
         animate();
     }
-        /* ═══════════════════════════════════════════════════════════
-       🌌 تحسينات الكون — سديم + كواكب + شمس + حزام كويكبات
+
+    /* ═══════════════════════════════════════════════════════════
+       🌌 تحسينات الكون
        ═══════════════════════════════════════════════════════════ */
     let cosmicObjects = { planets: [], asteroidBelt: null, nebulae: [], sun: null };
 
     function addCosmicDecorations() {
         const isMobile = matchMedia('(max-width: 768px)').matches;
 
-        /* ═══ 1) السديم (Nebula) — 3 سحابات ═══ */
         const nebulaColors = [
             { color: 0x8b5cf6, pos: [-60, 40, -120], size: 140 },
             { color: 0x3b82f6, pos: [80, -30, -150], size: 160 },
@@ -601,11 +587,8 @@ scene.add(bottomLight);
 
             const sprite = new THREE.Sprite(
                 new THREE.SpriteMaterial({
-                    map: texture,
-                    transparent: true,
-                    opacity: 0.7,
-                    blending: THREE.AdditiveBlending,
-                    depthWrite: false
+                    map: texture, transparent: true, opacity: 0.7,
+                    blending: THREE.AdditiveBlending, depthWrite: false
                 })
             );
             sprite.position.set(pos[0], pos[1], pos[2]);
@@ -614,17 +597,13 @@ scene.add(bottomLight);
             cosmicObjects.nebulae.push({ sprite, baseOpacity: 0.7, speed: 0.02 + Math.random() * 0.03 });
         });
 
-        /* ═══ 2) الشمس البعيدة ═══ */
         const sunGroup = new THREE.Group();
-
-        /* الكرة الأساسية */
         const sunCore = new THREE.Mesh(
             new THREE.SphereGeometry(3, 24, 24),
             new THREE.MeshBasicMaterial({ color: 0xffe6a3 })
         );
         sunGroup.add(sunCore);
 
-        /* هالة خارجية */
         const sunCanvas = document.createElement('canvas');
         sunCanvas.width = sunCanvas.height = 256;
         const sctx = sunCanvas.getContext('2d');
@@ -639,10 +618,8 @@ scene.add(bottomLight);
         const sunTexture = new THREE.CanvasTexture(sunCanvas);
         const sunHalo = new THREE.Sprite(
             new THREE.SpriteMaterial({
-                map: sunTexture,
-                transparent: true,
-                blending: THREE.AdditiveBlending,
-                depthWrite: false
+                map: sunTexture, transparent: true,
+                blending: THREE.AdditiveBlending, depthWrite: false
             })
         );
         sunHalo.scale.set(24, 24, 1);
@@ -652,7 +629,6 @@ scene.add(bottomLight);
         scene.add(sunGroup);
         cosmicObjects.sun = sunGroup;
 
-        /* ═══ 3) الكواكب الصغيرة — 3 كواكب ═══ */
         const planetDefs = [
             { color: 0xd4a574, radius: 0.9, orbitRadius: 55, speed: 0.0008, tilt: 0.3 },
             { color: 0x6ba6d8, radius: 1.2, orbitRadius: 70, speed: 0.0005, tilt: -0.4 },
@@ -662,23 +638,17 @@ scene.add(bottomLight);
         planetDefs.forEach((def, i) => {
             const geometry = new THREE.SphereGeometry(def.radius, isMobile ? 16 : 24, isMobile ? 16 : 24);
             const material = new THREE.MeshStandardMaterial({
-                color: def.color,
-                roughness: 0.7,
-                metalness: 0.2,
-                emissive: def.color,
-                emissiveIntensity: 0.08
+                color: def.color, roughness: 0.7, metalness: 0.2,
+                emissive: def.color, emissiveIntensity: 0.08
             });
             const planetMesh = new THREE.Mesh(geometry, material);
             planetMesh.userData = {
-                orbitRadius: def.orbitRadius,
-                speed: def.speed,
-                angle: Math.random() * Math.PI * 2,
-                tilt: def.tilt
+                orbitRadius: def.orbitRadius, speed: def.speed,
+                angle: Math.random() * Math.PI * 2, tilt: def.tilt
             };
             scene.add(planetMesh);
             cosmicObjects.planets.push(planetMesh);
 
-            /* قمر صغير يدور حول بعض الكواكب */
             if (i === 0 || i === 1) {
                 const moonGeo = new THREE.SphereGeometry(def.radius * 0.25, 12, 12);
                 const moonMat = new THREE.MeshBasicMaterial({ color: 0xa0a0a0 });
@@ -689,7 +659,6 @@ scene.add(bottomLight);
             }
         });
 
-        /* ═══ 4) حزام الكويكبات — نقط صغيرة تدور ═══ */
         const asteroidCount = isMobile ? 80 : 160;
         const asteroidGeo = new THREE.BufferGeometry();
         const positions = new Float32Array(asteroidCount * 3);
@@ -707,36 +676,28 @@ scene.add(bottomLight);
 
         asteroidGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
         const asteroidMat = new THREE.PointsMaterial({
-            color: 0xa0a0c0,
-            size: 0.15,
-            transparent: true,
-            opacity: 0.6,
-            sizeAttenuation: true
+            color: 0xa0a0c0, size: 0.15, transparent: true, opacity: 0.6, sizeAttenuation: true
         });
         const asteroidBelt = new THREE.Points(asteroidGeo, asteroidMat);
         asteroidBelt.userData = { data: asteroidData };
         scene.add(asteroidBelt);
         cosmicObjects.asteroidBelt = asteroidBelt;
 
-        /* ═══ 5) إضاءة إضافية للكواكب الصغيرة ═══ */
         const sunLight = new THREE.PointLight(0xffe6a3, 1.5, 500);
         sunLight.position.copy(sunGroup.position);
         scene.add(sunLight);
     }
 
     function updateCosmicDecorations(dt, elapsed) {
-        /* ═══ السديم — نبض خفيف ═══ */
         cosmicObjects.nebulae.forEach(n => {
             n.sprite.material.opacity = n.baseOpacity + Math.sin(elapsed * n.speed) * 0.15;
         });
 
-        /* ═══ الشمس — نبض ═══ */
         if (cosmicObjects.sun) {
             const pulse = 1 + Math.sin(elapsed * 1.5) * 0.08;
             cosmicObjects.sun.children[1].scale.set(24 * pulse, 24 * pulse, 1);
         }
 
-        /* ═══ الكواكب — دوران ═══ */
         cosmicObjects.planets.forEach(planet => {
             const d = planet.userData;
             d.angle += d.speed * dt * 60;
@@ -745,7 +706,6 @@ scene.add(bottomLight);
             planet.position.y = Math.sin(d.angle * 0.5) * 5 * Math.sin(d.tilt);
             planet.rotation.y += 0.005;
 
-            /* القمر يدور حول الكوكب */
             if (d.moon) {
                 d.moon.userData.angle += d.moon.userData.speed * dt * 60;
                 const ma = d.moon.userData.angle;
@@ -755,7 +715,6 @@ scene.add(bottomLight);
             }
         });
 
-        /* ═══ حزام الكويكبات — دوران بطيء ═══ */
         if (cosmicObjects.asteroidBelt) {
             const geo = cosmicObjects.asteroidBelt.geometry;
             const pos = geo.attributes.position.array;
@@ -785,10 +744,6 @@ scene.add(bottomLight);
         line.position.copy(start);
         scene.add(line);
         meteors.push({ line, dir, speed: THREE.MathUtils.randFloat(28, 45), life: 0, dur: THREE.MathUtils.randFloat(1.1, 1.9) });
-    }
-    if (REDUCE) {
-        /* في وضع تقليل الحركة: لا نُحدّث الكواكب */
-        updateCosmicDecorations = function() {};
     }
     if (!REDUCE) {
         (function meteorLoop() {
@@ -834,7 +789,7 @@ scene.add(bottomLight);
 
         labelDiv.addEventListener('click', (e) => {
             e.stopPropagation();
-                        trackEvent('capsule_viewed', {
+            trackEvent('capsule_viewed', {
                 country: msg.country,
                 mood: msg.mood || 'hope',
                 is_golden: !!isG,
@@ -848,7 +803,6 @@ scene.add(bottomLight);
             const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
             const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang === 'ar' ? 'الكبسولة الذهبية اليوم' : 'Golden Capsule of the Day'} 🌟</div>` : '';
 
-            /* ✅ إصلاح XSS: استخدام esc() على كل المحتوى القادم من المستخدم */
             tooltip.innerHTML = `
                 ${goldenHeader}
                 <h4>${esc(CCI18N.countryLabel(msg.country))} ${flag} ${translateBtn}</h4>
@@ -1007,6 +961,62 @@ scene.add(bottomLight);
 
     initThreeJS();
 
+    /* ═══════════════════════════════════════════════════════════
+       🌟 الكبسولة الذهبية اليومية
+       ═══════════════════════════════════════════════════════════ */
+    async function loadGoldenCapsule() {
+        if (!sb) return;
+        try {
+            const { data, error } = await sb.rpc('get_golden_capsule');
+            if (error || !data || !data.length) return;
+
+            const g = data[0];
+            const panel = document.getElementById('goldenCapsulePanel');
+            if (!panel) return;
+
+            document.getElementById('goldenText').textContent = g.o_text;
+            document.getElementById('goldenCountry').textContent = CCI18N.countryLabel(g.o_country) || '—';
+
+            const authorText = g.o_author || CCI18N.t('anon_name');
+            document.getElementById('goldenAuthor').textContent =
+                (CCI18N.lang === 'ar' ? 'بقلم: ' : 'By: ') + authorText;
+
+            panel.style.display = 'block';
+            panel.style.opacity = '0';
+            panel.style.transform = 'translateX(-50%) translateY(-20px)';
+
+            requestAnimationFrame(() => {
+                panel.style.transition = 'opacity 0.6s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1)';
+                panel.style.opacity = '1';
+                panel.style.transform = 'translateX(-50%) translateY(0)';
+            });
+
+            trackEvent('golden_capsule_viewed', {
+                country: g.o_country,
+                mood: g.o_mood,
+                lang: CCI18N.lang
+            });
+        } catch (e) {}
+    }
+
+    function updateGoldenLang() {
+        const panel = document.getElementById('goldenCapsulePanel');
+        if (!panel || panel.style.display === 'none') return;
+
+        const titleEl = panel.querySelector('.golden-title');
+        const hintEl = panel.querySelector('.golden-hint');
+
+        if (titleEl) titleEl.textContent = CCI18N.lang === 'ar'
+            ? 'الكبسولة الذهبية اليوم'
+            : 'Golden Capsule of the Day';
+
+        if (hintEl) hintEl.textContent = CCI18N.lang === 'ar'
+            ? 'تتغير كل يوم عند منتصف الليل'
+            : 'Changes daily at midnight';
+    }
+
+    loadGoldenCapsule();
+
     /* ═══ جلب الكبسولات من القاعدة ═══ */
     CapsuleStore.load().then(list => {
         list.forEach(m => { activeMessages.push(m); createMessageMarker(m); });
@@ -1032,7 +1042,6 @@ scene.add(bottomLight);
     const sendAsAnonymous = document.getElementById('sendAsAnonymous');
     let chosenDays = null;
 
-    /* ✅ إعادة حساب min كل مرة تفتح النافذة (كانت ثابتة وتصبح قديمة) */
     function refreshArrivalMin() {
         arrivalDate.min = new Date(Date.now() + 864e5).toISOString().slice(0, 10);
     }
@@ -1074,7 +1083,6 @@ scene.add(bottomLight);
         }
     }));
 
-    /* ✅ عند فتح النافذة: تحديث min + مزامنة حالة "مجهول" */
     openModalBtn.addEventListener('click', () => {
         refreshArrivalMin();
         if (sendAsAnonymous && authorNameInput) {
@@ -1095,7 +1103,6 @@ scene.add(bottomLight);
         }
     });
 
-    /* ✅ ربط "إرسال كمجهول" فعليًا */
     if (sendAsAnonymous && authorNameInput) {
         sendAsAnonymous.addEventListener('change', (e) => {
             authorNameInput.disabled = e.target.checked;
@@ -1128,8 +1135,6 @@ scene.add(bottomLight);
         if (!country) { showToast(CCI18N.t('pick_warn'), '⚠️'); return; }
 
         const text = messageText.value.trim();
-
-        /* ✅ قراءة "إرسال كمجهول" فعليًا */
         const isAnon = !!(sendAsAnonymous && sendAsAnonymous.checked);
         const author = isAnon
             ? CCI18N.t('anon_name')
@@ -1153,11 +1158,10 @@ scene.add(bottomLight);
         btn.disabled = true; btn.textContent = CCI18N.t('preparing');
 
         try {
-        const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
+            const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
             launchMessage(country, text, author, mood);
-                         showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
+            showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
 
-            /* 🎉 انفجار النجوم! */
             launchConfetti({
                 colors: [
                     MOOD_CSS[mood] || '#a78bfa',
@@ -1168,7 +1172,6 @@ scene.add(bottomLight);
                 duration: 3000
             });
 
-            /* ✅ تتبّع الإرسال */
             trackEvent('capsule_sent', {
                 country: country,
                 mood: mood,
@@ -1194,7 +1197,7 @@ scene.add(bottomLight);
        ═══════════════════════════════════════════════════════════ */
     const googleBtn = document.getElementById('googleLoginBtn');
 
-        const GOOGLE_LOGO_SVG = `<svg class="g-logo" viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
+    const GOOGLE_LOGO_SVG = `<svg class="g-logo" viewBox="0 0 48 48" width="18" height="18" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>`;
 
     function updateAuthUI(user) {
         if (!googleBtn) return;
@@ -1220,17 +1223,14 @@ scene.add(bottomLight);
     }
 
     if (sb && googleBtn) {
-        /* جلب الجلسة الحالية */
         sb.auth.getSession().then(({ data }) => {
             updateAuthUI(data && data.session ? data.session.user : null);
         }).catch(() => updateAuthUI(null));
 
-        /* الاستماع لتغيرات الحالة */
         sb.auth.onAuthStateChange((_event, session) => {
             updateAuthUI(session ? session.user : null);
         });
 
-        /* زر الدخول / الخروج */
         googleBtn.addEventListener('click', async () => {
             try {
                 const { data } = await sb.auth.getSession();
@@ -1254,10 +1254,9 @@ scene.add(bottomLight);
         });
     }
 
-    /* عند تبديل اللغة: تحديث أسماء الدول في التسميات + زر Google */
-                            /* عند تبديل اللغة: تحديث أسماء الدول في التسميات + زر Google */
     addEventListener('cc:lang', () => {
         trackEvent('language_toggle', { lang: CCI18N.lang, page: 'home' });
+        updateGoldenLang();
         labelElements.forEach(it => {
             it.element.innerHTML = `<span>📍</span> ${esc(CCI18N.countryLabel(it.msg.country))}`;
         });
@@ -1279,7 +1278,6 @@ scene.add(bottomLight);
     async function openDeep() {
         trackEvent('deep_dive_opened', { lang: CCI18N.lang });
         if (!sb) {
-                    
             showToast(CCI18N.lang === 'ar' ? 'هذه الميزة تحتاج ربط قاعدة البيانات' : 'This needs the database connection', '⚠️');
             return;
         }
@@ -1294,7 +1292,7 @@ scene.add(bottomLight);
             const r = data[0];
             lastDeepId = r.o_id;
             deepText.classList.remove('deep-empty');
-            deepText.textContent = '“' + r.o_text + '”';
+            deepText.textContent = '"' + r.o_text + '"';
             const when = new Intl.DateTimeFormat(CCI18N.lang === 'ar' ? 'ar-DZ' : 'en-GB',
                 { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(r.o_created));
             deepMeta.innerHTML =
@@ -1323,6 +1321,4 @@ scene.add(bottomLight);
             requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add('live')));
         }
     }
-    /* تصدير Confetti للاستخدام من ملفات أخرى */
-    window.launchConfetti = launchConfetti;
 });

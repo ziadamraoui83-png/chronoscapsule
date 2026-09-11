@@ -1,6 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — archive.js
-   (نهائي: GA4 + Social + Card Generator + تتبع)
+   CHRONOS CAPSULE — archive.js (نسخة نهائية مركزية)
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
@@ -27,7 +26,6 @@
         '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'
     }[c]));
 
-    /* ═══ GA4 Event Tracker ═══ */
     function trackEvent(eventName, params = {}) {
         try { if (typeof gtag === 'function') gtag('event', eventName, params); } catch (e) {}
     }
@@ -67,9 +65,10 @@
     }
     populateCountries();
 
-    const CC_SB_URL = 'https://sylnhrtgrxfacskjaxlq.supabase.co';
-    const CC_SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN5bG5ocnRncnhmYWNza2pheGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODg4MTA4MTcsImV4cCI6MjEwNDM4NjgxN30.gPFS04us1m7L4wZn0nvioctVQw86M7vEy2y3V5BELYQ';
-    const sb = (window.supabase) ? supabase.createClient(CC_SB_URL, CC_SB_KEY) : null;
+    /* ═══ الإعدادات المركزية ═══ */
+    const cfg = window.CC_CONFIG || { SUPABASE_URL: '', SUPABASE_ANON_KEY: '' };
+    const sb = (cfg.SUPABASE_URL && window.supabase)
+        ? supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
 
     let currentPage = 0;
     const LIMIT = 15;
@@ -201,7 +200,6 @@
             ${hasCode ? buildSocialRow(codeVal, r.text) : ''}
             ${buildCardButton(codeVal, r.text, r.author, r.country, r.mood, r.arrival_at)}`;
 
-        /* ═══ تتبّع الترجمة ═══ */
         el.querySelector('[data-translate]')?.addEventListener('click', () => {
             trackEvent('capsule_translated', {
                 country: r.country,
@@ -209,7 +207,6 @@
             });
         });
 
-        /* ═══ تتبّع المشاركة الاجتماعية ═══ */
         el.querySelectorAll('[data-social]').forEach(btn => {
             btn.addEventListener('click', () => {
                 trackEvent('capsule_shared', {
@@ -220,7 +217,6 @@
             });
         });
 
-        /* ═══ نسخ الرابط ═══ */
         const copyBtn = el.querySelector('[data-copy-url]');
         if (copyBtn) {
             copyBtn.addEventListener('click', () => {
@@ -235,7 +231,6 @@
             });
         }
 
-        /* ═══ زر إنشاء البطاقة ═══ */
         const cardBtn = el.querySelector('.btn-create-card');
         if (cardBtn) {
             cardBtn.addEventListener('click', () => {

@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <!-- ✅ Google Analytics 4 -->
+    <title>أرشيف الكوكب | Chronos Capsule</title>
+    <meta name="description" content="استكشف كبسولات الزمن من جميع أنحاء العالم. أرشيف كبسولة الزمن الكونية يحوي آلاف الرسائل والاعترافات.">
+    <meta name="keywords" content="أرشيف, كبسولة الزمن, رسائل عامة, chronos capsule, archive, time capsule">
+    <meta name="theme-color" content="#010103">
+
+    <!-- ✅ Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -11,11 +16,6 @@
       gtag('js', new Date());
       gtag('config', 'G-Z872SS657T');
     </script>
-    <meta name="google-site-verification" content="F0LC1gHJdqI7RF6OdtE51g2DMhnCkko3c-GzsEzKzUI" />
-    <title>أرشيف الكوكب | Chronos Capsule</title>
-    <meta name="description" content="استكشف كبسولات الزمن من جميع أنحاء العالم. أرشيف كبسولة الزمن الكونية يحوي آلاف الرسائل والاعترافات.">
-    <meta name="keywords" content="أرشيف, كبسولة الزمن, رسائل عامة, chronos capsule, archive, time capsule">
-    <meta name="theme-color" content="#010103">
 
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website">
@@ -35,7 +35,9 @@
     <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/archive.html">
 
     <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
 
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="archive.css">
@@ -57,7 +59,7 @@
     <main class="page">
         <h1 class="page-title" id="pageTitle">أرشيف الكوكب</h1>
         <p class="page-subtitle" id="pageSubtitle">اقرأ آلاف الرسائل التي تسبح في الفضـاء...</p>
-        
+
         <aside class="filter-bar">
             <select id="filterCountry" class="filter-select"><option value="">🌍 جميع الدول</option></select>
             <select id="filterMood" class="filter-select">
@@ -82,15 +84,16 @@
 
         <section class="cap-list" id="archiveList"></section>
         <div id="loader" class="loader">جاري جلب الكبسولات...</div>
-        
+
         <div style="text-align:center;">
             <button id="loadMoreBtn" class="load-more-btn" style="display:none;">تحميل المزيد</button>
         </div>
     </main>
 
-    <!-- Supabase & Scripts -->
+    <!-- ═══ السكربتات ═══ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="card-generator.js"></script>  
+    <script src="config.js"></script>
+    <script src="card-generator.js"></script>
     <script src="archive.js"></script>
 </body>
 </html>
