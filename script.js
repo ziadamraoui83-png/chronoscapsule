@@ -433,10 +433,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
-        controls.dampingFactor = 0.08;      /* ✅ نعومة أعلى */
+        controls.dampingFactor = 0.06;         /* ✅ نعومة */
         controls.enableZoom = true;
         controls.enablePan = false;
         controls.enableRotate = true;
+
+        /* ✅ دوران عمودي شبه كامل — يكاد لا يتوقف */
+        controls.minPolarAngle = 0.01;
+        controls.maxPolarAngle = Math.PI - 0.01;
+
+        controls.zoomSpeed = 0.6;
+        controls.rotateSpeed = 0.5;            /* سيُعدّل ديناميكيًا في animate */
 
         /* ✅ دوران حر في كل الاتجاهات */
         controls.minPolarAngle = 0.05;
@@ -447,15 +454,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         controls.addEventListener('start', () => { isZooming = false; hideTooltip(); });
 
-        function applyFit() {
+                function applyFit() {
             const vFov = THREE.MathUtils.degToRad(camera.fov);
             const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
             const fov = Math.min(vFov, hFov);
-            const dist = 5.6 / Math.sin(fov * 0.34);
+            /* ✅ dist أكبر → الكوكب أصغر (كما في صورة البداية) */
+            const dist = 5.6 / Math.sin(fov * 0.18);
             fitDist = dist;
-            /* ✅ تقريب أقل — حتى لا يصبح الكوكب ضخمًا */
-            controls.minDistance = dist * 0.68;
-            /* ✅ تبعيد أكبر — مساحة أوسع للتنقل */
+            /* ✅ minDistance أكبر → لا يقترب كثيرًا */
+            controls.minDistance = dist * 0.88;
+            /* ✅ maxDistance أوسع → تبعيد مريح */
             controls.maxDistance = dist * 2.5;
             return dist;
         }
@@ -539,11 +547,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 0, 1
             );
 
-            /* ✅ دوران الكوكب على نفسه — ثابت وبطيء */
+            /* ✅ دوران ذاتي للكوكب — ثابت وسلس */
             rotTarget = 1;
             rotFactor += (rotTarget - rotFactor) * 0.06;
-            planet.rotation.y += 0.0006 * rotFactor;
-            stars.rotation.y += 0.00003 * rotFactor;
+            planet.rotation.y += 0.0008 * rotFactor;
+            stars.rotation.y += 0.00004 * rotFactor;
+
+            /* ✅ سرعة السحب ديناميكية:
+               - عند التقريب (t=0): rotateSpeed = 0.35 (تحكّم دقيق)
+               - عند التبعيد (t=1): rotateSpeed = 1.00 (سحب عادي) */
+            controls.rotateSpeed = 0.35 + t * 0.65;
 
             /* ✅ سرعة السحب تتكيّف مع التقريب — عند الاقتراب أبطأ */
             controls.rotateSpeed = 0.35 + t * 0.75;
