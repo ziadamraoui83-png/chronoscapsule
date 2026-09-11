@@ -294,6 +294,8 @@ scene.add(bottomLight);
         const starsMat = new THREE.PointsMaterial({ size: 0.35, vertexColors: true, transparent: true, opacity: 0.9 });
         stars = new THREE.Points(starsGeom, starsMat);
         scene.add(stars);
+                /* 🌌 تحسينات الكون */
+        addCosmicDecorations();
 
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true; controls.dampingFactor = 0.05;
@@ -353,6 +355,8 @@ scene.add(bottomLight);
             requestAnimationFrame(animate);
             const dt = Math.min(clock.getDelta(), 0.05);
             frameCount++;
+            const elapsed = clock.getElapsedTime();
+            updateCosmicDecorations(dt, elapsed);
 
             const d = camera.position.distanceTo(controls.target);
             const t = THREE.MathUtils.clamp((d - controls.minDistance) / (controls.maxDistance - controls.minDistance), 0, 1);
@@ -390,6 +394,205 @@ scene.add(bottomLight);
         }
         animate();
     }
+        /* ═══════════════════════════════════════════════════════════
+       🌌 تحسينات الكون — سديم + كواكب + شمس + حزام كويكبات
+       ═══════════════════════════════════════════════════════════ */
+    let cosmicObjects = { planets: [], asteroidBelt: null, nebulae: [], sun: null };
+
+    function addCosmicDecorations() {
+        const isMobile = matchMedia('(max-width: 768px)').matches;
+
+        /* ═══ 1) السديم (Nebula) — 3 سحابات ═══ */
+        const nebulaColors = [
+            { color: 0x8b5cf6, pos: [-60, 40, -120], size: 140 },
+            { color: 0x3b82f6, pos: [80, -30, -150], size: 160 },
+            { color: 0xec4899, pos: [-40, -60, -130], size: 120 }
+        ];
+
+        nebulaColors.forEach(({ color, pos, size }) => {
+            const canvas = document.createElement('canvas');
+            canvas.width = canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+            const grad = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+            grad.addColorStop(0, `rgba(${(color >> 16) & 255}, ${(color >> 8) & 255}, ${color & 255}, 0.35)`);
+            grad.addColorStop(0.5, `rgba(${(color >> 16) & 255}, ${(color >> 8) & 255}, ${color & 255}, 0.12)`);
+            grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, 256, 256);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.minFilter = THREE.LinearFilter;
+
+            const sprite = new THREE.Sprite(
+                new THREE.SpriteMaterial({
+                    map: texture,
+                    transparent: true,
+                    opacity: 0.7,
+                    blending: THREE.AdditiveBlending,
+                    depthWrite: false
+                })
+            );
+            sprite.position.set(pos[0], pos[1], pos[2]);
+            sprite.scale.set(size, size, 1);
+            scene.add(sprite);
+            cosmicObjects.nebulae.push({ sprite, baseOpacity: 0.7, speed: 0.02 + Math.random() * 0.03 });
+        });
+
+        /* ═══ 2) الشمس البعيدة ═══ */
+        const sunGroup = new THREE.Group();
+
+        /* الكرة الأساسية */
+        const sunCore = new THREE.Mesh(
+            new THREE.SphereGeometry(3, 24, 24),
+            new THREE.MeshBasicMaterial({ color: 0xffe6a3 })
+        );
+        sunGroup.add(sunCore);
+
+        /* هالة خارجية */
+        const sunCanvas = document.createElement('canvas');
+        sunCanvas.width = sunCanvas.height = 256;
+        const sctx = sunCanvas.getContext('2d');
+        const sgrad = sctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+        sgrad.addColorStop(0, 'rgba(255, 230, 163, 0.9)');
+        sgrad.addColorStop(0.3, 'rgba(255, 180, 100, 0.5)');
+        sgrad.addColorStop(0.7, 'rgba(255, 120, 50, 0.15)');
+        sgrad.addColorStop(1, 'rgba(255, 100, 50, 0)');
+        sctx.fillStyle = sgrad;
+        sctx.fillRect(0, 0, 256, 256);
+
+        const sunTexture = new THREE.CanvasTexture(sunCanvas);
+        const sunHalo = new THREE.Sprite(
+            new THREE.SpriteMaterial({
+                map: sunTexture,
+                transparent: true,
+                blending: THREE.AdditiveBlending,
+                depthWrite: false
+            })
+        );
+        sunHalo.scale.set(24, 24, 1);
+        sunGroup.add(sunHalo);
+
+        sunGroup.position.set(120, 60, -180);
+        scene.add(sunGroup);
+        cosmicObjects.sun = sunGroup;
+
+        /* ═══ 3) الكواكب الصغيرة — 3 كواكب ═══ */
+        const planetDefs = [
+            { color: 0xd4a574, radius: 0.9, orbitRadius: 55, speed: 0.0008, tilt: 0.3 },
+            { color: 0x6ba6d8, radius: 1.2, orbitRadius: 70, speed: 0.0005, tilt: -0.4 },
+            { color: 0xc88b6b, radius: 0.7, orbitRadius: 45, speed: 0.0012, tilt: 0.6 }
+        ];
+
+        planetDefs.forEach((def, i) => {
+            const geometry = new THREE.SphereGeometry(def.radius, isMobile ? 16 : 24, isMobile ? 16 : 24);
+            const material = new THREE.MeshStandardMaterial({
+                color: def.color,
+                roughness: 0.7,
+                metalness: 0.2,
+                emissive: def.color,
+                emissiveIntensity: 0.08
+            });
+            const planetMesh = new THREE.Mesh(geometry, material);
+            planetMesh.userData = {
+                orbitRadius: def.orbitRadius,
+                speed: def.speed,
+                angle: Math.random() * Math.PI * 2,
+                tilt: def.tilt
+            };
+            scene.add(planetMesh);
+            cosmicObjects.planets.push(planetMesh);
+
+            /* قمر صغير يدور حول بعض الكواكب */
+            if (i === 0 || i === 1) {
+                const moonGeo = new THREE.SphereGeometry(def.radius * 0.25, 12, 12);
+                const moonMat = new THREE.MeshBasicMaterial({ color: 0xa0a0a0 });
+                const moon = new THREE.Mesh(moonGeo, moonMat);
+                moon.userData = { parent: planetMesh, orbitRadius: def.radius * 3, speed: 0.05, angle: 0 };
+                scene.add(moon);
+                planetMesh.userData.moon = moon;
+            }
+        });
+
+        /* ═══ 4) حزام الكويكبات — نقط صغيرة تدور ═══ */
+        const asteroidCount = isMobile ? 80 : 160;
+        const asteroidGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(asteroidCount * 3);
+        const asteroidData = [];
+
+        for (let i = 0; i < asteroidCount; i++) {
+            const angle = Math.random() * Math.PI * 2;
+            const radius = 30 + Math.random() * 15;
+            const y = (Math.random() - 0.5) * 3;
+            positions[i * 3] = Math.cos(angle) * radius;
+            positions[i * 3 + 1] = y;
+            positions[i * 3 + 2] = Math.sin(angle) * radius;
+            asteroidData.push({ angle, radius, y, speed: 0.0005 + Math.random() * 0.0008 });
+        }
+
+        asteroidGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        const asteroidMat = new THREE.PointsMaterial({
+            color: 0xa0a0c0,
+            size: 0.15,
+            transparent: true,
+            opacity: 0.6,
+            sizeAttenuation: true
+        });
+        const asteroidBelt = new THREE.Points(asteroidGeo, asteroidMat);
+        asteroidBelt.userData = { data: asteroidData };
+        scene.add(asteroidBelt);
+        cosmicObjects.asteroidBelt = asteroidBelt;
+
+        /* ═══ 5) إضاءة إضافية للكواكب الصغيرة ═══ */
+        const sunLight = new THREE.PointLight(0xffe6a3, 1.5, 500);
+        sunLight.position.copy(sunGroup.position);
+        scene.add(sunLight);
+    }
+
+    function updateCosmicDecorations(dt, elapsed) {
+        /* ═══ السديم — نبض خفيف ═══ */
+        cosmicObjects.nebulae.forEach(n => {
+            n.sprite.material.opacity = n.baseOpacity + Math.sin(elapsed * n.speed) * 0.15;
+        });
+
+        /* ═══ الشمس — نبض ═══ */
+        if (cosmicObjects.sun) {
+            const pulse = 1 + Math.sin(elapsed * 1.5) * 0.08;
+            cosmicObjects.sun.children[1].scale.set(24 * pulse, 24 * pulse, 1);
+        }
+
+        /* ═══ الكواكب — دوران ═══ */
+        cosmicObjects.planets.forEach(planet => {
+            const d = planet.userData;
+            d.angle += d.speed * dt * 60;
+            planet.position.x = Math.cos(d.angle) * d.orbitRadius;
+            planet.position.z = Math.sin(d.angle) * d.orbitRadius;
+            planet.position.y = Math.sin(d.angle * 0.5) * 5 * Math.sin(d.tilt);
+            planet.rotation.y += 0.005;
+
+            /* القمر يدور حول الكوكب */
+            if (d.moon) {
+                d.moon.userData.angle += d.moon.userData.speed * dt * 60;
+                const ma = d.moon.userData.angle;
+                d.moon.position.x = planet.position.x + Math.cos(ma) * d.moon.userData.orbitRadius;
+                d.moon.position.z = planet.position.z + Math.sin(ma) * d.moon.userData.orbitRadius;
+                d.moon.position.y = planet.position.y + Math.sin(ma * 2) * 0.5;
+            }
+        });
+
+        /* ═══ حزام الكويكبات — دوران بطيء ═══ */
+        if (cosmicObjects.asteroidBelt) {
+            const geo = cosmicObjects.asteroidBelt.geometry;
+            const pos = geo.attributes.position.array;
+            const data = cosmicObjects.asteroidBelt.userData.data;
+
+            data.forEach((a, i) => {
+                a.angle += a.speed * dt * 60;
+                pos[i * 3] = Math.cos(a.angle) * a.radius;
+                pos[i * 3 + 2] = Math.sin(a.angle) * a.radius;
+            });
+            geo.attributes.position.needsUpdate = true;
+        }
+    }
 
     function spawnMeteor() {
         if (document.visibilityState !== 'visible') return;
@@ -406,6 +609,10 @@ scene.add(bottomLight);
         line.position.copy(start);
         scene.add(line);
         meteors.push({ line, dir, speed: THREE.MathUtils.randFloat(28, 45), life: 0, dur: THREE.MathUtils.randFloat(1.1, 1.9) });
+    }
+    if (REDUCE) {
+        /* في وضع تقليل الحركة: لا نُحدّث الكواكب */
+        updateCosmicDecorations = function() {};
     }
     if (!REDUCE) {
         (function meteorLoop() {
