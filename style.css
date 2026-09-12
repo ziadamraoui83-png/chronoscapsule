@@ -608,3 +608,28 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 @media (prefers-reduced-motion: reduce) {
     .golden-panel, .golden-star { animation: none; }
 }
+/* ═══════════════════════════════════════════════════════════
+   🌟 تعديل: نقل لوحة الكبسولة الذهبية إلى الجانب
+   ═══════════════════════════════════════════════════════════ */
+
+@media (min-width: 901px) {
+    .golden-panel {
+        top: 100px;
+        left: 40px;
+        right: auto;
+        width: 300px;
+        max-width: 300px;
+        transform: none;
+        padding: 16px 20px 14px;
+        animation: goldenFloatSide 5s ease-in-out infinite;
+    }
+    html[dir="ltr"] .golden-panel {
+        left: auto;
+        right: 40px;
+    }
+}
+
+@keyframes goldenFloatSide {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
+}
