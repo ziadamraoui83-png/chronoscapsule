@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — archive.js (نسخة نهائية مركزية)
+   CHRONOS CAPSULE — archive.js (نسخة نهائية مركزية + Skeleton)
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
@@ -74,6 +74,38 @@
     const LIMIT = 15;
     let isLoading = false;
 
+    /* ═══════════════════════════════════════════════════════════
+       🦴 Skeleton Loading
+       ═══════════════════════════════════════════════════════════ */
+    function getSkeletonHTML() {
+        const label = AppLang === 'ar' ? 'جاري التحميل...' : 'Loading...';
+        const item = `
+            <div class="skeleton-item" aria-hidden="true">
+                <div class="skeleton-head">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line badge"></div>
+                </div>
+                <div class="skeleton-lines-group">
+                    <div class="skeleton-line text-1"></div>
+                    <div class="skeleton-line text-2"></div>
+                    <div class="skeleton-line text-3"></div>
+                </div>
+                <div class="skeleton-head">
+                    <div class="skeleton-line meta"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+            </div>`;
+        return `
+            <div class="skeleton-list" role="status" aria-label="${label}">
+                ${item.repeat(4)}
+            </div>`;
+    }
+
+    function showSkeleton(container) {
+        container.innerHTML = getSkeletonHTML();
+    }
+
+    /* ═══ الجلب ═══ */
     async function fetchArchive(reset) {
         reset = !!reset;
         if (!sb) {
@@ -83,12 +115,15 @@
         }
         if (isLoading) return;
         isLoading = true;
-        $('loader').style.display = 'block';
+
+        const list = $('archiveList');
 
         if (reset) {
             currentPage = 0;
-            $('archiveList').innerHTML = '';
             $('loadMoreBtn').style.display = 'none';
+            showSkeleton(list);
+        } else {
+            $('loader').style.display = 'block';
         }
 
         const country = $('filterCountry').value;
@@ -114,18 +149,20 @@
         isLoading = false;
 
         if (error) {
-            if (reset) $('archiveList').innerHTML =
+            if (reset) list.innerHTML =
                 `<div style="text-align:center;color:#f87171;padding:20px">${esc(error.message)}</div>`;
             return;
         }
 
+        if (reset) list.innerHTML = '';
+
         if (reset && (!data || data.length === 0)) {
-            $('archiveList').innerHTML = '<div style="text-align:center;color:#94a3b8;padding:30px;">' +
+            list.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:30px;">' +
                 (AppLang === 'ar' ? 'لم يُعثر على أي رسالة بهذا الفلتر.' : 'No messages match this filter.') + '</div>';
             return;
         }
 
-        data.forEach(r => $('archiveList').appendChild(createCard(r)));
+        data.forEach(r => list.appendChild(createCard(r)));
         $('loadMoreBtn').style.display =
             (data.length === LIMIT && (currentPage + 1) * LIMIT < count) ? 'inline-block' : 'none';
         currentPage++;

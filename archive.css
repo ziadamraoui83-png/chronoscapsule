@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
    CHRONOS CAPSULE — archive.css (نسخة نهائية)
-   تتضمن: التصميم الأساسي + Social + Card Modal
+   تتضمن: التصميم الأساسي + Social + Card Modal + Skeleton
    ═══════════════════════════════════════════════════════════ */
 *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
 body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
@@ -217,6 +217,77 @@ html[dir="ltr"] .filter-select {
 .card-social-btn.tg { background: rgba(0,136,204,.12); color: #0088cc; border-color: rgba(0,136,204,.3); }
 .card-social-btn.tg:hover { background: #0088cc; color: #fff; transform: translateY(-2px); }
 
+/* ═════════ 🦴 Skeleton Loading ═════════ */
+.skeleton-list{display:flex;flex-direction:column;gap:16px}
+.skeleton-item{
+    background:rgba(15,23,42,.5);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:18px;
+    padding:22px;
+    display:flex;flex-direction:column;gap:14px;
+    border-inline-start-width:4px;
+    border-inline-start-color:rgba(139,92,246,.25);
+    overflow:hidden;
+    position:relative;
+}
+.skeleton-item::after{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(90deg,
+        transparent 0%,
+        rgba(255,255,255,.04) 40%,
+        rgba(255,255,255,.08) 50%,
+        rgba(255,255,255,.04) 60%,
+        transparent 100%);
+    animation:skeletonShimmer 1.6s ease-in-out infinite;
+    pointer-events:none;
+}
+@keyframes skeletonShimmer{
+    0%   { transform:translateX(-100%); }
+    100% { transform:translateX(100%); }
+}
+html[dir="rtl"] .skeleton-item::after{
+    animation:skeletonShimmerRTL 1.6s ease-in-out infinite;
+}
+@keyframes skeletonShimmerRTL{
+    0%   { transform:translateX(100%); }
+    100% { transform:translateX(-100%); }
+}
+.skeleton-head{
+    display:flex;justify-content:space-between;align-items:center;gap:15px;
+}
+.skeleton-line{
+    height:14px;
+    border-radius:8px;
+    background:linear-gradient(90deg,
+        rgba(139,92,246,.10) 0%,
+        rgba(139,92,246,.18) 50%,
+        rgba(139,92,246,.10) 100%);
+    position:relative;
+    overflow:hidden;
+}
+.skeleton-line::after{
+    content:'';
+    position:absolute;inset:0;
+    background:linear-gradient(90deg,
+        transparent 0%,
+        rgba(167,139,250,.15) 50%,
+        transparent 100%);
+    animation:skeletonPulse 1.8s ease-in-out infinite;
+}
+@keyframes skeletonPulse{
+    0%,100% { opacity:.4; }
+    50%     { opacity:1; }
+}
+.skeleton-line.badge{width:90px;height:24px;border-radius:20px}
+.skeleton-line.title{width:60%;height:20px}
+.skeleton-line.text-1{width:100%}
+.skeleton-line.text-2{width:92%}
+.skeleton-line.text-3{width:70%}
+.skeleton-line.meta{width:40%;height:12px}
+.skeleton-line.short{width:30%;height:12px}
+.skeleton-lines-group{display:flex;flex-direction:column;gap:10px}
+
 /* ═════════ الجوال ═════════ */
 @media(max-width:600px){
     .page-header{padding:12px 18px}
@@ -225,6 +296,8 @@ html[dir="ltr"] .filter-select {
     .card-modal-close { top: 10px; left: 10px; width: 32px; height: 32px; font-size: 18px; }
     .card-btn { min-width: 80px; padding: 11px 12px; font-size: 12.5px; }
     .card-social-btn { width: 34px; height: 34px; font-size: 14px; }
+    .skeleton-item{padding:18px}
+    .skeleton-line.badge{width:70px;height:22px}
 }
 
 /* ═════════ تقليل الحركة ═════════ */
@@ -232,4 +305,6 @@ html[dir="ltr"] .filter-select {
     * { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
     .cap-item:hover { transform: none; }
     .card-spinner { animation: none; }
+    .skeleton-item::after { animation: none; opacity: 0.3; }
+    .skeleton-line::after { animation: none; opacity: 0.6; }
 }

@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — Service Worker (v1.1.0)
+   CHRONOS CAPSULE — Service Worker (v1.2.0)
    يخزّن الملفات المحلية فقط — لا يعترض الطلبات الخارجية
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.1.6';
+const CACHE_VERSION = 'cc-v1.2.0';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
@@ -37,7 +37,6 @@ const STATIC_ASSETS = [
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_STATIC).then((cache) => {
-            /* كل ملف على حدة — فشل واحد لا يكسر البقية */
             return Promise.all(
                 STATIC_ASSETS.map((url) =>
                     cache.add(url).catch(() => null)
@@ -76,7 +75,7 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    /* ⚠️ الأهم: تجاهل كل الطلبات الخارجية */
+    /* ⚠️ تجاهل كل الطلبات الخارجية */
     if (url.origin !== self.location.origin) {
         return;
     }
@@ -88,7 +87,6 @@ self.addEventListener('fetch', (event) => {
     const isHTML = request.headers.get('accept')?.includes('text/html');
 
     if (isHTML) {
-        /* HTML: Network First */
         event.respondWith(
             fetch(request)
                 .then((response) => {
@@ -110,11 +108,9 @@ self.addEventListener('fetch', (event) => {
                 })
         );
     } else {
-        /* CSS, JS, صور: Cache First */
         event.respondWith(
             caches.match(request).then((cached) => {
                 if (cached) {
-                    /* تحديث خلفي في الخلفية */
                     fetch(request)
                         .then((response) => {
                             if (response && response.ok) {
@@ -137,7 +133,6 @@ self.addEventListener('fetch', (event) => {
                         return response;
                     })
                     .catch(() => {
-                        /* دائماً أعد Response صالح */
                         if (request.destination === 'image') {
                             return new Response(
                                 '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🚀</text></svg>',

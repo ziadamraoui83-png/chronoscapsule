@@ -169,17 +169,6 @@
             backdrop-filter:blur(16px);z-index:9999;opacity:0;transition:all .4s cubic-bezier(.34,1.56,.64,1);
             pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
         .cc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-        @media(max-width:600px){
-            .page-header{padding:12px 16px}
-            .page{padding:24px 14px 60px}
-            .page-title{font-size:1.4rem}
-            .filter-bar{flex-direction:column;align-items:stretch}
-            .search-input{width:100%}
-        }
-                @media (prefers-reduced-motion: reduce) {
-            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
-            .cap-card:hover { transform: none; }
-        }
 
         /* ═════════ النافذة المنبثقة للبطاقة ═════════ */
         .card-modal-overlay {
@@ -280,11 +269,95 @@
         .card-social-btn.tg { background: rgba(0,136,204,.12); color: #0088cc; border-color: rgba(0,136,204,.3); }
         .card-social-btn.tg:hover { background: #0088cc; color: #fff; transform: translateY(-2px); }
 
-        @media (max-width: 600px) {
+        /* ═════════ 🦴 Skeleton Loading ═════════ */
+        .skeleton-list{display:flex;flex-direction:column;gap:14px}
+        .skeleton-item{
+            background:rgba(15,23,42,.5);
+            border:1px solid rgba(255,255,255,.06);
+            border-radius:16px;
+            padding:20px 22px;
+            display:flex;flex-direction:column;gap:12px;
+            border-inline-start-width:3px;
+            border-inline-start-color:rgba(139,92,246,.25);
+            overflow:hidden;
+            position:relative;
+        }
+        .skeleton-item::after{
+            content:'';
+            position:absolute;inset:0;
+            background:linear-gradient(90deg,
+                transparent 0%,
+                rgba(255,255,255,.04) 40%,
+                rgba(255,255,255,.08) 50%,
+                rgba(255,255,255,.04) 60%,
+                transparent 100%);
+            animation:skeletonShimmer 1.6s ease-in-out infinite;
+            pointer-events:none;
+        }
+        @keyframes skeletonShimmer{
+            0%   { transform:translateX(-100%); }
+            100% { transform:translateX(100%); }
+        }
+        html[dir="rtl"] .skeleton-item::after{
+            animation:skeletonShimmerRTL 1.6s ease-in-out infinite;
+        }
+        @keyframes skeletonShimmerRTL{
+            0%   { transform:translateX(100%); }
+            100% { transform:translateX(-100%); }
+        }
+        .skeleton-head{
+            display:flex;justify-content:space-between;align-items:center;gap:12px;
+        }
+        .skeleton-line{
+            height:13px;
+            border-radius:8px;
+            background:linear-gradient(90deg,
+                rgba(139,92,246,.10) 0%,
+                rgba(139,92,246,.18) 50%,
+                rgba(139,92,246,.10) 100%);
+            position:relative;
+            overflow:hidden;
+        }
+        .skeleton-line::after{
+            content:'';
+            position:absolute;inset:0;
+            background:linear-gradient(90deg,
+                transparent 0%,
+                rgba(167,139,250,.15) 50%,
+                transparent 100%);
+            animation:skeletonPulse 1.8s ease-in-out infinite;
+        }
+        @keyframes skeletonPulse{
+            0%,100% { opacity:.4; }
+            50%     { opacity:1; }
+        }
+        .skeleton-line.badge{width:90px;height:22px;border-radius:20px}
+        .skeleton-line.title{width:55%;height:20px}
+        .skeleton-line.text-1{width:100%}
+        .skeleton-line.text-2{width:92%}
+        .skeleton-line.text-3{width:70%}
+        .skeleton-line.meta{width:40%;height:11px}
+        .skeleton-line.short{width:30%;height:11px}
+        .skeleton-lines-group{display:flex;flex-direction:column;gap:9px}
+
+        @media(max-width:600px){
+            .page-header{padding:12px 16px}
+            .page{padding:24px 14px 60px}
+            .page-title{font-size:1.4rem}
+            .filter-bar{flex-direction:column;align-items:stretch}
+            .search-input{width:100%}
             .card-modal { padding: 20px; border-radius: 20px; }
             .card-modal-close { top: 10px; left: 10px; width: 32px; height: 32px; font-size: 18px; }
             .card-btn { min-width: 80px; padding: 11px 12px; font-size: 12.5px; }
             .card-social-btn { width: 34px; height: 34px; font-size: 14px; }
+            .skeleton-item{padding:16px 18px}
+            .skeleton-line.badge{width:70px;height:20px}
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+            .cap-card:hover { transform: none; }
+            .skeleton-item::after { animation: none; opacity: 0.3; }
+            .skeleton-line::after { animation: none; opacity: 0.6; }
         }
     </style>
 </head>
@@ -414,6 +487,33 @@
             if (show) visible++;
         });
         $('emptyState').style.display = visible === 0 ? 'block' : 'none';
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       🦴 Skeleton Loading
+       ═══════════════════════════════════════════════════════════ */
+    function getSkeletonHTML() {
+        const label = capLang === 'ar' ? 'جاري التحميل...' : 'Loading...';
+        const item = `
+            <div class="skeleton-item" aria-hidden="true">
+                <div class="skeleton-head">
+                    <div class="skeleton-line title"></div>
+                    <div class="skeleton-line badge"></div>
+                </div>
+                <div class="skeleton-lines-group">
+                    <div class="skeleton-line text-1"></div>
+                    <div class="skeleton-line text-2"></div>
+                    <div class="skeleton-line text-3"></div>
+                </div>
+                <div class="skeleton-head">
+                    <div class="skeleton-line meta"></div>
+                    <div class="skeleton-line short"></div>
+                </div>
+            </div>`;
+        return `
+            <div class="skeleton-list" role="status" aria-label="${label}">
+                ${item.repeat(3)}
+            </div>`;
     }
 
     function buildSocialRow(code, text) {
@@ -634,7 +734,7 @@
         });
     }, 1000);
 
-        /* ✅ منع التنفيذ المتزامن — يحل مشكلة التكرار */
+    /* ✅ منع التنفيذ المتزامن — يحل مشكلة التكرار */
     let _loadingMine = false;
 
     async function loadMine(){
@@ -642,7 +742,7 @@
         _loadingMine = true;
 
         const list = $('capList');
-        list.innerHTML = '';
+        list.innerHTML = getSkeletonHTML();
         allCards = [];
         let items = [];
 
@@ -680,7 +780,13 @@
             } catch (e) {}
         }
 
-        if (!items.length){ $('emptyState').style.display = 'block'; return; }
+        list.innerHTML = '';
+
+        if (!items.length){
+            $('emptyState').style.display = 'block';
+            _loadingMine = false;
+            return;
+        }
 
         items.sort((a, b) => new Date(b.o_created || b.created_at) - new Date(a.o_created || a.created_at));
         items.forEach(c => {
@@ -690,7 +796,7 @@
         });
         applyFilters();
 
-        _loadingMine = false;   /* ✅ إعادة الفتح */
+        _loadingMine = false;
     }
 
     async function openByCode(code){
