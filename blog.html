@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function() {
+        try {
+            var lang = localStorage.getItem('cc_lang') || 'ar';
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') lang = urlLang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch(e) {}
+    })();
+    </script>
+    <title>المدونة | Chronos Capsule — مقالات عن الزمن والذكريات والمستقبل</title>
+    <meta name="description" content="مقالات ونصائح حول الكبسولات الزمنية، حفظ الذكريات، ورسائل المستقبل. محتوى عربي وإنجليزي من Chronos Capsule.">
+    <meta name="keywords" content="مدونة, كبسولة الزمن, مقالات, Chronos Capsule blog, time capsule articles, ذكريات">
+    <meta name="theme-color" content="#010103">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z872SS657T');
+    </script>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="المدونة | Chronos Capsule">
+    <meta property="og:description" content="مقالات ونصائح حول الكبسولات الزمنية وحفظ الذكريات.">
+    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:url" content="https://chronoscapsule.vercel.app/blog.html">
+    <meta property="og:locale" content="ar_AR">
+
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <link rel="canonical" href="https://chronoscapsule.vercel.app/blog.html">
+    <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog.html">
+    <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/blog.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog.html">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Blog",
+      "name": "مدونة Chronos Capsule",
+      "url": "https://chronoscapsule.vercel.app/blog.html",
+      "inLanguage": ["ar", "en"],
+      "publisher": {
+        "@type": "Organization",
+        "name": "Chronos Capsule",
+        "url": "https://chronoscapsule.vercel.app/"
+      }
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html[lang="ar"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-ar { display: none !important; }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
+        body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
+        a,button{cursor:pointer}
+        body::before{content:'';position:fixed;inset:0;
+            background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
+                        radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
+            z-index:0;pointer-events:none}
+        body::after{content:'';position:fixed;inset:0;
+            background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
+                radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
+                radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+                radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
+            z-index:0;pointer-events:none}
+        .page-header{position:sticky;top:0;z-index:50;
+            background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
+            border-bottom:1px solid rgba(255,255,255,.07);
+            padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .header-logo-icon{font-size:1.4rem}
+        .header-logo-text{font-size:1.05rem;font-weight:900;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .header-actions{display:flex;align-items:center;gap:8px}
+        .back-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
+            padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
+        .back-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
+        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
+        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
+        .page{max-width:900px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
+
+        .hero{text-align:center;padding:20px 0 40px;position:relative}
+        .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+            width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);
+            pointer-events:none;z-index:-1}
+        .hero-emoji{font-size:56px;margin-bottom:18px;
+            filter:drop-shadow(0 0 20px rgba(139,92,246,.4));
+            animation:floatEmoji 4s ease-in-out infinite}
+        @keyframes floatEmoji{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .hero-title{font-size:2.2rem;font-weight:900;margin-bottom:12px;line-height:1.3;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6,#3AE1FF);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .hero-subtitle{font-size:1rem;color:#94a3b8;line-height:1.8;max-width:600px;margin:0 auto}
+
+        .posts{display:flex;flex-direction:column;gap:18px;margin-top:40px}
+        .post-card{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);
+            border-radius:20px;padding:26px 28px;backdrop-filter:blur(10px);
+            transition:all .3s ease;text-decoration:none;color:inherit;
+            display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden}
+        .post-card:hover{border-color:rgba(139,92,246,.5);transform:translateY(-3px);
+            box-shadow:0 12px 40px rgba(139,92,246,.15)}
+        .post-card::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;
+            background:linear-gradient(180deg,#8b5cf6,#3b82f6);opacity:.6}
+        .post-tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;
+            color:#a78bfa;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);
+            padding:3px 10px;border-radius:999px;width:fit-content}
+        .post-title{font-size:1.25rem;font-weight:900;color:#fff;line-height:1.4}
+        .post-card:hover .post-title{color:#c4b5fd}
+        .post-excerpt{font-size:.92rem;color:#94a3b8;line-height:1.75}
+        .post-meta{display:flex;gap:14px;align-items:center;font-size:12px;color:#64748b;margin-top:6px}
+        .post-meta span{display:flex;align-items:center;gap:5px}
+
+        .coming-soon{background:rgba(15,23,42,.3);border:1px dashed rgba(255,255,255,.1);
+            border-radius:20px;padding:26px 28px;text-align:center;color:#64748b}
+        .coming-soon-icon{font-size:30px;margin-bottom:10px;opacity:.5}
+        .coming-soon-title{font-size:1rem;font-weight:700;color:#94a3b8;margin-bottom:6px}
+        .coming-soon-desc{font-size:.85rem;color:#64748b;line-height:1.7}
+
+        .cta-box{margin-top:50px;padding:40px 30px;text-align:center;
+            background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(59,130,246,.08));
+            border:1px solid rgba(139,92,246,.3);border-radius:24px}
+        .cta-title{font-size:1.4rem;font-weight:900;margin-bottom:12px;
+            background:linear-gradient(135deg,#a78bfa,#3AE1FF);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .cta-desc{font-size:.95rem;color:#94a3b8;margin-bottom:24px;line-height:1.8}
+        .cta-btn{display:inline-flex;align-items:center;gap:10px;
+            padding:15px 34px;background:linear-gradient(135deg,#6d28d9,#2563eb);
+            color:#fff;text-decoration:none;border-radius:14px;
+            font-size:15px;font-weight:900;transition:all .3s ease;
+            box-shadow:0 12px 36px rgba(99,102,241,.4)}
+        .cta-btn:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(99,102,241,.55)}
+
+        .page-footer{text-align:center;padding:30px 20px;color:#64748b;font-size:12.5px;
+            border-top:1px solid rgba(255,255,255,.06);margin-top:50px}
+        .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+        .footer-links a{color:#a78bfa;text-decoration:none;transition:color .3s}
+        .footer-links a:hover{color:#fff}
+
+        @media(max-width:600px){
+            .page-header{padding:12px 16px}
+            .page{padding:24px 16px 60px}
+            .hero-title{font-size:1.6rem}
+            .hero-emoji{font-size:44px}
+            .hero-subtitle{font-size:.9rem}
+            .post-card{padding:20px}
+            .post-title{font-size:1.05rem}
+            .post-excerpt{font-size:.88rem}
+            .cta-box{padding:28px 20px}
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+            .hero-emoji { animation: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <a href="index.html" class="header-logo">
+        <span class="header-logo-icon">🚀</span>
+        <span class="header-logo-text">CHRONOS CAPSULE</span>
+    </a>
+    <div class="header-actions">
+        <button class="lang-toggle-cap" id="blogLangToggle">EN</button>
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span class="lang-ar">العودة للكوكب</span>
+            <span class="lang-en">Back to Planet</span>
+        </a>
+    </div>
+</header>
+
+<main class="page">
+
+    <section class="hero">
+        <div class="hero-emoji">📖</div>
+        <h1 class="hero-title">
+            <span class="lang-ar">مدونة Chronos</span>
+            <span class="lang-en">Chronos Blog</span>
+        </h1>
+        <p class="hero-subtitle">
+            <span class="lang-ar">مقالات ونصائح حول الكبسولات الزمنية، حفظ الذكريات، ورسائل المستقبل.</span>
+            <span class="lang-en">Articles and tips about time capsules, preserving memories, and messages to the future.</span>
+        </p>
+    </section>
+
+    <section class="posts">
+
+        <!-- مقال 1 -->
+        <a href="blog-how-to-write-a-time-capsule.html" class="post-card">
+            <span class="post-tag"><span class="lang-ar">دليل</span><span class="lang-en">GUIDE</span></span>
+            <h2 class="post-title">
+                <span class="lang-ar">كيف تكتب كبسولة زمنية مؤثرة؟ دليل كامل</span>
+                <span class="lang-en">How to Write a Powerful Time Capsule: Complete Guide</span>
+            </h2>
+            <p class="post-excerpt">
+                <span class="lang-ar">تعرّف على 7 نصائح عملية لكتابة كبسولة زمنية تترك أثراً حقيقياً — من اختيار الكلمات إلى تحديد الموعد المناسب.</span>
+                <span class="lang-en">Learn 7 practical tips for writing a time capsule that leaves a real impact — from choosing your words to setting the right time.</span>
+            </p>
+            <div class="post-meta">
+                <span>📅 <span class="lang-ar">13 سبتمبر 2026</span><span class="lang-en">September 13, 2026</span></span>
+                <span>⏱️ <span class="lang-ar">5 دقائق قراءة</span><span class="lang-en">5 min read</span></span>
+            </div>
+        </a>
+
+        <!-- مقالات قادمة -->
+        <div class="coming-soon">
+            <div class="coming-soon-icon">✍️</div>
+            <div class="coming-soon-title">
+                <span class="lang-ar">مقالات قادمة</span>
+                <span class="lang-en">More articles coming soon</span>
+            </div>
+            <div class="coming-soon-desc">
+                <span class="lang-ar">نعمل حالياً على مقالات جديدة حول أفكار الكبسولات، حفظ الذكريات، وقصص ملهمة من المستخدمين.</span>
+                <span class="lang-en">We're working on new articles about capsule ideas, preserving memories, and inspiring user stories.</span>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="cta-box">
+        <h2 class="cta-title">
+            <span class="lang-ar">جاهز لتطبق ما قرأت؟</span>
+            <span class="lang-en">Ready to Apply What You Read?</span>
+        </h2>
+        <p class="cta-desc">
+            <span class="lang-ar">اكتب أول كبسولة زمنية الآن — الأمر لا يستغرق أكثر من دقيقتين.</span>
+            <span class="lang-en">Write your first time capsule now — it takes less than two minutes.</span>
+        </p>
+        <a href="index.html" class="cta-btn">
+            <span>🚀</span>
+            <span class="lang-ar">ابدأ الآن</span>
+            <span class="lang-en">Start Now</span>
+        </a>
+    </section>
+
+    <footer class="page-footer">
+        <div class="footer-links">
+            <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+            <a href="how-it-works.html"><span class="lang-ar">كيف يعمل</span><span class="lang-en">How It Works</span></a>
+            <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
+            <a href="faq.html"><span class="lang-ar">الأسئلة الشائعة</span><span class="lang-en">FAQ</span></a>
+            <a href="privacy.html"><span class="lang-ar">سياسة الخصوصية</span><span class="lang-en">Privacy Policy</span></a>
+            <a href="terms.html"><span class="lang-ar">شروط الاستخدام</span><span class="lang-en">Terms of Use</span></a>
+        </div>
+        <div>© 2026 Chronos Capsule — <span class="lang-ar">منصة عالمية 🌍</span><span class="lang-en">Global platform 🌍</span></div>
+    </footer>
+
+</main>
+
+<script>
+(function(){
+    'use strict';
+    function getCurrentLang() {
+        try {
+            const urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') return urlLang;
+            return localStorage.getItem('cc_lang') || 'ar';
+        } catch (e) { return 'ar'; }
+    }
+    let currentLang = getCurrentLang();
+    function applyLang(l) {
+        currentLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+        const btn = document.getElementById('blogLangToggle');
+        if (btn) btn.textContent = (l === 'ar') ? 'EN' : 'عربي';
+        document.title = (l === 'ar' ? 'المدونة' : 'Blog') + ' | Chronos Capsule';
+    }
+    document.getElementById('blogLangToggle').addEventListener('click', () => {
+        applyLang(currentLang === 'ar' ? 'en' : 'ar');
+    });
+    applyLang(currentLang);
+})();
+</script>
+</body>
+</html>
