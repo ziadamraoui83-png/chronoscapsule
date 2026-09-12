@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — script.js (نسخة نهائية مركزية)
+   CHRONOS CAPSULE — script.js (نسخة نهائية مركزية + إصلاحات)
    ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
     let scene, camera, renderer, controls, planet, stars;
@@ -105,11 +105,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (e) {}
 
-                        /* ✅ جلب الكبسولات العامة + الخاصة التي وصلت فقط */
-            const now = new Date().toISOString();
+            /* ✅ جلب الكبسولات العامة + الخاصة التي وصلت فقط */
+            const nowIso = new Date().toISOString();
             const { data, error } = await sb.from('capsules')
                 .select('id,text,author,country,mood,arrival_at,created_at,mode')
-                .or(`mode.eq.public,and(mode.eq.private,arrival_at.lte.${now})`)
+                .or(`mode.eq.public,and(mode.eq.private,arrival_at.lte.${nowIso})`)
                 .order('arrival_at', { ascending: false })
                 .limit(200);
 
@@ -237,9 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('capsuleCount').textContent = activeMessages.length;
     }
 
-    /* ═══════════════════════════════════════════════════════════
-       🎉 Confetti — انفجار نجوم عند إرسال كبسولة
-       ═══════════════════════════════════════════════════════════ */
+    /* ═══ Confetti ═══ */
     function launchConfetti(options = {}) {
         const {
             colors = ['#a78bfa', '#3b82f6', '#3AE1FF', '#D355FF', '#fbbf24', '#34d399'],
@@ -388,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         document.getElementById('planet-viewport').appendChild(renderer.domElement);
 
-        /* ═══ إضاءة محسّنة ═══ */
+        /* ═══ إضاءة ═══ */
         scene.add(new THREE.AmbientLight(0xffffff, 1.1));
         const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
         dirLight.position.set(5, 3, 5);
@@ -437,37 +435,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
-        controls.dampingFactor = 0.06;         /* ✅ نعومة */
+        controls.dampingFactor = 0.06;
         controls.enableZoom = true;
         controls.enablePan = false;
         controls.enableRotate = true;
-
-        /* ✅ دوران عمودي شبه كامل — يكاد لا يتوقف */
         controls.minPolarAngle = 0.01;
         controls.maxPolarAngle = Math.PI - 0.01;
-
-        controls.zoomSpeed = 0.6;
-        controls.rotateSpeed = 0.5;            /* سيُعدّل ديناميكيًا في animate */
-
-        /* ✅ دوران حر في كل الاتجاهات */
-        controls.minPolarAngle = 0.05;
-        controls.maxPolarAngle = Math.PI - 0.05;
-
-        /* ✅ حدود التكبير/التصغير */
         controls.zoomSpeed = 0.6;
 
         controls.addEventListener('start', () => { isZooming = false; hideTooltip(); });
 
-            function applyFit() {
+        function applyFit() {
             const vFov = THREE.MathUtils.degToRad(camera.fov);
             const hFov = 2 * Math.atan(Math.tan(vFov / 2) * camera.aspect);
             const fov = Math.min(vFov, hFov);
-            /* ✅ حجم كوكب متوسط — مثل الصورة التي أعجبتك */
             const dist = 5.6 / Math.sin(fov * 0.25);
             fitDist = dist;
-            /* ✅ مساحة أوسع للتقريب */
             controls.minDistance = dist * 0.5;
-            /* ✅ مساحة معتدلة للتبعيد */
             controls.maxDistance = dist * 1.8;
             return dist;
         }
@@ -478,7 +462,7 @@ document.addEventListener('DOMContentLoaded', () => {
         else camera.position.set(0, 0, baseDist);
         let prevFit = baseDist;
 
-        /* ═══ أزرار التقريب/التبعيد — v2 ═══ */
+        /* ═══ أزرار التقريب ═══ */
         let targetDist = null;
 
         function startZoom(factor) {
@@ -551,19 +535,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 0, 1
             );
 
-            /* ✅ دوران ذاتي للكوكب — ثابت وسلس */
             rotTarget = 1;
             rotFactor += (rotTarget - rotFactor) * 0.06;
             planet.rotation.y += 0.0008 * rotFactor;
             stars.rotation.y += 0.00004 * rotFactor;
 
-            /* ✅ سرعة السحب ديناميكية:
-               - عند التقريب (t=0): rotateSpeed = 0.35 (تحكّم دقيق)
-               - عند التبعيد (t=1): rotateSpeed = 1.00 (سحب عادي) */
             controls.rotateSpeed = 0.35 + t * 0.65;
-
-            /* ✅ سرعة السحب تتكيّف مع التقريب — عند الاقتراب أبطأ */
-            controls.rotateSpeed = 0.35 + t * 0.75;
 
             if (isZooming) {
                 camera.position.lerp(zoomTargetVector, 0.08);
@@ -592,9 +569,7 @@ document.addEventListener('DOMContentLoaded', () => {
         animate();
     }
 
-    /* ═══════════════════════════════════════════════════════════
-       🌌 تحسينات الكون
-       ═══════════════════════════════════════════════════════════ */
+    /* ═══ تحسينات الكون ═══ */
     let cosmicObjects = { planets: [], asteroidBelt: null, nebulae: [], sun: null };
 
     function addCosmicDecorations() {
@@ -869,7 +844,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateLabelsPosition() {
         const cameraDistance = camera.position.distanceTo(controls.target);
-        /* ✅ الأسماء تظهر فقط عند التقريب */
         const showLabels = cameraDistance < fitDist * 0.68;
 
         labelElements.forEach(item => {
@@ -997,9 +971,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initThreeJS();
 
-    /* ═══════════════════════════════════════════════════════════
-       🌟 الكبسولة الذهبية اليومية
-       ═══════════════════════════════════════════════════════════ */
+    /* ═══ الكبسولة الذهبية ═══ */
     async function loadGoldenCapsule() {
         if (!sb) return;
         try {
@@ -1060,7 +1032,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ═══════════════════════════════════════════════════════════
-       إدارة النموذج والواجهة
+       إدارة النموذج
        ═══════════════════════════════════════════════════════════ */
     const openModalBtn = document.getElementById('openModalBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
@@ -1353,7 +1325,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target === deepModal) deepModal.classList.remove('active');
     });
 
-    /* ═══ حركة رسم الشعار ═══ */
+    /* ═══ حركة الشعار ═══ */
     const logo = document.querySelector('.cc-logo');
     if (logo) {
         if (REDUCE) { try { logo.pauseAnimations(); } catch (e) {} }
