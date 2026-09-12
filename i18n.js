@@ -40,10 +40,6 @@
       anon_name: 'مجهول',
       lang_btn: 'EN',
       other_space: 'فضاء آخر 🌍',
-      foot_about: 'من نحن',
-      foot_privacy: 'سياسة الخصوصية',
-      foot_terms: 'شروط الاستخدام',
-      foot_archive: 'الأرشيف',
       e_RATE_LIMITED: 'أطلقتَ كبسولة خلال 24 ساعة مضت… عُد غدًا ودَع الكون يتنفس ✨',
       e_BAD_WORDS: 'رسالتك تحوي كلمات غير لائقة للفضاء — راجعها من فضلك 🙏',
       e_ARRIVAL_MUST_BE_FUTURE: 'كبسولة المستقبل تحتاج تاريخ وصول في المستقبل',
@@ -55,7 +51,13 @@
       deep_again: 'غَوْصة أخرى',
       deep_empty: 'المحيط هادئ الآن… لا توجد كبسولات قديمة كفاية بعد. عُد بعد يومين 🌊',
       deep_reads: 'قراءة',
-      e_FAIL: 'تعذر الإطلاق، حاول من جديد'
+      e_FAIL: 'تعذر الإطلاق، حاول من جديد',
+      foot_about: 'من نحن',
+      foot_privacy: 'سياسة الخصوصية',
+      foot_terms: 'شروط الاستخدام',
+      foot_archive: 'الأرشيف',
+      golden_title: 'الكبسولة الذهبية اليوم',
+      golden_hint: 'تتغير كل يوم عند منتصف الليل'
     },
     en: {
       title: 'Chronos Capsule | Send a message to space',
@@ -94,10 +96,6 @@
       anon_name: 'Anonymous',
       lang_btn: 'عربي',
       other_space: 'Deep space 🌍',
-      foot_about: 'About',
-      foot_privacy: 'Privacy Policy',
-      foot_terms: 'Terms of Use',
-      foot_archive: 'Archive',
       e_RATE_LIMITED: 'You already launched a capsule within 24 hours… come back tomorrow ✨',
       e_BAD_WORDS: 'Your message contains words unworthy of space — please review it 🙏',
       e_ARRIVAL_MUST_BE_FUTURE: 'A future capsule needs an arrival date ahead of now',
@@ -109,12 +107,16 @@
       deep_again: 'Dive again',
       deep_empty: 'The ocean is calm… no old-enough capsules yet. Come back in two days 🌊',
       deep_reads: 'reads',
-      e_FAIL: 'Launch failed, please try again'
+      e_FAIL: 'Launch failed, please try again',
+      foot_about: 'About',
+      foot_privacy: 'Privacy Policy',
+      foot_terms: 'Terms of Use',
+      foot_archive: 'Archive',
+      golden_title: 'Golden Capsule of the Day',
+      golden_hint: 'Changes daily at midnight'
     }
   };
 
-  /* ✅ تم إصلاح: `.tagline` يستهدف الآن الرابط الداخلي فقط (بدل أن يمحو <a>) */
-  /* ✅ تم إصلاح: حذف `#openModalBtn` لأنه كان يُكرّر النص (span له data-i18n بالفعل) */
   const SELS = [
     ['.tagline a', 'tagline'],
     ['.main-title', 'title_html', 'html'],
@@ -177,7 +179,6 @@
     if (cur && (CI[cur] || cur === 'OTHER')) sel.value = cur;
   }
 
-  /* ملاحظة: هذه الدالة لم تعد مستخدمة (بعد إصلاح `.tagline`)، لكنها محفوظة */
   function setTextNode(el, txt) {
     const node = [...el.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
     if (node) node.textContent = txt;
@@ -216,10 +217,6 @@
   }
 
   document.addEventListener('DOMContentLoaded', () => {
-    /* ═══ تحديد اللغة الافتراضية ═══ */
-    /* 1) ?lang= في الرابط (روابط SEO alternate)  */
-    /* 2) localStorage                             */
-    /* 3) لغة المتصفح                              */
     let saved = null;
     try { saved = localStorage.getItem('cc_lang'); } catch (e) {}
 
@@ -233,7 +230,6 @@
         || saved
         || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
 
-    /* ═══ زر تبديل اللغة — يُضاف تلقائيًا للترويسة إن وُجدت ═══ */
     toggleBtn = document.createElement('button');
     toggleBtn.className = 'lang-toggle';
     toggleBtn.type = 'button';
@@ -241,7 +237,6 @@
 
     const header = document.querySelector('.site-header');
     if (header) {
-      /* حاول وضعه داخل حاوية الإجراءات الداخلية (بجانب زر جوجل) */
       const innerAction = header.querySelector(':scope > div:not(.logo)');
       if (innerAction && innerAction.tagName === 'DIV') {
         innerAction.appendChild(toggleBtn);

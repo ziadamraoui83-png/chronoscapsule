@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — style.css (نسخة مصحّحة شاملة)
+   CHRONOS CAPSULE — style.css (نسخة نهائية + الكبسولة الذهبية)
    ═══════════════════════════════════════════════════════════ */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 body { overflow: hidden; background: #010103; color: #fff; }
@@ -66,7 +66,6 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 }
 .main-desc { font-size: 1rem; color: #cbd5e1; margin-bottom: 30px; line-height: 1.6; }
 
-/* رابط كبسولاتي داخل البطاقة */
 .my-capsules-link{
   display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px;
   color:#a78bfa;text-decoration:none;font-size:13.5px;transition:color .3s;
@@ -97,11 +96,10 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 .zoom-controls {
     position: absolute; bottom: 40px;
     display: flex; flex-direction: column; gap: 10px;
-    z-index: 30 !important;       /* ⬅️ أعلى من كل العناصر */
-    isolation: isolate;            /* ⬅️ منع التداخل من الخارج */
-    pointer-events: none;          /* ⬅️ الحاوية شفافة للنقرات */
+    z-index: 30 !important;
+    isolation: isolate;
+    pointer-events: none;
 }
-
 .zoom-controls button {
     width: 45px; height: 45px;
     background: rgba(15, 23, 42, 0.7);
@@ -109,18 +107,10 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     border-radius: 12px; font-size: 24px; font-weight: 300;
     backdrop-filter: blur(8px);
     transition: all 0.3s ease;
-    pointer-events: auto !important;   /* ⬅️ الأزرار تستقبل النقرات */
-    position: relative;                /* ⬅️ لضمان z-index */
-    z-index: 1;                        /* ⬅️ داخل الحاوية */
+    pointer-events: auto !important;
+    position: relative;
+    z-index: 1;
     cursor: pointer;
-}
-.zoom-controls button {
-    width: 45px; height: 45px;
-    background: rgba(15, 23, 42, 0.7);
-    color: #fff; border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 12px; font-size: 24px; font-weight: 300;
-    backdrop-filter: blur(8px);
-    transition: all 0.3s ease;
 }
 .zoom-controls button:hover { background: #3b82f6; border-color: #60a5fa; transform: scale(1.1); }
 
@@ -134,14 +124,9 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     padding: 11px 16px; border-radius: 12px;
     font-size: 13px; color: #cbd5e1;
     transition: border-color 0.3s ease;
-}
-
-.capsule-counter {
-    /* ⬅️ لا يتداخل مع zoom-controls */
     max-width: calc(100vw - 250px);
     pointer-events: auto;
 }
-
 .capsule-counter:hover { border-color: rgba(139,92,246,0.6); }
 .capsule-counter b { color: #a78bfa; font-size: 17px; font-weight: 900; direction: ltr; }
 .pulse-dot {
@@ -154,7 +139,7 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     50%      { opacity: 0.45; transform: scale(0.65); }
 }
 
-/* ═════════ المشاعر: متغيرات + مفتاح الخريطة ═════════ */
+/* ═════════ المشاعر ═════════ */
 :root{
   --mood-hope:#38bdf8; --mood-nostalgia:#a78bfa; --mood-secret:#34d399;
   --mood-confession:#fbbf24; --mood-bold:#f87171;
@@ -253,7 +238,6 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 .close-btn { background: none; border: none; color: #94a3b8; font-size: 28px; transition: color 0.2s; }
 .close-btn:hover { color: #ef4444; }
 
-/* صندوق الترجمة (يُستخدم في بعض النوافذ) */
 .translation-box {
     margin-top: 12px;
     padding: 10px;
@@ -264,7 +248,6 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     line-height: 1.6;
 }
 
-/* زر كتم الصوت (اختياري — لا يظهر حاليًا لكنه محفوظ للاستخدام المستقبلي) */
 .mute-btn {
     background: rgba(15, 23, 42, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -277,13 +260,8 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     backdrop-filter: blur(8px);
     margin-inline-start: 8px;
 }
-.mute-btn:hover {
-    border-color: #8b5cf6;
-    color: #fff;
-}
-@media (prefers-reduced-motion: reduce) {
-    .mute-btn { animation: none; }
-}
+.mute-btn:hover { border-color: #8b5cf6; color: #fff; }
+@media (prefers-reduced-motion: reduce) { .mute-btn { animation: none; } }
 
 /* ═════════ الفورم ═════════ */
 .form-group { margin-bottom: 20px; text-align: right; }
@@ -299,7 +277,6 @@ textarea:focus, input[type="text"]:focus, select:focus { border-color: #8b5cf6; 
 .radio-group { display: flex; gap: 20px; }
 .radio-label { display: flex; align-items: center; gap: 8px; color: #e2e8f0; }
 
-/* منتقي الشعور */
 .mood-picker{display:flex;gap:10px;flex-wrap:wrap}
 .mood-chip{display:flex;align-items:center;gap:6px;cursor:pointer;background:rgba(0,0,0,.3);
   border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:9px 12px;transition:all .25s ease}
@@ -310,7 +287,6 @@ textarea:focus, input[type="text"]:focus, select:focus { border-color: #8b5cf6; 
 .mood-chip input{display:none}
 .mood-chip:hover{border-color:rgba(139,92,246,.55)}
 
-/* سفر الزمن: شرائح التاريخ */
 .arrival-chips{display:flex;gap:8px;flex-wrap:wrap}
 .chip{background:rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.2);color:#cbd5e1;border-radius:999px;
   padding:8px 14px;font-size:12.5px;cursor:pointer;transition:all .25s ease}
@@ -364,8 +340,6 @@ textarea:focus, input[type="text"]:focus, select:focus { border-color: #8b5cf6; 
 .lang-toggle:hover{ border-color:#8b5cf6; color:#fff; transform:translateY(-2px) }
 html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 
-/* الانعكاس حسب اللغة (سطح المكتب): عربي = البطاقة يمين / إنجليزي = البطاقة يسار
-   والأدوات دائمًا في الزاوية المقابلة للبطاقة */
 @media(min-width:901px){
   .hero-panel{ left:auto; right:5%; }
   .zoom-controls{ left:40px; right:auto; }
@@ -382,7 +356,7 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 
 /* ═════════ الجوال ═════════ */
 @media(max-width:900px){
-  .mood-legend{display:none}   /* الألوان موجودة في منتقي الشعور داخل النموذج */
+  .mood-legend{display:none}
   .hero-panel{
     left:50%; right:auto; top:auto; bottom:118px; transform:translateX(-50%);
     width:min(92%,430px); padding:20px 22px; animation:none;
@@ -409,7 +383,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
   .capsule-counter span:last-child{display:inline; max-width:96px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
 }
 
-/* ═════════ تقليل الحركة ═════════ */
 @media(prefers-reduced-motion:reduce){
   .hero-panel{animation:none}
   .cc-logo .cc-sand,.cc-logo .cc-pulse,.pulse-dot,.country-label.spawn{animation:none}
@@ -428,25 +401,20 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 
 /* ═════════ كبسولة من الأعماق ═════════ */
 .deep-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
   background: rgba(15, 23, 42, 0.65);
   border: 1px solid rgba(56, 189, 248, 0.4);
   backdrop-filter: blur(8px);
   color: #cbd5e1;
   padding: 13px 20px;
   border-radius: 12px;
-  font-size: 0.95rem;
-  font-weight: 600;
+  font-size: 0.95rem; font-weight: 600;
   cursor: pointer;
   width: 100%;
   transition: all 0.3s ease;
 }
 .deep-btn:hover {
-  border-color: #38bdf8;
-  color: #fff;
+  border-color: #38bdf8; color: #fff;
   background: rgba(56, 189, 248, 0.15);
   transform: translateY(-2px);
   box-shadow: 0 6px 22px rgba(56, 189, 248, 0.25);
@@ -490,11 +458,8 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 }
 
 /* ═══ ترتيب الترويسة ═══ */
-.site-header {
-    flex-wrap: wrap;
-}
+.site-header { flex-wrap: wrap; }
 
-/* زر اللغة — فصل بصري */
 .lang-toggle {
     margin-inline-start: 8px;
     border-color: rgba(139, 92, 246, 0.4) !important;
@@ -507,49 +472,139 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     color: #fff !important;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   روابط التذييل
-   ═══════════════════════════════════════════════════════════ */
-.site-footer {
-    padding: 12px 20px;
-    line-height: 1.7;
-}
+/* ═════════ روابط التذييل ═════════ */
+.site-footer { padding: 12px 20px; line-height: 1.7; }
 
 .footer-nav {
     margin-top: 6px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 6px;
-    font-size: 12px;
+    display: flex; flex-wrap: wrap;
+    justify-content: center; align-items: center;
+    gap: 6px; font-size: 12px;
 }
-
 .footer-nav a {
     color: rgba(167, 139, 250, 0.75);
     text-decoration: none;
     transition: color 0.3s ease;
     padding: 2px 4px;
 }
-
 .footer-nav a:hover {
     color: #fff;
     text-decoration: underline;
     text-decoration-color: #8b5cf6;
     text-underline-offset: 3px;
 }
-
-.foot-sep {
-    color: rgba(255, 255, 255, 0.2);
-    font-size: 10px;
-}
+.foot-sep { color: rgba(255, 255, 255, 0.2); font-size: 10px; }
 
 @media (max-width: 600px) {
-    .footer-nav {
-        font-size: 11px;
-        gap: 4px;
-    }
-    .footer-nav a {
-        padding: 2px 2px;
-    }
+    .footer-nav { font-size: 11px; gap: 4px; }
+    .footer-nav a { padding: 2px 2px; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   🌟 لوحة الكبسولة الذهبية اليومية
+   ═══════════════════════════════════════════════════════════ */
+.golden-panel {
+    position: absolute;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 560px;
+    background: linear-gradient(135deg,
+        rgba(251, 191, 36, 0.12) 0%,
+        rgba(245, 158, 11, 0.08) 50%,
+        rgba(251, 191, 36, 0.12) 100%);
+    border: 1.5px solid rgba(251, 191, 36, 0.5);
+    border-radius: 20px;
+    padding: 18px 24px 16px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(251, 191, 36, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 12;
+    animation: goldenFloat 5s ease-in-out infinite;
+    transition: all 0.4s ease;
+}
+.golden-panel:hover {
+    border-color: rgba(251, 191, 36, 0.8);
+    box-shadow:
+        0 12px 50px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(251, 191, 36, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+@keyframes goldenFloat {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%      { transform: translateX(-50%) translateY(-6px); }
+}
+.golden-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+.golden-star {
+    font-size: 16px;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+    animation: starPulse 2s ease-in-out infinite;
+}
+.golden-star:last-child { animation-delay: -1s; }
+@keyframes starPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.15); }
+}
+.golden-title {
+    font-size: 13px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    color: #fbbf24;
+    text-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+    text-transform: uppercase;
+}
+.golden-content { text-align: center; padding: 8px 0; }
+.golden-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    color: #fef3c7;
+    font-weight: 500;
+    margin-bottom: 10px;
+    unicode-bidi: plaintext;
+}
+.golden-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: rgba(251, 191, 36, 0.75);
+    font-weight: 700;
+}
+.golden-footer {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(251, 191, 36, 0.25);
+    text-align: center;
+}
+.golden-hint {
+    font-size: 10.5px;
+    color: rgba(251, 191, 36, 0.55);
+    letter-spacing: 0.04em;
+}
+@media (max-width: 900px) {
+    .golden-panel { top: 80px; width: 94%; padding: 14px 18px 12px; }
+    .golden-title { font-size: 11px; }
+    .golden-text { font-size: 0.95rem; line-height: 1.65; }
+    .golden-meta { font-size: 11px; }
+    .golden-hint { font-size: 10px; }
+}
+@media (max-width: 480px) {
+    .golden-panel { top: 72px; padding: 12px 14px 10px; border-radius: 16px; }
+    .golden-text { font-size: 0.9rem; }
+    .golden-header { gap: 6px; margin-bottom: 8px; }
+    .golden-star { font-size: 13px; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .golden-panel, .golden-star { animation: none; }
 }

@@ -1,13 +1,12 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — Service Worker (v1.3.0)
+   CHRONOS CAPSULE — Service Worker (v1.4.0)
    يخزّن الملفات المحلية فقط — لا يعترض الطلبات الخارجية
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.4.1';
+const CACHE_VERSION = 'cc-v1.4.0';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
-/* ═══ الملفات المحلية فقط ═══ */
 const STATIC_ASSETS = [
     '/',
     '/index.html',
@@ -33,7 +32,6 @@ const STATIC_ASSETS = [
     '/sitemap.xml'
 ];
 
-/* ═══ التثبيت ═══ */
 self.addEventListener('install', (event) => {
     event.waitUntil(
         caches.open(CACHE_STATIC).then((cache) => {
@@ -46,7 +44,6 @@ self.addEventListener('install', (event) => {
     );
 });
 
-/* ═══ التفعيل — حذف cache القديم ═══ */
 self.addEventListener('activate', (event) => {
     event.waitUntil(
         caches.keys().then((keys) => {
@@ -59,7 +56,6 @@ self.addEventListener('activate', (event) => {
     );
 });
 
-/* ═══ الجلب ═══ */
 self.addEventListener('fetch', (event) => {
     const { request } = event;
 
@@ -74,7 +70,6 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    /* ⚠️ تجاهل كل الطلبات الخارجية */
     if (url.origin !== self.location.origin) {
         return;
     }
@@ -147,7 +142,6 @@ self.addEventListener('fetch', (event) => {
     }
 });
 
-/* ═══ رسائل من الصفحة ═══ */
 self.addEventListener('message', (event) => {
     if (event.data === 'SKIP_WAITING') {
         self.skipWaiting();
