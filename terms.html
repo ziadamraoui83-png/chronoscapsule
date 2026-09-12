@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- ⚡ تحديد اللغة فورًا قبل تحميل أي شيء -->
     <script>
     (function() {
         try {
@@ -32,9 +31,6 @@
         body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
         a,button{cursor:pointer}
 
-        /* ═══════════════════════════════════════════════════════════
-           🌐 إظهار/إخفاء حسب اللغة — يمنع أي خلط
-           ═══════════════════════════════════════════════════════════ */
         html[lang="ar"] .lang-en { display: none !important; }
         html[lang="en"] .lang-ar { display: none !important; }
 
@@ -187,8 +183,8 @@
         </p>
         <div class="hero-date">
             <span>📅</span>
-            <span class="lang-ar">آخر تحديث: 11 سبتمبر 2026</span>
-            <span class="lang-en">Last updated: September 11, 2026</span>
+            <span class="lang-ar">آخر تحديث: 13 سبتمبر 2026</span>
+            <span class="lang-en">Last updated: September 13, 2026</span>
         </div>
     </section>
 
@@ -211,7 +207,6 @@
         </ul>
     </nav>
 
-    <!-- ═══ 1 ═══ -->
     <div class="card" id="t1">
         <h2 class="card-title">
             <span class="card-title-icon">👋</span>
@@ -230,7 +225,6 @@
         </div>
     </div>
 
-    <!-- ═══ 2 ═══ -->
     <div class="card" id="t2">
         <h2 class="card-title">
             <span class="card-title-icon">👤</span>
@@ -259,7 +253,6 @@
         </div>
     </div>
 
-    <!-- ═══ 3 ═══ -->
     <div class="card" id="t3">
         <h2 class="card-title">
             <span class="card-title-icon">🤝</span>
@@ -292,7 +285,6 @@
         </div>
     </div>
 
-    <!-- ═══ 4 ═══ -->
     <div class="card" id="t4">
         <h2 class="card-title">
             <span class="card-title-icon">🚫</span>
@@ -337,7 +329,6 @@
         </div>
     </div>
 
-    <!-- ═══ 5 ═══ -->
     <div class="card" id="t5">
         <h2 class="card-title">
             <span class="card-title-icon">©️</span>
@@ -376,7 +367,6 @@
         </div>
     </div>
 
-    <!-- ═══ 6 ═══ -->
     <div class="card" id="t6">
         <h2 class="card-title">
             <span class="card-title-icon">🤲</span>
@@ -411,7 +401,6 @@
         </div>
     </div>
 
-    <!-- ═══ 7 ═══ -->
     <div class="card" id="t7">
         <h2 class="card-title">
             <span class="card-title-icon">🛠️</span>
@@ -442,7 +431,6 @@
         </div>
     </div>
 
-    <!-- ═══ 8 ═══ -->
     <div class="card" id="t8">
         <h2 class="card-title">
             <span class="card-title-icon">🌍</span>
@@ -465,7 +453,6 @@
         </div>
     </div>
 
-    <!-- ═══ 9 ═══ -->
     <div class="card" id="t9">
         <h2 class="card-title">
             <span class="card-title-icon">✉️</span>
@@ -509,6 +496,8 @@
     <footer class="page-footer">
         <div class="footer-links">
             <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+            <a href="how-it-works.html"><span class="lang-ar">كيف يعمل</span><span class="lang-en">How It Works</span></a>
+            <a href="blog.html"><span class="lang-ar">المدونة</span><span class="lang-en">Blog</span></a>
             <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
             <a href="faq.html"><span class="lang-ar">الأسئلة الشائعة</span><span class="lang-en">FAQ</span></a>
             <a href="privacy.html"><span class="lang-ar">سياسة الخصوصية</span><span class="lang-en">Privacy Policy</span></a>
@@ -520,7 +509,6 @@
 </main>
 
 <script>
-/* ═══ زر نسخ البريد ═══ */
 function copyEmail(btn) {
     const email = 'ziadamiraoui83@gmail.com'.replace('ziadamiraoui', 'ziadamraoui');
     navigator.clipboard.writeText(email).then(() => {
@@ -534,7 +522,6 @@ function copyEmail(btn) {
 (function(){
     'use strict';
 
-    /* ═══ اللغة ═══ */
     function getCurrentLang() {
         try {
             const urlLang = new URLSearchParams(location.search).get('lang');
@@ -552,14 +539,11 @@ function copyEmail(btn) {
         document.documentElement.lang = l;
         document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
 
-        /* زر التبديل */
         const toggleBtn = document.getElementById('termsLangToggle');
         if (toggleBtn) toggleBtn.textContent = (l === 'ar') ? 'EN' : 'عربي';
 
-        /* العنوان */
         document.title = (l === 'ar' ? 'شروط الاستخدام' : 'Terms of Use') + ' | Chronos Capsule';
 
-        /* تحديث meta description */
         const metaDesc = document.querySelector('meta[name="description"]');
         if (metaDesc) {
             metaDesc.content = (l === 'ar')
@@ -572,7 +556,6 @@ function copyEmail(btn) {
         applyLang(currentLang === 'ar' ? 'en' : 'ar');
     });
 
-    /* تطبيق اللغة الحالية على أي حال */
     applyLang(currentLang);
 })();
 </script>
