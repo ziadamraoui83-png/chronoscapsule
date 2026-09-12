@@ -56,6 +56,8 @@
       foot_privacy: 'سياسة الخصوصية',
       foot_terms: 'شروط الاستخدام',
       foot_archive: 'الأرشيف',
+      nav_my_capsules: 'كبسولاتي',
+      foot_faq: 'الأسئلة الشائعة',
       golden_title: 'الكبسولة الذهبية اليوم',
       golden_hint: 'تتغير كل يوم عند منتصف الليل'
     },
