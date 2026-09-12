@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — archive.js (نسخة نهائية مركزية + Skeleton)
+   CHRONOS CAPSULE — archive.js (نسخة نهائية + Skeleton + Empty)
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
@@ -105,12 +105,83 @@
         container.innerHTML = getSkeletonHTML();
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       📭 Empty State — HTML جميل
+       ═══════════════════════════════════════════════════════════ */
+    function getEmptyStateHTML(type) {
+        const isAr = AppLang === 'ar';
+
+        /* type = 'no-results' | 'no-capsules' | 'error' */
+        const config = {
+            'no-results': {
+                icon: '🔍',
+                title: isAr ? 'لا توجد نتائج' : 'No Results Found',
+                desc: isAr
+                    ? 'لم يُعثر على أي رسالة تطابق الفلاتر التي اخترتها. جرّب تغيير الفلاتر أو البحث بكلمات أخرى.'
+                    : 'No messages match the filters you selected. Try changing the filters or searching with different keywords.',
+                cta: null,
+                hint: isAr ? 'نصيحة: جرّب البحث بشعور مختلف أو دولة أخرى' : 'Tip: Try a different mood or country'
+            },
+            'no-capsules': {
+                icon: '🛸',
+                title: isAr ? 'لم تُطلق كبسولة بعد' : 'No Capsules Yet',
+                desc: isAr
+                    ? 'الفضاء ينتظر رسالتك. ابدأ رحلتك عبر الزمن الآن — اكتب كبسولة، واختر متى تصل.'
+                    : 'Space awaits your message. Start your time travel now — write a capsule and choose when it arrives.',
+                cta: {
+                    href: 'index.html',
+                    label: isAr ? '🚀 إطلاق أول كبسولة' : '🚀 Launch First Capsule'
+                },
+                hint: isAr ? 'كل كبسولة تبقى في الفضاء حتى موعدها — ستحصل على مفتاح سري لمتابعتها' : 'Every capsule stays in space until its time — you\'ll get a secret key to track it'
+            },
+            'error': {
+                icon: '⚠️',
+                title: isAr ? 'حدث خطأ' : 'Something Went Wrong',
+                desc: isAr
+                    ? 'تعذّر تحميل الرسائل من الفضاء. تحقق من اتصالك بالإنترنت وحاول مجددًا.'
+                    : 'Failed to load messages from space. Check your internet connection and try again.',
+                cta: {
+                    href: 'javascript:location.reload()',
+                    label: isAr ? '🔄 حاول مجددًا' : '🔄 Try Again'
+                },
+                hint: null
+            }
+        };
+
+        const c = config[type] || config['no-results'];
+
+        const ctaHTML = c.cta ? `
+            <div class="empty-state-actions">
+                <a href="${c.cta.href}" class="empty-state-cta">
+                    ${c.cta.label}
+                </a>
+            </div>` : '';
+
+        const hintHTML = c.hint ? `
+            <div class="empty-state-hint">
+                <span class="empty-state-hint-icon">💡</span>
+                <span>${c.hint}</span>
+            </div>` : '';
+
+        return `
+            <div class="empty-state" role="status">
+                <div class="empty-state-icon">${c.icon}</div>
+                <h2 class="empty-state-title">${c.title}</h2>
+                <p class="empty-state-desc">${c.desc}</p>
+                ${ctaHTML}
+                ${hintHTML}
+            </div>`;
+    }
+
+    function showEmpty(container, type) {
+        container.innerHTML = getEmptyStateHTML(type);
+    }
+
     /* ═══ الجلب ═══ */
     async function fetchArchive(reset) {
         reset = !!reset;
         if (!sb) {
-            $('archiveList').innerHTML = '<div style="text-align:center;color:#f87171;padding:20px">' +
-                (AppLang === 'ar' ? 'لم يتم ربط قاعدة البيانات بعد.' : 'Database connection failed.') + '</div>';
+            showEmpty($('archiveList'), 'error');
             return;
         }
         if (isLoading) return;
@@ -149,16 +220,16 @@
         isLoading = false;
 
         if (error) {
-            if (reset) list.innerHTML =
-                `<div style="text-align:center;color:#f87171;padding:20px">${esc(error.message)}</div>`;
+            if (reset) showEmpty(list, 'error');
             return;
         }
 
         if (reset) list.innerHTML = '';
 
         if (reset && (!data || data.length === 0)) {
-            list.innerHTML = '<div style="text-align:center;color:#94a3b8;padding:30px;">' +
-                (AppLang === 'ar' ? 'لم يُعثر على أي رسالة بهذا الفلتر.' : 'No messages match this filter.') + '</div>';
+            /* ✅ إذا كانت الفلاتر افتراضية → "no-capsules" */
+            const hasFilters = country || mood || lang;
+            showEmpty(list, hasFilters ? 'no-results' : 'no-capsules');
             return;
         }
 

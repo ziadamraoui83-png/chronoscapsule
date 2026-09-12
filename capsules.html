@@ -156,12 +156,6 @@
             0%{opacity:1;transform:scale(1)}
             100%{opacity:0;transform:scale(.9) translateX(-30px)}}
         .cap-card.deleting{animation:cardFadeOut .4s ease forwards}
-        .empty-state{text-align:center;padding:70px 20px;color:#94a3b8}
-        .empty-state .ico{font-size:52px;margin-bottom:16px;opacity:.7}
-        .empty-state p{margin-bottom:22px;line-height:1.7}
-        .empty-state a{display:inline-block;padding:12px 26px;background:linear-gradient(135deg,#6d28d9,#2563eb);
-            color:#fff;border-radius:12px;text-decoration:none;font-weight:700;transition:transform .3s}
-        .empty-state a:hover{transform:translateY(-3px)}
         .hint{font-size:12px;color:#64748b;margin-top:12px;line-height:1.6}
         .cc-toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
             background:rgba(15,23,42,.95);border:1px solid rgba(139,92,246,.4);border-radius:14px;
@@ -340,6 +334,108 @@
         .skeleton-line.short{width:30%;height:11px}
         .skeleton-lines-group{display:flex;flex-direction:column;gap:9px}
 
+        /* ═════════ 📭 Empty State ═════════ */
+        .empty-state{
+            text-align:center;
+            padding:60px 30px 80px;
+            max-width:520px;
+            margin:0 auto;
+            position:relative;
+            z-index:1;
+        }
+        .empty-state::before{
+            content:'';
+            position:absolute;
+            top:40px;left:50%;
+            transform:translateX(-50%);
+            width:260px;height:260px;
+            background:radial-gradient(circle,rgba(139,92,246,.18) 0%,transparent 70%);
+            pointer-events:none;
+            z-index:-1;
+            animation:emptyGlow 5s ease-in-out infinite;
+        }
+        @keyframes emptyGlow{
+            0%,100% { opacity:.5; transform:translateX(-50%) scale(1); }
+            50%     { opacity:.9; transform:translateX(-50%) scale(1.15); }
+        }
+        .empty-state-icon{
+            font-size:76px;
+            margin-bottom:24px;
+            display:inline-block;
+            filter:drop-shadow(0 0 30px rgba(139,92,246,.5));
+            animation:emptyFloat 4s ease-in-out infinite;
+        }
+        @keyframes emptyFloat{
+            0%,100% { transform:translateY(0); }
+            50%     { transform:translateY(-12px); }
+        }
+        .empty-state-title{
+            font-size:1.6rem;
+            font-weight:900;
+            margin-bottom:14px;
+            line-height:1.3;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6,#3AE1FF);
+            -webkit-background-clip:text;
+            background-clip:text;
+            -webkit-text-fill-color:transparent;
+        }
+        .empty-state-desc{
+            font-size:.95rem;
+            color:#94a3b8;
+            line-height:1.8;
+            margin-bottom:28px;
+            max-width:400px;
+            margin-inline:auto;
+        }
+        .empty-state-actions{
+            display:flex;
+            gap:10px;
+            justify-content:center;
+            flex-wrap:wrap;
+            margin-bottom:20px;
+        }
+        .empty-state-cta{
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            padding:13px 26px;
+            background:linear-gradient(135deg,#6d28d9,#2563eb);
+            color:#fff;
+            text-decoration:none;
+            border-radius:12px;
+            font-size:14px;
+            font-weight:700;
+            font-family:inherit;
+            border:none;
+            cursor:pointer;
+            transition:all .3s ease;
+            box-shadow:0 8px 24px rgba(99,102,241,.35);
+        }
+        .empty-state-cta:hover{
+            transform:translateY(-3px);
+            box-shadow:0 14px 36px rgba(99,102,241,.5);
+        }
+        .empty-state-hint{
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            font-size:12.5px;
+            color:#a78bfa;
+            background:rgba(139,92,246,.08);
+            border:1px solid rgba(139,92,246,.2);
+            border-radius:14px;
+            padding:12px 18px;
+            line-height:1.7;
+            text-align:start;
+            max-width:440px;
+            margin-top:8px;
+        }
+        .empty-state-hint-icon{
+            font-size:18px;
+            flex:none;
+            filter:drop-shadow(0 0 8px rgba(167,139,250,.5));
+        }
+
         @media(max-width:600px){
             .page-header{padding:12px 16px}
             .page{padding:24px 14px 60px}
@@ -352,12 +448,21 @@
             .card-social-btn { width: 34px; height: 34px; font-size: 14px; }
             .skeleton-item{padding:16px 18px}
             .skeleton-line.badge{width:70px;height:20px}
+            .empty-state{padding:50px 20px 60px}
+            .empty-state::before{width:200px;height:200px}
+            .empty-state-icon{font-size:60px;margin-bottom:18px}
+            .empty-state-title{font-size:1.3rem}
+            .empty-state-desc{font-size:.9rem;margin-bottom:22px}
+            .empty-state-cta{padding:11px 22px;font-size:13px}
+            .empty-state-hint{font-size:11.5px;padding:10px 14px}
         }
         @media (prefers-reduced-motion: reduce) {
             * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
             .cap-card:hover { transform: none; }
             .skeleton-item::after { animation: none; opacity: 0.3; }
             .skeleton-line::after { animation: none; opacity: 0.6; }
+            .empty-state-icon { animation: none; }
+            .empty-state::before { animation: none; }
         }
     </style>
 </head>
@@ -401,12 +506,6 @@
     </div>
 
     <div class="capsule-list" id="capList"></div>
-
-    <div class="empty-state" id="emptyState" style="display:none">
-        <div class="ico">🛸</div>
-        <p id="emptyText">لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن</p>
-        <a href="index.html" id="emptyLink">إطلاق أول كبسولة</a>
-    </div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -486,7 +585,24 @@
             el.style.display = show ? '' : 'none';
             if (show) visible++;
         });
-        $('emptyState').style.display = visible === 0 ? 'block' : 'none';
+
+        /* ✅ إذا لم تكن هناك بطاقات → empty state */
+        const list = $('capList');
+        if (allCards.length === 0) {
+            if (!list.querySelector('.empty-state')) {
+                list.innerHTML = getEmptyStateHTML('no-capsules');
+            }
+            return;
+        }
+
+        /* ✅ إذا كانت هناك بطاقات لكن الفلتر أخفاها */
+        if (visible === 0) {
+            if (!list.querySelector('.empty-state')) {
+                list.insertAdjacentHTML('beforeend', getEmptyStateHTML('no-results'));
+            }
+        } else {
+            list.querySelector('.empty-state')?.remove();
+        }
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -516,6 +632,74 @@
             </div>`;
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       📭 Empty States
+       ═══════════════════════════════════════════════════════════ */
+    function getEmptyStateHTML(type) {
+        const isAr = capLang === 'ar';
+
+        const config = {
+            'no-results': {
+                icon: '🔍',
+                title: isAr ? 'لا توجد نتائج' : 'No Results Found',
+                desc: isAr
+                    ? 'لم يُعثر على أي كبسولة تطابق البحث أو الفلتر. جرّب كلمة أخرى أو غيّر الفلتر.'
+                    : 'No capsules match your search or filter. Try another keyword or change the filter.',
+                cta: null,
+                hint: isAr ? 'نصيحة: ابحث بجزء من النص فقط، أو اعرض "الكل"' : 'Tip: Search with a partial text, or show "All"'
+            },
+            'no-capsules': {
+                icon: '🛸',
+                title: isAr ? 'لم تُطلق كبسولة بعد' : 'No Capsules Yet',
+                desc: isAr
+                    ? 'الفضاء ينتظر رسالتك. ابدأ رحلتك عبر الزمن الآن — اكتب كبسولة، واختر متى تصل.'
+                    : 'Space awaits your message. Start your time travel now — write a capsule and choose when it arrives.',
+                cta: {
+                    href: 'index.html',
+                    label: isAr ? '🚀 إطلاق أول كبسولة' : '🚀 Launch First Capsule'
+                },
+                hint: isAr ? 'كل كبسولة تبقى في الفضاء حتى موعدها — ستحصل على مفتاح سري لمتابعتها' : 'Every capsule stays in space until its time — you\'ll get a secret key to track it'
+            },
+            'error': {
+                icon: '⚠️',
+                title: isAr ? 'حدث خطأ' : 'Something Went Wrong',
+                desc: isAr
+                    ? 'تعذّر تحميل كبسولاتك من الفضاء. تحقق من اتصالك وحاول مجددًا.'
+                    : 'Failed to load your capsules from space. Check your connection and try again.',
+                cta: {
+                    href: 'javascript:location.reload()',
+                    label: isAr ? '🔄 حاول مجددًا' : '🔄 Try Again'
+                },
+                hint: null
+            }
+        };
+
+        const c = config[type] || config['no-results'];
+
+        const ctaHTML = c.cta ? `
+            <div class="empty-state-actions">
+                <a href="${c.cta.href}" class="empty-state-cta">
+                    ${c.cta.label}
+                </a>
+            </div>` : '';
+
+        const hintHTML = c.hint ? `
+            <div class="empty-state-hint">
+                <span class="empty-state-hint-icon">💡</span>
+                <span>${c.hint}</span>
+            </div>` : '';
+
+        return `
+            <div class="empty-state" role="status">
+                <div class="empty-state-icon">${c.icon}</div>
+                <h2 class="empty-state-title">${c.title}</h2>
+                <p class="empty-state-desc">${c.desc}</p>
+                ${ctaHTML}
+                ${hintHTML}
+            </div>`;
+    }
+
+    /* ═══ روابط المشاركة ═══ */
     function buildSocialRow(code, text) {
         const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
         const shortText = text.slice(0, 100);
@@ -734,7 +918,6 @@
         });
     }, 1000);
 
-    /* ✅ منع التنفيذ المتزامن — يحل مشكلة التكرار */
     let _loadingMine = false;
 
     async function loadMine(){
@@ -783,7 +966,7 @@
         list.innerHTML = '';
 
         if (!items.length){
-            $('emptyState').style.display = 'block';
+            list.innerHTML = getEmptyStateHTML('no-capsules');
             _loadingMine = false;
             return;
         }
@@ -869,8 +1052,6 @@
             openBtn: 'فتح',
             codeHint: 'أدخل مفتاح الكبسولة الذي وصلك — يعمل حتى قبل موعد الوصول',
             searchPh: '🔍 ابحث في كبسولاتك...',
-            emptyText: 'لم تُطلق أي كبسولة بعد<br>ابدأ رحلتك عبر الزمن الآن',
-            emptyLink: 'إطلاق أول كبسولة',
             filterAll: 'الكل',
             filterArrived: '✅ وصلت',
             filterOrbit: '🛰️ في المدار'
@@ -882,8 +1063,6 @@
             openBtn: 'Open',
             codeHint: 'Enter the capsule key you received — works even before arrival',
             searchPh: '🔍 Search your capsules...',
-            emptyText: 'No capsules launched yet<br>Start your time travel now',
-            emptyLink: 'Launch first capsule',
             filterAll: 'All',
             filterArrived: '✅ Arrived',
             filterOrbit: '🛰️ In Orbit'
@@ -915,8 +1094,6 @@
         $('openBtnText').textContent   = D.openBtn;
         $('codeHint').textContent      = D.codeHint;
         $('searchInput').placeholder   = D.searchPh;
-        $('emptyText').innerHTML       = D.emptyText;
-        $('emptyLink').textContent     = D.emptyLink;
 
         const chips = document.querySelectorAll('.filter-chip');
         if (chips[0]) chips[0].textContent = D.filterAll;
