@@ -815,7 +815,9 @@ tooltip.innerHTML = `
             tooltip.style.top = labelDiv.style.top;
             tooltip.classList.add('show');
             tooltipTarget = labelDiv;
-
+if (window.CC_LIKES && typeof window.CC_LIKES.bind === 'function') {
+    setTimeout(() => window.CC_LIKES.bind(tooltip), 10);
+}
             const rbtn = tooltip.querySelector('.report-btn');
             if (rbtn) rbtn.addEventListener('click', async (ev) => {
                 ev.stopPropagation();
