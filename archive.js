@@ -283,7 +283,7 @@
         el.className = `cap-item mood-${r.mood || 'hope'}`;
        if (r.id && !SESSION_READS.has(r.id)) {
         SESSION_READS.add(r.id);
-        sb.rpc('read_capsule', { p_id: r.id }).catch(() => {});
+        sb.rpc('read_capsule', { p_id: r.id }).then(() => {}, () => {});
         r.reads_count = (r.reads_count || 0) + 1;  // تحديث متفائل
     }
 
