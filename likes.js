@@ -1,20 +1,17 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — likes.js v3 (مستقل تماماً)
+   CHRONOS CAPSULE — likes.js v4
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
 
-    /* ═══ Supabase client خاص بينا ═══ */
-    let sb = null;
-
-    function initSB() {
-        if (sb) return sb;
+    /* ✅ نستعمل نفس Supabase client من script.js */
+    function getSB() {
+        if (window.__ccSupabase) return window.__ccSupabase;
         if (!window.CC_CONFIG || !window.supabase) return null;
-        sb = window.supabase.createClient(
+        return window.supabase.createClient(
             window.CC_CONFIG.SUPABASE_URL,
             window.CC_CONFIG.SUPABASE_ANON_KEY
         );
-        return sb;
     }
 
     function getDeviceHash() {
@@ -38,17 +35,17 @@
     }
 
     async function loadState(id) {
-        const client = initSB();
+        const client = getSB();
         if (!client) return { count: 0, liked: false };
         try {
             const { data, error } = await client.rpc('get_capsule_stats', { p_capsule_id: id });
-            if (error) { console.warn(error); return { count: 0, liked: false }; }
+            if (error) return { count: 0, liked: false };
             return { count: data?.likes_count || 0, liked: !!data?.liked };
         } catch (e) { return { count: 0, liked: false }; }
     }
 
     async function toggle(id) {
-        const client = initSB();
+        const client = getSB();
         if (!client) throw new Error('No Supabase');
         const { data, error } = await client.rpc('toggle_like', {
             p_capsule_id: id,
@@ -117,15 +114,24 @@
         loadState(id).then(s => updateUI(btn, s.liked, s.count));
     }
 
-    function scan() {
-        document.querySelectorAll('.like-btn:not([data-bound])').forEach(bind);
+    function scan(root) {
+        const scope = root || document;
+        scope.querySelectorAll('.like-btn:not([data-bound])').forEach(bind);
     }
 
-    // scan كل 400ms
-    setInterval(scan, 400);
-    document.addEventListener('DOMContentLoaded', scan);
-    setTimeout(scan, 500);
-    setTimeout(scan, 1500);
+    /* ✅ نكشف دالة bind للاستعمال الخارجي (script.js) */
+    window.CC_LIKES = {
+        bind: function(container) {
+            if (!container) return;
+            container.querySelectorAll('.like-btn:not([data-bound])').forEach(bind);
+        },
+        scan: scan
+    };
 
-    console.log('❤️ likes.js v3 ready');
+    setInterval(() => scan(document), 400);
+    document.addEventListener('DOMContentLoaded', () => scan(document));
+    setTimeout(() => scan(document), 500);
+    setTimeout(() => scan(document), 1500);
+
+    console.log('❤️ likes.js v4 ready');
 })();
