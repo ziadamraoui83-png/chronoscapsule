@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const sb = (CC_CONFIG.SUPABASE_URL && window.supabase)
         ? supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY) : null;
+   window.__ccSupabase = sb;
 
     function getDeviceHash() {
         let h = localStorage.getItem('cc_device');
