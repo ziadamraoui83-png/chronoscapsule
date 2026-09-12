@@ -633,3 +633,54 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     0%, 100% { transform: translateY(0); }
     50%      { transform: translateY(-6px); }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   🛰️ رابط كبسولاتي في الترويسة
+   ═══════════════════════════════════════════════════════════ */
+.header-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(139, 92, 246, 0.12);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    color: #c4b5fd;
+    padding: 7px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(8px);
+    white-space: nowrap;
+}
+
+.header-nav-link:hover {
+    background: rgba(139, 92, 246, 0.25);
+    border-color: #8b5cf6;
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
+}
+
+.header-nav-link .nav-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.header-nav-link .nav-text {
+    line-height: 1;
+}
+
+@media (max-width: 768px) {
+    .header-nav-link {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    .header-nav-link .nav-text {
+        display: none;
+    }
+    .header-nav-link .nav-icon {
+        font-size: 16px;
+    }
+}
