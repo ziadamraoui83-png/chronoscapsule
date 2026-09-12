@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script>
+    (function() {
+        try {
+            var lang = localStorage.getItem('cc_lang') || 'ar';
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') lang = urlLang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch(e) {}
+    })();
+    </script>
     <title>سياسة الخصوصية | Chronos Capsule</title>
     <meta name="description" content="سياسة الخصوصية لموقع Chronos Capsule — كيف نجمع بياناتك، كيف نستخدمها، وكيف نحميها.">
     <meta name="theme-color" content="#010103">
@@ -160,7 +171,7 @@
         </p>
         <div class="hero-date">
             <span>📅</span>
-            <span id="lastUpdated">آخر تحديث: 11 سبتمبر 2026</span>
+            <span id="lastUpdated">آخر تحديث: 13 سبتمبر 2026</span>
         </div>
     </section>
 
@@ -246,6 +257,8 @@
     <footer class="page-footer">
         <div class="footer-links">
             <a href="index.html" id="footHome">الرئيسية</a>
+            <a href="how-it-works.html" id="footHow">كيف يعمل</a>
+            <a href="blog.html" id="footBlog">المدونة</a>
             <a href="about.html" id="footAbout">من نحن</a>
             <a href="faq.html" id="footFAQ">الأسئلة الشائعة</a>
             <a href="terms.html" id="footTerms">شروط الاستخدام</a>
@@ -281,7 +294,7 @@ function copyEmail(btn) {
             toggle: 'EN', back: 'العودة للكوكب',
             title: 'سياسة الخصوصية',
             subtitle: 'نحترم خصوصيتك ونحمي بياناتك. هذه الصفحة توضّح ما نجمعه، وكيف نستخدمه، وكيف نحميه.',
-            lastUpdated: 'آخر تحديث: 11 سبتمبر 2026',
+            lastUpdated: 'آخر تحديث: 13 سبتمبر 2026',
             tocTitle: 'فهرس المحتويات',
             toc1: 'المعلومات التي نجمعها', toc2: 'كيف نستخدم معلوماتك', toc3: 'ملفات تعريف الارتباط',
             toc4: 'خدمات الطرف الثالث', toc5: 'أمان البيانات', toc6: 'حقوقك',
@@ -357,15 +370,20 @@ function copyEmail(btn) {
             contactDesc: 'نحن هنا للإجابة على أي استفسار حول خصوصيتك.',
             contactBtn: 'راسلنا عبر Gmail',
             copyBtn: 'انسخ البريد',
-            footHome: 'الرئيسية', footAbout: 'من نحن',
-            footTerms: 'شروط الاستخدام', footArchive: 'الأرشيف',
+            footHome: 'الرئيسية',
+            footHow: 'كيف يعمل',
+            footBlog: 'المدونة',
+            footAbout: 'من نحن',
+            footFAQ: 'الأسئلة الشائعة',
+            footTerms: 'شروط الاستخدام',
+            footArchive: 'الأرشيف',
             footMade: 'منصة عالمية 🌍'
         },
         en: {
             toggle: 'عربي', back: 'Back to Planet',
             title: 'Privacy Policy',
             subtitle: 'We respect your privacy and protect your data. This page explains what we collect, how we use it, and how we protect it.',
-            lastUpdated: 'Last updated: September 11, 2026',
+            lastUpdated: 'Last updated: September 13, 2026',
             tocTitle: 'Table of Contents',
             toc1: 'Information We Collect', toc2: 'How We Use It', toc3: 'Cookies',
             toc4: 'Third-Party Services', toc5: 'Data Security', toc6: 'Your Rights',
@@ -441,8 +459,13 @@ function copyEmail(btn) {
             contactDesc: 'We\'re here to answer any inquiry about your privacy.',
             contactBtn: 'Contact via Gmail',
             copyBtn: 'Copy email',
-            footHome: 'Home', footAbout: 'About',
-            footTerms: 'Terms of Use', footArchive: 'Archive',
+            footHome: 'Home',
+            footHow: 'How It Works',
+            footBlog: 'Blog',
+            footAbout: 'About',
+            footFAQ: 'FAQ',
+            footTerms: 'Terms of Use',
+            footArchive: 'Archive',
             footMade: 'Global platform 🌍'
         }
     };
@@ -478,7 +501,10 @@ function copyEmail(btn) {
         $('contactBtn').textContent = D.contactBtn;
         $('copyBtn').textContent = D.copyBtn;
         $('footHome').textContent = D.footHome;
+        $('footHow').textContent = D.footHow;
+        $('footBlog').textContent = D.footBlog;
         $('footAbout').textContent = D.footAbout;
+        $('footFAQ').textContent = D.footFAQ;
         $('footTerms').textContent = D.footTerms;
         $('footArchive').textContent = D.footArchive;
         $('footMade').textContent = D.footMade;
