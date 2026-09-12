@@ -1,13 +1,16 @@
 (function(){
     'use strict';
 
-    const CC_CONFIG = window.CC_CONFIG || {};
-    const SUPABASE_URL = CC_CONFIG.SUPABASE_URL;
-    const SUPABASE_ANON_KEY = CC_CONFIG.SUPABASE_ANON_KEY;
+    /* ✅ نستعمل نفس Supabase client من script.js */
+    const sb = window.__ccSupabase || null;
 
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !window.supabase) {
-        console.warn('❤️ likes.js: Supabase not ready');
+    if (!sb) {
+        console.warn('❤️ likes.js: Supabase client not available yet');
+        // نحاول نستنى script.js يخلص
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => window.dispatchEvent(new Event('cc:likes-ready')), 100);
+            });
+        }
         return;
     }
-
-    const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
