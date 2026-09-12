@@ -73,6 +73,7 @@
     let currentPage = 0;
     const LIMIT = 15;
     let isLoading = false;
+    const SESSION_READS = new Set();
 
     /* ═══════════════════════════════════════════════════════════
        🦴 Skeleton Loading
