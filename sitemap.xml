@@ -5,23 +5,31 @@
     <!-- ═══ الصفحة الرئيسية ═══ -->
     <url>
         <loc>https://chronoscapsule.vercel.app/</loc>
-        <lastmod>2026-09-11</lastmod>
+        <lastmod>2026-09-12</lastmod>
         <changefreq>daily</changefreq>
         <priority>1.0</priority>
         <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/en/"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/"/>
     </url>
 
     <!-- ═══ الأرشيف ═══ -->
     <url>
         <loc>https://chronoscapsule.vercel.app/archive.html</loc>
-        <lastmod>2026-09-11</lastmod>
+        <lastmod>2026-09-12</lastmod>
         <changefreq>daily</changefreq>
         <priority>0.9</priority>
         <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/archive.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/archive.html?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/en/archive.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/archive.html"/>
+    </url>
+
+    <!-- ═══ الكبسولات ═══ -->
+    <url>
+        <loc>https://chronoscapsule.vercel.app/capsules.html</loc>
+        <lastmod>2026-09-12</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
     </url>
 
     <!-- ═══ من نحن ═══ -->
@@ -30,112 +38,21 @@
         <lastmod>2026-09-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
-        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/about.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/about.html?lang=en"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/about.html"/>
     </url>
 
-    <!-- ═══ سياسة الخصوصية ═══ -->
+    <!-- ═══ صفحات قانونية ═══ -->
     <url>
         <loc>https://chronoscapsule.vercel.app/privacy.html</loc>
         <lastmod>2026-09-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/privacy.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/privacy.html?lang=en"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/privacy.html"/>
     </url>
 
-    <!-- ═══ شروط الاستخدام ═══ -->
     <url>
         <loc>https://chronoscapsule.vercel.app/terms.html</loc>
         <lastmod>2026-09-11</lastmod>
         <changefreq>monthly</changefreq>
         <priority>0.5</priority>
-        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/terms.html"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/terms.html?lang=en"/>
-        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/terms.html"/>
     </url>
 
-    <!-- ═══ الأرشيف حسب المشاعر ═══ -->
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?mood=hope</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?mood=nostalgia</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?mood=secret</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?mood=confession</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?mood=bold</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-
-    <!-- ═══ الأرشيف حسب الدول ═══ -->
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=DZ</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=SA</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=EG</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=MA</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=TN</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=AE</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=US</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    <url>
-        <loc>https://chronoscapsule.vercel.app/archive.html?country=FR</loc>
-        <lastmod>2026-09-11</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-    </url>
 </urlset>

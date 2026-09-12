@@ -1,32 +1,36 @@
-# ═══════════════════════════════════════════════════════════
+# ============================================
 # CHRONOS CAPSULE — robots.txt
-# ═══════════════════════════════════════════════════════════
+# ============================================
 
 User-agent: *
 Allow: /
 Disallow: /api/
 Disallow: /functions/
 Disallow: /supabase/
-Disallow: /capsules.html?capsule=
-Disallow: /*?*capsule=
+Disallow: /login.html
+Disallow: /profile.html
+Disallow: /admin/
 
+# Google — سماح كامل
 User-agent: Googlebot
-Disallow: /capsules.html?capsule=
 Allow: /
 
 User-agent: Googlebot-Image
 Allow: /
 
+# بوتات SEO
 User-agent: AhrefsBot
 Crawl-delay: 10
 
 User-agent: SemrushBot
 Crawl-delay: 10
 
+# بوتات ضارة
 User-agent: MJ12bot
 Disallow: /
 
 User-agent: DotBot
 Disallow: /
 
+# Sitemap
 Sitemap: https://chronoscapsule.vercel.app/sitemap.xml
