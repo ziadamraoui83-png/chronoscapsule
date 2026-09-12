@@ -429,3 +429,78 @@ html[dir="rtl"] .skeleton-item::after{
     .empty-state-icon { animation: none; }
     .empty-state::before { animation: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   ❤️ أزرار الإعجاب في الأرشيف
+   ═══════════════════════════════════════════════════════════ */
+.cap-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.08);
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.like-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+    white-space: nowrap;
+}
+
+.like-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+    transform: translateY(-1px);
+}
+
+.like-btn:disabled {
+    opacity: 0.5;
+    cursor: wait;
+}
+
+.like-btn .heart-icon {
+    font-size: 15px;
+    display: inline-block;
+    transition: transform 0.25s ease;
+}
+
+.like-btn.liked {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #fecaca;
+}
+
+.like-btn.liked .heart-icon {
+    animation: heartPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.like-btn .like-count {
+    font-weight: 700;
+    min-width: 14px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+@keyframes heartPop {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.5); }
+    70%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+
+
