@@ -696,13 +696,13 @@
     }
 
     function buildCountdownHTML(c, isAr) {
-        const cd = getCountdownData(c.created_at, c.arrival_at);
+        const cd = getCountdownData(c.o_created || c.created_at, c.o_arrival_at || c.arrival_at);
         if (!cd) return '';
 
         return `
             <div class="cap-countdown-full"
-                 data-arrival="${esc(c.arrival_at)}"
-                 data-created="${esc(c.created_at || '')}">
+                 data-arrival="${esc(c.o_arrival_at || c.arrival_at)}"
+                 data-created="${esc(c.o_created || c.created_at || '')}">
                 <div class="cap-cd-header">
                     <span class="cap-cd-title">
                         ⏳ ${isAr ? 'العد التنازلي للوصول' : 'Countdown to Arrival'}
@@ -961,7 +961,9 @@
 
     function card(c, animate){
         animate = !!animate;
-        const arrived = !c.arrival_at || new Date(c.arrival_at) <= new Date();
+        const arrivalISO = c.o_arrival_at || c.arrival_at;
+        const createdISO = c.o_created || c.created_at;
+        const arrived = !arrivalISO || new Date(arrivalISO) <= new Date();
         const rawText = (c.o_text || c.text || '');
         const isAr = capLang === 'ar';
         const el = document.createElement('div');
@@ -989,7 +991,7 @@
         el.innerHTML = `
             <div class="cap-top">
                 <span class="cap-status ${arrived ? 'done' : 'orbit'}">${statusText}</span>
-                <span class="cap-date">${esc(fmt(c.arrival_at || c.created_at))}</span>
+                <span class="cap-date">${esc(fmt(arrivalISO || createdISO))}</span>
             </div>
             ${lockedHtml}
             <div class="cap-stats">
