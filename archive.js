@@ -281,6 +281,11 @@
     function createCard(r) {
         const el = document.createElement('article');
         el.className = `cap-item mood-${r.mood || 'hope'}`;
+       if (r.id && !SESSION_READS.has(r.id)) {
+        SESSION_READS.add(r.id);
+        sb.rpc('read_capsule', { p_id: r.id }).catch(() => {});
+        r.reads_count = (r.reads_count || 0) + 1;  // تحديث متفائل
+    }
 
         const when = new Intl.DateTimeFormat(AppLang === 'ar' ? 'ar-DZ' : 'en-GB', {
             day: 'numeric', month: 'long', year: 'numeric'
@@ -292,6 +297,13 @@
         const codeVal = r.code || '';
         const hasCode = !!codeVal;
 
+         const likeBtnHTML = r.id
+            ? `<button class="like-btn" data-capsule-id="${r.id}" type="button" title="${AppLang === 'ar' ? 'إعجاب' : 'Like'}">
+                   <span class="heart-icon">🤍</span>
+                   <span class="like-count"></span>
+               </button>`
+            : '';
+
         el.innerHTML = `
             <div class="cap-head">
                 <div class="cap-country">${esc(countryLabel(r.country, AppLang))}</div>
@@ -302,13 +314,15 @@
                 <div class="cap-author">${AppLang === 'ar' ? 'بقلم: ' : 'By: '}<b>${esc(r.author || '—')}</b></div>
                 <div class="cap-stats">
                     <span>📅 ${esc(when)}</span>
-                    <span>👁️ ${r.reads_count != null ? r.reads_count : 0}</span>
+                    <span class="reads-count" data-capsule-id="${r.id}">👁️ ${r.reads_count != null ? r.reads_count : 0}</span>
                     ${translateBtn}
                 </div>
             </div>
+            <div class="cap-actions">
+                ${likeBtnHTML}
+            </div>
             ${hasCode ? buildSocialRow(codeVal, r.text) : ''}
             ${buildCardButton(codeVal, r.text, r.author, r.country, r.mood, r.arrival_at)}`;
-
         el.querySelector('[data-translate]')?.addEventListener('click', () => {
             trackEvent('capsule_translated', {
                 country: r.country,
