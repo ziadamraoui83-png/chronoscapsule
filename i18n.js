@@ -114,6 +114,8 @@
       foot_privacy: 'Privacy Policy',
       foot_terms: 'Terms of Use',
       foot_archive: 'Archive',
+      nav_my_capsules: 'My Capsules',
+      foot_faq: 'FAQ',
       golden_title: 'Golden Capsule of the Day',
       golden_hint: 'Changes daily at midnight'
     }
