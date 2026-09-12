@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — archive.js (نسخة نهائية + Skeleton + Empty)
+   CHRONOS CAPSULE — archive.js (نهائي v3)
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
@@ -73,6 +73,8 @@
     let currentPage = 0;
     const LIMIT = 15;
     let isLoading = false;
+
+    /* ✅ تتبع القراءات في الجلسة */
     const SESSION_READS = new Set();
 
     /* ═══════════════════════════════════════════════════════════
@@ -107,12 +109,11 @@
     }
 
     /* ═══════════════════════════════════════════════════════════
-       📭 Empty State — HTML جميل
+       📭 Empty State
        ═══════════════════════════════════════════════════════════ */
     function getEmptyStateHTML(type) {
         const isAr = AppLang === 'ar';
 
-        /* type = 'no-results' | 'no-capsules' | 'error' */
         const config = {
             'no-results': {
                 icon: '🔍',
@@ -228,7 +229,6 @@
         if (reset) list.innerHTML = '';
 
         if (reset && (!data || data.length === 0)) {
-            /* ✅ إذا كانت الفلاتر افتراضية → "no-capsules" */
             const hasFilters = country || mood || lang;
             showEmpty(list, hasFilters ? 'no-results' : 'no-capsules');
             return;
@@ -279,77 +279,118 @@
 
     /* ═══ بطاقة كبسولة ═══ */
     function createCard(r) {
-    const el = document.createElement('article');
-    el.className = `cap-item mood-${r.mood || 'hope'}`;
+        const el = document.createElement('article');
+        el.className = `cap-item mood-${r.mood || 'hope'}`;
 
-    const when = new Intl.DateTimeFormat(AppLang === 'ar' ? 'ar-DZ' : 'en-GB', {
-        day: 'numeric', month: 'long', year: 'numeric'
-    }).format(new Date(r.created_at || r.arrival_at));
+        const when = new Intl.DateTimeFormat(AppLang === 'ar' ? 'ar-DZ' : 'en-GB', {
+            day: 'numeric', month: 'long', year: 'numeric'
+        }).format(new Date(r.created_at || r.arrival_at));
 
-    const transUrl = `https://translate.google.com/?sl=auto&tl=${AppLang === 'ar' ? 'ar' : 'en'}&text=${encodeURIComponent(r.text)}&op=translate`;
-    const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${AppLang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
+        const transUrl = `https://translate.google.com/?sl=auto&tl=${AppLang === 'ar' ? 'ar' : 'en'}&text=${encodeURIComponent(r.text)}&op=translate`;
+        const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${AppLang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
 
-    const codeVal = r.code || '';
-    const hasCode = !!codeVal;
+        const codeVal = r.code || '';
+        const hasCode = !!codeVal;
 
-    const likeBtnHTML = r.id
-        ? `<button class="like-btn" data-capsule-id="${r.id}" type="button" title="${AppLang === 'ar' ? 'إعجاب' : 'Like'}">
-               <span class="heart-icon">🤍</span>
-               <span class="like-count"></span>
-           </button>`
-        : '';
+        const likeBtnHTML = r.id
+            ? `<button class="like-btn" data-capsule-id="${r.id}" type="button" title="${AppLang === 'ar' ? 'إعجاب' : 'Like'}">
+                   <span class="heart-icon">🤍</span>
+                   <span class="like-count"></span>
+               </button>`
+            : '';
 
-    el.innerHTML = `
-        <div class="cap-head">
-            <div class="cap-country">${esc(countryLabel(r.country, AppLang))}</div>
-            <div><span class="cap-badge public">${AppLang === 'ar' ? 'رسالة عامة' : 'Public'}</span></div>
-        </div>
-        <div class="cap-text">"${esc(r.text)}"</div>
-        <div class="cap-meta">
-            <div class="cap-author">${AppLang === 'ar' ? 'بقلم: ' : 'By: '}<b>${esc(r.author || '—')}</b></div>
-            <div class="cap-stats">
-                <span>📅 ${esc(when)}</span>
-                <span class="reads-count">👁️ ${r.reads_count != null ? r.reads_count : 0}</span>
-                ${translateBtn}
+        el.innerHTML = `
+            <div class="cap-head">
+                <div class="cap-country">${esc(countryLabel(r.country, AppLang))}</div>
+                <div><span class="cap-badge public">${AppLang === 'ar' ? 'رسالة عامة' : 'Public'}</span></div>
             </div>
-        </div>
-        <div class="cap-actions">
-            ${likeBtnHTML}
-        </div>
-        ${hasCode ? buildSocialRow(codeVal, r.text) : ''}
-        ${buildCardButton(codeVal, r.text, r.author, r.country, r.mood, r.arrival_at)}`;
+            <div class="cap-text">"${esc(r.text)}"</div>
+            <div class="cap-meta">
+                <div class="cap-author">${AppLang === 'ar' ? 'بقلم: ' : 'By: '}<b>${esc(r.author || '—')}</b></div>
+                <div class="cap-stats">
+                    <span>📅 ${esc(when)}</span>
+                    <span class="reads-count">👁️ ${r.reads_count != null ? r.reads_count : 0}</span>
+                    ${translateBtn}
+                </div>
+            </div>
+            <div class="cap-actions">
+                ${likeBtnHTML}
+            </div>
+            ${hasCode ? buildSocialRow(codeVal, r.text) : ''}
+            ${buildCardButton(codeVal, r.text, r.author, r.country, r.mood, r.arrival_at)}`;
 
-    /* ✅ تسجيل القراءة عند الضغط */
-    el.addEventListener('click', (e) => {
-        if (e.target.closest('button, a, select, input')) return;
-        
-        if (r.id && !SESSION_READS.has(r.id)) {
-            SESSION_READS.add(r.id);
-            sb.rpc('read_capsule', { p_id: r.id })
-                .then(() => {
-                    const counter = el.querySelector('.reads-count');
-                    if (counter) {
-                        const newCount = (r.reads_count || 0) + 1;
-                        counter.textContent = `👁️ ${newCount}`;
-                    }
-                });
-        }
-    });
-
-    el.querySelector('[data-translate]')?.addEventListener('click', () => {
-        trackEvent('capsule_translated', {
-            country: r.country,
-            target_lang: AppLang === 'ar' ? 'ar' : 'en'
+        /* ✅ تسجيل القراءة عند الضغط على الكبسولة */
+        el.addEventListener('click', (e) => {
+            if (e.target.closest('button, a, select, input')) return;
+            if (r.id && !SESSION_READS.has(r.id)) {
+                SESSION_READS.add(r.id);
+                sb.rpc('read_capsule', { p_id: r.id })
+                    .then(() => {
+                        const counter = el.querySelector('.reads-count');
+                        if (counter) {
+                            const newCount = (r.reads_count || 0) + 1;
+                            counter.textContent = '👁️ ' + newCount;
+                        }
+                    });
+            }
         });
-    });
 
-    // ... باقي الكود كما هو
+        el.querySelector('[data-translate]')?.addEventListener('click', () => {
+            trackEvent('capsule_translated', {
+                country: r.country,
+                target_lang: AppLang === 'ar' ? 'ar' : 'en'
+            });
+        });
 
-    return el;
-}
+        el.querySelectorAll('[data-social]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                trackEvent('capsule_shared', {
+                    method: btn.dataset.social,
+                    country: r.country,
+                    lang: AppLang
+                });
+            });
+        });
+
+        const copyBtn = el.querySelector('[data-copy-url]');
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                const url = copyBtn.dataset.copyUrl;
+                navigator.clipboard.writeText(url)
+                    .then(() => {
+                        copyBtn.textContent = '✅';
+                        setTimeout(() => { copyBtn.textContent = '🔗'; }, 1200);
+                    })
+                    .catch(() => {});
+                trackEvent('capsule_link_copied', { lang: AppLang });
+            });
+        }
+
+        const cardBtn = el.querySelector('.btn-create-card');
+        if (cardBtn) {
+            cardBtn.addEventListener('click', () => {
+                const opts = {
+                    text: cardBtn.dataset.cardText,
+                    author: cardBtn.dataset.cardAuthor,
+                    country: cardBtn.dataset.cardCountry,
+                    mood: cardBtn.dataset.cardMood,
+                    arrivalAt: cardBtn.dataset.cardArrival || null,
+                    lang: AppLang
+                };
+                if (window.CardGenerator && typeof window.CardGenerator.open === 'function') {
+                    window.CardGenerator.open(opts);
+                } else {
+                    alert(AppLang === 'ar' ? 'ميزة البطاقة غير جاهزة بعد' : 'Card feature not ready yet');
+                }
+                trackEvent('card_generate_clicked', { mood: opts.mood, lang: AppLang });
+            });
+        }
+
+        return el;
     }
 
-    ['filterCountry', 'filterMood', 'filterLang', 'filterSort'].forEach(id =>
+    /* ═══ ربط الفلاتر ═══ */
+    ['filterCountry', 'filterMood', 'filterLang', 'filterSort'].forEach(id => {
         $(id).addEventListener('change', () => {
             trackEvent('archive_filter_changed', {
                 filter: id.replace('filter', '').toLowerCase(),
@@ -357,8 +398,8 @@
                 lang: AppLang
             });
             fetchArchive(true);
-        })
-    );
+        });
+    });
 
     $('loadMoreBtn').addEventListener('click', () => {
         trackEvent('archive_load_more', { page: currentPage + 1, lang: AppLang });
