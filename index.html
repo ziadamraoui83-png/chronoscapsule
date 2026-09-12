@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>كبسولة الزمن | Chronos Capsule — أرسل رسالة إلى الفضاء</title>
 
-    <!-- ✅ Google Site Verification -->
     <meta name="google-site-verification" content="F0LC1gHJdqI7RF6OdtE51g2DMhnCkko3c-GzsEzKzUI" />
 
-    <!-- ✅ Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -20,14 +18,12 @@
       });
     </script>
 
-    <!-- ✅ SEO Meta Tags -->
     <meta name="description" content="أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية. اكتب، اختر موعد الوصول، ودع الغرباء يقرؤها. مجاناً وبسرية تامة.">
     <meta name="keywords" content="كبسولة الزمن, رسالة للمستقبل, chronos capsule, time capsule, رسالة سرية, كبسولة زمنية, رسالة إلى الفضاء">
     <meta name="author" content="Chronos Capsule">
     <meta name="theme-color" content="#010103">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
-    <!-- ✅ PWA -->
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -35,7 +31,6 @@
     <link rel="apple-touch-icon" href="/icon-192.svg">
     <meta name="mobile-web-app-capable" content="yes">
 
-    <!-- ✅ Open Graph / Social Media -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="كبسولة الزمن | Chronos Capsule">
     <meta property="og:description" content="أرسل رسالتك إلى الفضاء — تسبح في المدار حتى يحين موعدها. كبسولة الزمن الكونية.">
@@ -47,19 +42,16 @@
     <meta property="og:locale" content="ar_AR">
     <meta property="og:site_name" content="Chronos Capsule">
 
-    <!-- ✅ Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="كبسولة الزمن | Chronos Capsule">
     <meta name="twitter:description" content="أرسل رسالتك إلى الفضاء وحدد متى تصل — كبسولة الزمن الكونية 🚀">
     <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
     <meta name="twitter:image:alt" content="Chronos Capsule">
 
-    <!-- ✅ Canonical & Hreflang -->
     <link rel="canonical" href="https://chronoscapsule.vercel.app/">
     <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/">
     <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/">
 
-    <!-- ✅ Favicon كامل -->
     <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" sizes="192x192" href="/icon-192.svg">
@@ -67,7 +59,6 @@
     <link rel="apple-touch-icon" sizes="192x192" href="/icon-192.svg">
     <link rel="shortcut icon" href="/favicon.ico">
 
-    <!-- ✅ Schema.org (WebSite + Organization + WebPage) -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -120,7 +111,7 @@
           "description": "أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية.",
           "inLanguage": "ar",
           "datePublished": "2026-09-08",
-          "dateModified": "2026-09-12"
+          "dateModified": "2026-09-13"
         }
       ]
     }
@@ -129,7 +120,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
-        /* رابط البروفايل */
         .profile-link-header {
             display: inline-flex;
             align-items: center;
@@ -149,7 +139,6 @@
             border-color: #8b5cf6;
             transform: translateY(-2px);
         }
-        /* زر تسجيل الدخول */
         .google-auth-btn {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid rgba(255, 255, 255, 0.2);
@@ -184,7 +173,6 @@
         .google-auth-btn.signed-in {
             padding: 4px 12px 4px 4px;
         }
-        /* الشعار الجديد */
         .cc-logo-wrap {
             display: inline-flex;
             align-items: center;
@@ -228,6 +216,29 @@
             letter-spacing: 0.35em;
             color: rgba(255, 255, 255, 0.55);
         }
+        .header-nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: linear-gradient(135deg, rgba(139,92,246,.15), rgba(59,130,246,.15));
+            border: 1px solid rgba(139,92,246,.4);
+            color: #c4b5fd;
+            padding: 6px 14px;
+            border-radius: 999px;
+            text-decoration: none;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 12.5px;
+            font-weight: 700;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        .header-nav-link:hover {
+            background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(59,130,246,.3));
+            border-color: #8b5cf6;
+            color: #fff;
+            transform: translateY(-2px);
+        }
         @media (max-width: 900px) {
             .cc-logo-icon { width: 38px; height: 38px; }
             .cc-logo-title { font-size: 13px; }
@@ -236,11 +247,11 @@
         @media (max-width: 480px) {
             .cc-logo-icon { width: 32px; height: 32px; }
             .cc-logo-text { display: none; }
+            .header-nav-link { padding: 5px 10px; font-size: 11.5px; }
         }
     </style>
 </head>
 <body>
-    <!-- شاشة التحميل -->
     <div id="ccLoader"><div class="orb"></div><p>CHRONOS CAPSULE</p></div>
 
     <div class="space-container">
@@ -248,7 +259,6 @@
         <div id="labels-container"></div>
         <div id="msgTooltip" class="msg-tooltip"></div>
 
-        <!-- الترويسة -->
         <header class="site-header">
             <a href="index.html" class="logo cc-logo-wrap" aria-label="Chronos Capsule">
                 <img src="/icon-192.svg" alt="Chronos Capsule" class="cc-logo-icon" width="44" height="44">
@@ -258,16 +268,15 @@
                 </div>
             </a>
 
-            <div style="display: flex; align-items: center; gap: 15px;">    
-            <a href="capsules.html" class="header-nav-link" data-i18n="nav_my_capsules">🛰️ كبسولاتي</a>
-            <a href="profile.html" class="profile-link-header" title="ملفي الشخصي">👤</a>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <a href="capsules.html" class="header-nav-link" data-i18n="nav_my_capsules">🛰️ كبسولاتي</a>
+                <a href="profile.html" class="profile-link-header" title="ملفي الشخصي">👤</a>
                 <button id="googleLoginBtn" class="google-auth-btn">
                     <span>🌐</span> دخول بجوجل
                 </button>
             </div>
         </header>
 
-        <!-- 🌟 الكبسولة الذهبية اليومية -->
         <div id="goldenCapsulePanel" class="golden-panel" style="display:none">
             <div class="golden-header">
                 <span class="golden-star">🌟</span>
@@ -287,7 +296,6 @@
             </div>
         </div>
 
-        <!-- اللوحة الزجاجية -->
         <div class="hero-panel">
             <h1 class="main-title">أرسل رسالتك إلى <span class="highlight">الفضاء</span></h1>
             <p class="main-desc">اكتب رسالتك السرية أو اعترافك، اختر دولتك، ودعها تطير لتستقر على كبسولة الزمن الكونية ليقرأها الغرباء بسلام.</p>
@@ -303,20 +311,17 @@
             </div>
         </div>
 
-        <!-- عدّاد الكبسولات -->
         <div class="capsule-counter" title="عدد الكبسولات السابحة في الفضاء">
             <span class="pulse-dot"></span>
             <b id="capsuleCount">0</b>
             <span>كبسولة تسبح في الفضاء</span>
         </div>
 
-        <!-- أزرار التقريب -->
         <div class="zoom-controls">
             <button id="zoomInBtn" title="تقريب">+</button>
             <button id="zoomOutBtn" title="تبعيد">-</button>
         </div>
 
-        <!-- مفتاح خريطة المشاعر -->
         <div class="mood-legend">
             <span class="li" style="color:var(--mood-hope)"><i></i><span data-i18n="mood_hope">أمل</span></span>
             <span class="li" style="color:var(--mood-nostalgia)"><i></i><span data-i18n="mood_nostalgia">حنين</span></span>
@@ -325,26 +330,26 @@
             <span class="li" style="color:var(--mood-bold)"><i></i><span data-i18n="mood_bold">جرأة</span></span>
         </div>
 
-        <!-- التذييل -->
-        <div class="footer-nav">
-    <a href="about.html" data-i18n="foot_about">من نحن</a>
-    <span class="foot-sep">·</span>
-    <a href="how-it-works.html" data-i18n="foot_how">كيف يعمل</a>
-    <span class="foot-sep">·</span>
-    <a href="blog.html" data-i18n="foot_blog">المدونة</a>
-    <span class="foot-sep">·</span>
-    <a href="faq.html" data-i18n="foot_faq">الأسئلة الشائعة</a>
-    <span class="foot-sep">·</span>
-    <a href="archive.html" data-i18n="foot_archive">الأرشيف</a>
-    <span class="foot-sep">·</span>
-    <a href="privacy.html" data-i18n="foot_privacy">سياسة الخصوصية</a>
-    <span class="foot-sep">·</span>
-    <a href="terms.html" data-i18n="foot_terms">شروط الاستخدام</a>
-</div>
+        <footer class="site-footer">
+            <p>جميع الرسائل تُنشر بسرية تامة ومحمية عبر الفضاء الرقمي</p>
+            <div class="footer-nav">
+                <a href="about.html" data-i18n="foot_about">من نحن</a>
+                <span class="foot-sep">·</span>
+                <a href="how-it-works.html" data-i18n="foot_how">كيف يعمل</a>
+                <span class="foot-sep">·</span>
+                <a href="blog.html" data-i18n="foot_blog">المدونة</a>
+                <span class="foot-sep">·</span>
+                <a href="faq.html" data-i18n="foot_faq">الأسئلة الشائعة</a>
+                <span class="foot-sep">·</span>
+                <a href="archive.html" data-i18n="foot_archive">الأرشيف</a>
+                <span class="foot-sep">·</span>
+                <a href="privacy.html" data-i18n="foot_privacy">سياسة الخصوصية</a>
+                <span class="foot-sep">·</span>
+                <a href="terms.html" data-i18n="foot_terms">شروط الاستخدام</a>
+            </div>
         </footer>
     </div>
 
-    <!-- نافذة كتابة الرسالة -->
     <div id="messageModal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
@@ -415,10 +420,8 @@
         </div>
     </div>
 
-    <!-- إشعار زجاجي -->
     <div id="ccToast" class="cc-toast"><span class="ico">🚀</span><span class="txt"></span></div>
 
-    <!-- نافذة الأعماق -->
     <div id="deepModal" class="modal-overlay deep-overlay">
         <div class="modal-card deep-card">
             <button id="deepClose" class="close-btn">&times;</button>
@@ -434,7 +437,6 @@
         </div>
     </div>
 
-    <!-- ═══ السكربتات ═══ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -448,7 +450,6 @@
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
     </script>
 
-    <!-- ✅ PWA Service Worker + Install Button -->
     <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
