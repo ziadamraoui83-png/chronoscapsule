@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function() {
+        try {
+            var lang = localStorage.getItem('cc_lang') || 'ar';
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') lang = urlLang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch(e) {}
+    })();
+    </script>
+    <title>كيف يعمل الموقع | Chronos Capsule — دليل شامل خطوة بخطوة</title>
+    <meta name="description" content="تعرّف على كيفية عمل Chronos Capsule خطوة بخطوة: كيف تكتب كبسولة زمنية، تختار موعد وصولها، وتشاركها مع العالم. دليل شامل بالعربية والإنجليزية.">
+    <meta name="keywords" content="كيف يعمل, Chronos Capsule, كبسولة الزمن, دليل, how it works, time capsule guide, tutorial">
+    <meta name="theme-color" content="#010103">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z872SS657T');
+    </script>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="كيف يعمل الموقع | Chronos Capsule">
+    <meta property="og:description" content="دليل شامل خطوة بخطوة لفهم كيفية عمل الكبسولة الزمنية.">
+    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:url" content="https://chronoscapsule.vercel.app/how-it-works.html">
+    <meta property="og:locale" content="ar_AR">
+
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <link rel="canonical" href="https://chronoscapsule.vercel.app/how-it-works.html">
+    <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/how-it-works.html">
+    <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/how-it-works.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/how-it-works.html">
+
+    <!-- Schema.org HowTo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "كيف ترسل كبسولة زمنية عبر Chronos Capsule",
+      "description": "دليل خطوة بخطوة لإرسال كبسولة زمنية: كتابة الرسالة، اختيار الشعور، تحديد موعد الوصول، ومشاركتها مع العالم.",
+      "inLanguage": "ar",
+      "totalTime": "PT2M",
+      "estimatedCost": {
+        "@type": "MonetaryAmount",
+        "currency": "USD",
+        "value": "0"
+      },
+      "step": [
+        {
+          "@type": "HowToStep",
+          "position": 1,
+          "name": "اكتب رسالتك",
+          "text": "اضغط على زر «اكتب رسالة جديدة»، ثم اكتب نص رسالتك حتى 300 حرف. يمكنك إرسالها باسمك أو كمجهول."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 2,
+          "name": "اختر الشعور",
+          "text": "اختر الشعور المناسب لرسالتك: أمل، حنين، سر، اعتراف، أو جرأة. كل شعور له لونه الخاص على الكوكب."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 3,
+          "name": "حدد نوع الكبسولة",
+          "text": "اختر «عامة» لتُنشر فوراً ويقرأها الغرباء، أو «خاصة» لتبقى سرية حتى موعد وصولها."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 4,
+          "name": "اختر موعد الوصول",
+          "text": "للرسائل الخاصة، حدد متى تريد أن تصل: غداً، بعد أسبوع، بعد شهر، بعد سنة، أو تاريخ مخصص."
+        },
+        {
+          "@type": "HowToStep",
+          "position": 5,
+          "name": "اختر الدولة وأطلق",
+          "text": "اختر دولتك لتحديد نقطة الانطلاق على الكوكب، ثم اضغط «إطلاق الكبسولة نحو الفضاء». ستحصل على رمز سري لمتابعتها."
+        }
+      ]
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html[lang="ar"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-ar { display: none !important; }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
+        body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh}
+        a,button{cursor:pointer}
+        body::before{content:'';position:fixed;inset:0;
+            background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
+                        radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
+            z-index:0;pointer-events:none}
+        body::after{content:'';position:fixed;inset:0;
+            background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
+                radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
+                radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+                radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
+            z-index:0;pointer-events:none}
+        .page-header{position:sticky;top:0;z-index:50;
+            background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
+            border-bottom:1px solid rgba(255,255,255,.07);
+            padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .header-logo-icon{font-size:1.4rem}
+        .header-logo-text{font-size:1.05rem;font-weight:900;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .header-actions{display:flex;align-items:center;gap:8px}
+        .back-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
+            padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
+        .back-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
+        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
+        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
+        .page{max-width:820px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
+
+        /* Hero */
+        .hero{text-align:center;padding:20px 0 40px;position:relative}
+        .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+            width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);
+            pointer-events:none;z-index:-1}
+        .hero-emoji{font-size:56px;margin-bottom:18px;
+            filter:drop-shadow(0 0 20px rgba(139,92,246,.4));
+            animation:floatEmoji 4s ease-in-out infinite}
+        @keyframes floatEmoji{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .hero-title{font-size:2.2rem;font-weight:900;margin-bottom:12px;line-height:1.3;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6,#3AE1FF);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .hero-subtitle{font-size:1rem;color:#94a3b8;line-height:1.8;max-width:600px;margin:0 auto}
+
+        /* Steps */
+        .steps{display:flex;flex-direction:column;gap:20px;margin-top:30px}
+        .step{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);
+            border-radius:20px;padding:26px 28px;backdrop-filter:blur(10px);
+            display:flex;gap:20px;align-items:flex-start;
+            transition:all .3s ease;position:relative;overflow:hidden}
+        .step:hover{border-color:rgba(139,92,246,.4);transform:translateY(-3px);
+            box-shadow:0 12px 40px rgba(139,92,246,.12)}
+        .step::before{content:'';position:absolute;top:0;left:0;width:4px;height:100%;
+            background:linear-gradient(180deg,#8b5cf6,#3b82f6);opacity:.6}
+        .step-num{flex:none;width:52px;height:52px;border-radius:50%;
+            background:linear-gradient(135deg,#6d28d9,#2563eb);
+            display:flex;align-items:center;justify-content:center;
+            font-size:22px;font-weight:900;color:#fff;
+            box-shadow:0 8px 24px rgba(99,102,241,.4)}
+        .step-content{flex:1}
+        .step-title{font-size:1.15rem;font-weight:900;color:#fff;margin-bottom:10px;
+            display:flex;align-items:center;gap:10px}
+        .step-icon{font-size:22px}
+        .step-desc{color:#cbd5e1;line-height:1.9;font-size:.95rem}
+        .step-desc strong{color:#a78bfa;font-weight:700}
+        .step-tip{margin-top:12px;padding:12px 14px;
+            background:rgba(139,92,246,.08);border:1px solid rgba(139,92,246,.2);
+            border-radius:12px;font-size:12.5px;color:#c4b5fd;line-height:1.7;
+            display:flex;gap:10px;align-items:flex-start}
+        .step-tip-icon{flex:none;font-size:16px}
+
+        /* Features */
+        .features{margin-top:50px}
+        .section-title{font-size:1.5rem;font-weight:900;text-align:center;margin-bottom:30px;
+            background:linear-gradient(135deg,#a78bfa,#3AE1FF);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+        .feature-card{background:rgba(15,23,42,.6);border:1px solid rgba(255,255,255,.08);
+            border-radius:16px;padding:22px;text-align:center;
+            backdrop-filter:blur(10px);transition:all .3s ease}
+        .feature-card:hover{border-color:rgba(139,92,246,.3);transform:translateY(-3px)}
+        .feature-icon{font-size:32px;margin-bottom:12px;display:block}
+        .feature-title{font-size:14px;font-weight:900;color:#e2e8f0;margin-bottom:8px}
+        .feature-desc{font-size:12.5px;color:#94a3b8;line-height:1.7}
+
+        /* CTA */
+        .cta-box{margin-top:50px;padding:40px 30px;text-align:center;
+            background:linear-gradient(135deg,rgba(139,92,246,.1),rgba(59,130,246,.08));
+            border:1px solid rgba(139,92,246,.3);border-radius:24px;
+            position:relative;overflow:hidden}
+        .cta-box::before{content:'';position:absolute;top:-50%;left:50%;transform:translateX(-50%);
+            width:300px;height:300px;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);
+            pointer-events:none}
+        .cta-title{font-size:1.5rem;font-weight:900;margin-bottom:12px;
+            background:linear-gradient(135deg,#a78bfa,#3AE1FF);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .cta-desc{font-size:.95rem;color:#94a3b8;margin-bottom:24px;line-height:1.8}
+        .cta-btn{display:inline-flex;align-items:center;gap:10px;
+            padding:15px 34px;background:linear-gradient(135deg,#6d28d9,#2563eb);
+            color:#fff;text-decoration:none;border-radius:14px;
+            font-size:15px;font-weight:900;transition:all .3s ease;
+            box-shadow:0 12px 36px rgba(99,102,241,.4)}
+        .cta-btn:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(99,102,241,.55)}
+
+        /* Footer */
+        .page-footer{text-align:center;padding:30px 20px;color:#64748b;font-size:12.5px;
+            border-top:1px solid rgba(255,255,255,.06);margin-top:50px}
+        .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+        .footer-links a{color:#a78bfa;text-decoration:none;transition:color .3s}
+        .footer-links a:hover{color:#fff}
+
+        @media(max-width:600px){
+            .page-header{padding:12px 16px}
+            .page{padding:24px 16px 60px}
+            .hero-title{font-size:1.6rem}
+            .hero-emoji{font-size:44px}
+            .hero-subtitle{font-size:.9rem}
+            .step{padding:20px;flex-direction:column;gap:14px}
+            .step-num{width:44px;height:44px;font-size:18px}
+            .step-title{font-size:1rem}
+            .step-desc{font-size:.9rem}
+            .cta-box{padding:28px 20px}
+            .cta-title{font-size:1.2rem}
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+            .hero-emoji { animation: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <a href="index.html" class="header-logo">
+        <span class="header-logo-icon">🚀</span>
+        <span class="header-logo-text">CHRONOS CAPSULE</span>
+    </a>
+    <div class="header-actions">
+        <button class="lang-toggle-cap" id="hiwLangToggle">EN</button>
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span class="lang-ar">العودة للكوكب</span>
+            <span class="lang-en">Back to Planet</span>
+        </a>
+    </div>
+</header>
+
+<main class="page">
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-emoji">🛰️</div>
+        <h1 class="hero-title">
+            <span class="lang-ar">كيف يعمل الموقع</span>
+            <span class="lang-en">How It Works</span>
+        </h1>
+        <p class="hero-subtitle">
+            <span class="lang-ar">دليل شامل خطوة بخطوة لإرسال كبسولة زمنية عبر الفضاء الرقمي — من الكتابة إلى الإطلاق.</span>
+            <span class="lang-en">A complete step-by-step guide to sending a time capsule through digital space — from writing to launch.</span>
+        </p>
+    </section>
+
+    <!-- Steps -->
+    <section class="steps">
+
+        <!-- Step 1 -->
+        <div class="step">
+            <div class="step-num">1</div>
+            <div class="step-content">
+                <h2 class="step-title">
+                    <span class="step-icon">✍️</span>
+                    <span class="lang-ar">اكتب رسالتك</span>
+                    <span class="lang-en">Write Your Message</span>
+                </h2>
+                <p class="step-desc">
+                    <span class="lang-ar">اضغط على زر <strong>«اكتب رسالة جديدة»</strong> في الصفحة الرئيسية. اكتب نص رسالتك حتى <strong>300 حرف</strong> — رسالة سرية، اعتراف، ذكرى، أو أمنية للمستقبل. يمكنك إرسالها باسمك أو <strong>كمجهول</strong> تماماً.</span>
+                    <span class="lang-en">Click the <strong>"Write a New Message"</strong> button on the homepage. Write up to <strong>300 characters</strong> — a secret, a confession, a memory, or a wish for the future. Send it under your name or <strong>anonymously</strong>.</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="step">
+            <div class="step-num">2</div>
+            <div class="step-content">
+                <h2 class="step-title">
+                    <span class="step-icon">🎨</span>
+                    <span class="lang-ar">اختر شعور رسالتك</span>
+                    <span class="lang-en">Choose the Mood</span>
+                </h2>
+                <p class="step-desc">
+                    <span class="lang-ar">كل رسالة لها <strong>شعور</strong> يحدد لونها على الكوكب:</span>
+                    <span class="lang-en">Every message has a <strong>mood</strong> that defines its color on the planet:</span>
+                </p>
+                <ul style="list-style:none;margin-top:12px;display:flex;flex-wrap:wrap;gap:10px">
+                    <li style="display:flex;align-items:center;gap:6px;color:#38bdf8;font-size:13px;font-weight:700"><span style="width:8px;height:8px;border-radius:50%;background:#38bdf8;box-shadow:0 0 8px #38bdf8"></span> <span class="lang-ar">أمل</span><span class="lang-en">Hope</span></li>
+                    <li style="display:flex;align-items:center;gap:6px;color:#a78bfa;font-size:13px;font-weight:700"><span style="width:8px;height:8px;border-radius:50%;background:#a78bfa;box-shadow:0 0 8px #a78bfa"></span> <span class="lang-ar">حنين</span><span class="lang-en">Nostalgia</span></li>
+                    <li style="display:flex;align-items:center;gap:6px;color:#34d399;font-size:13px;font-weight:700"><span style="width:8px;height:8px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399"></span> <span class="lang-ar">سر</span><span class="lang-en">Secret</span></li>
+                    <li style="display:flex;align-items:center;gap:6px;color:#fbbf24;font-size:13px;font-weight:700"><span style="width:8px;height:8px;border-radius:50%;background:#fbbf24;box-shadow:0 0 8px #fbbf24"></span> <span class="lang-ar">اعتراف</span><span class="lang-en">Confession</span></li>
+                    <li style="display:flex;align-items:center;gap:6px;color:#f87171;font-size:13px;font-weight:700"><span style="width:8px;height:8px;border-radius:50%;background:#f87171;box-shadow:0 0 8px #f87171"></span> <span class="lang-ar">جرأة</span><span class="lang-en">Bold</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="step">
+            <div class="step-num">3</div>
+            <div class="step-content">
+                <h2 class="step-title">
+                    <span class="step-icon">🔐</span>
+                    <span class="lang-ar">اختر نوع الكبسولة</span>
+                    <span class="lang-en">Choose Capsule Type</span>
+                </h2>
+                <p class="step-desc">
+                    <span class="lang-ar"><strong>عامة:</strong> تُنشر فوراً على الكوكب ويقرأها الغرباء من كل العالم.<br><strong>خاصة:</strong> تبقى سرية تماماً حتى موعد وصولها — حتى أنت لا تستطيع قراءتها قبل ذلك.</span>
+                    <span class="lang-en"><strong>Public:</strong> published immediately on the planet for strangers worldwide to read.<br><strong>Private:</strong> stays completely secret until its arrival — not even you can read it before then.</span>
+                </p>
+                <div class="step-tip">
+                    <span class="step-tip-icon">💡</span>
+                    <span class="lang-ar">نصيحة: للكبسولات الخاصة، احتفظ بالرمز السري في مكان آمن — بدونه لن تتمكن من فتحها.</span>
+                    <span class="lang-en">Tip: For private capsules, keep the secret code safe — without it, you won't be able to open it.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="step">
+            <div class="step-num">4</div>
+            <div class="step-content">
+                <h2 class="step-title">
+                    <span class="step-icon">⏰</span>
+                    <span class="lang-ar">حدد موعد الوصول</span>
+                    <span class="lang-en">Set the Arrival Time</span>
+                </h2>
+                <p class="step-desc">
+                    <span class="lang-ar">للرسائل الخاصة، اختر متى تريد أن تصل:</span>
+                    <span class="lang-en">For private messages, choose when it should arrive:</span>
+                </p>
+                <ul style="list-style:none;margin-top:12px;display:flex;flex-wrap:wrap;gap:8px">
+                    <li style="padding:6px 14px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:999px;font-size:12.5px;color:#c4b5fd;font-weight:700"><span class="lang-ar">غداً</span><span class="lang-en">Tomorrow</span></li>
+                    <li style="padding:6px 14px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:999px;font-size:12.5px;color:#c4b5fd;font-weight:700"><span class="lang-ar">بعد أسبوع</span><span class="lang-en">In a week</span></li>
+                    <li style="padding:6px 14px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:999px;font-size:12.5px;color:#c4b5fd;font-weight:700"><span class="lang-ar">بعد شهر</span><span class="lang-en">In a month</span></li>
+                    <li style="padding:6px 14px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:999px;font-size:12.5px;color:#c4b5fd;font-weight:700"><span class="lang-ar">بعد سنة</span><span class="lang-en">In a year</span></li>
+                    <li style="padding:6px 14px;background:rgba(139,92,246,.12);border:1px solid rgba(139,92,246,.3);border-radius:999px;font-size:12.5px;color:#c4b5fd;font-weight:700"><span class="lang-ar">تاريخ مخصص</span><span class="lang-en">Custom date</span></li>
+                </ul>
+                <p class="step-desc" style="margin-top:12px">
+                    <span class="lang-ar">لا يوجد حد أقصى — يمكنك إرسال كبسولة لتفتح بعد 10 أو 20 سنة.</span>
+                    <span class="lang-en">No maximum — you can send a capsule to open in 10 or 20 years.</span>
+                </p>
+            </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="step">
+            <div class="step-num">5</div>
+            <div class="step-content">
+                <h2 class="step-title">
+                    <span class="step-icon">🚀</span>
+                    <span class="lang-ar">اختر دولتك وأطلق</span>
+                    <span class="lang-en">Choose Country & Launch</span>
+                </h2>
+                <p class="step-desc">
+                    <span class="lang-ar">اختر دولتك لتحديد <strong>نقطة الانطلاق</strong> على الكوكب. اضغط <strong>«إطلاق الكبسولة نحو الفضاء»</strong> — وستحصل على <strong>رمز سري فريد</strong> لمتابعتها، ومشاركتها مع من تحب.</span>
+                    <span class="lang-en">Select your country to set the <strong>launch point</strong> on the planet. Press <strong>"Launch Capsule to Space"</strong> — you'll receive a <strong>unique secret code</strong> to track and share it.</span>
+                </p>
+            </div>
+        </div>
+
+    </section>
+
+    <!-- Features -->
+    <section class="features">
+        <h2 class="section-title">
+            <span class="lang-ar">لماذا Chronos Capsule؟</span>
+            <span class="lang-en">Why Chronos Capsule?</span>
+        </h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">🔒</span>
+                <div class="feature-title"><span class="lang-ar">سرية تامة</span><span class="lang-en">Full Privacy</span></div>
+                <div class="feature-desc"><span class="lang-ar">رسائلك الخاصة مشفّرة ولا يقرأها أحد حتى موعدها.</span><span class="lang-en">Your private messages stay encrypted until their time.</span></div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🌍</span>
+                <div class="feature-desc-title"></div>
+                <div class="feature-title"><span class="lang-ar">مجاني للجميع</span><span class="lang-en">Free for All</span></div>
+                <div class="feature-desc"><span class="lang-ar">بدون تسجيل، بدون رسوم، بدون حدود.</span><span class="lang-en">No sign-up, no fees, no limits.</span></div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🌐</span>
+                <div class="feature-title"><span class="lang-ar">ثنائي اللغة</span><span class="lang-en">Bilingual</span></div>
+                <div class="feature-desc"><span class="lang-ar">العربية والإنجليزية — لتصل رسالتك للعالم كله.</span><span class="lang-en">Arabic and English — to reach the whole world.</span></div>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <div class="feature-title"><span class="lang-ar">تجربة فريدة</span><span class="lang-en">Unique Experience</span></div>
+                <div class="feature-desc"><span class="lang-ar">كوكب 3D تفاعلي وكبسولات طائرة.</span><span class="lang-en">An interactive 3D planet and flying capsules.</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-box">
+        <h2 class="cta-title">
+            <span class="lang-ar">جاهز لإرسال أول كبسولة؟</span>
+            <span class="lang-en">Ready to Send Your First Capsule?</span>
+        </h2>
+        <p class="cta-desc">
+            <span class="lang-ar">الأمر لا يستغرق أكثر من دقيقتين. ابدأ رحلتك عبر الزمن الآن.</span>
+            <span class="lang-en">It takes less than two minutes. Start your journey through time now.</span>
+        </p>
+        <a href="index.html" class="cta-btn">
+            <span>🚀</span>
+            <span class="lang-ar">ابدأ الآن</span>
+            <span class="lang-en">Start Now</span>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+        <div class="footer-links">
+            <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+            <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
+            <a href="faq.html"><span class="lang-ar">الأسئلة الشائعة</span><span class="lang-en">FAQ</span></a>
+            <a href="privacy.html"><span class="lang-ar">سياسة الخصوصية</span><span class="lang-en">Privacy Policy</span></a>
+            <a href="terms.html"><span class="lang-ar">شروط الاستخدام</span><span class="lang-en">Terms of Use</span></a>
+            <a href="archive.html"><span class="lang-ar">الأرشيف</span><span class="lang-en">Archive</span></a>
+        </div>
+        <div>© 2026 Chronos Capsule — <span class="lang-ar">منصة عالمية 🌍</span><span class="lang-en">Global platform 🌍</span></div>
+    </footer>
+
+</main>
+
+<script>
+(function(){
+    'use strict';
+
+    function getCurrentLang() {
+        try {
+            const urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') return urlLang;
+            return localStorage.getItem('cc_lang') || 'ar';
+        } catch (e) { return 'ar'; }
+    }
+
+    let currentLang = getCurrentLang();
+
+    function applyLang(l) {
+        currentLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+
+        const toggleBtn = document.getElementById('hiwLangToggle');
+        if (toggleBtn) toggleBtn.textContent = (l === 'ar') ? 'EN' : 'عربي';
+
+        document.title = (l === 'ar' ? 'كيف يعمل الموقع' : 'How It Works') + ' | Chronos Capsule';
+
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+            metaDesc.content = (l === 'ar')
+                ? 'تعرّف على كيفية عمل Chronos Capsule خطوة بخطوة: كيف تكتب كبسولة زمنية، تختار موعد وصولها، وتشاركها مع العالم.'
+                : 'Learn how Chronos Capsule works step by step: how to write a time capsule, choose its arrival time, and share it with the world.';
+        }
+    }
+
+    document.getElementById('hiwLangToggle').addEventListener('click', () => {
+        applyLang(currentLang === 'ar' ? 'en' : 'ar');
+    });
+
+    applyLang(currentLang);
+})();
+</script>
+</body>
+</html>
