@@ -813,12 +813,22 @@ document.addEventListener('DOMContentLoaded', () => {
             const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
             const goldenHeader = isG ? `<div style="color:#fbbf24;font-size:12px;margin-bottom:6px;font-weight:900;text-align:center;">🌟 ${CCI18N.lang === 'ar' ? 'الكبسولة الذهبية اليوم' : 'Golden Capsule of the Day'} 🌟</div>` : '';
 
-            tooltip.innerHTML = `
-                ${goldenHeader}
-                <h4>${esc(CCI18N.countryLabel(msg.country))} ${flag} ${translateBtn}</h4>
-                <p>"${esc(msg.text)}"</p>
-                <div class="author">${esc(CCI18N.t('by'))}: ${esc(msg.author)}</div>
-            `;
+            const likeBtnHtml = msg.dbId
+    ? `<button class="like-btn" data-capsule-id="${msg.dbId}" title="${CCI18N.lang === 'ar' ? 'إعجاب' : 'Like'}">
+            <span class="heart-icon">🤍</span>
+            <span class="like-count"></span>
+       </button>`
+    : '';
+
+tooltip.innerHTML = `
+    ${goldenHeader}
+    <h4>${esc(CCI18N.countryLabel(msg.country))} ${flag} ${translateBtn}</h4>
+    <p>"${esc(msg.text)}"</p>
+    <div class="author">${esc(CCI18N.t('by'))}: ${esc(msg.author)}</div>
+    <div class="tooltip-actions">
+        ${likeBtnHtml}
+    </div>
+`;
             tooltip.style.left = labelDiv.style.left;
             tooltip.style.top = labelDiv.style.top;
             tooltip.classList.add('show');
