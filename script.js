@@ -461,10 +461,10 @@ document.addEventListener('DOMContentLoaded', () => {
             /* ✅ حجم كوكب متوسط — مثل الصورة التي أعجبتك */
             const dist = 5.6 / Math.sin(fov * 0.25);
             fitDist = dist;
-            /* ✅ تقريب معتدل — يقترب بدرجة مفيدة */
-            controls.minDistance = dist * 0.68;
-            /* ✅ تبعيد معتدل */
-            controls.maxDistance = dist * 2.0;
+            /* ✅ مساحة أوسع للتقريب */
+            controls.minDistance = dist * 0.5;
+            /* ✅ مساحة معتدلة للتبعيد */
+            controls.maxDistance = dist * 1.8;
             return dist;
         }
 
@@ -493,12 +493,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         document.getElementById('zoomInBtn').addEventListener('click', () => {
-            startZoom(0.65);
+            startZoom(0.75);
             hideTooltip();
         });
 
         document.getElementById('zoomOutBtn').addEventListener('click', () => {
-            startZoom(1.55);
+            startZoom(1.42);
             hideTooltip();
         });
 
@@ -865,8 +865,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function updateLabelsPosition() {
         const cameraDistance = camera.position.distanceTo(controls.target);
-        /* ✅ عرض الأسماء عند التقريب المعتدل */
-        const showLabels = cameraDistance < fitDist * 0.95;
+        /* ✅ الأسماء تظهر فقط عند التقريب */
+        const showLabels = cameraDistance < fitDist * 0.68;
 
         labelElements.forEach(item => {
             const worldPos = new THREE.Vector3();
