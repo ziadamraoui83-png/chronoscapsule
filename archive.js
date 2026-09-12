@@ -281,11 +281,7 @@
     function createCard(r) {
         const el = document.createElement('article');
         el.className = `cap-item mood-${r.mood || 'hope'}`;
-       if (r.id && !SESSION_READS.has(r.id)) {
-        SESSION_READS.add(r.id);
-        sb.rpc('read_capsule', { p_id: r.id }).then(() => {}, () => {});
-        r.reads_count = (r.reads_count || 0) + 1;  // تحديث متفائل
-    }
+      
 
         const when = new Intl.DateTimeFormat(AppLang === 'ar' ? 'ar-DZ' : 'en-GB', {
             day: 'numeric', month: 'long', year: 'numeric'
@@ -373,8 +369,25 @@
                 trackEvent('card_generate_clicked', { mood: opts.mood, lang: AppLang });
             });
         }
+el.addEventListener('click', (e) => {
+        // تجاهل إذا كان الضغط على زر/رابط
+        if (e.target.closest('button, a, select, input')) return;
+        
+        if (r.id && !SESSION_READS.has(r.id)) {
+            SESSION_READS.add(r.id);
+            sb.rpc('read_capsule', { p_id: r.id })
+                .then(() => {
+                    // تحديث العداد في الواجهة
+                    const counter = el.querySelector('.reads-count');
+                    if (counter) {
+                        const newCount = (r.reads_count || 0) + 1;
+                        counter.textContent = `👁️ ${newCount}`;
+                    }
+                });
+        }
+    });
 
-        return el;
+    return el;
     }
 
     ['filterCountry', 'filterMood', 'filterLang', 'filterSort'].forEach(id =>
