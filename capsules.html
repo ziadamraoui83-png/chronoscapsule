@@ -176,9 +176,115 @@
             .filter-bar{flex-direction:column;align-items:stretch}
             .search-input{width:100%}
         }
-        @media (prefers-reduced-motion: reduce) {
+                @media (prefers-reduced-motion: reduce) {
             * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
             .cap-card:hover { transform: none; }
+        }
+
+        /* ═════════ النافذة المنبثقة للبطاقة ═════════ */
+        .card-modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999; opacity: 0;
+            transition: opacity .3s ease;
+            padding: 20px; overflow-y: auto;
+        }
+        .card-modal-overlay.active { opacity: 1; }
+        .card-modal {
+            background: #0f172a;
+            border: 1px solid rgba(139,92,246,.3);
+            border-radius: 24px;
+            max-width: 560px; width: 100%;
+            padding: 24px; position: relative;
+            box-shadow: 0 30px 90px rgba(0,0,0,.7), 0 0 60px rgba(139,92,246,.15);
+            transform: scale(.9);
+            transition: transform .4s cubic-bezier(.34,1.56,.64,1);
+            max-height: calc(100vh - 40px);
+            overflow-y: auto;
+        }
+        .card-modal-overlay.active .card-modal { transform: scale(1); }
+        .card-modal-close {
+            position: absolute; top: 14px; left: 14px;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255,255,255,.06);
+            border: 1px solid rgba(255,255,255,.15);
+            color: #94a3b8; font-size: 20px; cursor: pointer;
+            transition: all .25s ease;
+            display: flex; align-items: center; justify-content: center;
+            padding: 0; line-height: 1;
+        }
+        .card-modal-close:hover { background: rgba(239,68,68,.2); color: #f87171; border-color: #ef4444; }
+        .card-modal-head { text-align: center; margin-bottom: 18px; }
+        .card-modal-title { display: block; font-size: 17px; font-weight: 900; color: #fff; margin-bottom: 4px; }
+        .card-modal-sub { font-size: 12px; color: #64748b; }
+        .card-modal-preview {
+            background: #010103; border-radius: 16px;
+            overflow: hidden; margin-bottom: 18px;
+            aspect-ratio: 1 / 1;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(255,255,255,.08);
+        }
+        .card-modal-preview img { width: 100%; height: 100%; object-fit: contain; display: block; }
+        .card-loading { display: flex; flex-direction: column; align-items: center; gap: 14px; color: #64748b; font-size: 13px; }
+        .card-spinner {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 3px solid rgba(139,92,246,.2);
+            border-top-color: #8b5cf6;
+            animation: cardSpin 1s linear infinite;
+        }
+        @keyframes cardSpin { to { transform: rotate(360deg); } }
+        .card-modal-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+        .card-btn {
+            flex: 1; min-width: 100px; padding: 12px 16px;
+            border-radius: 12px; font-size: 13.5px; font-weight: 700;
+            font-family: inherit; cursor: pointer;
+            transition: all .25s ease;
+            border: 1px solid transparent;
+            display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+        }
+        .card-btn.primary { background: linear-gradient(135deg, #6d28d9, #2563eb); color: #fff; }
+        .card-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(99,102,241,.4); }
+        .card-btn.native {
+            background: rgba(56,189,248,.12);
+            color: #7dd3fc;
+            border-color: rgba(56,189,248,.35);
+        }
+        .card-btn.native:hover { background: rgba(56,189,248,.25); color: #fff; transform: translateY(-2px); }
+        .card-btn.copy {
+            background: rgba(139,92,246,.12);
+            color: #c4b5fd;
+            border-color: rgba(139,92,246,.35);
+        }
+        .card-btn.copy:hover { background: rgba(139,92,246,.25); color: #fff; transform: translateY(-2px); }
+        .card-social-row {
+            display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+            padding-top: 12px; border-top: 1px dashed rgba(255,255,255,.08);
+        }
+        .card-social-label { font-size: 11.5px; color: #64748b; margin-inline-end: 4px; }
+        .card-social-btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 38px; height: 38px; border-radius: 50%;
+            text-decoration: none; font-size: 16px;
+            transition: all .25s ease;
+            border: 1px solid transparent; cursor: pointer;
+        }
+        .card-social-btn.wa { background: rgba(37,211,102,.12); color: #25d366; border-color: rgba(37,211,102,.3); }
+        .card-social-btn.wa:hover { background: #25d366; color: #fff; transform: translateY(-2px); }
+        .card-social-btn.tw { background: rgba(255,255,255,.08); color: #fff; border-color: rgba(255,255,255,.2); }
+        .card-social-btn.tw:hover { background: #000; color: #fff; transform: translateY(-2px); }
+        .card-social-btn.fb { background: rgba(24,119,242,.12); color: #1877f2; border-color: rgba(24,119,242,.3); }
+        .card-social-btn.fb:hover { background: #1877f2; color: #fff; transform: translateY(-2px); }
+        .card-social-btn.tg { background: rgba(0,136,204,.12); color: #0088cc; border-color: rgba(0,136,204,.3); }
+        .card-social-btn.tg:hover { background: #0088cc; color: #fff; transform: translateY(-2px); }
+
+        @media (max-width: 600px) {
+            .card-modal { padding: 20px; border-radius: 20px; }
+            .card-modal-close { top: 10px; left: 10px; width: 32px; height: 32px; font-size: 18px; }
+            .card-btn { min-width: 80px; padding: 11px 12px; font-size: 12.5px; }
+            .card-social-btn { width: 34px; height: 34px; font-size: 14px; }
         }
     </style>
 </head>
@@ -528,7 +634,13 @@
         });
     }, 1000);
 
+        /* ✅ منع التنفيذ المتزامن — يحل مشكلة التكرار */
+    let _loadingMine = false;
+
     async function loadMine(){
+        if (_loadingMine) return;
+        _loadingMine = true;
+
         const list = $('capList');
         list.innerHTML = '';
         allCards = [];
@@ -577,6 +689,8 @@
             list.appendChild(cardObj.el);
         });
         applyFilters();
+
+        _loadingMine = false;   /* ✅ إعادة الفتح */
     }
 
     async function openByCode(code){
