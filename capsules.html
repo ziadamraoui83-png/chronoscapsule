@@ -8,7 +8,6 @@
     <meta name="theme-color" content="#010103">
     <meta name="robots" content="noindex, follow">
 
-    <!-- ✅ Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -99,9 +98,6 @@
             border-radius:10px;padding:12px 14px}
         .cap-stats{display:flex;gap:16px;font-size:12px;color:#94a3b8;flex-wrap:wrap;align-items:center}
         .cap-stats b{color:#a78bfa;direction:ltr;display:inline-block}
-        .cap-countdown{font-size:13px;color:#fbbf24;margin-top:10px;direction:ltr;
-            font-family:monospace;background:rgba(251,191,36,.06);border-radius:8px;padding:6px 10px;display:inline-block}
-        .cap-countdown.done-label{color:#34d399;background:rgba(52,211,153,.06)}
         .cap-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center}
         .btn-share{padding:6px 14px;border-radius:8px;font-size:12px;font-weight:700;
             background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.3);color:#60a5fa;transition:all .3s}
@@ -141,6 +137,105 @@
             border:1px solid rgba(139,92,246,.4);color:#c4b5fd;cursor:pointer;transition:all .3s ease}
         .btn-create-card:hover{background:linear-gradient(135deg,#6d28d9,#2563eb);color:#fff;
             border-color:transparent;transform:translateY(-2px);box-shadow:0 8px 24px rgba(99,102,241,.4)}
+
+        /* ═════════ ⏳ Live Countdown ═════════ */
+        .cap-countdown-full{
+            margin-top:14px;
+            padding:16px 18px;
+            background:linear-gradient(135deg,rgba(251,191,36,.08),rgba(245,158,11,.04));
+            border:1px solid rgba(251,191,36,.2);
+            border-radius:14px;
+            position:relative;
+            overflow:hidden;
+        }
+        .cap-countdown-full::before{
+            content:'';
+            position:absolute;
+            top:0;left:0;right:0;height:2px;
+            background:linear-gradient(90deg,transparent,#fbbf24,transparent);
+            opacity:.6;
+        }
+        .cap-cd-header{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            margin-bottom:12px;
+            font-size:12px;
+        }
+        .cap-cd-title{
+            color:#fbbf24;
+            font-weight:700;
+            letter-spacing:.02em;
+            display:flex;
+            align-items:center;
+            gap:6px;
+        }
+        .cap-cd-percent{
+            color:#a78bfa;
+            font-weight:900;
+            font-family:'Space Grotesk',monospace;
+            direction:ltr;
+            font-size:13px;
+            font-variant-numeric:tabular-nums;
+        }
+        .cap-cd-grid{
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:8px;
+            margin-bottom:12px;
+        }
+        .cap-cd-unit{
+            text-align:center;
+            padding:10px 4px;
+            background:rgba(0,0,0,.3);
+            border-radius:10px;
+            border:1px solid rgba(255,255,255,.06);
+            transition:all .3s ease;
+        }
+        .cap-cd-unit:hover{
+            border-color:rgba(251,191,36,.3);
+            background:rgba(0,0,0,.4);
+        }
+        .cap-cd-value{
+            font-size:1.55rem;
+            font-weight:900;
+            color:#fff;
+            line-height:1;
+            font-family:'Space Grotesk',monospace;
+            direction:ltr;
+            font-variant-numeric:tabular-nums;
+            text-shadow:0 0 20px rgba(251,191,36,.3);
+        }
+        .cap-cd-label{
+            font-size:10.5px;
+            color:#94a3b8;
+            margin-top:6px;
+            font-weight:600;
+            letter-spacing:.03em;
+        }
+        .cap-cd-progress{
+            height:6px;
+            background:rgba(0,0,0,.4);
+            border-radius:999px;
+            overflow:hidden;
+            position:relative;
+            border:1px solid rgba(255,255,255,.04);
+        }
+        .cap-cd-bar{
+            height:100%;
+            background:linear-gradient(90deg,#fbbf24,#f59e0b,#fbbf24);
+            background-size:200% 100%;
+            border-radius:999px;
+            transition:width .8s ease;
+            box-shadow:0 0 12px rgba(251,191,36,.6);
+            position:relative;
+            animation:cdBarShimmer 2.5s linear infinite;
+        }
+        @keyframes cdBarShimmer{
+            0%   { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
         @keyframes capsuleArrive{
             0%{transform:scale(.8) translateY(-20px);opacity:0}
             60%{transform:scale(1.04) translateY(4px);opacity:1}
@@ -164,7 +259,6 @@
             pointer-events:none;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,.4)}
         .cc-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-        /* ═════════ النافذة المنبثقة للبطاقة ═════════ */
         .card-modal-overlay {
             position: fixed; inset: 0;
             background: rgba(0,0,0,.85);
@@ -455,6 +549,14 @@
             .empty-state-desc{font-size:.9rem;margin-bottom:22px}
             .empty-state-cta{padding:11px 22px;font-size:13px}
             .empty-state-hint{font-size:11.5px;padding:10px 14px}
+
+            .cap-countdown-full{padding:14px 14px}
+            .cap-cd-grid{gap:5px}
+            .cap-cd-unit{padding:8px 2px}
+            .cap-cd-value{font-size:1.15rem}
+            .cap-cd-label{font-size:9px}
+            .cap-cd-title{font-size:11px}
+            .cap-cd-percent{font-size:12px}
         }
         @media (prefers-reduced-motion: reduce) {
             * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
@@ -463,6 +565,7 @@
             .skeleton-line::after { animation: none; opacity: 0.6; }
             .empty-state-icon { animation: none; }
             .empty-state::before { animation: none; }
+            .cap-cd-bar { animation: none; }
         }
     </style>
 </head>
@@ -560,14 +663,76 @@
         } catch (e) { return String(iso).slice(0, 10); }
     }
 
-    function countdown(iso){
-        const diff = new Date(iso) - Date.now();
-        if (diff <= 0) return null;
-        const d = Math.floor(diff / 864e5);
-        const h = Math.floor((diff % 864e5) / 36e5);
-        const m = Math.floor((diff % 36e5) / 6e4);
-        if (d > 0) return `${d}d ${h}h ${m}m`;
-        return `${h}h ${m}m`;
+    /* ═══════════════════════════════════════════════════════════
+       ⏳ Countdown — بيانات كاملة
+       ═══════════════════════════════════════════════════════════ */
+    function getCountdownData(createdIso, arrivalIso) {
+        if (!arrivalIso) return null;
+        const end = new Date(arrivalIso).getTime();
+        const now = Date.now();
+        const remaining = end - now;
+        if (remaining <= 0) return null;
+
+        const start = createdIso ? new Date(createdIso).getTime() : (end - (30 * 864e5));
+        const total = Math.max(1, end - start);
+        const elapsed = Math.max(0, now - start);
+
+        const d = Math.floor(remaining / 864e5);
+        const h = Math.floor((remaining % 864e5) / 36e5);
+        const m = Math.floor((remaining % 36e5) / 6e4);
+        const s = Math.floor((remaining % 6e4) / 1000);
+
+        const progress = Math.min(100, Math.max(0, (elapsed / total) * 100));
+
+        return {
+            days: d,
+            hours: h,
+            minutes: m,
+            seconds: s,
+            progress: progress,
+            total: total,
+            remaining: remaining
+        };
+    }
+
+    function buildCountdownHTML(c, isAr) {
+        const cd = getCountdownData(c.created_at, c.arrival_at);
+        if (!cd) return '';
+
+        return `
+            <div class="cap-countdown-full"
+                 data-arrival="${esc(c.arrival_at)}"
+                 data-created="${esc(c.created_at || '')}">
+                <div class="cap-cd-header">
+                    <span class="cap-cd-title">
+                        ⏳ ${isAr ? 'العد التنازلي للوصول' : 'Countdown to Arrival'}
+                    </span>
+                    <span class="cap-cd-percent" data-cd-percent>
+                        ${Math.round(cd.progress)}%
+                    </span>
+                </div>
+                <div class="cap-cd-grid">
+                    <div class="cap-cd-unit">
+                        <div class="cap-cd-value" data-cd-days>${cd.days}</div>
+                        <div class="cap-cd-label">${isAr ? 'يوم' : 'Days'}</div>
+                    </div>
+                    <div class="cap-cd-unit">
+                        <div class="cap-cd-value" data-cd-hours>${cd.hours}</div>
+                        <div class="cap-cd-label">${isAr ? 'ساعة' : 'Hours'}</div>
+                    </div>
+                    <div class="cap-cd-unit">
+                        <div class="cap-cd-value" data-cd-minutes>${cd.minutes}</div>
+                        <div class="cap-cd-label">${isAr ? 'دقيقة' : 'Minutes'}</div>
+                    </div>
+                    <div class="cap-cd-unit">
+                        <div class="cap-cd-value" data-cd-seconds>${cd.seconds}</div>
+                        <div class="cap-cd-label">${isAr ? 'ثانية' : 'Seconds'}</div>
+                    </div>
+                </div>
+                <div class="cap-cd-progress">
+                    <div class="cap-cd-bar" data-cd-bar style="width:${cd.progress}%"></div>
+                </div>
+            </div>`;
     }
 
     let allCards = [];
@@ -586,7 +751,6 @@
             if (show) visible++;
         });
 
-        /* ✅ إذا لم تكن هناك بطاقات → empty state */
         const list = $('capList');
         if (allCards.length === 0) {
             if (!list.querySelector('.empty-state')) {
@@ -595,7 +759,6 @@
             return;
         }
 
-        /* ✅ إذا كانت هناك بطاقات لكن الفلتر أخفاها */
         if (visible === 0) {
             if (!list.querySelector('.empty-state')) {
                 list.insertAdjacentHTML('beforeend', getEmptyStateHTML('no-results'));
@@ -699,7 +862,6 @@
             </div>`;
     }
 
-    /* ═══ روابط المشاركة ═══ */
     function buildSocialRow(code, text) {
         const url = `${location.origin}${location.pathname}?capsule=${encodeURIComponent(code)}`;
         const shortText = text.slice(0, 100);
@@ -835,7 +997,7 @@
                 <span>👁️ <b>${c.o_reads != null ? c.o_reads : (c.reads != null ? c.reads : 0)}</b> ${readsLabel}</span>
                 ${codeVal ? `<span>🔑 <b style="font-size:11px;font-family:monospace">${esc(codeVal.slice(0, 8))}…</b></span>` : ''}
             </div>
-            ${!arrived && c.arrival_at ? `<div class="cap-countdown" data-arrival="${esc(c.arrival_at)}">⏳ T-${esc(countdown(c.arrival_at) || '—')}</div>` : ''}
+            ${!arrived ? buildCountdownHTML(c, isAr) : ''}
             <div class="cap-actions">
                 ${codeVal ? `<button class="btn-copy-code" data-code="${esc(codeVal)}">${copyLabel}</button>` : ''}
                 ${arrived && codeVal ? `<button class="btn-share" data-code="${esc(codeVal)}" data-text="${esc(rawText.slice(0, 80))}">${shareLabel}</button>` : ''}
@@ -910,11 +1072,43 @@
         return {el, arrived, text: rawText};
     }
 
+    /* ═══════════════════════════════════════════════════════════
+       ⏳ Live Update — كل ثانية
+       ═══════════════════════════════════════════════════════════ */
     setInterval(() => {
-        document.querySelectorAll('.cap-countdown[data-arrival]').forEach(el => {
-            const cd = countdown(el.dataset.arrival);
-            if (cd) el.textContent = `⏳ T-${cd}`;
-            else { el.textContent = capLang === 'ar' ? '✅ وصلت للتو!' : '✅ Just arrived!'; el.className = 'cap-countdown done-label'; }
+        document.querySelectorAll('.cap-countdown-full[data-arrival]').forEach(el => {
+            const arrival = el.dataset.arrival;
+            const created = el.dataset.created;
+            const cd = getCountdownData(created, arrival);
+
+            if (!cd) {
+                /* ✅ وصلت للتو */
+                const cardEl = el.closest('.cap-card');
+                if (cardEl && cardEl.classList.contains('in-orbit')) {
+                    cardEl.classList.remove('in-orbit');
+                    cardEl.classList.add('arrived', 'just-arrived');
+                    setTimeout(() => cardEl.classList.remove('just-arrived'), 2000);
+                }
+                el.innerHTML = `
+                    <div style="color:#34d399;text-align:center;font-weight:900;padding:12px;font-size:14px;">
+                        ✅ ${capLang === 'ar' ? 'وصلت للتو!' : 'Just arrived!'}
+                    </div>`;
+                return;
+            }
+
+            const daysEl = el.querySelector('[data-cd-days]');
+            const hoursEl = el.querySelector('[data-cd-hours]');
+            const minsEl = el.querySelector('[data-cd-minutes]');
+            const secsEl = el.querySelector('[data-cd-seconds]');
+            const pctEl = el.querySelector('[data-cd-percent]');
+            const barEl = el.querySelector('[data-cd-bar]');
+
+            if (daysEl) daysEl.textContent = cd.days;
+            if (hoursEl) hoursEl.textContent = cd.hours;
+            if (minsEl) minsEl.textContent = cd.minutes;
+            if (secsEl) secsEl.textContent = cd.seconds;
+            if (pctEl) pctEl.textContent = Math.round(cd.progress) + '%';
+            if (barEl) barEl.style.width = cd.progress + '%';
         });
     }, 1000);
 

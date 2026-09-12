@@ -1,9 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — Service Worker (v1.2.0)
+   CHRONOS CAPSULE — Service Worker (v1.3.0)
    يخزّن الملفات المحلية فقط — لا يعترض الطلبات الخارجية
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.2.0';
+const CACHE_VERSION = 'cc-v1.3.0';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
@@ -63,7 +63,6 @@ self.addEventListener('activate', (event) => {
 self.addEventListener('fetch', (event) => {
     const { request } = event;
 
-    /* تجاهل الطلبات بدون URL صالح */
     if (!request.url || !request.url.startsWith('http')) {
         return;
     }
@@ -80,10 +79,8 @@ self.addEventListener('fetch', (event) => {
         return;
     }
 
-    /* تجاهل طلبات غير GET */
     if (request.method !== 'GET') return;
 
-    /* ═══ نفس الأصل: Cache First للـ assets، Network First للـ HTML ═══ */
     const isHTML = request.headers.get('accept')?.includes('text/html');
 
     if (isHTML) {
