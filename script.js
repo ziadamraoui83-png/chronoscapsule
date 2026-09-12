@@ -105,9 +105,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (e) {}
 
+                        /* ✅ جلب الكبسولات العامة + الخاصة التي وصلت فقط */
+            const now = new Date().toISOString();
             const { data, error } = await sb.from('capsules')
-                .select('id,text,author,country,mood,arrival_at')
-                .order('arrival_at', { ascending: false }).limit(200);
+                .select('id,text,author,country,mood,arrival_at,created_at,mode')
+                .or(`mode.eq.public,and(mode.eq.private,arrival_at.lte.${now})`)
+                .order('arrival_at', { ascending: false })
+                .limit(200);
 
             if (error) { console.warn('CapsuleStore.load:', error.message); return []; }
 
@@ -1191,7 +1195,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
-            launchMessage(country, text, author, mood);
+
+            /* ✅ فقط الكبسولات العامة تُطلق على الكوكب */
+            if (!isPrivate) {
+                launchMessage(country, text, author, mood);
+            }
+
             showToast(code ? CCI18N.t('launched_code') + code : CCI18N.t('launched'));
 
             launchConfetti({
