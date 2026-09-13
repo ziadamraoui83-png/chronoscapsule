@@ -65,7 +65,14 @@
       rating_label: 'تقييمك',
       rating_count: 'مصوت',
       rating_your: 'تقييمك:',
-      rating_thanks: 'شكراً لتقييمك!'
+      rating_thanks: 'شكراً لتقييمك!',
+      notifications_title: 'الإشعارات',
+      notification_no_new: 'لا توجد إشعارات جديدة',
+      notification_mark_read: 'تحديد الكل كمقروء',
+      notification_sent: 'تم الإرسال',
+      notification_received: 'تم الاستلام',
+      notification_like: 'أعجب برسالتك',
+      notification_rating: 'قيّم رسالتك'
     },
     en: {
       title: 'Chronos Capsule | Send a message to space',
@@ -129,7 +136,14 @@
       rating_label: 'Your Rating',
       rating_count: 'votes',
       rating_your: 'Your rating:',
-      rating_thanks: 'Thanks for rating!'
+      rating_thanks: 'Thanks for rating!',
+      notifications_title: 'Notifications',
+      notification_no_new: 'No new notifications',
+      notification_mark_read: 'Mark all as read',
+      notification_sent: 'Sent',
+      notification_received: 'Received',
+      notification_like: 'liked your message',
+      notification_rating: 'rated your capsule'
     }
   };
 
