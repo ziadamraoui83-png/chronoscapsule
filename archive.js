@@ -303,8 +303,11 @@
             : '';
 
         const ratingHTML = r.id
-            ? `<div class="rating-container" data-capsule-id="${r.id}"></div>`
-            : '';
+    ? `<div class="rating-container" 
+            data-capsule-id="${r.id}"
+            data-avg="${r.ratings_avg || 0}"
+            data-count="${r.ratings_count || 0}"></div>`
+    : '';
 
         el.innerHTML = `
             <div class="cap-head">
