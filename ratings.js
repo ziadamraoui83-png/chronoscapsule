@@ -237,5 +237,4 @@
     renderStars: renderStars
   };
 
-  console.log('⭐ ratings.js ready');
-})();
+ })();
