@@ -69,6 +69,9 @@ html[dir="ltr"] .filter-select {
 .mood-secret     { border-inline-start-color: #8b5cf6 !important; }
 .mood-confession { border-inline-start-color: #ef4444 !important; }
 .mood-bold       { border-inline-start-color: #f97316 !important; }
+.mood-love       { border-inline-start-color: #ec4899 !important; }
+.mood-dream      { border-inline-start-color: #06b6d4 !important; }
+.mood-wisdom     { border-inline-start-color: #a16207 !important; }
 
 .cap-text{font-size:1.15rem;color:#f8fafc;line-height:1.7;unicode-bidi:plaintext;font-weight:500;}
 .cap-meta{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#94a3b8;flex-wrap:wrap;gap:10px;}
