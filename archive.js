@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — archive.js (نهائي v3)
+   CHRONOS CAPSULE — archive.js (نهائي v4)
+   يتضمن: Skeleton + Empty States + Likes + Ratings + Schema.org
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
@@ -65,10 +66,12 @@
     }
     populateCountries();
 
-    /* ═══ الإعدادات المركزية ═══ */
+    /* ═══ الإعدادات ═══ */
     const cfg = window.CC_CONFIG || { SUPABASE_URL: '', SUPABASE_ANON_KEY: '' };
     const sb = (cfg.SUPABASE_URL && window.supabase)
         ? supabase.createClient(cfg.SUPABASE_URL, cfg.SUPABASE_ANON_KEY) : null;
+
+    window.__ccSupabase = sb;
 
     let currentPage = 0;
     const LIMIT = 15;
@@ -234,17 +237,7 @@
             return;
         }
 
-        data.forEach(r => {
-            const card = createCard(r);
-            list.appendChild(card);
-            // Bind rating system to each card
-            if (window.CC_RATINGS && typeof window.CC_RATINGS.bind === 'function' && r.id) {
-                setTimeout(() => {
-                    const ratingContainer = card.querySelector('.rating-container');
-                    if (ratingContainer) window.CC_RATINGS.bind(ratingContainer, r.id);
-                }, 10);
-            }
-        });
+        data.forEach(r => list.appendChild(createCard(r)));
         $('loadMoreBtn').style.display =
             (data.length === LIMIT && (currentPage + 1) * LIMIT < count) ? 'inline-block' : 'none';
         currentPage++;
@@ -309,6 +302,10 @@
                </button>`
             : '';
 
+        const ratingHTML = r.id
+            ? `<div class="rating-container" data-capsule-id="${r.id}"></div>`
+            : '';
+
         el.innerHTML = `
             <div class="cap-head">
                 <div class="cap-country">${esc(countryLabel(r.country, AppLang))}</div>
@@ -325,24 +322,22 @@
             </div>
             <div class="cap-actions">
                 ${likeBtnHTML}
-                <div class="rating-container" data-capsule-id="${r.id || ''}"></div>
             </div>
+            ${ratingHTML}
             ${hasCode ? buildSocialRow(codeVal, r.text) : ''}
             ${buildCardButton(codeVal, r.text, r.author, r.country, r.mood, r.arrival_at)}`;
 
-        /* ✅ تسجيل القراءة عند الضغط على الكبسولة */
+        /* ✅ تسجيل القراءة عند الضغط */
         el.addEventListener('click', (e) => {
             if (e.target.closest('button, a, select, input')) return;
             if (r.id && !SESSION_READS.has(r.id)) {
                 SESSION_READS.add(r.id);
-                sb.rpc('read_capsule', { p_id: r.id })
-                    .then(() => {
-                        const counter = el.querySelector('.reads-count');
-                        if (counter) {
-                            const newCount = (r.reads_count || 0) + 1;
-                            counter.textContent = '👁️ ' + newCount;
-                        }
-                    });
+                const counter = el.querySelector('.reads-count');
+                if (counter) {
+                    const newCount = (r.reads_count || 0) + 1;
+                    counter.textContent = '👁️ ' + newCount;
+                }
+                sb.rpc('read_capsule', { p_id: r.id }).then(() => {}).catch(() => {});
             }
         });
 
@@ -395,6 +390,35 @@
                 }
                 trackEvent('card_generate_clicked', { mood: opts.mood, lang: AppLang });
             });
+        }
+
+        /* ⭐ ربط نظام التقييم */
+        if (r.id && window.CC_RATINGS && typeof window.CC_RATINGS.bind === 'function') {
+            setTimeout(() => {
+                const ratingBox = el.querySelector('.rating-container');
+                if (ratingBox) window.CC_RATINGS.bind(ratingBox, r.id);
+            }, 10);
+        }
+
+        /* ⭐ Schema.org AggregateRating */
+        if (r.id && r.ratings_count > 0 && r.ratings_avg > 0) {
+            const ld = document.createElement('script');
+            ld.type = 'application/ld+json';
+            ld.textContent = JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "headline": (r.text || '').slice(0, 110),
+                "datePublished": r.created_at || new Date().toISOString(),
+                "author": { "@type": "Person", "name": r.author || "Anonymous" },
+                "aggregateRating": {
+                    "@type": "AggregateRating",
+                    "ratingValue": Number(r.ratings_avg).toFixed(1),
+                    "ratingCount": r.ratings_count,
+                    "bestRating": 5,
+                    "worstRating": 1
+                }
+            });
+            el.appendChild(ld);
         }
 
         return el;
