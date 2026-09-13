@@ -861,3 +861,10 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     100% { opacity: 0; transform: translateY(-40px) scale(1.6); }
 }
 .like-btn.offline { opacity: 0.5; pointer-events: none; }
+
+#messageForm .form-group { display: block !important; width: 100% !important; }
+#messageForm .form-group > * { width: 100% !important; display: block !important; }
+#messageForm .form-group > div,
+#messageForm .form-group > .mood-picker,
+#messageForm .form-group > .radio-group,
+#messageForm .form-group > .arrival-chips { width: auto !important; display: flex !important; }
