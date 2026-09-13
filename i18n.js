@@ -1,4 +1,4 @@
-/* ═════════ CHRONOS CAPSULE — طبقة التعريب v3 (عربي / English) ═════════ */
+/* ═════════ CHRONOS CAPSULE — طبقة التعريب v4 (عربي / English) ═════════ */
 (function () {
   "use strict";
 
@@ -62,17 +62,10 @@
       nav_my_capsules: '🛰️ كبسولاتي',
       golden_title: 'الكبسولة الذهبية اليوم',
       golden_hint: 'تتغير كل يوم عند منتصف الليل',
-      rating_label: 'تقييمك',
-      rating_count: 'مصوت',
-      rating_your: 'تقييمك:',
-      rating_thanks: 'شكراً لتقييمك!',
-      notifications_title: 'الإشعارات',
-      notification_no_new: 'لا توجد إشعارات جديدة',
-      notification_mark_read: 'تحديد الكل كمقروء',
-      notification_sent: 'تم الإرسال',
-      notification_received: 'تم الاستلام',
-      notification_like: 'أعجب برسالتك',
-      notification_rating: 'قيّم رسالتك'
+      stat_capsules: 'كبسولة',
+      stat_reads: 'قراءة',
+      stat_countries: 'دولة',
+      hero_learn: 'كيف يعمل الموقع؟ →'
     },
     en: {
       title: 'Chronos Capsule | Send a message to space',
@@ -133,17 +126,10 @@
       nav_my_capsules: '🛰️ My Capsules',
       golden_title: 'Golden Capsule of the Day',
       golden_hint: 'Changes daily at midnight',
-      rating_label: 'Your Rating',
-      rating_count: 'votes',
-      rating_your: 'Your rating:',
-      rating_thanks: 'Thanks for rating!',
-      notifications_title: 'Notifications',
-      notification_no_new: 'No new notifications',
-      notification_mark_read: 'Mark all as read',
-      notification_sent: 'Sent',
-      notification_received: 'Received',
-      notification_like: 'liked your message',
-      notification_rating: 'rated your capsule'
+      stat_capsules: 'capsules',
+      stat_reads: 'reads',
+      stat_countries: 'countries',
+      hero_learn: 'How it works? →'
     }
   };
 
@@ -286,7 +272,4 @@
     applyCountries,
     setLang
   };
-
-  // Also expose as CC_I18N for ratings.js compatibility
-  window.CC_I18N = window.CCI18N;
 })();
