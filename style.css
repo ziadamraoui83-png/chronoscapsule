@@ -868,3 +868,25 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 #messageForm .form-group > .mood-picker,
 #messageForm .form-group > .radio-group,
 #messageForm .form-group > .arrival-chips { width: auto !important; display: flex !important; }
+
+/* ═══ إصلاح فورم المودال ═══ */
+#messageForm .form-group {
+    display: block !important;
+    width: 100% !important;
+}
+#messageForm .form-group > input,
+#messageForm .form-group > select,
+#messageForm .form-group > textarea {
+    width: 100% !important;
+    display: block !important;
+}
+#messageForm .form-group > div,
+#messageForm .form-group > .mood-picker,
+#messageForm .form-group > .radio-group,
+#messageForm .form-group > .arrival-chips {
+    width: auto !important;
+    display: flex !important;
+}
+#messageForm .form-group > .mood-picker {
+    display: grid !important;
+}
