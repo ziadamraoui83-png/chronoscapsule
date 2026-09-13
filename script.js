@@ -1328,4 +1328,25 @@ if (window.CC_LIKES && typeof window.CC_LIKES.bind === 'function') {
             requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add('live')));
         }
     }
+
+       /* ═══ إحصائيات اليوم ═══ */
+    async function loadTodayStats() {
+        if (!sb) return;
+        try {
+            const { data, error } = await sb.rpc('get_today_stats');
+            if (error || !data) return;
+            
+            const set = (id, val) => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = val;
+            };
+            
+            set('statCapsules', data.capsules_today || 0);
+            set('statReads', data.reads_today || 0);
+            set('statCountries', data.countries || 0);
+        } catch (e) {}
+    }
+    
+    loadTodayStats();
+    setInterval(loadTodayStats, 60000); // تحديث كل دقيقة
 });
