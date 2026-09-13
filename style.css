@@ -58,14 +58,14 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     50%      { transform: translateY(calc(-50% - 12px)); }
 }
 
-.main-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 15px; line-height: 1.2; }
+.main-title { font-size: 1.9rem; font-weight: 900; margin-bottom: 12px; line-height: 1.2; }
 .highlight {
     background: linear-gradient(135deg, #a78bfa, #3b82f6);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
 }
-.main-desc { font-size: 1rem; color: #cbd5e1; margin-bottom: 30px; line-height: 1.6; }
+.main-desc { font-size: 0.9rem; color: #cbd5e1; margin-bottom: 20px; line-height: 1.6; }
 
 /* ⭐ إحصائيات صغيرة في الـ Hero */
 .hero-stats {
