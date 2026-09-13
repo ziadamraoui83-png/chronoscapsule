@@ -462,7 +462,7 @@
 
         const fMood = $('filterMood');
         fMood.options[0].text = D.f_mood;
-        const moodKeys = ['hope', 'nostalgia', 'secret', 'confession', 'bold'];
+                const moodKeys = ['hope', 'nostalgia', 'secret', 'confession', 'bold', 'love', 'dream', 'wisdom'];
         moodKeys.forEach((k, i) => {
             if (fMood.options[i + 1]) fMood.options[i + 1].text = D.moods[k];
         });
