@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }[c]));
 
     /* ═══ ألوان المشاعر ═══ */
-    const MOOD_COLORS = { hope: 0x38bdf8, nostalgia: 0xa78bfa, secret: 0x34d399, confession: 0xfbbf24, bold: 0xf87171 };
-    const MOOD_CSS    = { hope: '#38bdf8', nostalgia: '#a78bfa', secret: '#34d399', confession: '#fbbf24', bold: '#f87171' };
+        const MOOD_COLORS = { hope: 0x38bdf8, nostalgia: 0xa78bfa, secret: 0x34d399, confession: 0xfbbf24, bold: 0xf87171, love: 0xec4899, dream: 0x06b6d4, wisdom: 0xa16207 };
+    const MOOD_CSS    = { hope: '#38bdf8', nostalgia: '#a78bfa', secret: '#34d399', confession: '#fbbf24', bold: '#f87171', love: '#ec4899', dream: '#06b6d4', wisdom: '#a16207' };
 
     /* ═══ الإعدادات المركزية ═══ */
     const CC_CONFIG = window.CC_CONFIG || {
