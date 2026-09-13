@@ -890,3 +890,33 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 #messageForm .form-group > .mood-picker {
     display: grid !important;
 }
+
+/* ═══ إصلاح قوي للمودال ═══ */
+.modal-card,
+.modal-card #messageForm,
+.modal-card #messageForm > .form-group,
+.modal-card #messageForm > .form-group > label,
+.modal-card #messageForm > .form-group > input,
+.modal-card #messageForm > .form-group > select,
+.modal-card #messageForm > .form-group > textarea,
+.modal-card #messageForm > .btn-submit {
+    display: block !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    float: none !important;
+    position: static !important;
+}
+
+.modal-card #messageForm > .btn-submit {
+    display: flex !important;
+}
+
+.modal-card #messageForm > .form-group {
+    margin-bottom: 14px !important;
+}
+
+.modal-card #messageForm {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0 !important;
+}
