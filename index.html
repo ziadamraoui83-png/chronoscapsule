@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1, maximum-scale=1, initial-scale=1.0">
     <title>كبسولة الزمن | Chronos Capsule — أرسل رسالة إلى الفضاء</title>
 
     <meta name="google-site-verification" content="F0LC1gHJdqI7RF6OdtE51g2DMhnCkko3c-GzsEzKzUI" />
@@ -227,6 +227,7 @@
             border-radius: 999px;
             text-decoration: none;
             font-family: 'Tajawal', sans-serif;
+window.addEventListener('resize', throttledResize = throttle(() =>
             font-size: 12.5px;
             font-weight: 700;
             backdrop-filter: blur(10px);
@@ -269,14 +270,6 @@
             </a>
 
             <div style="display: flex; align-items: center; gap: 15px;">
-                <!-- Notification Bell -->
-                <button id="notificationBell" class="notification-bell" aria-label="الإشعارات" title="الإشعارات">
-                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z"/>
-                    </svg>
-                    <span class="notification-badge">0</span>
-                </button>
-                
                 <a href="capsules.html" class="header-nav-link" data-i18n="nav_my_capsules">🛰️ كبسولاتي</a>
                 <a href="profile.html" class="profile-link-header" title="ملفي الشخصي">👤</a>
                 <button id="googleLoginBtn" class="google-auth-btn">
@@ -284,16 +277,6 @@
                 </button>
             </div>
         </header>
-
-        <!-- Notification Dropdown -->
-        <div id="notificationDropdown" class="notification-dropdown">
-            <div class="notification-dropdown-header">
-                <h3 data-i18n="notifications_title">الإشعارات</h3>
-            </div>
-            <div class="notification-dropdown-content">
-                <!-- Notifications will be rendered here -->
-            </div>
-        </div>
 
         <div id="goldenCapsulePanel" class="golden-panel" style="display:none">
             <div class="golden-header">
@@ -462,42 +445,9 @@
     <script src="i18n.js"></script>
     <script src="script.js"></script>
     <script src="likes.js"></script>
-    <script src="ratings.js"></script>
-    <script src="notifications.js"></script>
 
     <script>
-    window.addEventListener('load', () => {
-        setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400);
-        
-        // Initialize notifications system and setup bell toggle
-        if (window.CC_NOTIFICATIONS) {
-            window.CC_NOTIFICATIONS.init();
-            
-            const bell = document.getElementById('notificationBell');
-            const dropdown = document.getElementById('notificationDropdown');
-            
-            if (bell && dropdown) {
-                bell.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    dropdown.classList.toggle('show');
-                    
-                    if (dropdown.classList.contains('show')) {
-                        const content = dropdown.querySelector('.notification-dropdown-content');
-                        if (content && window.CC_NOTIFICATIONS.renderNotificationList) {
-                            window.CC_NOTIFICATIONS.renderNotificationList(content);
-                        }
-                    }
-                });
-                
-                // Close dropdown when clicking outside
-                document.addEventListener('click', (e) => {
-                    if (!bell.contains(e.target) && !dropdown.contains(e.target)) {
-                        dropdown.classList.remove('show');
-                    }
-                });
-            }
-        }
-    });
+    window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
     </script>
 
