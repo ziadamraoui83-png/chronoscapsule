@@ -1,24 +1,35 @@
 /**
- * Chronos Capsule - Rating System
- * Vanilla JS Rating Module with Supabase Integration
+ * Chronos Capsule — Rating System (v2)
+ * نظام التقييم بالنجوم — نسخة مصححة
  */
 (function() {
   'use strict';
 
-  // Device Hash for anonymous identification
-  function getDeviceHash() {
-    let hash = localStorage.getItem('cc_device');
-    if (!hash) {
-      hash = 'dev_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
-      localStorage.setItem('cc_device', hash);
-    }
-    return hash;
+  /* ═══ Supabase client (مع fallback) ═══ */
+  function getSB() {
+    if (window.__ccSupabase) return window.__ccSupabase;
+    if (!window.CC_CONFIG || !window.supabase) return null;
+    return window.supabase.createClient(
+      window.CC_CONFIG.SUPABASE_URL,
+      window.CC_CONFIG.SUPABASE_ANON_KEY
+    );
   }
 
-  // Get translation key
+  /* ═══ Device Hash الموحدة (نفس likes.js) ═══ */
+  function getDeviceHash() {
+    let h = localStorage.getItem('cc_device');
+    if (!h) {
+      const a = crypto.getRandomValues(new Uint8Array(16));
+      h = [...a].map(b => b.toString(16).padStart(2, '0')).join('');
+      localStorage.setItem('cc_device', h);
+    }
+    return h;
+  }
+
+  /* ═══ الترجمة ═══ */
   function t(key) {
-    if (window.CC_I18N && window.CC_I18N.t) {
-      return window.CC_I18N.t(key);
+    if (window.CCI18N && typeof window.CCI18N.t === 'function') {
+      return window.CCI18N.t(key);
     }
     const lang = document.documentElement.lang || 'ar';
     const defaults = {
@@ -26,38 +37,53 @@
         rating_label: 'تقييمك',
         rating_count: 'مصوت',
         rating_your: 'تقييمك:',
-        rating_thanks: 'شكراً لتقييمك!'
+        rating_thanks: 'شكراً لتقييمك!',
+        rating_error: 'تعذّر حفظ التقييم'
       },
       en: {
         rating_label: 'Your Rating',
         rating_count: 'votes',
         rating_your: 'Your rating:',
-        rating_thanks: 'Thanks for rating!'
+        rating_thanks: 'Thanks for rating!',
+        rating_error: 'Could not save rating'
       }
     };
-    return defaults[lang]?.[key] || key;
+    return (defaults[lang] && defaults[lang][key]) || key;
   }
 
-  // Render stars HTML
+  /* ═══ Toast ═══ */
+  function showToast(msg, ico = '⭐') {
+    const toast = document.getElementById('ccToast');
+    if (!toast) { return; }
+    toast.querySelector('.ico').textContent = ico;
+    toast.querySelector('.txt').textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(window.__rtToastTimer);
+    window.__rtToastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+  }
+
+  /* ═══ بناء HTML النجوم ═══ */
   function renderStars(avg, count, userStars) {
     const fullStars = Math.floor(avg || 0);
     const hasHalf = (avg || 0) % 1 >= 0.5;
-    
+
     let starsHtml = '';
     for (let i = 1; i <= 5; i++) {
-      const filled = i <= fullStars || (i === fullStars + 1 && hasHalf && !userStars);
-      const userFilled = userStars && i <= userStars;
-      const isFilled = userFilled || filled;
-      
-      starsHtml += `<button class="star-btn ${isFilled ? 'filled' : ''}" data-star="${i}" aria-label="${i} ${t('rating_label')}">★</button>`;
+      const filledByAvg = i <= fullStars || (i === fullStars + 1 && hasHalf && !userStars);
+      const filledByUser = userStars && i <= userStars;
+      const isFilled = filledByUser || filledByAvg;
+
+      starsHtml += `<button class="star-btn ${isFilled ? 'filled' : ''}" data-star="${i}" type="button" aria-label="${i} ${t('rating_label')}">★</button>`;
     }
 
-    const countText = count === 1 ? t('rating_count').replace('s', '') : t('rating_count');
-    const avgDisplay = avg ? avg.toFixed(1) : '---';
-    
+    const countText = count === 1
+      ? t('rating_count').replace('s', '')
+      : t('rating_count');
+    const avgDisplay = avg ? avg.toFixed(1) : '—';
+
     return `
-      <div class="star-rating" role="group" aria-label="${t('rating_label')}">
-        ${starsHtml}
+      <div class="star-rating" role="group" aria-label="${t('rating_label')}" aria-live="polite">
+        <div class="stars-row">${starsHtml}</div>
         <div class="rating-info">
           <span class="rating-avg">${avgDisplay}</span>
           <span class="rating-count">(${count} ${countText})</span>
@@ -66,175 +92,144 @@
     `;
   }
 
-  // Bind rating functionality to container
+  /* ═══ ربط النظام بحاوية ═══ */
   function bind(container, capsuleId) {
     if (!container || !capsuleId) return;
 
-    const deviceHash = getDeviceHash();
-    const supabase = window.__ccSupabase;
+    const sb = getSB();
+    if (!sb) {
+      console.warn('⭐ ratings.js: Supabase not ready');
+      return;
+    }
 
-    // Local state
+    const deviceHash = getDeviceHash();
+
     let avg = 0;
     let count = 0;
     let userStars = 0;
     let currentUserId = null;
 
-    if (!supabase) {
-      console.warn('Supabase client not found');
-      container.innerHTML = '<span class="rating-error">Rating unavailable</span>';
-      return;
-    }
-
-    // Initial load
     loadRating();
 
+    /* ═══ تحميل الحالة الأولية ═══ */
     async function loadRating() {
       try {
-        // 1. Check if user is logged in
-        const { data: { user }, error: authError } = await supabase.auth.getUser();
-        if (!authError && user) {
-          currentUserId = user.id;
-          console.log('[Rating] Logged in user:', user.id);
-        }
+        // 1. تحقق من المستخدم
+        const { data: { user } } = await sb.auth.getUser();
+        if (user) currentUserId = user.id;
 
-        // 2. Get capsule data
-        const { data: capsule, error: capsuleError } = await supabase
+        // 2. جلب بيانات الكبسولة
+        const { data: capsule, error: capErr } = await sb
           .from('capsules')
           .select('ratings_avg, ratings_count')
           .eq('id', capsuleId)
-          .single();
+          .maybeSingle();
 
-        if (capsuleError) throw capsuleError;
+        if (capErr) throw capErr;
 
-        avg = capsule?.ratings_avg || 0;
-        count = capsule?.ratings_count || 0;
+        avg = (capsule && capsule.ratings_avg) || 0;
+        count = (capsule && capsule.ratings_count) || 0;
 
-        // 3. Get user's rating (check by user_id first, then device_hash)
-        let userQuery = supabase
-          .from('ratings')
-          .select('stars')
-          .eq('capsule_id', capsuleId);
-
+        // 3. جلب تقييم المستخدم
+        let q = sb.from('ratings').select('stars').eq('capsule_id', capsuleId);
         if (currentUserId) {
-          userQuery = userQuery.eq('user_id', currentUserId);
+          q = q.eq('user_id', currentUserId);
         } else {
-          userQuery = userQuery.eq('device_hash', deviceHash);
+          q = q.eq('device_hash', deviceHash);
         }
 
-        const { data: userRating, error: userError } = await userQuery.single();
-
-        if (userError && userError.code !== 'PGRST116') {
-          console.warn('Error fetching user rating:', userError);
-        }
-
-        userStars = userRating?.stars || 0;
+        const { data: userRating } = await q.maybeSingle();
+        userStars = (userRating && userRating.stars) || 0;
 
         updateUI();
       } catch (err) {
-        console.error('Error loading rating:', err);
+        console.warn('⭐ loadRating error:', err);
         updateUI();
       }
     }
 
+    /* ═══ تحديث الواجهة ═══ */
     function updateUI() {
       container.innerHTML = renderStars(avg, count, userStars);
-      attachStarEvents();
+      attachEvents();
     }
 
-    function attachStarEvents() {
-      const starBtns = container.querySelectorAll('.star-btn');
-      
-      starBtns.forEach(btn => {
-        const starValue = parseInt(btn.dataset.star);
+    /* ═══ ربط الأحداث ═══ */
+    function attachEvents() {
+      const stars = container.querySelectorAll('.star-btn');
 
-        // Hover effect
+      stars.forEach(btn => {
+        const val = parseInt(btn.dataset.star, 10);
+
         btn.addEventListener('mouseenter', () => {
-          starBtns.forEach((b, idx) => {
-            b.classList.toggle('hover', idx < starValue);
-          });
+          stars.forEach((b, idx) => b.classList.toggle('hover', idx < val));
         });
 
         btn.addEventListener('mouseleave', () => {
-          starBtns.forEach(b => b.classList.remove('hover'));
+          stars.forEach(b => b.classList.remove('hover'));
         });
 
-        // Click to rate
-        btn.addEventListener('click', async () => {
-          if (userStars === starValue) return; // Already rated this
+        btn.addEventListener('click', async (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          if (userStars === val) return;
 
-          // Optimistic update
-          const oldAvg = avg;
-          const oldCount = count;
-          const oldUserStars = userStars;
-          
-          if (oldUserStars === 0) {
-            // New rating
-            avg = ((oldAvg * oldCount) + starValue) / (oldCount + 1);
-            count = oldCount + 1;
-          } else {
-            // Update existing rating
-            avg = ((oldAvg * oldCount) - oldUserStars + starValue) / oldCount;
-          }
-          userStars = starValue;
-          
-          updateUI();
-
-          try {
-            // Prepare parameters for RPC
-            const rpcParams = {
-              p_capsule_id: capsuleId,
-              p_stars: starValue,
-              p_device_hash: currentUserId ? null : deviceHash
-            };
-            
-            // Add user_id if logged in (if your RPC supports it)
-            if (currentUserId) {
-              rpcParams.p_user_id = currentUserId;
-            }
-
-            const { data, error } = await supabase.rpc('rate_capsule', rpcParams);
-
-            if (error) throw error;
-
-            if (data && data.length > 0) {
-              const result = data[0];
-              avg = result.avg || 0;
-              count = result.count || 0;
-              userStars = result.your_stars || 0;
-              updateUI();
-              
-              // Show thanks message briefly
-              showThanksMessage();
-            }
-          } catch (err) {
-            console.error('Error submitting rating:', err);
-            // Revert on error
-            avg = oldAvg;
-            count = oldCount;
-            userStars = oldUserStars;
-            updateUI();
-            alert('فشل التسجيل، حاول مرة أخرى');
-          }
+          await submitRating(val, stars);
         });
       });
     }
 
-    function showThanksMessage() {
-      const info = container.querySelector('.rating-info');
-      if (info) {
-        const originalText = info.innerHTML;
-        info.innerHTML = `<span class="rating-thanks">✓ ${t('rating_thanks')}</span>`;
-        setTimeout(() => {
-          info.innerHTML = originalText;
-        }, 2000);
+    /* ═══ إرسال التقييم ═══ */
+    async function submitRating(val, stars) {
+      const oldAvg = avg;
+      const oldCount = count;
+      const oldUserStars = userStars;
+
+      // Optimistic update
+      if (oldUserStars === 0) {
+        avg = ((oldAvg * oldCount) + val) / (oldCount + 1);
+        count = oldCount + 1;
+      } else {
+        avg = ((oldAvg * oldCount) - oldUserStars + val) / oldCount;
+      }
+      userStars = val;
+      updateUI();
+
+      try {
+        // ✅ بدون p_user_id (الـ RPC كتاخد auth.uid() تلقائياً)
+        const { data, error } = await sb.rpc('rate_capsule', {
+          p_capsule_id: capsuleId,
+          p_stars: val,
+          p_device_hash: currentUserId ? null : deviceHash
+        });
+
+        if (error) throw error;
+
+        // ✅ data = JSON object مباشرة
+        if (data) {
+          avg = data.avg || 0;
+          count = data.count || 0;
+          userStars = data.your_stars || val;
+          updateUI();
+          showToast(t('rating_thanks'), '⭐');
+        }
+      } catch (err) {
+        console.error('⭐ submitRating error:', err);
+        // Rollback
+        avg = oldAvg;
+        count = oldCount;
+        userStars = oldUserStars;
+        updateUI();
+        showToast(t('rating_error'), '⚠️');
       }
     }
   }
 
-  // Expose to global scope
+  /* ═══ Expose ═══ */
   window.CC_RATINGS = {
     bind: bind,
     renderStars: renderStars
   };
 
+  console.log('⭐ ratings.js ready');
 })();
