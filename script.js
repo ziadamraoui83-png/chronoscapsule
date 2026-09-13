@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     function hideTooltip() { tooltip.classList.remove('show'); tooltipTarget = null; }
     function updateCounter() {
-        document.getElementById('capsuleCount').textContent = activeMessages.length;
+        const statCapsules = document.getElementById('statCapsules'); if (statCapsules) statCapsules.textContent = activeMessages.length;
     }
 
     /* ═══ Confetti ═══ */
