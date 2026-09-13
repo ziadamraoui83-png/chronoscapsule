@@ -510,92 +510,39 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
    ═══════════════════════════════════════════════════════════ */
 .golden-panel {
     position: absolute;
-    top: 90px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 90%;
-    max-width: 560px;
-    background: linear-gradient(135deg,
-        rgba(251, 191, 36, 0.12) 0%,
-        rgba(245, 158, 11, 0.08) 50%,
-        rgba(251, 191, 36, 0.12) 100%);
-    border: 1.5px solid rgba(251, 191, 36, 0.5);
-    border-radius: 20px;
-    padding: 18px 24px 16px;
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    box-shadow:
-        0 12px 40px rgba(0, 0, 0, 0.4),
-        0 0 40px rgba(251, 191, 36, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
-    z-index: 12;
-    animation: goldenFloat 5s ease-in-out infinite;
-    transition: all 0.4s ease;
+    top: 100px;
+    left: 40px;
+    width: 240px;              /* ← أصغر */
+    max-width: 240px;
+    padding: 12px 14px 10px;   /* ← أصغر */
+    /* ... باقي الخصائص */
 }
-.golden-panel:hover {
-    border-color: rgba(251, 191, 36, 0.8);
-    box-shadow:
-        0 12px 50px rgba(0, 0, 0, 0.5),
-        0 0 60px rgba(251, 191, 36, 0.3),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15);
-}
-@keyframes goldenFloat {
-    0%, 100% { transform: translateX(-50%) translateY(0); }
-    50%      { transform: translateX(-50%) translateY(-6px); }
-}
-.golden-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 12px;
-}
-.golden-star {
-    font-size: 16px;
-    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
-    animation: starPulse 2s ease-in-out infinite;
-}
-.golden-star:last-child { animation-delay: -1s; }
-@keyframes starPulse {
-    0%, 100% { opacity: 0.7; transform: scale(1); }
-    50%      { opacity: 1; transform: scale(1.15); }
-}
-.golden-title {
-    font-size: 13px;
-    font-weight: 900;
-    letter-spacing: 0.12em;
-    color: #fbbf24;
-    text-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
-    text-transform: uppercase;
-}
-.golden-content { text-align: center; padding: 8px 0; }
+
 .golden-text {
-    font-size: 1.05rem;
-    line-height: 1.75;
-    color: #fef3c7;
-    font-weight: 500;
-    margin-bottom: 10px;
-    unicode-bidi: plaintext;
+    font-size: 0.85rem;        /* ← أصغر */
+    line-height: 1.55;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;     /* ← 3 سطور كحد أقصى */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 6px;
 }
+
+.golden-title {
+    font-size: 10px;           /* ← أصغر */
+}
+
+.golden-header {
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
 .golden-meta {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    font-size: 12px;
-    color: rgba(251, 191, 36, 0.75);
-    font-weight: 700;
-}
-.golden-footer {
-    margin-top: 10px;
-    padding-top: 10px;
-    border-top: 1px dashed rgba(251, 191, 36, 0.25);
-    text-align: center;
-}
-.golden-hint {
     font-size: 10.5px;
-    color: rgba(251, 191, 36, 0.55);
-    letter-spacing: 0.04em;
+}
+
+.golden-hint {
+    font-size: 9.5px;
 }
 @media (max-width: 900px) {
     .golden-panel { top: 80px; width: 94%; padding: 14px 18px 12px; }
