@@ -73,6 +73,11 @@
     const deviceHash = getDeviceHash();
     const supabase = window.__ccSupabase;
 
+    // Local state
+    let avg = 0;
+    let count = 0;
+    let userStars = 0;
+
     if (!supabase) {
       console.warn('Supabase client not found');
       container.innerHTML = '<span class="rating-error">Rating unavailable</span>';
@@ -84,59 +89,45 @@
 
     async function loadRating() {
       try {
-        const { data, error } = await supabase.rpc('rate_capsule', {
-          p_capsule_id: capsuleId,
-          p_stars: 0,
-          p_device_hash: deviceHash
-        });
-
-        if (error) throw error;
-
-        if (data && data.length > 0) {
-          const result = data[0];
-          updateUI(result.avg || 0, result.count || 0, result.your_stars || 0);
-        }
-      } catch (err) {
-        console.error('Error loading rating:', err);
-        // Fallback: fetch from capsules table directly if RPC fails
-        fallbackLoad();
-      }
-    }
-
-    async function fallbackLoad() {
-      try {
-        const { data: capsule, error } = await supabase
+        // First, get capsule data
+        const { data: capsule, error: capsuleError } = await supabase
           .from('capsules')
           .select('ratings_avg, ratings_count')
           .eq('id', capsuleId)
           .single();
 
-        if (error) throw error;
+        if (capsuleError) throw capsuleError;
 
-        // Try to get user's rating from ratings table
-        let userStars = 0;
-        const { data: userRating } = await supabase
+        avg = capsule?.ratings_avg || 0;
+        count = capsule?.ratings_count || 0;
+
+        // Then, get user's rating
+        const { data: userRating, error: userError } = await supabase
           .from('ratings')
           .select('stars')
           .eq('capsule_id', capsuleId)
           .eq('device_hash', deviceHash)
           .single();
 
-        if (userRating) userStars = userRating.stars;
+        if (userError && userError.code !== 'PGRST116') { // PGRST116 = no rows returned
+          console.warn('Error fetching user rating:', userError);
+        }
 
-        updateUI(capsule?.ratings_avg || 0, capsule?.ratings_count || 0, userStars);
+        userStars = userRating?.stars || 0;
+
+        updateUI();
       } catch (err) {
-        console.error('Fallback error:', err);
-        updateUI(0, 0, 0);
+        console.error('Error loading rating:', err);
+        updateUI();
       }
     }
 
-    function updateUI(avg, count, userStars) {
+    function updateUI() {
       container.innerHTML = renderStars(avg, count, userStars);
-      attachStarEvents(userStars);
+      attachStarEvents();
     }
 
-    function attachStarEvents(currentUserStars) {
+    function attachStarEvents() {
       const starBtns = container.querySelectorAll('.star-btn');
       
       starBtns.forEach(btn => {
@@ -155,12 +146,24 @@
 
         // Click to rate
         btn.addEventListener('click', async () => {
-          if (currentUserStars === starValue) return; // Already rated this
+          if (userStars === starValue) return; // Already rated this
 
           // Optimistic update
-          const oldContent = container.innerHTML;
-          const tempAvg = ((avg * count) + starValue) / (count + 1);
-          updateUI(tempAvg, count + 1, starValue);
+          const oldAvg = avg;
+          const oldCount = count;
+          const oldUserStars = userStars;
+          
+          if (oldUserStars === 0) {
+            // New rating
+            avg = ((oldAvg * oldCount) + starValue) / (oldCount + 1);
+            count = oldCount + 1;
+          } else {
+            // Update existing rating
+            avg = ((oldAvg * oldCount) - oldUserStars + starValue) / oldCount;
+          }
+          userStars = starValue;
+          
+          updateUI();
 
           try {
             const { data, error } = await supabase.rpc('rate_capsule', {
@@ -173,7 +176,10 @@
 
             if (data && data.length > 0) {
               const result = data[0];
-              updateUI(result.avg || 0, result.count || 0, result.your_stars || 0);
+              avg = result.avg || 0;
+              count = result.count || 0;
+              userStars = result.your_stars || 0;
+              updateUI();
               
               // Show thanks message briefly
               showThanksMessage();
@@ -181,7 +187,10 @@
           } catch (err) {
             console.error('Error submitting rating:', err);
             // Revert on error
-            updateUI(avg, count, currentUserStars);
+            avg = oldAvg;
+            count = oldCount;
+            userStars = oldUserStars;
+            updateUI();
             alert('فشل التسجيل، حاول مرة أخرى');
           }
         });
