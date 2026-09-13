@@ -227,9 +227,9 @@
             border-radius: 999px;
             text-decoration: none;
             font-family: 'Tajawal', sans-serif;
-window.addEventListener('resize', throttledResize = throttle(() =>
             font-size: 12.5px;
             font-weight: 700;
+            letter-spacing: 0.12em;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             white-space: nowrap;
@@ -269,9 +269,12 @@ window.addEventListener('resize', throttledResize = throttle(() =>
                 </div>
             </a>
 
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                <a href="archive.html" class="header-search-btn" title="بحث" aria-label="بحث">🔍</a>
+            <div style="display: flex; align-items: center; gap: 15px;">
                 <a href="capsules.html" class="header-nav-link" data-i18n="nav_my_capsules">🛰️ كبسولاتي</a>
+                <a href="#" class="header-nav-link notifications-btn" title="الإشعارات">
+                    <span class="nav-icon">🔔</span>
+                    <span class="notification-badge" style="display: none;">0</span>
+                </a>
                 <a href="profile.html" class="profile-link-header" title="ملفي الشخصي">👤</a>
                 <button id="googleLoginBtn" class="google-auth-btn">
                     <span>🌐</span> دخول بجوجل
@@ -306,23 +309,11 @@ window.addEventListener('resize', throttledResize = throttle(() =>
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                     <span data-i18n="new_msg">اكتب رسالة جديدة</span>
                 </button>
-                                <button id="deepBtn" class="deep-btn" title="فتح رسالة عشوائية من أعماق المحيط">
+                <button id="deepBtn" class="deep-btn" title="افتح رسالة عشوائية من أعماق المحيط">
                     <span class="db-ico">🎲</span>
                     <span class="db-txt" data-i18n="deep_btn">كبسولة من الأعماق</span>
                 </button>
             </div>
-
-            <!-- ⭐ إحصائيات -->
-                        <!-- ⭐ إحصائيات -->
-            <div class="hero-stats">
-                <span>🛰️ <b id="statCapsules">0</b> <span data-i18n="stat_capsules">كبسولة</span></span>
-                <span>🌍 <b id="statCountries">18</b> <span data-i18n="stat_countries">دولة</span></span>
-            </div>
-
-            <!-- 🔗 رابط كيف يعمل -->
-            <a href="how-it-works.html" class="hero-learn-link" data-i18n="hero_learn">
-                كيف يعمل الموقع؟ →
-            </a>
         </div>
 
         <div class="capsule-counter" title="عدد الكبسولات السابحة في الفضاء">
@@ -341,10 +332,7 @@ window.addEventListener('resize', throttledResize = throttle(() =>
             <span class="li" style="color:var(--mood-nostalgia)"><i></i><span data-i18n="mood_nostalgia">حنين</span></span>
             <span class="li" style="color:var(--mood-secret)"><i></i><span data-i18n="mood_secret">سر</span></span>
             <span class="li" style="color:var(--mood-confession)"><i></i><span data-i18n="mood_confession">اعتراف</span></span>
-                        <span class="li" style="color:var(--mood-bold)"><i></i><span data-i18n="mood_bold">جرأة</span></span>
-            <span class="li" style="color:var(--mood-love)"><i></i><span data-i18n="mood_love">حب</span></span>
-            <span class="li" style="color:var(--mood-dream)"><i></i><span data-i18n="mood_dream">حلم</span></span>
-            <span class="li" style="color:var(--mood-wisdom)"><i></i><span data-i18n="mood_wisdom">حكمة</span></span>
+            <span class="li" style="color:var(--mood-bold)"><i></i><span data-i18n="mood_bold">جرأة</span></span>
         </div>
 
         <footer class="site-footer">
@@ -367,8 +355,8 @@ window.addEventListener('resize', throttledResize = throttle(() =>
         </footer>
     </div>
 
-    <div id="messageModal" class="modal-overlay">
-        <div class="modal-card">
+    <div id="messageModal" class="modal-overlay" onclick="if(event.target === this) this.classList.remove('active')">
+        <div class="modal-card" onclick="event.stopPropagation()">
             <div class="modal-header">
                 <h3>إرسال كبسولة جديدة</h3>
                 <button id="closeModalBtn" class="close-btn">&times;</button>
@@ -388,7 +376,7 @@ window.addEventListener('resize', throttledResize = throttle(() =>
                         <label class="mood-chip"><input type="radio" name="mood" value="nostalgia"><span>🌙</span><em data-i18n="mood_nostalgia">حنين</em></label>
                         <label class="mood-chip"><input type="radio" name="mood" value="secret"><span>🤫</span><em data-i18n="mood_secret">سر</em></label>
                         <label class="mood-chip"><input type="radio" name="mood" value="confession"><span>🎭</span><em data-i18n="mood_confession">اعتراف</em></label>
-                        <label class="mood-chip"><input type="radio" name="mood" value="bold"><span>💥</span><em data-i18n="mood_bold">جرأة</em></label>                         <label class="mood-chip"><input type="radio" name="mood" value="love"><span>❤️</span><em data-i18n="mood_love">حب</em></label>                         <label class="mood-chip"><input type="radio" name="mood" value="dream"><span>💭</span><em data-i18n="mood_dream">حلم</em></label>                         <label class="mood-chip"><input type="radio" name="mood" value="wisdom"><span>🦉</span><em data-i18n="mood_wisdom">حكمة</em></label>                     </div>
+                        <label class="mood-chip"><input type="radio" name="mood" value="bold"><span>💥</span><em data-i18n="mood_bold">جرأة</em></label>
                     </div>
                 </div>
 
@@ -418,9 +406,9 @@ window.addEventListener('resize', throttledResize = throttle(() =>
                 <div class="form-group">
                     <label for="authorName">اسمك أو اللقب</label>
                     <input type="text" id="authorName" placeholder="اكتب اسمك هنا...">
-                    <div style="margin-top: 6px; display: flex; align-items: center; gap: 8px;">
-                        <input type="checkbox" id="sendAsAnonymous" style="accent-color: #8b5cf6; cursor: pointer; width: 15px; height: 15px;">
-                        <label for="sendAsAnonymous" data-i18n="send_anon" style="font-size: 12px; color: #cbd5e1; cursor: pointer; font-weight: normal; margin: 0;">إرسال كمجهول</label>
+                    <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="sendAsAnonymous" style="accent-color: #38bdf8; cursor: pointer; width: 16px; height: 16px;">
+                        <label for="sendAsAnonymous" data-i18n="send_anon" style="font-size: 0.9rem; color: #cbd5e1; cursor: pointer; font-weight: normal;">إرسال كمجهول</label>
                     </div>
                     <div class="privacy-note" data-i18n="name_optional">اختياري — بدونه تُنشر كبسولتك باسم «مجهول»</div>
                 </div>
@@ -439,9 +427,9 @@ window.addEventListener('resize', throttledResize = throttle(() =>
 
     <div id="ccToast" class="cc-toast"><span class="ico">🚀</span><span class="txt"></span></div>
 
-    <div id="deepModal" class="modal-overlay deep-overlay">
+    <div id="deepModal" class="modal-overlay deep-overlay" onclick="if(event.target === this) this.classList.remove('active')">
         <div class="modal-card deep-card">
-            <button id="deepClose" class="close-btn">&times;</button>
+            <button id="deepClose" class="close-btn" onclick="event.stopPropagation()">&times;</button>
             <div class="deep-scene">
                 <div class="deep-bubble"></div>
                 <div class="deep-content">
@@ -454,17 +442,64 @@ window.addEventListener('resize', throttledResize = throttle(() =>
         </div>
     </div>
 
+    <!-- قائمة الإشعارات -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-header">
+            <h3>الإشعارات</h3>
+            <button class="notification-close" id="notificationClose">&times;</button>
+        </div>
+        <div class="notification-content">
+            <div class="notification-list" id="notificationList">
+                <div class="no-notifications">لا توجد إشعارات جديدة</div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="config.js"></script>
     <script src="i18n.js"></script>
+    <script src="notifications.js"></script>
     <script src="script.js"></script>
     <script src="likes.js"></script>
 
     <script>
     window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
+    </script>
+
+    <script>
+    // تهيئة نظام الإشعارات
+    document.addEventListener('DOMContentLoaded', () => {
+        // تهيئة زر الإشعارات
+        const notificationsBtn = document.querySelector('.notifications-btn');
+        const notificationPanel = document.getElementById('notificationPanel');
+        const notificationClose = document.getElementById('notificationClose');
+        const notificationList = document.getElementById('notificationList');
+        
+        // فتح/إغلاق قائمة الإشعارات
+        notificationsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            notificationPanel.classList.toggle('show');
+            if (notificationPanel.classList.contains('show')) {
+                // تحميل الإشعارات عند الفتح
+                CC_NOTIFICATIONS.renderNotificationList(notificationList);
+            }
+        });
+        
+        // إغلاق قائمة الإشعارات
+        notificationClose.addEventListener('click', () => {
+            notificationPanel.classList.remove('show');
+        });
+        
+        // إغلاق عند النقر خارج القائمة
+        document.addEventListener('click', (e) => {
+            if (!notificationPanel.contains(e.target) && !notificationsBtn.contains(e.target)) {
+                notificationPanel.classList.remove('show');
+            }
+        });
+    });
     </script>
 
     <script>
@@ -485,7 +520,7 @@ window.addEventListener('resize', throttledResize = throttle(() =>
         position: fixed;
         bottom: 20px;
         left: 50%;
-        transform: translateX(-50%) translateY(120%);
+        transform: translateX(-50%) translateY(max(60px, 5.5vh));
         background: linear-gradient(135deg, #6d28d9, #2563eb);
         color: #fff;
         border: none;
