@@ -809,6 +809,7 @@ tooltip.innerHTML = `
     <div class="author">${esc(CCI18N.t('by'))}: ${esc(msg.author)}</div>
     <div class="tooltip-actions">
         ${likeBtnHtml}
+        <div class="rating-container" data-capsule-id="${msg.dbId || ''}"></div>
     </div>
 `;
             tooltip.style.left = labelDiv.style.left;
@@ -817,6 +818,12 @@ tooltip.innerHTML = `
             tooltipTarget = labelDiv;
 if (window.CC_LIKES && typeof window.CC_LIKES.bind === 'function') {
     setTimeout(() => window.CC_LIKES.bind(tooltip), 10);
+}
+if (window.CC_RATINGS && typeof window.CC_RATINGS.bind === 'function' && msg.dbId) {
+    setTimeout(() => {
+        const ratingContainer = tooltip.querySelector('.rating-container');
+        if (ratingContainer) window.CC_RATINGS.bind(ratingContainer, msg.dbId);
+    }, 20);
 }
             const rbtn = tooltip.querySelector('.report-btn');
             if (rbtn) rbtn.addEventListener('click', async (ev) => {

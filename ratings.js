@@ -1,0 +1,209 @@
+/**
+ * Chronos Capsule - Rating System
+ * Vanilla JS Rating Module with Supabase Integration
+ */
+(function() {
+  'use strict';
+
+  // Device Hash for anonymous identification
+  function getDeviceHash() {
+    let hash = localStorage.getItem('cc_device');
+    if (!hash) {
+      hash = 'dev_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+      localStorage.setItem('cc_device', hash);
+    }
+    return hash;
+  }
+
+  // Get translation key
+  function t(key) {
+    if (window.CC_I18N && window.CC_I18N.t) {
+      return window.CC_I18N.t(key);
+    }
+    const lang = document.documentElement.lang || 'ar';
+    const defaults = {
+      ar: {
+        rating_label: 'تقييمك',
+        rating_count: 'مصوت',
+        rating_your: 'تقييمك:',
+        rating_thanks: 'شكراً لتقييمك!'
+      },
+      en: {
+        rating_label: 'Your Rating',
+        rating_count: 'votes',
+        rating_your: 'Your rating:',
+        rating_thanks: 'Thanks for rating!'
+      }
+    };
+    return defaults[lang]?.[key] || key;
+  }
+
+  // Render stars HTML
+  function renderStars(avg, count, userStars) {
+    const fullStars = Math.floor(avg || 0);
+    const hasHalf = (avg || 0) % 1 >= 0.5;
+    
+    let starsHtml = '';
+    for (let i = 1; i <= 5; i++) {
+      const filled = i <= fullStars || (i === fullStars + 1 && hasHalf && !userStars);
+      const userFilled = userStars && i <= userStars;
+      const isFilled = userFilled || filled;
+      
+      starsHtml += `<button class="star-btn ${isFilled ? 'filled' : ''}" data-star="${i}" aria-label="${i} ${t('rating_label')}">★</button>`;
+    }
+
+    const countText = count === 1 ? t('rating_count').replace('s', '') : t('rating_count');
+    const avgDisplay = avg ? avg.toFixed(1) : '---';
+    
+    return `
+      <div class="star-rating" role="group" aria-label="${t('rating_label')}">
+        ${starsHtml}
+        <div class="rating-info">
+          <span class="rating-avg">${avgDisplay}</span>
+          <span class="rating-count">(${count} ${countText})</span>
+        </div>
+      </div>
+    `;
+  }
+
+  // Bind rating functionality to container
+  function bind(container, capsuleId) {
+    if (!container || !capsuleId) return;
+
+    const deviceHash = getDeviceHash();
+    const supabase = window.__ccSupabase;
+
+    if (!supabase) {
+      console.warn('Supabase client not found');
+      container.innerHTML = '<span class="rating-error">Rating unavailable</span>';
+      return;
+    }
+
+    // Initial load
+    loadRating();
+
+    async function loadRating() {
+      try {
+        const { data, error } = await supabase.rpc('rate_capsule', {
+          p_capsule_id: capsuleId,
+          p_stars: 0,
+          p_device_hash: deviceHash
+        });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const result = data[0];
+          updateUI(result.avg || 0, result.count || 0, result.your_stars || 0);
+        }
+      } catch (err) {
+        console.error('Error loading rating:', err);
+        // Fallback: fetch from capsules table directly if RPC fails
+        fallbackLoad();
+      }
+    }
+
+    async function fallbackLoad() {
+      try {
+        const { data: capsule, error } = await supabase
+          .from('capsules')
+          .select('ratings_avg, ratings_count')
+          .eq('id', capsuleId)
+          .single();
+
+        if (error) throw error;
+
+        // Try to get user's rating from ratings table
+        let userStars = 0;
+        const { data: userRating } = await supabase
+          .from('ratings')
+          .select('stars')
+          .eq('capsule_id', capsuleId)
+          .eq('device_hash', deviceHash)
+          .single();
+
+        if (userRating) userStars = userRating.stars;
+
+        updateUI(capsule?.ratings_avg || 0, capsule?.ratings_count || 0, userStars);
+      } catch (err) {
+        console.error('Fallback error:', err);
+        updateUI(0, 0, 0);
+      }
+    }
+
+    function updateUI(avg, count, userStars) {
+      container.innerHTML = renderStars(avg, count, userStars);
+      attachStarEvents(userStars);
+    }
+
+    function attachStarEvents(currentUserStars) {
+      const starBtns = container.querySelectorAll('.star-btn');
+      
+      starBtns.forEach(btn => {
+        const starValue = parseInt(btn.dataset.star);
+
+        // Hover effect
+        btn.addEventListener('mouseenter', () => {
+          starBtns.forEach((b, idx) => {
+            b.classList.toggle('hover', idx < starValue);
+          });
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          starBtns.forEach(b => b.classList.remove('hover'));
+        });
+
+        // Click to rate
+        btn.addEventListener('click', async () => {
+          if (currentUserStars === starValue) return; // Already rated this
+
+          // Optimistic update
+          const oldContent = container.innerHTML;
+          const tempAvg = ((avg * count) + starValue) / (count + 1);
+          updateUI(tempAvg, count + 1, starValue);
+
+          try {
+            const { data, error } = await supabase.rpc('rate_capsule', {
+              p_capsule_id: capsuleId,
+              p_stars: starValue,
+              p_device_hash: deviceHash
+            });
+
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+              const result = data[0];
+              updateUI(result.avg || 0, result.count || 0, result.your_stars || 0);
+              
+              // Show thanks message briefly
+              showThanksMessage();
+            }
+          } catch (err) {
+            console.error('Error submitting rating:', err);
+            // Revert on error
+            updateUI(avg, count, currentUserStars);
+            alert('فشل التسجيل، حاول مرة أخرى');
+          }
+        });
+      });
+    }
+
+    function showThanksMessage() {
+      const info = container.querySelector('.rating-info');
+      if (info) {
+        const originalText = info.innerHTML;
+        info.innerHTML = `<span class="rating-thanks">✓ ${t('rating_thanks')}</span>`;
+        setTimeout(() => {
+          info.innerHTML = originalText;
+        }, 2000);
+      }
+    }
+  }
+
+  // Expose to global scope
+  window.CC_RATINGS = {
+    bind: bind,
+    renderStars: renderStars
+  };
+
+})();

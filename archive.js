@@ -234,7 +234,17 @@
             return;
         }
 
-        data.forEach(r => list.appendChild(createCard(r)));
+        data.forEach(r => {
+            const card = createCard(r);
+            list.appendChild(card);
+            // Bind rating system to each card
+            if (window.CC_RATINGS && typeof window.CC_RATINGS.bind === 'function' && r.id) {
+                setTimeout(() => {
+                    const ratingContainer = card.querySelector('.rating-container');
+                    if (ratingContainer) window.CC_RATINGS.bind(ratingContainer, r.id);
+                }, 10);
+            }
+        });
         $('loadMoreBtn').style.display =
             (data.length === LIMIT && (currentPage + 1) * LIMIT < count) ? 'inline-block' : 'none';
         currentPage++;
@@ -315,6 +325,7 @@
             </div>
             <div class="cap-actions">
                 ${likeBtnHTML}
+                <div class="rating-container" data-capsule-id="${r.id || ''}"></div>
             </div>
             ${hasCode ? buildSocialRow(codeVal, r.text) : ''}
             ${buildCardButton(codeVal, r.text, r.author, r.country, r.mood, r.arrival_at)}`;

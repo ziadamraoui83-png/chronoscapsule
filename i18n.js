@@ -61,7 +61,11 @@
       foot_archive: 'الأرشيف',
       nav_my_capsules: '🛰️ كبسولاتي',
       golden_title: 'الكبسولة الذهبية اليوم',
-      golden_hint: 'تتغير كل يوم عند منتصف الليل'
+      golden_hint: 'تتغير كل يوم عند منتصف الليل',
+      rating_label: 'تقييمك',
+      rating_count: 'مصوت',
+      rating_your: 'تقييمك:',
+      rating_thanks: 'شكراً لتقييمك!'
     },
     en: {
       title: 'Chronos Capsule | Send a message to space',
@@ -121,7 +125,11 @@
       foot_archive: 'Archive',
       nav_my_capsules: '🛰️ My Capsules',
       golden_title: 'Golden Capsule of the Day',
-      golden_hint: 'Changes daily at midnight'
+      golden_hint: 'Changes daily at midnight',
+      rating_label: 'Your Rating',
+      rating_count: 'votes',
+      rating_your: 'Your rating:',
+      rating_thanks: 'Thanks for rating!'
     }
   };
 
@@ -264,4 +272,7 @@
     applyCountries,
     setLang
   };
+
+  // Also expose as CC_I18N for ratings.js compatibility
+  window.CC_I18N = window.CCI18N;
 })();
