@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — style.css (نسخة نهائية + الكبسولة الذهبية)
+   CHRONOS CAPSULE — style.css (v4 محسّن)
+   Golden Panel مصغّر + Mood Legend مصغّر + إحصائيات + بحث
    ═══════════════════════════════════════════════════════════ */
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 body { overflow: hidden; background: #010103; color: #fff; }
@@ -31,13 +32,8 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     color: rgba(255,255,255,0.5); font-size: 13px;
 }
 
-/* ═════════ اللوحة الزجاجية الطافية ═════════ */
+/* ═════════ اللوحة الزجاجية ═════════ */
 .hero-panel {
-    width: 95%;
-    max-width: 85vw;
-    max-height: 80vh;
-    height: auto;
-
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -70,6 +66,32 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     -webkit-text-fill-color: transparent;
 }
 .main-desc { font-size: 1rem; color: #cbd5e1; margin-bottom: 30px; line-height: 1.6; }
+
+/* ⭐ إحصائيات صغيرة في الـ Hero */
+.hero-stats {
+    display: flex;
+    gap: 14px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,.06);
+    font-size: 11.5px;
+    color: #64748b;
+    flex-wrap: wrap;
+}
+.hero-stats span { display: flex; align-items: center; gap: 5px; }
+.hero-stats b { color: #a78bfa; font-weight: 900; font-size: 13px; }
+
+/* 🔗 رابط كيف يعمل */
+.hero-learn-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: #a78bfa;
+    text-decoration: none;
+    transition: color .3s;
+}
+.hero-learn-link:hover { color: #fff; text-decoration: underline; }
 
 .my-capsules-link{
   display:flex;justify-content:center;align-items:center;gap:8px;margin-top:14px;
@@ -119,7 +141,7 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 }
 .zoom-controls button:hover { background: #3b82f6; border-color: #60a5fa; transform: scale(1.1); }
 
-/* ═════════ عدّاد الكبسولات ═════════ */
+/* ═════════ عدّاد الكبسولات (دمجناه في hero) ═════════ */
 .capsule-counter {
     position: absolute; bottom: 40px; z-index: 10;
     display: flex; align-items: center; gap: 9px;
@@ -144,20 +166,20 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     50%      { opacity: 0.45; transform: scale(0.65); }
 }
 
-/* ═════════ المشاعر ═════════ */
+/* ═════════ المشاعر — مصغّر ═════════ */
 :root{
   --mood-hope:#38bdf8; --mood-nostalgia:#a78bfa; --mood-secret:#34d399;
   --mood-confession:#fbbf24; --mood-bold:#f87171;
 }
 .mood-legend{
   position:absolute; bottom:40px; z-index:10;
-  display:flex; gap:14px; align-items:center;
+  display:flex; gap:10px; align-items:center;
   background:rgba(15,23,42,.7); border:1px solid rgba(255,255,255,.15);
-  backdrop-filter:blur(8px); padding:10px 16px; border-radius:12px;
-  font-size:11.5px; color:#cbd5e1;
+  backdrop-filter:blur(8px); padding:7px 12px; border-radius:10px;
+  font-size:10px; color:#cbd5e1;
 }
-.mood-legend .li{display:flex;align-items:center;gap:5px;white-space:nowrap}
-.mood-legend .li i{width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
+.mood-legend .li{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.mood-legend .li i{width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:0 0 6px currentColor}
 
 /* ═════════ تسميات الدول ═════════ */
 .country-label {
@@ -345,6 +367,54 @@ textarea:focus, input[type="text"]:focus, select:focus { border-color: #8b5cf6; 
 .lang-toggle:hover{ border-color:#8b5cf6; color:#fff; transform:translateY(-2px) }
 html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 
+/* ⭐ رابط My Capsules في Header */
+.header-nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: linear-gradient(135deg, rgba(139,92,246,.15), rgba(59,130,246,.15));
+    border: 1px solid rgba(139,92,246,.4);
+    color: #c4b5fd;
+    padding: 6px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12.5px;
+    font-weight: 700;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+.header-nav-link:hover {
+    background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(59,130,246,.3));
+    border-color: #8b5cf6;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* 🔍 زر البحث */
+.header-search-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #cbd5e1;
+    text-decoration: none;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+}
+.header-search-btn:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: #8b5cf6;
+    color: #fff;
+    transform: translateY(-2px);
+}
+
 @media(min-width:901px){
   .hero-panel{ left:auto; right:5%; }
   .zoom-controls{ left:40px; right:auto; }
@@ -386,6 +456,7 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
   .cc-logo{height:34px}
   .lang-toggle{padding:6px 11px; font-size:12px}
   .capsule-counter span:last-child{display:inline; max-width:96px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+  .header-nav-link { padding: 5px 10px; font-size: 11.5px; }
 }
 
 @media(prefers-reduced-motion:reduce){
@@ -506,250 +577,180 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 }
 
 /* ═══════════════════════════════════════════════════════════
-   🌟 لوحة الكبسولة الذهبية اليومية
+   🌟 Golden Panel — مصغّر
    ═══════════════════════════════════════════════════════════ */
 .golden-panel {
     position: absolute;
     top: 100px;
     left: 40px;
-    width: 240px;              /* ← أصغر */
+    width: 240px;
     max-width: 240px;
-    padding: 12px 14px 10px;   /* ← أصغر */
-    /* ... باقي الخصائص */
+    background: linear-gradient(135deg,
+        rgba(251, 191, 36, 0.12) 0%,
+        rgba(245, 158, 11, 0.08) 50%,
+        rgba(251, 191, 36, 0.12) 100%);
+    border: 1.5px solid rgba(251, 191, 36, 0.5);
+    border-radius: 16px;
+    padding: 12px 14px 10px;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(251, 191, 36, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 12;
+    animation: goldenFloat 5s ease-in-out infinite;
+    transition: all 0.4s ease;
 }
-
-.golden-text {
-    font-size: 0.85rem;        /* ← أصغر */
-    line-height: 1.55;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;     /* ← 3 سطور كحد أقصى */
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    margin-bottom: 6px;
+.golden-panel:hover {
+    border-color: rgba(251, 191, 36, 0.8);
+    box-shadow:
+        0 12px 50px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(251, 191, 36, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
-
-.golden-title {
-    font-size: 10px;           /* ← أصغر */
+@keyframes goldenFloat {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-6px); }
 }
-
 .golden-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     gap: 6px;
     margin-bottom: 8px;
 }
-
-.golden-meta {
-    font-size: 10.5px;
+.golden-star {
+    font-size: 12px;
+    filter: drop-shadow(0 0 8px rgba(251, 191, 36, 0.8));
+    animation: starPulse 2s ease-in-out infinite;
 }
-
-.golden-hint {
+.golden-star:last-child { animation-delay: -1s; }
+@keyframes starPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%      { opacity: 1; transform: scale(1.15); }
+}
+.golden-title {
     font-size: 9.5px;
+    font-weight: 900;
+    letter-spacing: 0.1em;
+    color: #fbbf24;
+    text-shadow: 0 0 12px rgba(251, 191, 36, 0.5);
+    text-transform: uppercase;
+}
+.golden-content { text-align: center; padding: 4px 0; }
+.golden-text {
+    font-size: 0.82rem;
+    line-height: 1.55;
+    color: #fef3c7;
+    font-weight: 500;
+    margin-bottom: 6px;
+    unicode-bidi: plaintext;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.golden-meta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    font-size: 10px;
+    color: rgba(251, 191, 36, 0.75);
+    font-weight: 700;
+}
+.golden-footer {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(251, 191, 36, 0.25);
+    text-align: center;
+}
+.golden-hint {
+    font-size: 9px;
+    color: rgba(251, 191, 36, 0.55);
+    letter-spacing: 0.04em;
 }
 @media (max-width: 900px) {
-    .golden-panel { top: 80px; width: 94%; padding: 14px 18px 12px; }
-    .golden-title { font-size: 11px; }
-    .golden-text { font-size: 0.95rem; line-height: 1.65; }
-    .golden-meta { font-size: 11px; }
-    .golden-hint { font-size: 10px; }
+    .golden-panel { top: 80px; width: 200px; padding: 10px 12px 8px; }
+    .golden-title { font-size: 8.5px; }
+    .golden-text { font-size: 0.75rem; }
+    .golden-meta { font-size: 9px; }
+    .golden-hint { font-size: 8px; }
 }
 @media (max-width: 480px) {
-    .golden-panel { top: 72px; padding: 12px 14px 10px; border-radius: 16px; }
-    .golden-text { font-size: 0.9rem; }
-    .golden-header { gap: 6px; margin-bottom: 8px; }
-    .golden-star { font-size: 13px; }
+    .golden-panel { top: 72px; width: 170px; padding: 8px 10px 6px; border-radius: 12px; }
+    .golden-text { font-size: 0.7rem; }
+    .golden-header { gap: 4px; margin-bottom: 6px; }
+    .golden-star { font-size: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
     .golden-panel, .golden-star { animation: none; }
 }
-/* ═══════════════════════════════════════════════════════════
-   🌟 تعديل: نقل لوحة الكبسولة الذهبية إلى الجانب
-   ═══════════════════════════════════════════════════════════ */
-
-@media (min-width: 901px) {
-    .golden-panel {
-        top: 100px;
-        left: 40px;
-        right: auto;
-        width: 300px;
-        max-width: 300px;
-        transform: none;
-        padding: 16px 20px 14px;
-        animation: goldenFloatSide 5s ease-in-out infinite;
-    }
-    html[dir="ltr"] .golden-panel {
-        left: auto;
-        right: 40px;
-    }
-}
-
-@keyframes goldenFloatSide {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-6px); }
-}
 
 /* ═══════════════════════════════════════════════════════════
-   🛰️ رابط كبسولاتي في الترويسة
+   ❤️ نظام الإعجابات
    ═══════════════════════════════════════════════════════════ */
-.header-nav-link {
+.tooltip-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.like-btn {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    background: rgba(139, 92, 246, 0.12);
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    color: #c4b5fd;
-    padding: 7px 14px;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: #cbd5e1;
+    padding: 6px 12px;
     border-radius: 999px;
-    text-decoration: none;
+    font-family: 'Tajawal', sans-serif;
     font-size: 13px;
-    font-weight: 700;
-    font-family: 'Tajawal', sans-serif;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    white-space: nowrap;
-}
-
-.header-nav-link:hover {
-    background: rgba(139, 92, 246, 0.25);
-    border-color: #8b5cf6;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
-}
-
-.header-nav-link .nav-icon {
-    font-size: 14px;
-    line-height: 1;
-}
-
-.header-nav-link .nav-text {
-    line-height: 1;
-}
-
-@media (max-width: 768px) {
-    .header-nav-link {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-    .header-nav-link .nav-text {
-        display: none;
-    }
-    .header-nav-link .nav-icon {
-        font-size: 16px;
-    }
-}
-.header-nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, rgba(139,92,246,.15), rgba(59,130,246,.15));
-    border: 1px solid rgba(139,92,246,.4);
-    color: #c4b5fd;
-    padding: 6px 14px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 12.5px;
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 16px rgba(139,92,246,.15), inset 0 1px 0 rgba(255,255,255,.08);
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-.header-nav-link:hover {
-    background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(59,130,246,.3));
-    border-color: #8b5cf6;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(139,92,246,.35);
-}
-@media (max-width: 480px) {
-    .header-nav-link { padding: 5px 10px; font-size: 11.5px; }
-}
-.header-nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, rgba(139,92,246,.15), rgba(59,130,246,.15));
-    border: 1px solid rgba(139,92,246,.4);
-    color: #c4b5fd;
-    padding: 6px 14px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 12.5px;
-    font-weight: 700;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-.header-nav-link:hover {
-    background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(59,130,246,.3));
-    border-color: #8b5cf6;
-    color: #fff;
-    transform: translateY(-2px);
-}
-@media (max-width: 480px) {
-    .header-nav-link { padding: 5px 10px; font-size: 11.5px; }
-}
-.star-rating {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 8px;
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-}
-
-.stars-row {
-    display: inline-flex;
-    gap: 2px;
-}
-
-.star-btn {
-    background: none;
-    border: none;
-    color: rgba(255, 255, 255, 0.2);
-    font-size: 20px;
-    cursor: pointer;
-    padding: 0 2px;
-    transition: all 0.2s ease;
-    line-height: 1;
-}
-
-.star-btn:hover,
-.star-btn.hover {
-    color: #fbbf24;
-    transform: scale(1.2);
-    text-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
-}
-
-.star-btn.filled {
-    color: #fbbf24;
-    text-shadow: 0 0 8px rgba(251, 191, 36, 0.4);
-}
-
-.rating-info {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 13px;
-    color: #94a3b8;
     font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    user-select: none;
+    white-space: nowrap;
 }
-
-.rating-avg {
-    color: #fbbf24;
-    font-weight: 900;
-    font-size: 15px;
+.like-btn:hover {
+    background: rgba(239, 68, 68, 0.15);
+    border-color: rgba(239, 68, 68, 0.5);
+    color: #fca5a5;
+    transform: translateY(-1px);
 }
-
-.rating-count {
-    opacity: 0.7;
+.like-btn:disabled { opacity: 0.5; cursor: wait; }
+.like-btn .heart-icon { font-size: 15px; display: inline-block; transition: transform 0.25s ease; }
+.like-btn.liked {
+    background: rgba(239, 68, 68, 0.2);
+    border-color: #ef4444;
+    color: #fecaca;
 }
-
-.rating-thanks {
-    color: #34d399;
+.like-btn.liked .heart-icon { animation: heartPop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.like-btn .like-count {
     font-weight: 700;
+    min-width: 14px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
 }
+@keyframes heartPop {
+    0%   { transform: scale(1); }
+    35%  { transform: scale(1.5); }
+    70%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+}
+.like-btn .float-heart {
+    position: absolute;
+    pointer-events: none;
+    font-size: 20px;
+    animation: heartFloat 0.9s ease-out forwards;
+}
+@keyframes heartFloat {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-40px) scale(1.6); }
+}
+.like-btn.offline { opacity: 0.5; pointer-events: none; }
