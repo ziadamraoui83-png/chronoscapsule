@@ -369,7 +369,8 @@
         }
 
         /* ⭐ Schema.org AggregateRating */
-        if (r.id && r.ratings_count > 0 && r.ratings_avg > 0) {
+                /* ⭐ Schema.org Article (بدون AggregateRating) */
+        if (r.id) {
             const ld = document.createElement('script');
             ld.type = 'application/ld+json';
             ld.textContent = JSON.stringify({
@@ -397,14 +398,7 @@
                     "@type": "WebPage",
                     "@id": "https://chronoscapsule.vercel.app/archive.html"
                 },
-                "inLanguage": AppLang,
-                "aggregateRating": {
-                    "@type": "AggregateRating",
-                    "ratingValue": Number(r.ratings_avg).toFixed(1),
-                    "ratingCount": r.ratings_count,
-                    "bestRating": 5,
-                    "worstRating": 1
-                }
+                "inLanguage": AppLang
             });
             el.appendChild(ld);
         }
