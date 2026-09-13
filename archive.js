@@ -368,7 +368,6 @@
             }, 10);
         }
 
-        /* ⭐ Schema.org AggregateRating */
                 /* ⭐ Schema.org Article (بدون AggregateRating) */
         if (r.id) {
             const ld = document.createElement('script');
@@ -376,7 +375,7 @@
             ld.textContent = JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "Article",
-                "headline": (r.text || '').slice(0, 110),
+                "headline": (r.text && r.text.trim().length >= 10)     ? r.text.slice(0, 110)     : ((r.text || 'Capsule') + ' — from ' + (r.country || 'Earth')).slice(0, 110),
                 "image": "https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png",
                 "datePublished": r.created_at || new Date().toISOString(),
                 "dateModified": r.created_at || new Date().toISOString(),
