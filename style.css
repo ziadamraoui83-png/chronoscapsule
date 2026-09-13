@@ -580,6 +580,7 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
    🌟 Golden Panel — مصغّر
    ═══════════════════════════════════════════════════════════ */
 .golden-panel {
+    display: none !important;
     position: absolute;
     top: 100px;
     left: 40px;
