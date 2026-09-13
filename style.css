@@ -170,6 +170,7 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 :root{
   --mood-hope:#38bdf8; --mood-nostalgia:#a78bfa; --mood-secret:#34d399;
   --mood-confession:#fbbf24; --mood-bold:#f87171;
+  --mood-love:#ec4899; --mood-dream:#06b6d4; --mood-wisdom:#a16207;
 }
 .mood-legend{
   position:absolute; bottom:40px; z-index:10;
