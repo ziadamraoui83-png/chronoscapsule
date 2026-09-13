@@ -272,17 +272,21 @@
     function setupRealtimeListener() {
         if (!supabase) return;
 
-        let channel = supabase.channel('notifications');
+        const channelName = userId ? `notifications:${userId}` : `notifications:${deviceHash}`;
+        let channel = supabase.channel(channelName);
 
-        if (userId) {
-            channel = channel.filter('user_id', 'eq', userId);
-        } else if (deviceHash) {
-            channel = channel.filter('device_hash', 'eq', deviceHash);
-        }
+        const filterParams = userId 
+            ? { user_id: userId }
+            : { device_hash: deviceHash };
 
         channel
             .on('postgres_changes', 
-                { event: 'INSERT', schema: 'public', table: 'notifications' },
+                { 
+                    event: 'INSERT', 
+                    schema: 'public', 
+                    table: 'notifications',
+                    filter: userId ? `user_id=eq.${userId}` : `device_hash=eq.${deviceHash}`
+                },
                 (payload) => {
                     const newNotification = payload.new;
                     showToast(newNotification);
