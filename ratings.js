@@ -113,39 +113,45 @@
 
     /* ═══ تحميل الحالة الأولية ═══ */
     async function loadRating() {
-      try {
-        // 1. تحقق من المستخدم
-        const { data: { user } } = await sb.auth.getUser();
-        if (user) currentUserId = user.id;
+    try {
+        // ✅ 1. استخدام البيانات من الأب (ماشي طلب جديد)
+        if (container.dataset.avg) avg = parseFloat(container.dataset.avg) || 0;
+        if (container.dataset.count) count = parseInt(container.dataset.count, 10) || 0;
 
-        // 2. جلب بيانات الكبسولة
-        const { data: capsule, error: capErr } = await sb
-          .from('capsules')
-          .select('ratings_avg, ratings_count')
-          .eq('id', capsuleId)
-          .maybeSingle();
-
-        if (capErr) throw capErr;
-
-        avg = (capsule && capsule.ratings_avg) || 0;
-        count = (capsule && capsule.ratings_count) || 0;
-
-        // 3. جلب تقييم المستخدم
-        let q = sb.from('ratings').select('stars').eq('capsule_id', capsuleId);
-        if (currentUserId) {
-          q = q.eq('user_id', currentUserId);
-        } else {
-          q = q.eq('device_hash', deviceHash);
+        // ✅ 2. جلب تقييم المستخدم فقط (وإذا فشل، نتجاهلو)
+        // نتجاهل تماماً إذا ما كانش device_hash في localStorage
+        const storedDevice = localStorage.getItem('cc_device');
+        if (!storedDevice && !currentUserId) {
+            // Google Crawler: ما عندوش device → نتجاهل الطلب
+            updateUI();
+            return;
         }
 
-        const { data: userRating } = await q.maybeSingle();
-        userStars = (userRating && userRating.stars) || 0;
+        // جلب المستخدم
+        try {
+            const { data: { user } } = await sb.auth.getUser();
+            if (user) currentUserId = user.id;
+        } catch (e) {}
+
+        // جلب تقييم المستخدم
+        let q = sb.from('ratings').select('stars').eq('capsule_id', capsuleId);
+        if (currentUserId) {
+            q = q.eq('user_id', currentUserId);
+        } else {
+            q = q.eq('device_hash', storedDevice);
+        }
+
+        const { data: userRating, error } = await q.maybeSingle();
+        if (!error && userRating) {
+            userStars = userRating.stars || 0;
+        }
 
         updateUI();
-      } catch (err) {
-        console.warn('⭐ loadRating error:', err);
+    } catch (err) {
+        // صامت — ما نسجلش أخطاء
         updateUI();
-      }
+    }
+}
     }
 
     /* ═══ تحديث الواجهة ═══ */
