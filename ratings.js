@@ -77,6 +77,7 @@
     let avg = 0;
     let count = 0;
     let userStars = 0;
+    let currentUserId = null;
 
     if (!supabase) {
       console.warn('Supabase client not found');
@@ -89,7 +90,14 @@
 
     async function loadRating() {
       try {
-        // First, get capsule data
+        // 1. Check if user is logged in
+        const { data: { user }, error: authError } = await supabase.auth.getUser();
+        if (!authError && user) {
+          currentUserId = user.id;
+          console.log('[Rating] Logged in user:', user.id);
+        }
+
+        // 2. Get capsule data
         const { data: capsule, error: capsuleError } = await supabase
           .from('capsules')
           .select('ratings_avg, ratings_count')
@@ -101,15 +109,21 @@
         avg = capsule?.ratings_avg || 0;
         count = capsule?.ratings_count || 0;
 
-        // Then, get user's rating
-        const { data: userRating, error: userError } = await supabase
+        // 3. Get user's rating (check by user_id first, then device_hash)
+        let userQuery = supabase
           .from('ratings')
           .select('stars')
-          .eq('capsule_id', capsuleId)
-          .eq('device_hash', deviceHash)
-          .single();
+          .eq('capsule_id', capsuleId);
 
-        if (userError && userError.code !== 'PGRST116') { // PGRST116 = no rows returned
+        if (currentUserId) {
+          userQuery = userQuery.eq('user_id', currentUserId);
+        } else {
+          userQuery = userQuery.eq('device_hash', deviceHash);
+        }
+
+        const { data: userRating, error: userError } = await userQuery.single();
+
+        if (userError && userError.code !== 'PGRST116') {
           console.warn('Error fetching user rating:', userError);
         }
 
@@ -166,11 +180,19 @@
           updateUI();
 
           try {
-            const { data, error } = await supabase.rpc('rate_capsule', {
+            // Prepare parameters for RPC
+            const rpcParams = {
               p_capsule_id: capsuleId,
               p_stars: starValue,
-              p_device_hash: deviceHash
-            });
+              p_device_hash: currentUserId ? null : deviceHash
+            };
+            
+            // Add user_id if logged in (if your RPC supports it)
+            if (currentUserId) {
+              rpcParams.p_user_id = currentUserId;
+            }
+
+            const { data, error } = await supabase.rpc('rate_capsule', rpcParams);
 
             if (error) throw error;
 
