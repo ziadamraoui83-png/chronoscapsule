@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" style="background:#010103">
+<head>
+    <script id="cc_html_fade">
+    /* Prevent white flash on page navigation */
+    (function(){
+        try {
+            document.documentElement.style.opacity = '0';
+            document.documentElement.style.transition = 'opacity 0.35s ease';
+        } catch(e){}
+    })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function() {
+        try {
+            var lang = localStorage.getItem('cc_lang') || 'ar';
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') lang = urlLang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch(e) {}
+    })();
+    </script>
+    <title>اتصل بنا | Chronos Capsule — نحن هنا للمساعدة</title>
+    <meta name="description" content="تواصل مع فريق Chronos Capsule — أسئلة، اقتراحات، إبلاغ عن محتوى، أو شراكات. نرد خلال 24-48 ساعة.">
+    <meta name="keywords" content="اتصل بنا, تواصل, Chronos Capsule, contact, support, email">
+    <meta name="theme-color" content="#010103">
+    <meta name="robots" content="index, follow">
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z872SS657T');
+    </script>
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="اتصل بنا | Chronos Capsule">
+    <meta property="og:description" content="تواصل مع فريق Chronos Capsule — نحن هنا للمساعدة.">
+    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:url" content="https://chronoscapsule.vercel.app/contact.html">
+    <meta property="og:locale" content="ar_AR">
+
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <link rel="canonical" href="https://chronoscapsule.vercel.app/contact.html">
+    <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/contact.html">
+    <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/contact.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/contact.html">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ContactPage",
+      "url": "https://chronoscapsule.vercel.app/contact.html",
+      "name": "اتصل بنا — Chronos Capsule",
+      "inLanguage": "ar",
+      "isPartOf": {
+        "@type": "WebSite",
+        "@id": "https://chronoscapsule.vercel.app/#website"
+      }
+    }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html[lang="ar"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-ar { display: none !important; }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
+        body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh;line-height:1.7}
+        a,button{cursor:pointer}
+        body::before{content:'';position:fixed;inset:0;
+            background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
+                        radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),#010103;
+            z-index:0;pointer-events:none}
+        body::after{content:'';position:fixed;inset:0;
+            background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
+                radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
+                radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+                radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%);
+            z-index:0;pointer-events:none}
+        .page-header{position:sticky;top:0;z-index:50;
+            background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
+            border-bottom:1px solid rgba(255,255,255,.07);
+            padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .header-logo-icon{font-size:1.4rem}
+        .header-logo-text{font-size:1.05rem;font-weight:900;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .header-actions{display:flex;align-items:center;gap:8px}
+        .back-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
+            padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
+        .back-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
+        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
+        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
+
+        .page{max-width:760px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
+
+        .hero{text-align:center;padding:20px 0 40px;position:relative}
+        .hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);
+            width:400px;height:400px;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);
+            pointer-events:none;z-index:-1}
+        .hero-emoji{font-size:56px;margin-bottom:18px;
+            filter:drop-shadow(0 0 20px rgba(139,92,246,.4));
+            animation:floatEmoji 4s ease-in-out infinite}
+        @keyframes floatEmoji{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+        .hero-title{font-size:2.2rem;font-weight:900;margin-bottom:12px;line-height:1.3;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6,#3AE1FF);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .hero-subtitle{font-size:1rem;color:#94a3b8;line-height:1.8;max-width:560px;margin:0 auto}
+
+        .contact-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 14px;
+            margin-bottom: 40px;
+        }
+        .contact-card {
+            background: rgba(15,23,42,.6);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 16px;
+            padding: 22px 20px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            transition: all .3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .contact-card:hover {
+            border-color: rgba(139,92,246,.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(139,92,246,.15);
+        }
+        .contact-card-icon {
+            font-size: 32px;
+            margin-bottom: 4px;
+            filter: drop-shadow(0 0 12px rgba(139,92,246,.4));
+        }
+        .contact-card-title { font-size: 15px; font-weight: 900; color: #fff; }
+        .contact-card-desc { font-size: 12px; color: #94a3b8; line-height: 1.6; }
+        .contact-card-cta { font-size: 12.5px; color: #a78bfa; font-weight: 700; margin-top: 4px; }
+
+        .form-card {
+            background: rgba(15,23,42,.6);
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 20px;
+            padding: 28px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 30px;
+        }
+        .form-title {
+            font-size: 1.25rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-subtitle { font-size: 13px; color: #64748b; margin-bottom: 22px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            color: #cbd5e1;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 11px 14px;
+            background: rgba(0,0,0,.3);
+            border: 1px solid rgba(255,255,255,.15);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.92rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color .3s;
+        }
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139,92,246,.15);
+        }
+        .form-group textarea { resize: vertical; min-height: 120px; }
+        .form-group select { color-scheme: dark; }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        @media (max-width: 600px) {
+            .form-row { grid-template-columns: 1fr; }
+        }
+
+        .btn-send {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, #6d28d9, #2563eb);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-weight: 900;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all .3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .btn-send:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(99,102,241,.4);
+        }
+        .btn-send:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quick-links {
+            background: rgba(139,92,246,.06);
+            border: 1px solid rgba(139,92,246,.2);
+            border-radius: 16px;
+            padding: 20px 24px;
+        }
+        .quick-links-title {
+            font-size: 13px;
+            font-weight: 900;
+            color: #a78bfa;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .quick-links-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .quick-links-list a {
+            padding: 8px 14px;
+            background: rgba(139,92,246,.1);
+            border: 1px solid rgba(139,92,246,.25);
+            border-radius: 999px;
+            color: #c4b5fd;
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: 700;
+            transition: all .3s ease;
+        }
+        .quick-links-list a:hover {
+            background: rgba(139,92,246,.25);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .cc-toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            z-index: 9999;
+            transform: translate(-50%, 20px);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid #8b5cf6;
+            border-radius: 14px;
+            padding: 14px 24px;
+            font-size: 14px;
+            color: #fff;
+            box-shadow: 0 12px 44px rgba(139, 92, 246, 0.28);
+            backdrop-filter: blur(10px);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+        }
+        .cc-toast.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, 0);
+        }
+
+        .page-footer{text-align:center;padding:30px 20px;color:#64748b;font-size:12.5px;
+            border-top:1px solid rgba(255,255,255,.06);margin-top:50px}
+        .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+        .footer-links a{color:#a78bfa;text-decoration:none;transition:color .3s}
+        .footer-links a:hover{color:#fff}
+
+        @media(max-width:600px){
+            .page-header{padding:12px 16px}
+            .page{ padding:24px 16px 60px; }
+            .hero-title{font-size:1.6rem}
+            .hero-emoji{font-size:44px}
+            .hero-subtitle{font-size:.9rem}
+            .form-card { padding: 22px 18px; }
+            .contact-cards { grid-template-columns: 1fr; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+            .hero-emoji { animation: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <a href="index.html" class="header-logo">
+        <span class="header-logo-icon">🚀</span>
+        <span class="header-logo-text">CHRONOS CAPSULE</span>
+    </a>
+    <div class="header-actions">
+        <button class="lang-toggle-cap" id="contactLangToggle">EN</button>
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span class="lang-ar">العودة للكوكب</span>
+            <span class="lang-en">Back to Planet</span>
+        </a>
+    </div>
+</header>
+
+<main class="page">
+
+    <section class="hero">
+        <div class="hero-emoji">💬</div>
+        <h1 class="hero-title">
+            <span class="lang-ar">اتصل بنا</span>
+            <span class="lang-en">Contact Us</span>
+        </h1>
+        <p class="hero-subtitle">
+            <span class="lang-ar">عندك سؤال، اقتراح، أو تريد الإبلاغ عن محتوى؟ نحن هنا للمساعدة — نرد خلال 24-48 ساعة.</span>
+            <span class="lang-en">Have a question, suggestion, or want to report content? We're here to help — we reply within 24-48 hours.</span>
+        </p>
+    </section>
+
+    <section class="contact-cards">
+        <a href="mailto:ziadamraoui83@gmail.com" class="contact-card">
+            <div class="contact-card-icon">✉️</div>
+            <div class="contact-card-title">
+                <span class="lang-ar">البريد الإلكتروني</span>
+                <span class="lang-en">Email</span>
+            </div>
+            <div class="contact-card-desc">ziadamraoui83@gmail.com</div>
+            <div class="contact-card-cta">
+                <span class="lang-ar">راسلنا ←</span>
+                <span class="lang-en">Send email →</span>
+            </div>
+        </a>
+
+        <a href="https://twitter.com/chronoscapsule" target="_blank" rel="noopener" class="contact-card">
+            <div class="contact-card-icon">𝕏</div>
+            <div class="contact-card-title">
+                <span class="lang-ar">X (Twitter)</span>
+                <span class="lang-en">X (Twitter)</span>
+            </div>
+            <div class="contact-card-desc">@chronoscapsule</div>
+            <div class="contact-card-cta">
+                <span class="lang-ar">تابعنا ←</span>
+                <span class="lang-en">Follow us →</span>
+            </div>
+        </a>
+    </section>
+
+    <section class="form-card">
+        <h2 class="form-title">
+            <span>📝</span>
+            <span class="lang-ar">أرسل رسالة</span>
+            <span class="lang-en">Send a Message</span>
+        </h2>
+        <p class="form-subtitle">
+            <span class="lang-ar">سيتم إرسال رسالتك مباشرة لفريقنا — نرد خلال 24-48 ساعة.</span>
+            <span class="lang-en">Your message will be sent directly to our team — we reply within 24-48 hours.</span>
+        </p>
+
+        <form id="contactForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contactName">
+                        <span class="lang-ar">الاسم</span>
+                        <span class="lang-en">Name</span>
+                    </label>
+                    <input type="text" id="contactName" name="name" required placeholder="اسمك">
+                </div>
+                <div class="form-group">
+                    <label for="contactEmail">
+                        <span class="lang-ar">البريد الإلكتروني</span>
+                        <span class="lang-en">Email</span>
+                    </label>
+                    <input type="email" id="contactEmail" name="email" required placeholder="you@example.com">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="contactSubject">
+                    <span class="lang-ar">الموضوع</span>
+                    <span class="lang-en">Subject</span>
+                </label>
+                <select id="contactSubject" name="subject" required>
+                    <option value="general">استفسار عام / General</option>
+                    <option value="bug">مشكل تقني / Bug</option>
+                    <option value="suggestion">اقتراح / Suggestion</option>
+                    <option value="report">إبلاغ / Report</option>
+                    <option value="partnership">شراكة / Partnership</option>
+                    <option value="other">أخرى / Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="contactMessage">
+                    <span class="lang-ar">الرسالة</span>
+                    <span class="lang-en">Message</span>
+                </label>
+                <textarea id="contactMessage" name="message" required placeholder="اكتب رسالتك هنا..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-send">
+                <span>✉️</span>
+                <span class="lang-ar">إرسال الرسالة</span>
+                <span class="lang-en">Send Message</span>
+            </button>
+        </form>
+    </section>
+
+    <section class="quick-links">
+        <div class="quick-links-title">
+            <span>💡</span>
+            <span class="lang-ar">قبل ما تراسلنا — جرّب هذي الصفحات</span>
+            <span class="lang-en">Before contacting us — try these pages</span>
+        </div>
+        <div class="quick-links-list">
+            <a href="faq.html">
+                <span class="lang-ar">الأسئلة الشائعة</span>
+                <span class="lang-en">FAQ</span>
+            </a>
+            <a href="how-it-works.html">
+                <span class="lang-ar">كيف يعمل الموقع</span>
+                <span class="lang-en">How It Works</span>
+            </a>
+            <a href="privacy.html">
+                <span class="lang-ar">سياسة الخصوصية</span>
+                <span class="lang-en">Privacy Policy</span>
+            </a>
+            <a href="terms.html">
+                <span class="lang-ar">شروط الاستخدام</span>
+                <span class="lang-en">Terms of Use</span>
+            </a>
+        </div>
+    </section>
+
+    <footer class="page-footer">
+        <div class="footer-links">
+            <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+            <a href="how-it-works.html"><span class="lang-ar">كيف يعمل</span><span class="lang-en">How It Works</span></a>
+            <a href="blog.html"><span class="lang-ar">المدونة</span><span class="lang-en">Blog</span></a>
+            <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
+            <a href="faq.html"><span class="lang-ar">الأسئلة الشائعة</span><span class="lang-en">FAQ</span></a>
+            <a href="archive.html"><span class="lang-ar">الأرشيف</span><span class="lang-en">Archive</span></a>
+            <a href="privacy.html"><span class="lang-ar">الخصوصية</span><span class="lang-en">Privacy</span></a>
+            <a href="terms.html"><span class="lang-ar">الشروط</span><span class="lang-en">Terms</span></a>
+        </div>
+        <div>© 2026 Chronos Capsule — <span class="lang-ar">منصة عالمية 🌍</span><span class="lang-en">Global platform 🌍</span></div>
+    </footer>
+
+</main>
+
+<div id="ccToast" class="cc-toast">
+    <span class="ico">🚀</span>
+    <span class="txt"></span>
+</div>
+
+<script>
+(function(){
+    'use strict';
+
+    /* ═══ اللغة ═══ */
+    function getCurrentLang() {
+        try {
+            const urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') return urlLang;
+            return localStorage.getItem('cc_lang') || 'ar';
+        } catch (e) { return 'ar'; }
+    }
+
+    let currentLang = getCurrentLang();
+
+    function applyLang(l) {
+        currentLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+
+        const toggleBtn = document.getElementById('contactLangToggle');
+        if (toggleBtn) toggleBtn.textContent = (l === 'ar') ? 'EN' : 'عربي';
+
+        document.title = (l === 'ar' ? 'اتصل بنا' : 'Contact Us') + ' | Chronos Capsule';
+
+        const metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) {
+            metaDesc.content = (l === 'ar')
+                ? 'تواصل مع فريق Chronos Capsule — أسئلة، اقتراحات، إبلاغ عن محتوى، أو شراكات.'
+                : 'Contact the Chronos Capsule team — questions, suggestions, content reports, or partnerships.';
+        }
+    }
+
+    document.getElementById('contactLangToggle').addEventListener('click', function() {
+        applyLang(currentLang === 'ar' ? 'en' : 'ar');
+    });
+
+    applyLang(currentLang);
+
+    /* ═══ Toast ═══ */
+    function showToast(msg, ico) {
+        const t = document.getElementById('ccToast');
+        if (!t) return;
+        t.querySelector('.ico').textContent = ico || '✉️';
+        t.querySelector('.txt').textContent = msg;
+        t.classList.add('show');
+        clearTimeout(window.__contactToastTimer);
+        window.__contactToastTimer = setTimeout(function() {
+            t.classList.remove('show');
+        }, 3200);
+    }
+
+    /* ═══ الفورم — Web3Forms ═══ */
+        /* ═══ الفورم — Formspree ═══ */
+    document.getElementById('contactForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+
+        const btn = this.querySelector('.btn-send');
+        const originalText = btn.innerHTML;
+
+        btn.disabled = true;
+        btn.innerHTML = '⏳ ' + (currentLang === 'ar' ? 'جاري الإرسال...' : 'Sending...');
+
+        const name    = document.getElementById('contactName').value.trim();
+        const email   = document.getElementById('contactEmail').value.trim();
+        const subject = document.getElementById('contactSubject').value;
+        const message = document.getElementById('contactMessage').value.trim();
+
+        const subjects = {
+            general: 'General Inquiry',
+            bug: 'Bug Report',
+            suggestion: 'Suggestion',
+            report: 'Content Report',
+            partnership: 'Partnership',
+            other: 'Other'
+        };
+
+        const data = {
+            name: name,
+            email: email,
+            subject: '[Chronos Capsule] ' + (subjects[subject] || 'Contact'),
+            message: message,
+            _replyto: email
+        };
+
+        console.log('📤 Sending:', data);
+
+        try {
+            const response = await fetch('https://formspree.io/f/mzeblkyv', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            console.log('📥 Response:', result);
+
+            if (response.ok && (result.ok || result.next)) {
+                showToast(
+                    currentLang === 'ar'
+                        ? '✅ وصلت رسالتك! شكراً لتواصلك'
+                        : '✅ Message sent! Thanks',
+                    '✅'
+                );
+                this.reset();
+
+                try {
+                    if (typeof gtag === 'function') {
+                        gtag('event', 'contact_form_submitted', {
+                            subject: subject,
+                            lang: currentLang
+                        });
+                    }
+                } catch (err) {}
+            } else {
+                const errMsg = (result.errors && result.errors[0] && result.errors[0].message) || 'Failed';
+                throw new Error(errMsg);
+            }
+        } catch (err) {
+            console.error('❌ Contact form error:', err);
+            showToast(
+                currentLang === 'ar'
+                    ? '⚠️ تعذّر الإرسال. راسلنا: ziadamraoui83@gmail.com'
+                    : '⚠️ Failed. Email: ziadamraoui83@gmail.com',
+                '⚠️'
+            );
+        } finally {
+            btn.disabled = false;
+            btn.innerHTML = originalText;
+        }
+    });
+
+})();
+</script>
+    <script src="transitions.js"></script>
+</body>
+</html>

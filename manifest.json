@@ -1,0 +1,59 @@
+{
+  "name": "Chronos Capsule — كبسولة الزمن",
+  "short_name": "Chronos",
+  "description": "أرسل رسالتك إلى الفضاء. كبسولة الزمن الكونية — اكتب، اختر موعد الوصول، ودع الغرباء يقرؤها.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#010103",
+  "theme_color": "#010103",
+  "lang": "ar",
+  "dir": "rtl",
+  "categories": ["social", "lifestyle", "entertainment"],
+  "icons": [
+    {
+      "src": "/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-maskable.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshot.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "اكتب كبسولة",
+      "short_name": "اكتب",
+      "url": "/?action=create"
+    },
+    {
+      "name": "كبسولاتي",
+      "short_name": "كبسولاتي",
+      "url": "/capsules.html"
+    },
+    {
+      "name": "الأرشيف",
+      "short_name": "الأرشيف",
+      "url": "/archive.html"
+    }
+  ]
+}

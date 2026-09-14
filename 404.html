@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" style="background:#010103">
+<head>
+    <script id="cc_html_fade">
+    /* Prevent white flash on page navigation */
+    (function(){
+        try {
+            document.documentElement.style.opacity = '0';
+            document.documentElement.style.transition = 'opacity 0.35s ease';
+        } catch(e){}
+    })();
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    (function() {
+        try {
+            var lang = localStorage.getItem('cc_lang') || 'ar';
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') lang = urlLang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch(e) {}
+    })();
+    </script>
+    <title>404 — الصفحة غير موجودة | Chronos Capsule</title>
+    <meta name="description" content="الصفحة التي تبحث عنها غير موجودة. لكن الفضاء واسع — دعنا نعيدك إلى المسار الصحيح.">
+    <meta name="theme-color" content="#010103">
+    <meta name="robots" content="noindex, follow">
+
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        html[lang="ar"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-ar { display: none !important; }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
+        body{overflow:hidden;background:#010103;color:#fff;min-height:100vh;display:flex;flex-direction:column}
+        a,button{cursor:pointer}
+
+        body::before{content:'';position:fixed;inset:0;
+            background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.12) 0%,transparent 60%),
+                        radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.08) 0%,transparent 50%),#010103;
+            z-index:0;pointer-events:none}
+        body::after{content:'';position:fixed;inset:0;
+            background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
+                radial-gradient(1px 1px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
+                radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+                radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1.5px 1.5px at 35% 70%,rgba(58,225,255,.4) 0%,transparent 100%),
+                radial-gradient(1.5px 1.5px at 65% 25%,rgba(167,139,250,.5) 0%,transparent 100%);
+            z-index:0;pointer-events:none;animation:starsTwinkle 4s ease-in-out infinite}
+        @keyframes starsTwinkle {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        /* ═══ Header ═══ */
+        .page-header{position:sticky;top:0;z-index:50;
+            background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
+            border-bottom:1px solid rgba(255,255,255,.07);
+            padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .header-logo-icon{font-size:1.4rem}
+        .header-logo-text{font-size:1.05rem;font-weight:900;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .header-actions{display:flex;align-items:center;gap:8px}
+        .back-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
+            padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
+        .back-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
+        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
+        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
+
+        /* ═══ المحتوى ═══ */
+        .error-wrap {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .error-card {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        /* حطام/كوكب */
+        .error-visual {
+            position: relative;
+            height: 200px;
+            margin-bottom: 30px;
+        }
+
+        .error-planet {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%,
+                rgba(139,92,246,.6) 0%,
+                rgba(59,130,246,.4) 40%,
+                rgba(15,23,42,.9) 80%);
+            box-shadow:
+                inset -20px -20px 60px rgba(0,0,0,.6),
+                inset 10px 10px 40px rgba(167,139,250,.3),
+                0 0 60px rgba(139,92,246,.4),
+                0 0 120px rgba(139,92,246,.2);
+            animation: planetFloat 6s ease-in-out infinite;
+        }
+        @keyframes planetFloat {
+            0%, 100% { transform: translate(-50%, -50%) translateY(0) rotate(0deg); }
+            50%      { transform: translate(-50%, -50%) translateY(-12px) rotate(180deg); }
+        }
+
+        .error-orbit {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: 200px;
+            border: 1px dashed rgba(167,139,250,.3);
+            border-radius: 50%;
+            animation: orbitSpin 20s linear infinite;
+        }
+        @keyframes orbitSpin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .error-satellite {
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 20px;
+            filter: drop-shadow(0 0 8px rgba(58,225,255,.6));
+        }
+
+        .error-orbit-2 {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 260px;
+            height: 260px;
+            border: 1px dashed rgba(58,225,255,.15);
+            border-radius: 50%;
+            animation: orbitSpin 30s linear infinite reverse;
+        }
+        .error-orbit-2 .error-satellite {
+            font-size: 14px;
+            filter: drop-shadow(0 0 8px rgba(167,139,250,.6));
+        }
+
+        /* الرقم 404 */
+        .error-code {
+            font-family: 'Space Grotesk', 'Tajawal', sans-serif;
+            font-size: clamp(4rem, 12vw, 6rem);
+            font-weight: 900;
+            line-height: 1;
+            background: linear-gradient(135deg, #a78bfa, #3b82f6, #3AE1FF, #a78bfa);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 0.05em;
+            margin-bottom: 12px;
+            animation: gradientFlow 4s ease-in-out infinite;
+            filter: drop-shadow(0 0 30px rgba(139,92,246,.4));
+        }
+        @keyframes gradientFlow {
+            0%, 100% { background-position: 0% 50%; }
+            50%      { background-position: 100% 50%; }
+        }
+
+        .error-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 14px;
+            line-height: 1.4;
+        }
+
+        .error-desc {
+            font-size: 0.95rem;
+            color: #94a3b8;
+            line-height: 1.8;
+            margin-bottom: 32px;
+            max-width: 440px;
+            margin-inline: auto;
+        }
+
+        /* أزرار */
+        .error-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 40px;
+        }
+
+        .error-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 26px;
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 900;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .error-btn.primary {
+            background: linear-gradient(135deg, #6d28d9, #2563eb);
+            color: #fff;
+            box-shadow: 0 12px 32px rgba(99,102,241,.35);
+        }
+        .error-btn.primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 44px rgba(99,102,241,.5);
+        }
+
+        .error-btn.secondary {
+            background: rgba(139,92,246,.12);
+            border: 1px solid rgba(139,92,246,.4);
+            color: #c4b5fd;
+        }
+        .error-btn.secondary:hover {
+            background: rgba(139,92,246,.25);
+            color: #fff;
+            transform: translateY(-3px);
+        }
+
+        /* روابط سريعة */
+        .quick-links {
+            background: rgba(15,23,42,.4);
+            border: 1px solid rgba(255,255,255,.06);
+            border-radius: 16px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+        }
+        .quick-links-title {
+            font-size: 12px;
+            font-weight: 900;
+            color: #a78bfa;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .quick-links-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+        }
+        .quick-links-list a {
+            padding: 8px 14px;
+            background: rgba(139,92,246,.08);
+            border: 1px solid rgba(139,92,246,.2);
+            border-radius: 999px;
+            color: #c4b5fd;
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: 700;
+            transition: all .3s ease;
+        }
+        .quick-links-list a:hover {
+            background: rgba(139,92,246,.22);
+            color: #fff;
+            transform: translateY(-2px);
+            border-color: rgba(139,92,246,.5);
+        }
+
+        /* Footer */
+        .error-footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+            font-size: 12px;
+            position: relative;
+            z-index: 1;
+        }
+        .error-footer a {
+            color: #a78bfa;
+            text-decoration: none;
+        }
+        .error-footer a:hover { color: #fff; }
+
+        /* الجوال */
+        @media (max-width: 600px) {
+            .page-header { padding: 12px 16px; }
+            .error-wrap { padding: 20px 16px; }
+            .error-visual { height: 170px; }
+            .error-planet { width: 110px; height: 110px; }
+            .error-orbit { width: 160px; height: 160px; }
+            .error-orbit-2 { width: 200px; height: 200px; }
+            .error-code { font-size: 4.5rem; }
+            .error-title { font-size: 1.2rem; }
+            .error-desc { font-size: 0.88rem; }
+            .error-actions { flex-direction: column; align-items: stretch; }
+            .error-btn { justify-content: center; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+            .error-planet, .error-orbit, .error-orbit-2, .error-code { animation: none; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <a href="index.html" class="header-logo">
+        <span class="header-logo-icon">🚀</span>
+        <span class="header-logo-text">CHRONOS CAPSULE</span>
+    </a>
+    <div class="header-actions">
+        <button class="lang-toggle-cap" id="errLangToggle">EN</button>
+        <a href="index.html" class="back-link">
+            <span>←</span>
+            <span class="lang-ar">العودة للكوكب</span>
+            <span class="lang-en">Back to Planet</span>
+        </a>
+    </div>
+</header>
+
+<div class="error-wrap">
+    <div class="error-card">
+
+        <div class="error-visual">
+            <div class="error-orbit-2">
+                <span class="error-satellite">✨</span>
+            </div>
+            <div class="error-orbit">
+                <span class="error-satellite">🛸</span>
+            </div>
+            <div class="error-planet"></div>
+        </div>
+
+        <div class="error-code">404</div>
+
+        <h1 class="error-title">
+            <span class="lang-ar">هذه الصفحة ضاعت في الفضاء</span>
+            <span class="lang-en">This page drifted into space</span>
+        </h1>
+
+        <p class="error-desc">
+            <span class="lang-ar">الرابط الذي تبحث عنه غير موجود، أو تم نقله إلى مكان آخر. لا تقلق — الفضاء واسع، والطريق للعودة قصير.</span>
+            <span class="lang-en">The link you're looking for doesn't exist, or it was moved. Don't worry — space is vast, but the way back is short.</span>
+        </p>
+
+        <div class="error-actions">
+            <a href="index.html" class="error-btn primary">
+                <span>🚀</span>
+                <span class="lang-ar">العودة للرئيسية</span>
+                <span class="lang-en">Back to Home</span>
+            </a>
+            <a href="archive.html" class="error-btn secondary">
+                <span>🛰️</span>
+                <span class="lang-ar">استكشف الأرشيف</span>
+                <span class="lang-en">Explore Archive</span>
+            </a>
+        </div>
+
+        <div class="quick-links">
+            <div class="quick-links-title">
+                <span>💡</span>
+                <span class="lang-ar">ربما تبحث عن</span>
+                <span class="lang-en">Maybe you're looking for</span>
+            </div>
+            <div class="quick-links-list">
+                <a href="how-it-works.html"><span class="lang-ar">كيف يعمل</span><span class="lang-en">How It Works</span></a>
+                <a href="faq.html"><span class="lang-ar">الأسئلة الشائعة</span><span class="lang-en">FAQ</span></a>
+                <a href="blog.html"><span class="lang-ar">المدونة</span><span class="lang-en">Blog</span></a>
+                <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
+                <a href="contact.html"><span class="lang-ar">اتصل بنا</span><span class="lang-en">Contact</span></a>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="error-footer">
+    © 2026 Chronos Capsule — <a href="index.html">chronoscapsule.vercel.app</a>
+</div>
+
+<script>
+(function(){
+    'use strict';
+    function getCurrentLang() {
+        try {
+            const urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') return urlLang;
+            return localStorage.getItem('cc_lang') || 'ar';
+        } catch (e) { return 'ar'; }
+    }
+    let currentLang = getCurrentLang();
+    function applyLang(l) {
+        currentLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+        const btn = document.getElementById('errLangToggle');
+        if (btn) btn.textContent = (l === 'ar') ? 'EN' : 'عربي';
+        document.title = (l === 'ar' ? '404 — الصفحة غير موجودة' : '404 — Page Not Found') + ' | Chronos Capsule';
+    }
+    document.getElementById('errLangToggle').addEventListener('click', () => {
+        applyLang(currentLang === 'ar' ? 'en' : 'ar');
+    });
+    applyLang(currentLang);
+
+    /* إرسال الحدث إلى Google Analytics */
+    try {
+        if (typeof gtag === 'function') {
+            gtag('event', 'page_not_found', {
+                page_path: location.pathname,
+                page_lang: currentLang
+            });
+        }
+    } catch (e) {}
+})();
+</script>
+    <script src="transitions.js"></script>
+</body>
+</html>
