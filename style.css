@@ -1,6 +1,20 @@
 /* ═══════════════════════════════════════════════════════════
    CHRONOS CAPSULE — style.css (نسخة نهائية + الكبسولة الذهبية)
    ═══════════════════════════════════════════════════════════ */
+/* ═══ منع الوميض الأبيض ═══ */
+html {
+    background: #010103 !important;
+    min-height: 100vh;
+}
+body {
+    background: #010103;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+}
+body.cc-loaded {
+    opacity: 1;
+}
+
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 body {     overflow-x: hidden;     overflow-y: auto;     background: #010103;     color: #fff;     scroll-behavior: smooth; }
 
