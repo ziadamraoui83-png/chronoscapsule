@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Fix white flash v2 — the correct way
-- Remove inline html style
-- Remove cc_html_fade script
+Fix white flash v3 — inline critical CSS
+- Adds inline <style> in <head> right after <meta charset>
+- Prevents white flash even before external CSS loads
 """
 
 import os
@@ -10,6 +10,14 @@ import re
 
 REPO_DIR = "."
 IGNORED_DIRS = {'.git', 'node_modules', '.vercel', 'dist', 'build', '.next', '.vscode'}
+
+INLINE_STYLE = '''<meta charset="UTF-8">
+    <!-- ═══ منع الوميض الأبيض — inline (critical CSS) ═══ -->
+    <style id="cc_critical">
+        html { background: #010103 !important; }
+        body { background: #010103; opacity: 0; transition: opacity 0.35s ease; }
+        body.cc-loaded { opacity: 1; }
+    </style>'''
 
 stats = {"processed": 0, "modified": 0, "skipped": 0}
 
@@ -21,20 +29,19 @@ def process_html(filepath):
         stats["processed"] += 1
         original = content
         
-        # ═══ 1. حذف inline style من <html> ═══
-        content = re.sub(
-            r'<html\s+lang="(ar|en)"\s+dir="(rtl|ltr)"\s+style="background:#010103">',
-            r'<html lang="\1" dir="\2">',
-            content
-        )
+        # ═══ Skip إذا كان موجود من قبل ═══
+        if 'cc_critical' in content:
+            print(f"⏭️  Already fixed: {filepath}")
+            stats["skipped"] += 1
+            return
         
-        # ═══ 2. حذف script cc_html_fade ═══
-        content = re.sub(
-            r'\s*<script id="cc_html_fade">.*?</script>\s*',
-            '\n',
-            content,
-            flags=re.DOTALL
-        )
+        # ═══ بدّل <meta charset="UTF-8"> بالنسخة المطولة ═══
+        if '<meta charset="UTF-8">' in content:
+            content = content.replace(
+                '<meta charset="UTF-8">',
+                INLINE_STYLE,
+                1
+            )
         
         if content != original:
             with open(filepath, 'w', encoding='utf-8') as f:
@@ -42,7 +49,7 @@ def process_html(filepath):
             print(f"✅ Fixed: {filepath}")
             stats["modified"] += 1
         else:
-            print(f"⏭️  Skipped: {filepath}")
+            print(f"⚠️  No charset tag: {filepath}")
             stats["skipped"] += 1
     
     except Exception as e:
@@ -50,7 +57,7 @@ def process_html(filepath):
 
 def main():
     print("═" * 60)
-    print("🚀 Fix White Flash v2")
+    print("🚀 Fix White Flash v3 — Inline Critical CSS")
     print("═" * 60)
     
     files = []
