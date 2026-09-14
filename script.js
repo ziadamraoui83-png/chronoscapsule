@@ -174,7 +174,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ═══ الرسائل الابتدائية ═══ */
     const seedMessages = [];
 
-    const activeMessages = [...seedMessages];
+    const activeMessages = [];
     const labelElements = [];
     const meteors = [];
     let toastTimer = null, tooltipTarget = null;
