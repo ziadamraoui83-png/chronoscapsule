@@ -1,6 +1,5 @@
 /**
- * Chronos Capsule - Notification System
- * Handles local and Supabase-backed notifications
+ * Chronos Capsule - Notification System (i18n v2)
  */
 (function() {
     'use strict';
@@ -11,9 +10,47 @@
     let userId = null;
     let deviceHash = null;
 
-    // Initialize with Supabase client if available
+    /* ═══ ترجمة ═══ */
+    function t(key) {
+        if (window.CCI18N && typeof window.CCI18N.t === 'function') {
+            return window.CCI18N.t(key);
+        }
+        // احتياطي
+        const fallback = {
+            ar: {
+                notif_empty: 'لا توجد إشعارات جديدة',
+                notif_mark_all: 'تحديد الكل كمقروء',
+                notif_just_now: 'الآن',
+                notif_mins_ago: 'منذ {n} دقيقة',
+                notif_hours_ago: 'منذ {n} ساعة',
+                notif_days_ago: 'منذ {n} يوم',
+                notif_new: 'جديد'
+            },
+            en: {
+                notif_empty: 'No new notifications',
+                notif_mark_all: 'Mark all as read',
+                notif_just_now: 'just now',
+                notif_mins_ago: '{n} min ago',
+                notif_hours_ago: '{n} h ago',
+                notif_days_ago: '{n} d ago',
+                notif_new: 'New'
+            }
+        };
+        const lang = document.documentElement.lang || 'ar';
+        return (fallback[lang] && fallback[lang][key]) || key;
+    }
+
+    /* ═══ Detect اللغة ═══ */
+    function getLang() {
+        try {
+            const urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') return urlLang;
+            return localStorage.getItem('cc_lang') || 'ar';
+        } catch (e) { return 'ar'; }
+    }
+
+    /* ═══ Init ═══ */
     function init() {
-        // تهيئة Supabase
         if (window.__ccSupabase) {
             supabase = window.__ccSupabase;
         } else if (window.CC_CONFIG && window.CC_CONFIG.SUPABASE_URL && window.CC_CONFIG.SUPABASE_ANON_KEY) {
@@ -22,22 +59,17 @@
                     window.CC_CONFIG.SUPABASE_URL,
                     window.CC_CONFIG.SUPABASE_ANON_KEY
                 );
-                console.log('✅ Supabase initialized successfully');
             } catch (error) {
-                console.warn('❌ Failed to initialize Supabase:', error);
+                console.warn('❌ Supabase init failed:', error);
             }
         }
         
-        // Get user ID or device hash
         const user = localStorage.getItem('cc_user');
         if (user) {
             try {
                 const userData = JSON.parse(user);
                 userId = userData.id;
-                console.log('✅ User ID:', userId);
-            } catch (e) {
-                console.error('Error parsing user data:', e);
-            }
+            } catch (e) {}
         }
         
         if (!userId) {
@@ -45,15 +77,29 @@
             if (!localStorage.getItem('cc_device')) {
                 localStorage.setItem('cc_device', deviceHash);
             }
-            console.log('✅ Device hash:', deviceHash);
         }
         
-        // Load notifications from storage
         loadNotifications();
         
-        // Setup realtime listener if Supabase is available
         if (supabase) {
             setupRealtimeListener();
+        }
+
+        /* ✅ إعادة الترجمة لما تبدل اللغة */
+        window.addEventListener('cc:lang', function() {
+            updateNotificationUI();
+        });
+    }
+
+    /* ═══ إعادة بناء كل شيء عند تغيير اللغة ═══ */
+    function updateNotificationUI() {
+        // عاود جيب الإشعارات
+        loadNotifications();
+        
+        // عاود ارسم القائمة إذا كانت مفتوحة
+        const dropdown = document.querySelector('.notification-dropdown');
+        if (dropdown && dropdown.classList.contains('open')) {
+            renderNotificationList(dropdown);
         }
     }
 
@@ -74,7 +120,6 @@
         return 'dev_' + Math.abs(hash).toString(36);
     }
 
-    // دالة لإنشاء إشعارة جديدة
     async function createNotification(notificationData) {
         const notification = {
             id: Date.now().toString(),
@@ -83,7 +128,6 @@
             is_read: false
         };
 
-        // حفظ في التخزين المحلي أولاً
         const stored = localStorage.getItem(STORAGE_KEY);
         const notifications = stored ? JSON.parse(stored) : [];
         notifications.unshift(notification);
@@ -95,40 +139,29 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
         updateNotificationBadge(notifications.filter(n => !n.is_read).length);
 
-        // محاولة حفظ في Supabase
         if (supabase) {
             try {
                 notification.user_id = userId;
                 notification.device_hash = deviceHash;
                 
-                const { data, error } = await supabase
+                await supabase
                     .from(SUPABASE_NOTIFICATIONS_TABLE)
                     .insert([notification])
                     .select();
-
-                if (error) throw error;
             } catch (err) {
-                console.warn('Failed to save notification to Supabase:', err);
+                console.warn('Failed to save notification:', err);
             }
         }
         
         return notification;
     }
 
-    // Public API for showing notifications
     function show(type, title, message, duration = 5000) {
-        const notification = {
-            type,
-            title,
-            message,
-            duration
-        };
-
+        const notification = { type, title, message, duration };
         createNotification(notification);
         showNotificationUI(notification);
     }
 
-    // Show temporary notification UI
     function showNotificationUI(notification) {
         const container = document.createElement('div');
         container.className = `notification notification-${notification.type}`;
@@ -155,15 +188,12 @@
         }, 10);
     }
 
-    // دالة لتحميل الإشعارات
     async function loadNotifications() {
         const stored = localStorage.getItem(STORAGE_KEY);
         const localNotifications = stored ? JSON.parse(stored) : [];
         updateNotificationBadge(localNotifications.filter(n => !n.is_read).length);
 
-        if (!supabase) {
-            return localNotifications;
-        }
+        if (!supabase) return localNotifications;
 
         try {
             let query = supabase
@@ -179,7 +209,6 @@
             }
 
             const { data, error } = await query;
-            
             if (error) throw error;
             
             if (data) {
@@ -189,7 +218,7 @@
             
             return localNotifications;
         } catch (err) {
-            console.warn('Failed to fetch notifications from Supabase:', err);
+            console.warn('Failed to fetch notifications:', err);
             return localNotifications;
         }
     }
@@ -223,9 +252,7 @@
                     .from(SUPABASE_NOTIFICATIONS_TABLE)
                     .update({ is_read: true })
                     .eq('id', notificationId);
-            } catch (err) {
-                console.warn('Failed to mark notification as read in Supabase:', err);
-            }
+            } catch (err) {}
         }
     }
 
@@ -249,9 +276,7 @@
                 }
 
                 await query;
-            } catch (err) {
-                console.warn('Failed to mark all notifications as read in Supabase:', err);
-            }
+            } catch (err) {}
         }
     }
 
@@ -272,10 +297,7 @@
                     table: SUPABASE_NOTIFICATIONS_TABLE,
                     filter: userId ? `user_id=eq.${userId}` : `device_hash=eq.${deviceHash}`
                 },
-                (payload) => {
-                    console.log('Notification change:', payload);
-                    loadNotifications();
-                }
+                () => { loadNotifications(); }
             )
             .subscribe();
     }
@@ -290,12 +312,16 @@
         return icons[type] || '📢';
     }
 
+    /* ═══ رسم القائمة — مع ترجمة ═══ */
     function renderNotificationList(container) {
         fetchNotifications().then(notifications => {
             container.innerHTML = '';
             
             if (notifications.length === 0) {
-                container.innerHTML = '<div class="no-notifications">لا توجد إشعارات جديدة</div>';
+                const empty = document.createElement('div');
+                empty.className = 'no-notifications';
+                empty.textContent = t('notif_empty');   /* ✅ مترجم */
+                container.appendChild(empty);
                 return;
             }
 
@@ -329,7 +355,7 @@
 
             const markAllBtn = document.createElement('button');
             markAllBtn.className = 'mark-all-read-btn';
-            markAllBtn.textContent = 'تحديد الكل كمقروء';
+            markAllBtn.textContent = t('notif_mark_all');   /* ✅ مترجم */
             markAllBtn.addEventListener('click', () => {
                 markAllAsRead();
                 const items = list.querySelectorAll('.notification-item.unread');
@@ -345,6 +371,7 @@
         });
     }
 
+    /* ═══ الوقت النسبي — مترجم ═══ */
     function getTimeAgo(date) {
         const now = new Date();
         const diffMs = now - date;
@@ -352,15 +379,17 @@
         const diffHours = Math.floor(diffMs / 3600000);
         const diffDays = Math.floor(diffMs / 86400000);
 
-        if (diffMins < 1) return 'الآن';
-        if (diffMins < 60) return `منذ ${diffMins} دقيقة`;
-        if (diffHours < 24) return `منذ ${diffHours} ساعة`;
-        if (diffDays < 7) return `منذ ${diffDays} يوم`;
+        const lang = getLang();
+
+        if (diffMins < 1)  return t('notif_just_now');
+        if (diffMins < 60) return t('notif_mins_ago').replace('{n}', diffMins);
+        if (diffHours < 24) return t('notif_hours_ago').replace('{n}', diffHours);
+        if (diffDays < 7)  return t('notif_days_ago').replace('{n}', diffDays);
         
-        return date.toLocaleDateString('ar-EG');
+        return date.toLocaleDateString(lang === 'ar' ? 'ar-DZ' : 'en-GB');
     }
 
-    // Expose public API
+    /* ═══ Public API ═══ */
     window.CC_NOTIFICATIONS = {
         init,
         show,
@@ -370,7 +399,6 @@
         renderNotificationList
     };
 
-    // Auto-init when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', init);
     } else {
