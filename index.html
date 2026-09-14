@@ -110,16 +110,19 @@
           "description": "أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية.",
           "inLanguage": "ar",
           "datePublished": "2026-09-08",
-          "dateModified": "2026-09-14"
+          "dateModified": "2026-09-15"
         }
       ]
     }
     </script>
 
+    <!-- ✅ Fonts — Tajawal + Space Grotesk + Amiri + Playfair Display + IBM Plex Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@1,400;1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@1,500;1,700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@1,400;1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@1,500;1,700&family=Space+Grotesk:wght@400;500;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="style.css">
+
     <style>
         html[lang="ar"] .lang-en { display: none !important; }
         html[lang="en"] .lang-ar { display: none !important; }
@@ -306,7 +309,8 @@
                 </button>
             </div>
         </header>
-               <!-- 🔔 Panel الإشعارات -->
+
+        <!-- 🔔 Panel الإشعارات -->
         <div id="notifPanel" class="notification-panel">
             <div class="notification-header">
                 <h3 data-i18n="notif_title">الإشعارات</h3>
@@ -753,6 +757,9 @@
         </div>
     </div>
 
+    <!-- ═══════════════════════════════════════════════════════
+         📜 SCRIPTS
+         ═══════════════════════════════════════════════════════ -->
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -762,27 +769,14 @@
     <script src="script.js"></script>
     <script src="likes.js"></script>
     <script src="notifications.js"></script>
-<script>
+
+    <script>
     window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
 
     /* زر CTA السفلي → يفتح نفس Modal */
     document.getElementById('openModalBtnBottom')?.addEventListener('click', () => {
         document.getElementById('openModalBtn')?.click();
-    });
-
-    /* Scroll smooth */
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-            const id = a.getAttribute('href');
-            if (id && id.length > 1) {
-                const el = document.querySelector(id);
-                if (el) {
-                    e.preventDefault();
-                    el.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
     });
     </script>
 
@@ -849,10 +843,6 @@
         installBtn.remove();
     });
     </script>
-        <script src="transitions.js"></script>
-</body>
-
-    </script>
 
     <!-- ═══ Smooth Scroll + Reveal Animations ═══ -->
     <script>
@@ -877,7 +867,6 @@
             }
             requestAnimationFrame(raf);
 
-            /* دعم روابط الـ anchor */
             document.querySelectorAll('a[href^="#"]').forEach(a => {
                 a.addEventListener('click', (e) => {
                     const id = a.getAttribute('href');
@@ -901,9 +890,8 @@
             revealTargets.forEach(el => el.classList.add('reveal'));
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
+                entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        /* تأخير متسلسل للعناصر المتعددة */
                         const delay = Math.min(entry.target.dataset.delay || 0, 300);
                         setTimeout(() => {
                             entry.target.classList.add('visible');
@@ -916,7 +904,6 @@
                 rootMargin: '0px 0px -60px 0px'
             });
 
-            /* تأخير متسلسل للـ grid items */
             document.querySelectorAll('.features-grid, .blog-preview-grid, .stats-grid').forEach(grid => {
                 grid.querySelectorAll(':scope > *').forEach((child, i) => {
                     child.dataset.delay = i * 80;
@@ -927,7 +914,7 @@
         }
     })();
     </script>
-    <script src="likes.js"></script>
+
+    <script src="transitions.js"></script>
 </body>
-    
 </html>
