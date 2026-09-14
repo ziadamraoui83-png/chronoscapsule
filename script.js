@@ -1,5 +1,10 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — script.js (نسخة نهائية مركزية + إصلاحات)
+   CHRONOS CAPSULE — script.js (v2 محسّن)
+   - حذف seedMessages الفارغ
+   - حذف rotTarget الثابت
+   - PLANET_RADIUS constant
+   - try/catch حول initThreeJS
+   - باقي الكود كما هو
    ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
     let scene, camera, renderer, controls, planet, stars;
@@ -7,9 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let isZooming = false;
     let zoomTargetVector = new THREE.Vector3();
 
-    let rotFactor = 1, rotTarget = 1;
+    let rotFactor = 1;
     let fitDist = 21;
     const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const PLANET_RADIUS = 5.05;
 
     /* ═══ أدوات مساعدة ═══ */
     const $ = id => document.getElementById(id);
@@ -37,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     const sb = (CC_CONFIG.SUPABASE_URL && window.supabase)
         ? supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY) : null;
-   window.__ccSupabase = sb;
+    window.__ccSupabase = sb;
 
     function getDeviceHash() {
         let h = localStorage.getItem('cc_device');
@@ -96,7 +102,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     return list.filter(m => !m.arrivalISO || new Date(m.arrivalISO) <= new Date());
                 } catch (e) { return []; }
             }
-            /* ✅ جلب الكبسولات العامة + الخاصة التي وصلت فقط */
             const nowIso = new Date().toISOString();
             const { data, error } = await sb.from('capsules')
                 .select('id,text,author,country,mood,arrival_at,created_at,mode')
@@ -106,13 +111,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (error) { console.warn('CapsuleStore.load:', error.message); return []; }
 
-            let loaded = data.map(r => {
+            return data.map(r => {
                 const ci = countryInfo(r.country);
                 return { id: 'db_' + r.id, dbId: r.id, text: r.text,
                          author: r.author || CCI18N.t('anon_name'),
                          country: r.country, mood: r.mood, lat: ci.lat, lng: ci.lng };
             });
-            return loaded;
         },
         async save(msg) {
             const ci = countryInfo(msg.country);
@@ -170,9 +174,6 @@ document.addEventListener('DOMContentLoaded', () => {
                      .then(r => !r.error).catch(() => false);
         }
     };
-
-    /* ═══ الرسائل الابتدائية ═══ */
-    const seedMessages = [];
 
     const activeMessages = [];
     const labelElements = [];
@@ -498,8 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 0, 1
             );
 
-            rotTarget = 1;
-            rotFactor += (rotTarget - rotFactor) * 0.06;
+            rotFactor += (1 - rotFactor) * 0.06;
             planet.rotation.y += 0.0008 * rotFactor;
             stars.rotation.y += 0.00004 * rotFactor;
 
@@ -724,7 +724,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })();
     }
 
-    function get3DPos(lat, lng, radius = 5.05) {
+    function get3DPos(lat, lng, radius = PLANET_RADIUS) {
         const phi = (90 - lat) * (Math.PI / 180);
         const theta = (lng + 180) * (Math.PI / 180);
         return new THREE.Vector3(
@@ -773,27 +773,29 @@ document.addEventListener('DOMContentLoaded', () => {
             const transUrl = `https://translate.google.com/?sl=auto&tl=${tLang}&text=${encodeURIComponent(msg.text)}&op=translate`;
             const translateBtn = `<a href="${transUrl}" target="_blank" rel="noopener" class="action-btn translate-btn" data-translate title="${CCI18N.lang === 'ar' ? 'ترجم' : 'Translate'}">🔤</a>`;
             const likeBtnHtml = msg.dbId
-    ? `<button class="like-btn" data-capsule-id="${msg.dbId}" title="${CCI18N.lang === 'ar' ? 'إعجاب' : 'Like'}">
-            <span class="heart-icon">🤍</span>
-            <span class="like-count"></span>
-       </button>`
-    : '';
+                ? `<button class="like-btn" data-capsule-id="${msg.dbId}" title="${CCI18N.lang === 'ar' ? 'إعجاب' : 'Like'}">
+                        <span class="heart-icon">🤍</span>
+                        <span class="like-count"></span>
+                   </button>`
+                : '';
 
-tooltip.innerHTML = `
-    <h4>${esc(CCI18N.countryLabel(msg.country))} ${flag} ${translateBtn}</h4>
-    <p>"${esc(msg.text)}"</p>
-    <div class="author">${esc(CCI18N.t('by'))}: ${esc(msg.author)}</div>
-    <div class="tooltip-actions">
-        ${likeBtnHtml}
-    </div>
-`;
+            tooltip.innerHTML = `
+                <h4>${esc(CCI18N.countryLabel(msg.country))} ${flag} ${translateBtn}</h4>
+                <p>"${esc(msg.text)}"</p>
+                <div class="author">${esc(CCI18N.t('by'))}: ${esc(msg.author)}</div>
+                <div class="tooltip-actions">
+                    ${likeBtnHtml}
+                </div>
+            `;
             tooltip.style.left = labelDiv.style.left;
             tooltip.style.top = labelDiv.style.top;
             tooltip.classList.add('show');
             tooltipTarget = labelDiv;
-if (window.CC_LIKES && typeof window.CC_LIKES.bind === 'function') {
-    setTimeout(() => window.CC_LIKES.bind(tooltip), 10);
-}
+
+            if (window.CC_LIKES && typeof window.CC_LIKES.bind === 'function') {
+                setTimeout(() => window.CC_LIKES.bind(tooltip), 10);
+            }
+
             const rbtn = tooltip.querySelector('.report-btn');
             if (rbtn) rbtn.addEventListener('click', async (ev) => {
                 ev.stopPropagation();
@@ -939,15 +941,18 @@ if (window.CC_LIKES && typeof window.CC_LIKES.bind === 'function') {
         requestAnimationFrame(animateLaunch);
     }
 
-    initThreeJS();
-
-
+    /* ✅ لفّ initThreeJS في try/catch — إذا فشل، باقي الموقع يخدم */
+    try {
+        initThreeJS();
+    } catch (err) {
+        console.warn('Three.js init failed:', err);
+    }
 
     /* ═══ جلب الكبسولات من القاعدة ═══ */
     CapsuleStore.load().then(list => {
         list.forEach(m => { activeMessages.push(m); createMessageMarker(m); });
         updateCounter();
-    });
+    }).catch(err => console.warn('CapsuleStore.load error:', err));
 
     /* ═══════════════════════════════════════════════════════════
        إدارة النموذج
@@ -1086,7 +1091,6 @@ if (window.CC_LIKES && typeof window.CC_LIKES.bind === 'function') {
         try {
             const { code } = await CapsuleStore.save({ text, author, country, mood, arrivalISO });
 
-            /* ✅ فقط الكبسولات العامة تُطلق على الكوكب */
             if (!isPrivate) {
                 launchMessage(country, text, author, mood);
             }
