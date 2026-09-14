@@ -1,28 +1,45 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — Service Worker (v1.4.0)
-   يخزّن الملفات المحلية فقط — لا يعترض الطلبات الخارجية
+   CHRONOS CAPSULE — Service Worker (v1.9.0)
+   - جميع الصفحات + الملفات في Cache
+   - يخزّن الملفات المحلية فقط
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.8.0';
+const CACHE_VERSION = 'cc-v1.9.0';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
 const STATIC_ASSETS = [
     '/',
+    /* HTML Pages */
     '/index.html',
     '/archive.html',
     '/capsules.html',
     '/profile.html',
+    '/login.html',
     '/about.html',
     '/privacy.html',
     '/terms.html',
+    '/faq.html',
+    '/how-it-works.html',
+    '/contact.html',
+    '/blog.html',
+    '/blog-10-ideas-for-future-messages.html',
+    '/blog-how-to-write-a-time-capsule.html',
+    '/404.html',
+    /* CSS */
     '/style.css',
     '/archive.css',
+    /* JavaScript */
     '/config.js',
     '/i18n.js',
     '/script.js',
     '/archive.js',
     '/card-generator.js',
+    '/likes.js',
+    '/ratings.js',
+    '/notifications.js',
+    '/transitions.js',
+    /* Assets */
     '/manifest.json',
     '/icon-192.svg',
     '/icon-512.svg',
