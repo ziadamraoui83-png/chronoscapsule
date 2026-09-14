@@ -60,6 +60,14 @@
       foot_terms: 'شروط الاستخدام',
       foot_archive: 'الأرشيف',
       nav_my_capsules: '🛰️ كبسولاتي'
+      notif_empty: 'لا توجد إشعارات جديدة',
+      notif_mark_all: 'تحديد الكل كمقروء',
+      notif_just_now: 'الآن',
+      notif_mins_ago: 'منذ {n} دقيقة',
+      notif_hours_ago: 'منذ {n} ساعة',
+      notif_days_ago: 'منذ {n} يوم',
+      notif_new: 'جديد',
+      notif_title: 'الإشعارات',
     },
     en: {
       title: 'Chronos Capsule | Send a message to space',
@@ -118,6 +126,14 @@
       foot_terms: 'Terms of Use',
       foot_archive: 'Archive',
       nav_my_capsules: '🛰️ My Capsules'
+      notif_empty: 'No new notifications',
+      notif_mark_all: 'Mark all as read',
+      notif_just_now: 'just now',
+      notif_mins_ago: '{n} min ago',
+      notif_hours_ago: '{n} h ago',
+      notif_days_ago: '{n} d ago',
+      notif_new: 'New',
+      notif_title: 'Notifications',
     }
   };
 
