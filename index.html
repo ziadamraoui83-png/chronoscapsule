@@ -293,6 +293,10 @@
 
             <div style="display: flex; align-items: center; gap: 12px;">
                 <a href="archive.html" class="header-search-btn" title="بحث" aria-label="بحث">🔍</a>
+                <button id="notifBell" class="notification-bell" type="button" title="الإشعارات" aria-label="الإشعارات">
+    🔔
+    <span class="notification-badge" style="display:none">0</span>
+</button>
                 <a href="capsules.html" class="header-nav-link" data-i18n="nav_my_capsules">🛰️ كبسولاتي</a>
                 <a href="profile.html" class="profile-link-header" title="ملفي الشخصي">👤</a>
                 <button id="googleLoginBtn" class="google-auth-btn">
@@ -300,6 +304,16 @@
                 </button>
             </div>
         </header>
+        <!-- 🔔 Dropdown الإشعارات -->
+<div id="notifDropdown" class="notification-dropdown">
+    <div class="notif-header">
+        <span class="notif-title" data-i18n="notif_title">الإشعارات</span>
+        <button id="notifClose" class="notif-close" type="button" aria-label="إغلاق">×</button>
+    </div>
+    <div class="notif-body" id="notifBody">
+        <div class="no-notifications" data-i18n="notif_empty">لا توجد إشعارات جديدة</div>
+    </div>
+</div>
 
         <div id="goldenCapsulePanel" class="golden-panel" style="display:none">
             <div class="golden-header">
