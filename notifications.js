@@ -1,5 +1,8 @@
 /**
- * Chronos Capsule - Notification System (i18n v2)
+ * Chronos Capsule - Notification System (i18n v3)
+ * - مترجم بالكامل
+ * - يتزامن مع تغيير اللغة
+ * - يعمل مع panel + bell
  */
 (function() {
     'use strict';
@@ -15,7 +18,6 @@
         if (window.CCI18N && typeof window.CCI18N.t === 'function') {
             return window.CCI18N.t(key);
         }
-        // احتياطي
         const fallback = {
             ar: {
                 notif_empty: 'لا توجد إشعارات جديدة',
@@ -40,7 +42,6 @@
         return (fallback[lang] && fallback[lang][key]) || key;
     }
 
-    /* ═══ Detect اللغة ═══ */
     function getLang() {
         try {
             const urlLang = new URLSearchParams(location.search).get('lang');
@@ -63,7 +64,7 @@
                 console.warn('❌ Supabase init failed:', error);
             }
         }
-        
+
         const user = localStorage.getItem('cc_user');
         if (user) {
             try {
@@ -71,36 +72,30 @@
                 userId = userData.id;
             } catch (e) {}
         }
-        
+
         if (!userId) {
             deviceHash = localStorage.getItem('cc_device') || generateDeviceHash();
             if (!localStorage.getItem('cc_device')) {
                 localStorage.setItem('cc_device', deviceHash);
             }
         }
-        
+
         loadNotifications();
-        
+
         if (supabase) {
             setupRealtimeListener();
         }
 
-        /* ✅ إعادة الترجمة لما تبدل اللغة */
-        window.addEventListener('cc:lang', function() {
-            updateNotificationUI();
-        });
-    }
+        setupBell();
 
-    /* ═══ إعادة بناء كل شيء عند تغيير اللغة ═══ */
-    function updateNotificationUI() {
-        // عاود جيب الإشعارات
-        loadNotifications();
-        
-        // عاود ارسم القائمة إذا كانت مفتوحة
-        const dropdown = document.querySelector('.notification-dropdown');
-        if (dropdown && dropdown.classList.contains('open')) {
-            renderNotificationList(dropdown);
-        }
+        /* ✅ إعادة الترجمة عند تغيير اللغة */
+        window.addEventListener('cc:lang', function() {
+            const panel = document.getElementById('notifPanel');
+            const content = document.getElementById('notifContent');
+            if (panel && panel.classList.contains('show') && content) {
+                renderNotificationList(content);
+            }
+        });
     }
 
     function generateDeviceHash() {
@@ -110,7 +105,7 @@
         const cores = navigator.hardwareConcurrency || 'unknown';
         const memory = navigator.deviceMemory || 'unknown';
         const str = `${ua}${lang}${platform}${cores}${memory}${Date.now()}`;
-        
+
         let hash = 0;
         for (let i = 0; i < str.length; i++) {
             const char = str.charCodeAt(i);
@@ -120,6 +115,7 @@
         return 'dev_' + Math.abs(hash).toString(36);
     }
 
+    /* ═══ إنشاء إشعار ═══ */
     async function createNotification(notificationData) {
         const notification = {
             id: Date.now().toString(),
@@ -131,11 +127,11 @@
         const stored = localStorage.getItem(STORAGE_KEY);
         const notifications = stored ? JSON.parse(stored) : [];
         notifications.unshift(notification);
-        
+
         if (notifications.length > 50) {
             notifications.splice(50);
         }
-        
+
         localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
         updateNotificationBadge(notifications.filter(n => !n.is_read).length);
 
@@ -143,7 +139,7 @@
             try {
                 notification.user_id = userId;
                 notification.device_hash = deviceHash;
-                
+
                 await supabase
                     .from(SUPABASE_NOTIFICATIONS_TABLE)
                     .insert([notification])
@@ -152,10 +148,11 @@
                 console.warn('Failed to save notification:', err);
             }
         }
-        
+
         return notification;
     }
 
+    /* ═══ إظهار إشعار منبثق ═══ */
     function show(type, title, message, duration = 5000) {
         const notification = { type, title, message, duration };
         createNotification(notification);
@@ -165,13 +162,13 @@
     function showNotificationUI(notification) {
         const container = document.createElement('div');
         container.className = `notification notification-${notification.type}`;
-        container.innerHTML = 
-            '<div class="notification-icon">' + getIconForType(notification.type) + '</div>' +
-            '<div class="notification-content">' +
+        container.innerHTML =
+            '<div class="notification-icon ' + (notification.type || 'info') + '">' + getIconForType(notification.type) + '</div>' +
+            '<div class="notification-content-inner">' +
                 (notification.title ? '<div class="notification-title">' + notification.title + '</div>' : '') +
                 '<div class="notification-message">' + notification.message + '</div>' +
             '</div>' +
-            '<div class="notification-close">×</div>';
+            '<button class="notification-close" type="button">×</button>';
 
         document.body.appendChild(container);
 
@@ -188,6 +185,7 @@
         }, 10);
     }
 
+    /* ═══ تحميل الإشعارات ═══ */
     async function loadNotifications() {
         const stored = localStorage.getItem(STORAGE_KEY);
         const localNotifications = stored ? JSON.parse(stored) : [];
@@ -210,12 +208,12 @@
 
             const { data, error } = await query;
             if (error) throw error;
-            
-            if (data) {
+
+            if (data && data.length) {
                 saveNotifications(data);
                 return data;
             }
-            
+
             return localNotifications;
         } catch (err) {
             console.warn('Failed to fetch notifications:', err);
@@ -232,7 +230,7 @@
         const badge = document.querySelector('.notification-badge');
         if (badge) {
             badge.textContent = count > 0 ? count : '';
-            badge.style.display = count > 0 ? 'block' : 'none';
+            badge.style.display = count > 0 ? 'inline-flex' : 'none';
         }
     }
 
@@ -312,16 +310,13 @@
         return icons[type] || '📢';
     }
 
-    /* ═══ رسم القائمة — مع ترجمة ═══ */
+    /* ═══ رسم القائمة ═══ */
     function renderNotificationList(container) {
         fetchNotifications().then(notifications => {
             container.innerHTML = '';
-            
-            if (notifications.length === 0) {
-                const empty = document.createElement('div');
-                empty.className = 'no-notifications';
-                empty.textContent = t('notif_empty');   /* ✅ مترجم */
-                container.appendChild(empty);
+
+            if (!notifications || notifications.length === 0) {
+                container.innerHTML = '<div class="no-notifications">' + t('notif_empty') + '</div>';
                 return;
             }
 
@@ -332,13 +327,13 @@
                 const item = document.createElement('div');
                 item.className = `notification-item ${notification.is_read ? 'read' : 'unread'}`;
                 item.dataset.id = notification.id;
-                
+
                 const date = new Date(notification.created_at);
                 const timeAgo = getTimeAgo(date);
 
-                item.innerHTML = 
-                    '<div class="notification-icon">' + getIconForType(notification.type) + '</div>' +
-                    '<div class="notification-content">' +
+                item.innerHTML =
+                    '<div class="notification-icon ' + (notification.type || 'info') + '">' + getIconForType(notification.type) + '</div>' +
+                    '<div class="notification-content-inner">' +
                         (notification.title ? '<div class="notification-title">' + notification.title + '</div>' : '') +
                         '<div class="notification-message">' + notification.message + '</div>' +
                         '<div class="notification-time">' + timeAgo + '</div>' +
@@ -355,7 +350,7 @@
 
             const markAllBtn = document.createElement('button');
             markAllBtn.className = 'mark-all-read-btn';
-            markAllBtn.textContent = t('notif_mark_all');   /* ✅ مترجم */
+            markAllBtn.textContent = t('notif_mark_all');
             markAllBtn.addEventListener('click', () => {
                 markAllAsRead();
                 const items = list.querySelectorAll('.notification-item.unread');
@@ -385,8 +380,42 @@
         if (diffMins < 60) return t('notif_mins_ago').replace('{n}', diffMins);
         if (diffHours < 24) return t('notif_hours_ago').replace('{n}', diffHours);
         if (diffDays < 7)  return t('notif_days_ago').replace('{n}', diffDays);
-        
+
         return date.toLocaleDateString(lang === 'ar' ? 'ar-DZ' : 'en-GB');
+    }
+
+    /* ═══ ربط الجرس بـ Panel ═══ */
+    function setupBell() {
+        const bell = document.getElementById('notifBell');
+        const panel = document.getElementById('notifPanel');
+        const closeBtn = document.getElementById('notifClose');
+        const content = document.getElementById('notifContent');
+
+        if (!bell || !panel) return;
+
+        bell.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = panel.classList.contains('show');
+
+            if (isOpen) {
+                panel.classList.remove('show');
+            } else {
+                panel.classList.add('show');
+                if (content) renderNotificationList(content);
+            }
+        });
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                panel.classList.remove('show');
+            });
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!panel.contains(e.target) && !bell.contains(e.target)) {
+                panel.classList.remove('show');
+            }
+        });
     }
 
     /* ═══ Public API ═══ */
@@ -396,7 +425,8 @@
         fetchNotifications,
         markAsRead,
         markAllAsRead,
-        renderNotificationList
+        renderNotificationList,
+        setupBell
     };
 
     if (document.readyState === 'loading') {
