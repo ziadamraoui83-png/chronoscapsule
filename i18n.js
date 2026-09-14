@@ -59,7 +59,7 @@
       foot_privacy: 'سياسة الخصوصية',
       foot_terms: 'شروط الاستخدام',
       foot_archive: 'الأرشيف',
-      nav_my_capsules: '🛰️ كبسولاتي'
+      nav_my_capsules: '🛰️ كبسولاتي',
       notif_empty: 'لا توجد إشعارات جديدة',
       notif_mark_all: 'تحديد الكل كمقروء',
       notif_just_now: 'الآن',
@@ -125,7 +125,7 @@
       foot_privacy: 'Privacy Policy',
       foot_terms: 'Terms of Use',
       foot_archive: 'Archive',
-      nav_my_capsules: '🛰️ My Capsules'
+      nav_my_capsules: '🛰️ My Capsules',
       notif_empty: 'No new notifications',
       notif_mark_all: 'Mark all as read',
       notif_just_now: 'just now',
