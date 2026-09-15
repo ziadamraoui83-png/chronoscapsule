@@ -500,6 +500,37 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     height: 40px;
     font-size: 20px;
   }
+  /* ✅ إخفاء بعض عناصر الـ header على الموبايل الصغير */
+  .profile-link-header,
+  .header-search-btn {
+    display: none !important;
+  }
+  /* تقليل حجم زر Google على الموبايل */
+  .google-auth-btn {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  .google-auth-btn .g-text {
+    font-size: 12px !important;
+  }
+  /* تقليل زر "حسابي" */
+  .email-auth-link {
+    padding: 6px 10px !important;
+    font-size: 12px !important;
+  }
+  /* تقليل الـ nav link */
+  .header-nav-link {
+    font-size: 12px !important;
+    padding: 6px 8px !important;
+  }
+}
+
+/* ✅ الموبايل الأصغر (≤480px) - إخفاء المزيد */
+@media(max-width:480px){
+  .header-nav-link {
+    display: none !important;
+  }
+  /* إظهار فقط: bell + email link + google btn */
 }
 
 @media(max-width:768px){.cc-logo{height:38px}}
