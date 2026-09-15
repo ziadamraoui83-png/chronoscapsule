@@ -9,6 +9,18 @@
         body.cc-loaded { opacity: 1; }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script>
+    // ✅ تطبيق اللغة فوراً لمنع الوميض (FOUC)
+    (function() {
+        try {
+            var savedLang = localStorage.getItem('cc_lang');
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            var finalLang = urlLang || savedLang || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+            document.documentElement.lang = finalLang;
+            document.documentElement.dir = (finalLang === 'ar') ? 'rtl' : 'ltr';
+        } catch (e) {}
+    })();
+    </script>
     <title>كبسولة الزمن | Chronos Capsule — أرسل رسالة إلى الفضاء</title>
 
     <meta name="google-site-verification" content="F0LC1gHJdqI7RF6OdtE51g2DMhnCkko3c-GzsEzKzUI" />
@@ -110,19 +122,14 @@
           "description": "أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية.",
           "inLanguage": "ar",
           "datePublished": "2026-09-08",
-          "dateModified": "2026-09-15"
+          "dateModified": "2026-09-14"
         }
       ]
     }
     </script>
 
-    <!-- ✅ Fonts — Tajawal + Space Grotesk + Amiri + Playfair Display + IBM Plex Mono -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@1,400;1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@1,500;1,700&family=Space+Grotesk:wght@400;500;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
-
     <style>
         html[lang="ar"] .lang-en { display: none !important; }
         html[lang="en"] .lang-ar { display: none !important; }
@@ -297,7 +304,6 @@
             </a>
 
             <div style="display: flex; align-items: center; gap: 12px;">
-                <button class="lang-toggle" type="button">EN</button>
                 <a href="archive.html" class="header-search-btn" title="بحث" aria-label="بحث">🔍</a>
                 <button class="notifications-btn" id="notifBell" type="button" title="الإشعارات" aria-label="الإشعارات" style="position:relative;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#cbd5e1;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">
                     🔔
@@ -305,13 +311,18 @@
                 </button>
                 <a href="capsules.html" class="header-nav-link" data-i18n="nav_my_capsules">🛰️ كبسولاتي</a>
                 <a href="profile.html" class="profile-link-header" title="ملفي الشخصي">👤</a>
+                <!-- ✅ زر تسجيل الدخول بالبريد الإلكتروني (يفتح login.html) -->
+                <a href="login.html" class="email-auth-link" id="emailLoginLink" title="تسجيل الدخول بالبريد الإلكتروني" data-i18n-title="email_login_title" style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#cbd5e1;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s ease;">
+                    <span>✉️</span>
+                    <span class="email-login-text" data-i18n="email_login_btn">حسابي</span>
+                </a>
+                <!-- زر تسجيل الدخول عبر Google (يبقى كما هو - OAuth مباشر) -->
                 <button id="googleLoginBtn" class="google-auth-btn">
                     <span>🌐</span> تسجيل الدخول
                 </button>
             </div>
         </header>
-
-        <!-- 🔔 Panel الإشعارات -->
+               <!-- 🔔 Panel الإشعارات -->
         <div id="notifPanel" class="notification-panel">
             <div class="notification-header">
                 <h3 data-i18n="notif_title">الإشعارات</h3>
@@ -342,8 +353,8 @@
         </div>
 
         <div class="hero-panel">
-            <h1 class="main-title" data-i18n-html="title_html">أرسل رسالتك إلى <span class="highlight">الفضاء</span></h1>
-            <p class="main-desc" data-i18n="desc">اكتب رسالتك السرية أو اعترافك، اختر دولتك، ودعها تطير لتستقر على كبسولة الزمن الكونية ليقرأها الغرباء بسلام.</p>
+            <h1 class="main-title">أرسل رسالتك إلى <span class="highlight">الفضاء</span></h1>
+            <p class="main-desc">اكتب رسالتك السرية أو اعترافك، اختر دولتك، ودعها تطير لتستقر على كبسولة الزمن الكونية ليقرأها الغرباء بسلام.</p>
             <div class="hero-actions">
                 <button id="openModalBtn" class="btn-primary">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -368,7 +379,7 @@
         <div class="capsule-counter" title="عدد الكبسولات السابحة في الفضاء">
             <span class="pulse-dot"></span>
             <b id="capsuleCount">0</b>
-            <span data-i18n="counter">كبسولة تسبح في الفضاء</span>
+            <span>كبسولة تسبح في الفضاء</span>
         </div>
 
         <div class="zoom-controls">
@@ -671,14 +682,14 @@
     <div id="messageModal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 data-i18n="modal_title">إرسال كبسولة جديدة</h3>
+                <h3>إرسال كبسولة جديدة</h3>
                 <button id="closeModalBtn" class="close-btn">&times;</button>
             </div>
 
             <form id="messageForm">
                 <div class="form-group">
-                    <label for="messageText" data-i18n="msg_label">نص الرسالة</label>
-                    <textarea id="messageText" rows="4" placeholder="اكتب ما يدور في ذهنك بحرية..." data-i18n-ph="msg_ph" required maxlength="300"></textarea>
+                    <label for="messageText">نص الرسالة</label>
+                    <textarea id="messageText" rows="4" placeholder="اكتب ما يدور في ذهنك بحرية..." required maxlength="300"></textarea>
                     <span class="char-counter">0 / 300</span>
                 </div>
 
@@ -720,8 +731,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="authorName" data-i18n="name_label">اسمك أو اللقب</label>
-                    <input type="text" id="authorName" placeholder="اكتب اسمك هنا..." data-i18n-ph="name_ph">
+                    <label for="authorName">اسمك أو اللقب</label>
+                    <input type="text" id="authorName" placeholder="اكتب اسمك هنا...">
                     <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
                         <input type="checkbox" id="sendAsAnonymous" style="accent-color: #8b5cf6; cursor: pointer; width: 16px; height: 16px;">
                         <label for="sendAsAnonymous" data-i18n="send_anon" style="font-size: 0.9rem; color: #cbd5e1; cursor: pointer; font-weight: normal;">إرسال كمجهول</label>
@@ -730,13 +741,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="userCountry" data-i18n="country_label">الدولة</label>
+                    <label for="userCountry">الدولة</label>
                     <select id="userCountry" required>
-                        <option value="" disabled selected data-i18n="choose_country">اختر دولتك لتحديد نقطة الانطلاق</option>
+                        <option value="" disabled selected>اختر دولتك لتحديد نقطة الانطلاق</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn-submit" data-i18n="launch_btn">إطلاق الكبسولة نحو الفضاء</button>
+                <button type="submit" class="btn-submit">إطلاق الكبسولة نحو الفضاء</button>
             </form>
         </div>
     </div>
@@ -758,9 +769,6 @@
         </div>
     </div>
 
-    <!-- ═══════════════════════════════════════════════════════
-         📜 SCRIPTS
-         ═══════════════════════════════════════════════════════ -->
     <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
@@ -770,14 +778,27 @@
     <script src="script.js"></script>
     <script src="likes.js"></script>
     <script src="notifications.js"></script>
-
-    <script>
+<script>
     window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
 
     /* زر CTA السفلي → يفتح نفس Modal */
     document.getElementById('openModalBtnBottom')?.addEventListener('click', () => {
         document.getElementById('openModalBtn')?.click();
+    });
+
+    /* Scroll smooth */
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+            const id = a.getAttribute('href');
+            if (id && id.length > 1) {
+                const el = document.querySelector(id);
+                if (el) {
+                    e.preventDefault();
+                    el.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
     });
     </script>
 
@@ -844,6 +865,10 @@
         installBtn.remove();
     });
     </script>
+        <script src="transitions.js"></script>
+</body>
+
+    </script>
 
     <!-- ═══ Smooth Scroll + Reveal Animations ═══ -->
     <script>
@@ -868,6 +893,7 @@
             }
             requestAnimationFrame(raf);
 
+            /* دعم روابط الـ anchor */
             document.querySelectorAll('a[href^="#"]').forEach(a => {
                 a.addEventListener('click', (e) => {
                     const id = a.getAttribute('href');
@@ -891,8 +917,9 @@
             revealTargets.forEach(el => el.classList.add('reveal'));
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry) => {
+                entries.forEach((entry, i) => {
                     if (entry.isIntersecting) {
+                        /* تأخير متسلسل للعناصر المتعددة */
                         const delay = Math.min(entry.target.dataset.delay || 0, 300);
                         setTimeout(() => {
                             entry.target.classList.add('visible');
@@ -905,6 +932,7 @@
                 rootMargin: '0px 0px -60px 0px'
             });
 
+            /* تأخير متسلسل للـ grid items */
             document.querySelectorAll('.features-grid, .blog-preview-grid, .stats-grid').forEach(grid => {
                 grid.querySelectorAll(':scope > *').forEach((child, i) => {
                     child.dataset.delay = i * 80;
@@ -915,7 +943,7 @@
         }
     })();
     </script>
-
-    <script src="transitions.js"></script>
+    <script src="likes.js"></script>
 </body>
+    
 </html>

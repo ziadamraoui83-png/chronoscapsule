@@ -1,4 +1,4 @@
-/* ═════════ CHRONOS CAPSULE — طبقة التعريب v3.1 (عربي / English) ═════════ */
+/* ═════════ CHRONOS CAPSULE — طبقة التعريب v3 (عربي / English) ═════════ */
 (function () {
   "use strict";
 
@@ -63,6 +63,9 @@
       stat_capsules: 'كبسولة',
       stat_countries: 'دولة',
       hero_learn: 'كيف يعمل الموقع؟ →',
+      /* ✅ مفاتيح زر تسجيل الدخول بالبريد */
+      email_login_btn: 'حسابي',
+      email_login_title: 'تسجيل الدخول بالبريد الإلكتروني',
       notif_empty: 'لا توجد إشعارات جديدة',
       notif_mark_all: 'تحديد الكل كمقروء',
       notif_just_now: 'الآن',
@@ -132,6 +135,9 @@
       stat_capsules: 'capsules',  
       stat_countries: 'countries',       
       hero_learn: 'How it works? →',
+      /* ✅ Email login button keys */
+      email_login_btn: 'My Account',
+      email_login_title: 'Sign in with email',
       notif_empty: 'No new notifications',
       notif_mark_all: 'Mark all as read',
       notif_just_now: 'just now',
@@ -143,7 +149,23 @@
     }
   };
 
+  const SELS = [
+    ['.tagline a', 'tagline'],
+    ['.main-title', 'title_html', 'html'],
+    ['.main-desc', 'desc'],
+    ['.capsule-counter span:last-child', 'counter'],
+    ['.site-footer p', 'footer'],
+    ['.modal-header h3', 'modal_title'],
+    ['label[for="messageText"]', 'msg_label'],
+    ['#messageText', 'msg_ph', 'ph'],
+    ['label[for="authorName"]', 'name_label'],
+    ['#authorName', 'name_ph', 'ph'],
+    ['label[for="userCountry"]', 'country_label'],
+    ['.btn-submit', 'launch_btn']
+  ];
+
   let lang = 'ar';
+  let toggleBtn = null;
   const dnCache = {};
 
   const t = (key) => (DICT[lang] && DICT[lang][key]) || key;
@@ -189,10 +211,17 @@
     if (cur && (CI[cur] || cur === 'OTHER')) sel.value = cur;
   }
 
+  function setTextNode(el, txt) {
+    const node = [...el.childNodes].find(n => n.nodeType === 3 && n.textContent.trim());
+    if (node) node.textContent = txt;
+    else el.appendChild(document.createTextNode(' ' + txt));
+  }
+
   function applyDataI18n() {
     document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll('[data-i18n-html]').forEach(el => { el.innerHTML = t(el.dataset.i18nHtml); });
     document.querySelectorAll('[data-i18n-ph]').forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+    document.querySelectorAll('[data-i18n-title]').forEach(el => { el.title = t(el.dataset.i18nTitle); });
     document.querySelectorAll('[data-i18n-chip]').forEach(el => { el.textContent = t('chip_' + el.dataset.i18nChip); });
   }
 
@@ -200,13 +229,16 @@
     document.documentElement.lang = lang;
     document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
     document.title = t('title');
-    
-    // تحديث كل الأزرار أو العناصر التي تحمل class أو ID لزر اللغة
-    document.querySelectorAll('.lang-toggle').forEach(btn => {
-      btn.textContent = t('lang_btn');
-    });
-
+    for (const [sel, key, mode] of SELS) {
+      const el = document.querySelector(sel);
+      if (!el) continue;
+      if (mode === 'ph') el.placeholder = t(key);
+      else if (mode === 'html') el.innerHTML = t(key);
+      else if (mode === 'node') setTextNode(el, t(key));
+      else el.textContent = t(key);
+    }
     applyDataI18n();
+    if (toggleBtn) toggleBtn.textContent = t('lang_btn');
   }
 
   function setLang(l, save) {
@@ -217,36 +249,47 @@
     window.dispatchEvent(new CustomEvent('cc:lang'));
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    let saved = null;
-    try { saved = localStorage.getItem('cc_lang'); } catch (e) {}
-
+  /* ✅ تطبيق اللغة فوراً قبل DOMContentLoaded لمنع الوميض (FOUC) */
+  function getInitialLang() {
     let urlLang = null;
     try {
       const p = new URLSearchParams(location.search).get('lang');
       if (p === 'ar' || p === 'en') urlLang = p;
     } catch (e) {}
 
-    lang = urlLang
+    let saved = null;
+    try { saved = localStorage.getItem('cc_lang'); } catch (e) {}
+
+    return urlLang
         || saved
         || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+  }
 
-    // البحث عن زر اللغة في الصفحة أو إنشائه تلقائياً في شريط التنقل إذا لم يكن موجوداً
-    let toggleBtns = document.querySelectorAll('.lang-toggle');
-    if (toggleBtns.length === 0) {
-      const newBtn = document.createElement('button');
-      newBtn.className = 'lang-toggle';
-      newBtn.type = 'button';
-      const header = document.querySelector('.site-header') || document.querySelector('header');
-      if (header) header.appendChild(newBtn);
-      toggleBtns = [newBtn];
+  /* ✅ تطبيق lang/dir على <html> مباشرة (لمنع وميض اللغة) */
+  lang = getInitialLang();
+  try {
+    document.documentElement.lang = lang;
+    document.documentElement.dir = (lang === 'ar') ? 'rtl' : 'ltr';
+  } catch (e) {}
+
+  document.addEventListener('DOMContentLoaded', () => {
+    /* ✅ إعادة قراءة اللغة (قد تكون تغيرت أثناء التحميل) */
+    lang = getInitialLang();
+
+    toggleBtn = document.createElement('button');
+    toggleBtn.className = 'lang-toggle';
+    toggleBtn.type = 'button';
+    toggleBtn.addEventListener('click', () => setLang(lang === 'ar' ? 'en' : 'ar'));
+
+    const header = document.querySelector('.site-header');
+    if (header) {
+      const innerAction = header.querySelector(':scope > div:not(.logo)');
+      if (innerAction && innerAction.tagName === 'DIV') {
+        innerAction.appendChild(toggleBtn);
+      } else {
+        header.appendChild(toggleBtn);
+      }
     }
-
-    toggleBtns.forEach(btn => {
-      btn.addEventListener('click', () => {
-        setLang(lang === 'ar' ? 'en' : 'ar');
-      });
-    });
 
     setLang(lang, false);
   });
