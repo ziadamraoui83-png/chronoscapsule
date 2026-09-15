@@ -297,6 +297,7 @@
             </a>
 
             <div style="display: flex; align-items: center; gap: 12px;">
+                <button class="lang-toggle" type="button">EN</button>
                 <a href="archive.html" class="header-search-btn" title="بحث" aria-label="بحث">🔍</a>
                 <button class="notifications-btn" id="notifBell" type="button" title="الإشعارات" aria-label="الإشعارات" style="position:relative;width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#cbd5e1;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;">
                     🔔
@@ -341,8 +342,8 @@
         </div>
 
         <div class="hero-panel">
-            <h1 class="main-title">أرسل رسالتك إلى <span class="highlight">الفضاء</span></h1>
-            <p class="main-desc">اكتب رسالتك السرية أو اعترافك، اختر دولتك، ودعها تطير لتستقر على كبسولة الزمن الكونية ليقرأها الغرباء بسلام.</p>
+            <h1 class="main-title" data-i18n-html="title_html">أرسل رسالتك إلى <span class="highlight">الفضاء</span></h1>
+            <p class="main-desc" data-i18n="desc">اكتب رسالتك السرية أو اعترافك، اختر دولتك، ودعها تطير لتستقر على كبسولة الزمن الكونية ليقرأها الغرباء بسلام.</p>
             <div class="hero-actions">
                 <button id="openModalBtn" class="btn-primary">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
@@ -367,7 +368,7 @@
         <div class="capsule-counter" title="عدد الكبسولات السابحة في الفضاء">
             <span class="pulse-dot"></span>
             <b id="capsuleCount">0</b>
-            <span>كبسولة تسبح في الفضاء</span>
+            <span data-i18n="counter">كبسولة تسبح في الفضاء</span>
         </div>
 
         <div class="zoom-controls">
@@ -670,14 +671,14 @@
     <div id="messageModal" class="modal-overlay">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>إرسال كبسولة جديدة</h3>
+                <h3 data-i18n="modal_title">إرسال كبسولة جديدة</h3>
                 <button id="closeModalBtn" class="close-btn">&times;</button>
             </div>
 
             <form id="messageForm">
                 <div class="form-group">
-                    <label for="messageText">نص الرسالة</label>
-                    <textarea id="messageText" rows="4" placeholder="اكتب ما يدور في ذهنك بحرية..." required maxlength="300"></textarea>
+                    <label for="messageText" data-i18n="msg_label">نص الرسالة</label>
+                    <textarea id="messageText" rows="4" placeholder="اكتب ما يدور في ذهنك بحرية..." data-i18n-ph="msg_ph" required maxlength="300"></textarea>
                     <span class="char-counter">0 / 300</span>
                 </div>
 
@@ -719,8 +720,8 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="authorName">اسمك أو اللقب</label>
-                    <input type="text" id="authorName" placeholder="اكتب اسمك هنا...">
+                    <label for="authorName" data-i18n="name_label">اسمك أو اللقب</label>
+                    <input type="text" id="authorName" placeholder="اكتب اسمك هنا..." data-i18n-ph="name_ph">
                     <div style="margin-top: 8px; display: flex; align-items: center; gap: 8px;">
                         <input type="checkbox" id="sendAsAnonymous" style="accent-color: #8b5cf6; cursor: pointer; width: 16px; height: 16px;">
                         <label for="sendAsAnonymous" data-i18n="send_anon" style="font-size: 0.9rem; color: #cbd5e1; cursor: pointer; font-weight: normal;">إرسال كمجهول</label>
@@ -729,13 +730,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="userCountry">الدولة</label>
+                    <label for="userCountry" data-i18n="country_label">الدولة</label>
                     <select id="userCountry" required>
-                        <option value="" disabled selected>اختر دولتك لتحديد نقطة الانطلاق</option>
+                        <option value="" disabled selected data-i18n="choose_country">اختر دولتك لتحديد نقطة الانطلاق</option>
                     </select>
                 </div>
 
-                <button type="submit" class="btn-submit">إطلاق الكبسولة نحو الفضاء</button>
+                <button type="submit" class="btn-submit" data-i18n="launch_btn">إطلاق الكبسولة نحو الفضاء</button>
             </form>
         </div>
     </div>
