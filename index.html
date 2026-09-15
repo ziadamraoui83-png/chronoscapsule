@@ -329,8 +329,39 @@
                 <button id="googleLoginBtn" class="google-auth-btn" aria-label="تسجيل الدخول باستخدام Google">
                     <span aria-hidden="true">🌐</span> تسجيل الدخول
                 </button>
+                <!-- ✅ Hamburger Menu Button (يظهر فقط على الموبايل) -->
+                <button id="hamburgerBtn" class="hamburger-btn" type="button" aria-label="فتح القائمة" aria-expanded="false" aria-controls="hamburgerMenu">
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                    <span class="hamburger-line"></span>
+                </button>
             </div>
         </header>
+
+        <!-- ✅ Hamburger Menu Overlay (يظهر فقط على الموبايل) -->
+        <nav id="hamburgerMenu" class="hamburger-menu" aria-label="القائمة الرئيسية" aria-hidden="true">
+            <div class="hamburger-header">
+                <span class="hamburger-title">القائمة</span>
+                <button id="hamburgerClose" class="hamburger-close" type="button" aria-label="إغلاق القائمة">×</button>
+            </div>
+            <ul class="hamburger-list">
+                <li><a href="capsules.html" class="hamburger-link">🛰️ <span data-i18n="nav_my_capsules">كبسولاتي</span></a></li>
+                <li><a href="profile.html" class="hamburger-link">👤 <span>ملفي الشخصي</span></a></li>
+                <li><button class="hamburger-link hamburger-notif-btn" id="hamburgerNotifBtn" type="button" aria-label="الإشعارات">🔔 <span data-i18n="notif_title">الإشعارات</span><span class="notification-badge" style="display:none">0</span></button></li>
+                <li><button class="hamburger-link hamburger-lang-btn" id="hamburgerLangBtn" type="button" aria-label="تبديل اللغة">🌐 <span data-i18n="lang_btn">عربي</span></button></li>
+                <li><a href="login.html" class="hamburger-link">🚪 <span data-i18n="email_login_btn">حسابي</span></a></li>
+                <li class="hamburger-divider"></li>
+                <li><a href="index.html" class="hamburger-link">🏠 <span>الرئيسية</span></a></li>
+                <li><a href="archive.html" class="hamburger-link">📚 <span>الأرشيف</span></a></li>
+                <li><a href="blog.html" class="hamburger-link">📖 <span data-i18n="foot_blog">المدونة</span></a></li>
+                <li><a href="faq.html" class="hamburger-link">❓ <span data-i18n="foot_faq">الأسئلة الشائعة</span></a></li>
+                <li><a href="contact.html" class="hamburger-link">💬 <span data-i18n="foot_contact">اتصل بنا</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- ✅ Backdrop خلف القائمة -->
+        <div id="hamburgerBackdrop" class="hamburger-backdrop" aria-hidden="true"></div>
+
                <!-- 🔔 Panel الإشعارات -->
         <div id="notifPanel" class="notification-panel">
             <div class="notification-header">
@@ -959,6 +990,130 @@
 
             revealTargets.forEach(el => observer.observe(el));
         }
+    })();
+    </script>
+    <!-- ✅ Hamburger Menu JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        const hamburgerBtn = document.getElementById('hamburgerBtn');
+        const hamburgerMenu = document.getElementById('hamburgerMenu');
+        const hamburgerClose = document.getElementById('hamburgerClose');
+        const hamburgerBackdrop = document.getElementById('hamburgerBackdrop');
+        const hamburgerNotifBtn = document.getElementById('hamburgerNotifBtn');
+        const hamburgerLangBtn = document.getElementById('hamburgerLangBtn');
+
+        if (!hamburgerBtn || !hamburgerMenu) return;
+
+        let isOpen = false;
+
+        /* ✅ فتح القائمة */
+        function openMenu() {
+            isOpen = true;
+            hamburgerBtn.classList.add('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'true');
+            hamburgerMenu.classList.add('open');
+            hamburgerMenu.setAttribute('aria-hidden', 'false');
+            if (hamburgerBackdrop) {
+                hamburgerBackdrop.classList.add('show');
+                hamburgerBackdrop.setAttribute('aria-hidden', 'false');
+            }
+            document.body.classList.add('hamburger-open');
+        }
+
+        /* ✅ إغلاق القائمة */
+        function closeMenu() {
+            isOpen = false;
+            hamburgerBtn.classList.remove('active');
+            hamburgerBtn.setAttribute('aria-expanded', 'false');
+            hamburgerMenu.classList.remove('open');
+            hamburgerMenu.setAttribute('aria-hidden', 'true');
+            if (hamburgerBackdrop) {
+                hamburgerBackdrop.classList.remove('show');
+                hamburgerBackdrop.setAttribute('aria-hidden', 'true');
+            }
+            document.body.classList.remove('hamburger-open');
+        }
+
+        /* ✅ تبديل الحالة */
+        function toggleMenu() {
+            if (isOpen) closeMenu();
+            else openMenu();
+        }
+
+        /* ✅ ربط الأحداث */
+        hamburgerBtn.addEventListener('click', toggleMenu);
+        if (hamburgerClose) hamburgerClose.addEventListener('click', closeMenu);
+        if (hamburgerBackdrop) hamburgerBackdrop.addEventListener('click', closeMenu);
+
+        /* ✅ إغلاق بمفتاح Escape */
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && isOpen) closeMenu();
+        });
+
+        /* ✅ إغلاق عند النقر على أي رابط داخل القائمة */
+        hamburgerMenu.querySelectorAll('a.hamburger-link').forEach(function(link) {
+            link.addEventListener('click', function() {
+                /* تأخير قصير للسماح بالتنقل */
+                setTimeout(closeMenu, 150);
+            });
+        });
+
+        /* ✅ زر الإشعارات داخل القائمة */
+        if (hamburgerNotifBtn) {
+            hamburgerNotifBtn.addEventListener('click', function() {
+                closeMenu();
+                /* فتح لوحة الإشعارات بعد إغلاق القائمة */
+                setTimeout(function() {
+                    const bell = document.getElementById('notifBell');
+                    if (bell) bell.click();
+                }, 350);
+            });
+        }
+
+        /* ✅ زر تبديل اللغة داخل القائمة */
+        if (hamburgerLangBtn) {
+            hamburgerLangBtn.addEventListener('click', function() {
+                /* استعمال زر اللغة الرئيسي إن وجد */
+                const langToggle = document.querySelector('.lang-toggle');
+                if (langToggle) {
+                    langToggle.click();
+                    /* تحديث نص زر اللغة في القائمة */
+                    setTimeout(function() {
+                        const span = hamburgerLangBtn.querySelector('span:last-child');
+                        if (span && window.CCI18N) {
+                            span.textContent = window.CCI18N.t('lang_btn');
+                        }
+                    }, 100);
+                }
+            });
+        }
+
+        /* ✅ مزامنة شارة الإشعارات بين الجرس والقائمة */
+        function syncNotifBadge() {
+            const originalBadge = document.querySelector('.notifications-btn .notification-badge');
+            const menuBadge = hamburgerNotifBtn?.querySelector('.notification-badge');
+            if (originalBadge && menuBadge) {
+                if (originalBadge.style.display !== 'none' && originalBadge.textContent) {
+                    menuBadge.style.display = 'inline-block';
+                    menuBadge.textContent = originalBadge.textContent;
+                } else {
+                    menuBadge.style.display = 'none';
+                }
+            }
+        }
+
+        /* تحديث كل 2 ثانية */
+        setInterval(syncNotifBadge, 2000);
+        syncNotifBadge();
+
+        /* ✅ إغلاق عند تغيير حجم الشاشة لديسكتوب */
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && isOpen) {
+                closeMenu();
+            }
+        });
     })();
     </script>
     <!-- ✅ transitions.js آخر شي بعد Lenis/Reveal -->
