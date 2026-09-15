@@ -169,7 +169,7 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 }
 
 .zoom-controls {
-    position: absolute; bottom: 40px;
+    position: absolute; top: 90px;
     display: flex; flex-direction: column; gap: 10px;
     z-index: 30 !important;
     isolation: isolate;
@@ -503,7 +503,7 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
   }
   .main-title{font-size:1.55rem}
   .main-desc{font-size:.9rem; margin-bottom:16px}
-  .zoom-controls{bottom:62px; right:14px; left:auto; z-index: 30}
+  .zoom-controls{top:80px; right:14px; left:auto; bottom:auto; z-index: 30}
   html[dir="ltr"] .zoom-controls{right:14px; left:auto}
   .zoom-controls button{width:42px;height:42px;font-size:21px}
   .capsule-counter{bottom:66px; left:14px; right:auto; padding:8px 12px; font-size:11.5px; border-radius:10px}
