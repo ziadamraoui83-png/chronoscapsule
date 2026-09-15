@@ -187,8 +187,69 @@
             .hero-emoji { animation: none; }
         }
     </style>
+
+<style>
+.breadcrumbs-nav {
+  padding: 14px 25px 0;
+  font-size: 13px;
+  color: #94a3b8;
+  position: relative;
+  z-index: 5;
+}
+.breadcrumbs-nav ol {
+  list-style: none;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.breadcrumbs-nav li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.breadcrumbs-nav li:not(:last-child)::after {
+  content: "›";
+  margin: 0 4px;
+  color: #475569;
+  font-size: 16px;
+}
+.breadcrumbs-nav a {
+  color: #38bdf8;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.breadcrumbs-nav a:hover {
+  color: #7dd3fc;
+  text-decoration: underline;
+}
+.breadcrumbs-nav [aria-current="page"] {
+  color: #cbd5e1;
+  font-weight: 500;
+}
+@media (max-width: 600px) {
+  .breadcrumbs-nav { padding: 10px 14px 0; font-size: 11px; }
+}
+</style>
 </head>
 <body>
+<nav class="breadcrumbs-nav" aria-label="مسار التنقل">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <a itemscope itemtype="https://schema.org/WebPage" itemprop="item" itemid="https://chronoscapsule.vercel.app/" href="https://chronoscapsule.vercel.app/">
+        <span itemprop="name">الرئيسية</span>
+      </a>
+      <meta itemprop="position" content="1">
+    </li>
+    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+      <span itemprop="name" aria-current="page">المدونة</span>
+      <meta itemprop="position" content="2">
+    </li>
+  </ol>
+</nav>
+
 
 <header class="page-header">
     <a href="index.html" class="header-logo">
