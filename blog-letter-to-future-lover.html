@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+    <!-- ═══ منع الوميض الأبيض — inline (critical CSS) ═══ -->
+    <style id="cc_critical">
+        html { background: #010103 !important; }
+        body { background: #010103; opacity: 0; transition: opacity 0.35s ease; }
+        body.cc-loaded { opacity: 1; }
+    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- ✅ تطبيق اللغة فوراً لمنع الوميض (FOUC) -->
+    <script>
+        (function() {
+            try {
+                var savedLang = localStorage.getItem('cc_lang');
+                var urlLang = new URLSearchParams(location.search).get('lang');
+                var cookieMatch = document.cookie.match(/(?:^|;\s*)cc_lang=([a-z]{2})(?:;|$)/i);
+                var cookieLang = (cookieMatch && (cookieMatch[1] === 'ar' || cookieMatch[1] === 'en')) ? cookieMatch[1] : null;
+                var finalLang = urlLang || savedLang || cookieLang || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+                document.documentElement.lang = finalLang;
+                document.documentElement.dir = (finalLang === 'ar') ? 'rtl' : 'ltr';
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- ✅ التطبيق الثاني للتأكيد -->
+    <script>
+    (function() {
+        try {
+            var lang = localStorage.getItem('cc_lang') || 'ar';
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') lang = urlLang;
+            document.documentElement.lang = lang;
+            document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+        } catch(e) {}
+    })();
+    </script>
+
+    <!-- ═══ SEO Meta Tags ═══ -->
+    <title>كيف تكتب رسالة لحبيبك في المستقبل: 5 نماذج وطرق مؤثرة | Chronos Capsule</title>
+    <meta name="description" content="دليل كامل لكتابة رسالة حب للحبيب في المستقبل: 5 نماذج جاهزة، نصائح عاطفية، وأفكار رومانسية. اكتشف كيف ترسل رسالة مؤثرة عبر الزمن مع Chronos Capsule.">
+    <meta name="keywords" content="رسالة لحبيبك, رسالة حب, رسالة للمستقبل, كتابة رسالة عاطفية, رسالة حب للمستقبل, نماذج رسائل حب, time capsule love letter, romantic message future">
+    <meta name="theme-color" content="#010103">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="author" content="Chronos Capsule">
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-Z872SS657T');
+    </script>
+
+    <!-- ✅ Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="كيف تكتب رسالة لحبيبك في المستقبل: 5 نماذج وطرق مؤثرة">
+    <meta property="og:description" content="دليل كامل لكتابة رسالة حب مؤثرة للحبيب في المستقبل. 5 نماذج جاهزة + نصائح عاطفية.">
+    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html">
+    <meta property="og:site_name" content="Chronos Capsule">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta property="article:published_time" content="2026-09-15">
+    <meta property="article:modified_time" content="2026-09-15">
+    <meta property="article:author" content="Chronos Capsule">
+    <meta property="article:section" content="علاقات">
+    <meta property="article:tag" content="رسالة حب">
+    <meta property="article:tag" content="كبسولة الزمن">
+    <meta property="article:tag" content="رسالة للمستقبل">
+
+    <!-- ✅ Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="كيف تكتب رسالة لحبيبك في المستقبل: 5 نماذج وطرق مؤثرة">
+    <meta name="twitter:description" content="5 نماذج جاهزة + نصائح عاطفية لكتابة رسالة حب للحبيب في المستقبل.">
+    <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta name="twitter:image:alt" content="رسالة حب للمستقبل - Chronos Capsule">
+
+    <!-- ✅ Icons -->
+    <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
+    <link rel="apple-touch-icon" href="/icon-192.svg">
+    <link rel="canonical" href="https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html">
+
+    <!-- ✅ Hreflang -->
+    <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html">
+    <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html">
+
+    <!-- ✅ Schema.org Article -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "كيف تكتب رسالة لحبيبك في المستقبل: 5 نماذج وطرق مؤثرة",
+      "description": "دليل كامل لكتابة رسالة حب للحبيب في المستقبل: 5 نماذج جاهزة، نصائح عاطفية، وأفكار رومانسية مع Chronos Capsule.",
+      "image": "https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png",
+      "datePublished": "2026-09-15",
+      "dateModified": "2026-09-15",
+      "author": {
+        "@type": "Organization",
+        "name": "Chronos Capsule",
+        "url": "https://chronoscapsule.vercel.app/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Chronos Capsule",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://chronoscapsule.vercel.app/icon-512.svg",
+          "width": 512,
+          "height": 512
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html"
+      },
+      "inLanguage": "ar",
+      "wordCount": "1800",
+      "articleSection": "علاقات",
+      "keywords": "رسالة لحبيبك, رسالة حب, رسالة للمستقبل, كتابة رسالة عاطفية"
+    }
+    </script>
+
+    <!-- ✅ Schema.org BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "الرئيسية",
+          "item": "https://chronoscapsule.vercel.app/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "المدونة",
+          "item": "https://chronoscapsule.vercel.app/blog.html"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "رسالة لحبيبك في المستقبل",
+          "item": "https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html"
+        }
+      ]
+    }
+    </script>
+
+    <!-- ✅ Fonts + Preconnect -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@1,400;1,700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        html[lang="ar"] .lang-en { display: none !important; }
+        html[lang="en"] .lang-ar { display: none !important; }
+        *{box-sizing:border-box;margin:0;padding:0;font-family:'Tajawal',sans-serif}
+        body{overflow-y:auto;background:#010103;color:#fff;min-height:100vh;line-height:1.85}
+        a,button{cursor:pointer}
+
+        /* ✅ خلفية فضائية موحدة */
+        body::before{content:'';position:fixed;inset:0;
+            background:radial-gradient(ellipse at 20% 50%,rgba(139,92,246,.08) 0%,transparent 60%),
+                        radial-gradient(ellipse at 80% 20%,rgba(59,130,246,.06) 0%,transparent 50%),
+                        radial-gradient(ellipse at 50% 100%,rgba(167,139,250,.05) 0%,transparent 60%),
+                        #010103;
+            z-index:0;pointer-events:none}
+        body::after{content:'';position:fixed;inset:0;
+            background-image:radial-gradient(1px 1px at 10% 15%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1px 1px at 25% 40%,rgba(255,255,255,.4) 0%,transparent 100%),
+                radial-gradient(1.5px 1.5px at 50% 10%,rgba(255,255,255,.6) 0%,transparent 100%),
+                radial-gradient(1px 1px at 70% 60%,rgba(255,255,255,.3) 0%,transparent 100%),
+                radial-gradient(1px 1px at 90% 30%,rgba(255,255,255,.5) 0%,transparent 100%),
+                radial-gradient(1.5px 1.5px at 15% 80%,rgba(167,139,250,.4) 0%,transparent 100%),
+                radial-gradient(1px 1px at 85% 75%,rgba(58,225,255,.3) 0%,transparent 100%);
+            z-index:0;pointer-events:none}
+
+        .page-header{position:sticky;top:0;z-index:50;
+            background:rgba(1,1,3,.85);backdrop-filter:blur(14px);
+            border-bottom:1px solid rgba(255,255,255,.07);
+            padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+        .header-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .header-logo-icon{font-size:1.4rem}
+        .header-logo-text{font-size:1.05rem;font-weight:900;
+            background:linear-gradient(135deg,#a78bfa,#3b82f6);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .header-actions{display:flex;align-items:center;gap:8px}
+        .back-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
+            padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
+        .back-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
+        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
+        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
+
+        .page{max-width:760px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
+
+        .breadcrumb{font-size:12.5px;color:#64748b;margin-bottom:20px}
+        .breadcrumb a{color:#a78bfa;text-decoration:none}
+        .breadcrumb a:hover{color:#fff}
+
+        .article-header{margin-bottom:30px}
+        .article-tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;
+            color:#f87171;background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.3);
+            padding:3px 12px;border-radius:999px;margin-bottom:14px}
+        .article-title{font-size:2rem;font-weight:900;line-height:1.35;margin-bottom:14px;
+            background:linear-gradient(135deg,#f87171,#a78bfa,#3AE1FF);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .article-meta{display:flex;gap:16px;flex-wrap:wrap;font-size:12.5px;color:#64748b;
+            padding-bottom:20px;border-bottom:1px solid rgba(255,255,255,.06)}
+        .article-meta span{display:flex;align-items:center;gap:6px}
+
+        .article-body{color:#cbd5e1;font-size:1rem;line-height:1.95}
+        .article-body p{margin-bottom:18px}
+        .article-body h2{font-size:1.35rem;font-weight:900;color:#fff;margin:34px 0 14px;
+            display:flex;align-items:center;gap:10px;line-height:1.4}
+        .article-body h2 .num{flex:none;width:34px;height:34px;border-radius:10px;
+            background:linear-gradient(135deg,#be123c,#8b5cf6);
+            display:flex;align-items:center;justify-content:center;
+            font-size:14px;color:#fff;font-weight:900}
+        .article-body h3{font-size:1.1rem;font-weight:900;color:#e2e8f0;margin:22px 0 10px}
+        .article-body strong{color:#f87171;font-weight:700}
+        .article-body em{color:#fda4af;font-style:italic}
+        .article-body ul{list-style:none;margin:14px 0;padding:0}
+        .article-body ul li{padding:6px 0 6px 26px;position:relative;font-size:.97rem}
+        .article-body ul li::before{content:'♥';position:absolute;left:0;color:#f87171;font-weight:900}
+        html[dir="ltr"] .article-body ul li{padding:6px 0 6px 26px}
+        html[dir="ltr"] .article-body ul li::before{content:'♥';left:0}
+        .article-body a{color:#3AE1FF;text-decoration:none;
+            border-bottom:1px dashed rgba(58,225,255,.3);transition:all .3s}
+        .article-body a:hover{color:#fff;border-bottom-color:#3AE1FF}
+
+        /* ✅ صندوق النماذج - مميز */
+        .template-box{margin:24px 0;padding:22px 26px;
+            background:linear-gradient(135deg,rgba(248,113,113,.08),rgba(167,139,250,.06));
+            border:1px solid rgba(248,113,113,.25);
+            border-radius:18px;position:relative;overflow:hidden}
+        .template-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;
+            background:linear-gradient(90deg,#f87171,#a78bfa,#3AE1FF)}
+        .template-box-title{font-size:.95rem;font-weight:900;color:#f87171;
+            margin-bottom:10px;display:flex;align-items:center;gap:8px}
+        .template-box-content{font-size:.97rem;color:#e2e8f0;line-height:1.95;font-style:italic;
+            border-inline-start:3px solid rgba(248,113,113,.3);padding-inline-start:14px}
+
+        .article-body blockquote{margin:24px 0;padding:18px 22px;
+            background:rgba(248,113,113,.06);border-inline-start:4px solid #f87171;
+            border-radius:12px;font-style:italic;color:#fda4af;font-size:1rem;line-height:1.8}
+        .article-body blockquote::before{content:'"';font-size:2rem;color:#f87171;
+            line-height:0;vertical-align:-12px;margin-inline-end:6px}
+
+        .tip-box{margin:22px 0;padding:16px 20px;
+            background:rgba(56,189,248,.08);border:1px solid rgba(56,189,248,.25);
+            border-radius:14px;display:flex;gap:12px;align-items:flex-start}
+        .tip-icon{font-size:20px;flex:none}
+        .tip-text{font-size:.92rem;color:#7dd3fc;line-height:1.8}
+
+        .article-cta{margin-top:50px;padding:36px 28px;text-align:center;
+            background:linear-gradient(135deg,rgba(248,113,113,.1),rgba(167,139,250,.08));
+            border:1px solid rgba(248,113,113,.3);border-radius:24px}
+        .article-cta h3{font-size:1.3rem;font-weight:900;margin-bottom:10px;
+            background:linear-gradient(135deg,#f87171,#a78bfa);
+            -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+        .article-cta p{font-size:.93rem;color:#94a3b8;margin-bottom:22px;line-height:1.7}
+        .article-cta-btn{display:inline-flex;align-items:center;gap:10px;
+            padding:14px 32px;background:linear-gradient(135deg,#be123c,#8b5cf6);
+            color:#fff;text-decoration:none;border-radius:14px;
+            font-size:15px;font-weight:900;transition:all .3s ease;
+            box-shadow:0 12px 36px rgba(190,18,60,.4)}
+        .article-cta-btn:hover{transform:translateY(-3px);box-shadow:0 18px 48px rgba(190,18,60,.55)}
+
+        .related{margin-top:40px;padding-top:30px;border-top:1px solid rgba(255,255,255,.06)}
+        .related-title{font-size:1.1rem;font-weight:900;margin-bottom:16px;color:#fff}
+        .related-links{display:flex;flex-wrap:wrap;gap:10px}
+        .related-links a{padding:9px 16px;background:rgba(248,113,113,.1);
+            border:1px solid rgba(248,113,113,.3);border-radius:999px;
+            color:#fda4af;text-decoration:none;font-size:13px;font-weight:700;
+            transition:all .3s}
+        .related-links a:hover{background:rgba(248,113,113,.25);color:#fff}
+
+        .page-footer{text-align:center;padding:30px 20px;color:#64748b;font-size:12.5px;
+            border-top:1px solid rgba(255,255,255,.06);margin-top:50px}
+        .footer-links{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+        .footer-links a{color:#a78bfa;text-decoration:none;transition:color .3s}
+        .footer-links a:hover{color:#fff}
+
+        @media(max-width:600px){
+            .page-header{padding:12px 16px}
+            .page{padding:24px 16px 60px}
+            .article-title{font-size:1.45rem}
+            .article-body{font-size:.95rem}
+            .article-body h2{font-size:1.15rem}
+            .article-cta{padding:26px 20px}
+            .template-box{padding:18px 16px}
+        }
+        @media (prefers-reduced-motion: reduce) {
+            * { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="page-header">
+    <a href="index.html" class="header-logo" aria-label="Chronos Capsule">
+        <span class="header-logo-icon">🚀</span>
+        <span class="header-logo-text">CHRONOS CAPSULE</span>
+    </a>
+    <div class="header-actions">
+        <button class="lang-toggle-cap" aria-label="تبديل اللغة" id="postLangToggle">EN</button>
+        <a href="blog.html" class="back-link" aria-label="العودة للمدونة">
+            <span>←</span>
+            <span class="lang-ar">المدونة</span>
+            <span class="lang-en">Blog</span>
+        </a>
+    </div>
+</header>
+
+<main class="page">
+
+    <nav class="breadcrumb" aria-label="مسار التنقل">
+        <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+        <span> › </span>
+        <a href="blog.html"><span class="lang-ar">المدونة</span><span class="lang-en">Blog</span></a>
+        <span> › </span>
+        <span class="lang-ar">رسالة لحبيبك في المستقبل</span>
+        <span class="lang-en">Letter to Future Lover</span>
+    </nav>
+
+    <article>
+
+        <header class="article-header">
+            <span class="article-tag">
+                <span class="lang-ar">علاقات</span>
+                <span class="lang-en">Relationships</span>
+            </span>
+            <h1 class="article-title">
+                <span class="lang-ar">كيف تكتب رسالة لحبيبك في المستقبل: 5 نماذج وطرق مؤثرة</span>
+                <span class="lang-en">How to Write a Letter to Your Future Lover: 5 Templates & Methods</span>
+            </h1>
+            <div class="article-meta">
+                <span>📅 <span class="lang-ar">15 سبتمبر 2026</span><span class="lang-en">September 15, 2026</span></span>
+                <span>⏱️ <span class="lang-ar">7 دقائق قراءة</span><span class="lang-en">7 min read</span></span>
+                <span>✍️ <span class="lang-ar">فريق Chronos</span><span class="lang-en">Chronos Team</span></span>
+            </div>
+        </header>
+
+        <div class="article-body">
+
+            <!-- ═══ النسخة العربية ═══ -->
+            <div class="lang-ar">
+                <p>الكتابة للحبيب ليست مجرد كلمات — إنها <strong>تثبيت لحظة عاطفية</strong> في الزمن. حين تكتب رسالة لحبيبك في المستقبل، أنت لا ترسل مجرد نص، بل تحفظ مشاعرك من تآكل الزمن، وتضمن أن حبك سيصل حتى لو تغير كل شيء حولكما.</p>
+
+                <p>في هذا الدليل، سنشاركك 5 نماذج جاهزة لكتابة رسالة حب للحبيب في المستقبل، مع نصائح عملية لجعلها <em>مؤثرة حقاً</em> وليست مجرد كلام رومانسي فارغ. يمكنك استخدام <a href="index.html">Chronos Capsule</a> لإرسال هذه الرسائل لتصل في تاريخ محدد مستقبلاً.</p>
+
+                <h2><span class="num">1</span> الرسالة العاطفية الكلاسيكية</h2>
+                <p>النموذج الكلاسيكي هو الأكثر أماناً وأسهل كتابة. يعتمد على التعبير المباشر عن المشاعر بصدق، دون تكلف أو تصنع. الهدف هو أن يقرأها الحبيب بعد سنوات ويشعر بنفس الدفء الذي شعرت به حين كتبتها.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">💌 النموذج الأول</div>
+                    <div class="template-box-content">
+                        "حبيبي/حبيبتي، أكتب لك هذه الكلمات في [تاريخ اليوم]، وأنا لا أعرف أين ستكون حين تقرأها. لكنني أعرف شيئاً واحداً: مهما تغير العالم حولي، سيبقى حبي لك كما هو. أتذكر اليوم الذي [اذكر لحظة جميلة جمعتكما]، وأتذكر كيف نظرت إليّ في تلك اللحظة. كنت سعيداً ببساطة. أردت أن أحفظ هذه اللحظة لك، لأنني أخاف أن يأخذها الزمن مني. إذا كنت تقرأ هذا بعد سنوات، أريدك أن تعرف: لم أنسَ، ولن أنسى أبداً."
+                    </div>
+                </div>
+
+                <h2><span class="num">2</span> رسالة الاعتذار والمصالحة</h2>
+                <p>أحياناً يكون الحب مصحوباً بأخطاء. كتابة رسالة اعتذار للحبيب في المستقبل هي طريقة قوية لتحمل مسؤولية أفعالك، وفتح باب المصالحة حتى لو كان الوقت قد مر. هذا النوع من الرسائل يحتاج إلى شجاعة وصدق.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">💜 النموذج الثاني</div>
+                    <div class="template-box-content">
+                        "أكتب هذا الاعتذار وأنا أعرف أن الكلمات لا تكفي. في [تاريخ الحدث]، فعلت شيئاً آسف عليه حقاً. لم أكن أنوي إيذاءك، لكنني كنت [اذكر سبب الخطأ بصدق]. أريدك أن تعرف أنني تعلمت من هذا الخطأ، وأنني سأبذل ما في وسعي لأكون أفضل. إذا كان الوقت قد شفى الجراح، فأتمنى أن تجد في هذه الكلمات سلاماً. وإن لم يكن، فأفهم تماماً."
+                    </div>
+                </div>
+
+                <blockquote>
+                    الاعتذار ليس ضعفاً — إنه قوة. حين تعتذر بصدق، تثبت أنك تقدّر العلاقة أكثر من كبريائك.
+                </blockquote>
+
+                <h2><span class="num">3</span> رسالة للحبيب المستقبلي (لمن لم تقابله بعد)</h2>
+                <p>هذا النوع فريد من نوعه — تكتب لشخص <strong>لم تقابله بعد</strong>. قد يكون حبيبك المستقبلي الذي ستلتقي به بعد سنوات. هذه الرسالة تكون مثل وعد أو أمنية، تصلح لأن تكون توقيعاً من ماضيك لمستقبلك العاطفي.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">✨ النموذج الثالث</div>
+                    <div class="template-box-content">
+                        "إلى الحب الذي لم يأتِ بعد، أكتب لك هذه الكلمات وأنا لا أعرف وجهك بعد، ولا أعرف اسمك، ولا أعرف متى سألتقي بك. لكنني أعرف أنك موجود هناك في المستقبل، تنتظرني كما أنتظرك. أريدك أن تعرف أنني أحفظ لك مكاناً في قلبي. سأكون أفضل نسخة من نفسي حتى نلتقي، وسأحبك بالطريقة التي تستحقها. انتظرني قليلاً — أنا في طريقي إليك."
+                    </div>
+                </div>
+
+                <h2><span class="num">4</span> رسالة الذكرى السنوية</h2>
+                <p>هذا النوع تكتبه لمناسبة خاصة — ذكرى سنوية للتعارف، عيد ميلاد، أو عيد حب. تختار تاريخ وصول الرسالة ليكون في نفس اليوم بعد سنة أو أكثر، لتجعلها تقليداً سنوياً.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">🎉 النموذج الرابع</div>
+                    <div class="template-box-content">
+                        "مرّ عام كامل منذ [تاريخ المناسبة]. في هذا اليوم قبل سنة، كنت [اذكر ما حدث في ذلك اليوم]. لا أصدق أن الوقت مرّ بهذه السرعة. أردت أن أحفظ هذه اللحظة لأنني أعرف أن المستقبل سيجلب تغييرات، لكنني أريد أن أثبتّ لك أن حبي لم يتغير — بل نما. كل يوم أكتشف فيك شيئاً جديداً يعجبني. إلى العام القادم، وإلى كل الأعوام التي تليه."
+                    </div>
+                </div>
+
+                <h2><span class="num">5</span> رسالة الوداع الأخير</h2>
+                <p>أصعب أنواع الرسائل، لكنها الأكثر أثراً. حين تعرف أن العلاقة تنتهي، أو حين تودّع شخصاً تحبه (سفر، فراق، أو حتى رحيل)، كتابة رسالة وداع هي طريقة لترك أثر أخير، وإغلاق الباب بكرامة وحب.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">🌙 النموذج الخامس</div>
+                    <div class="template-box-content">
+                        "هذه آخر رسالة أكتبها لك. لست غاضباً، ولست حزيناً — بل ممتنّاً. لأنك علّمتني كيف أحب، وكيف أتألم، وكيف أنهض من جديد. أردت أن أودّعك بطريقة تستحقها، لا بصرخة بل بسلام. سأحمل ذكرياتنا معي، لكنني سأمشي قدماً. إذا التقينا يوماً في طريق آخر، أتمنى أن نبتسم لبعضنا — لأننا نستحق السلام."
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <span class="tip-icon">💡</span>
+                    <div class="tip-text"><strong>نصيحة:</strong> اختر شعور "حنين" على Chronos Capsule لرسائل الوداع والذكرى السنوية، وشعور "حب" للرسائل العاطفية الكلاسيكية. هذا يساعد القارئ الغريب على فهم سياق رسالتك.</div>
+                </div>
+
+                <h2>كيف ترسل هذه الرسائل عبر الزمن؟</h2>
+                <p>بعد كتابة الرسالة، يمكنك استخدام <a href="index.html">Chronos Capsule</a> لإرسالها بتاريخ مستقبلي محدد. إليك الخطوات:</p>
+                <ul>
+                    <li>اختر <strong>التاريخ</strong> الذي تريد أن تصل فيه الرسالة (بعد شهر، سنة، أو 5 سنوات)</li>
+                    <li>اختر <strong>الشعور</strong> المناسب (حنين، حب، أمل، اعتراف)</li>
+                    <li>اكتب الرسالة بصوتك الطبيعي — لا تحاول أن تبدو شاعراً</li>
+                    <li>اختر <strong>وضع الكبسولة</strong>: خاصة (لنفسي فقط) أو عامة (يقرأها الغرباء)</li>
+                </ul>
+
+                <h2>الخلاصة</h2>
+                <p>الكتابة للحبيب في المستقبل ليست مجرد رومانسية — إنها <strong>أداة عاطفية قوية</strong> لحفظ المشاعر من الزمن، وتحويل اللحظات العابرة إلى ذكريات خالدة. سواء كنت تكتب لحبيب حالي، أو مستقبلي، أو حتى لمن رحل، الكلمات الصادقة تجد دائماً طريقها إلى القلب.</p>
+                <p>افتح <a href="index.html">الصفحة الرئيسية</a> الآن، واكتب أول رسالة لحبيبك في المستقبل — ستُقرأ في وقتها المناسب.</p>
+            </div>
+
+            <!-- ═══ النسخة الإنجليزية ═══ -->
+            <div class="lang-en">
+                <p>Writing to your lover is not just words — it's <strong>preserving an emotional moment</strong> in time. When you write a letter to your future lover, you're not sending just text; you're protecting your feelings from the erosion of time, ensuring your love reaches them even if everything changes around you both.</p>
+
+                <p>In this guide, we'll share 5 ready templates for writing a love letter to your future lover, with practical tips to make them <em>truly impactful</em> rather than empty romantic talk. You can use <a href="index.html">Chronos Capsule</a> to send these letters for delivery on a specific future date.</p>
+
+                <h2><span class="num">1</span> The Classic Emotional Letter</h2>
+                <p>The classic template is the safest and easiest to write. It relies on honestly expressing feelings directly, without pretense. The goal is for your lover to read it years later and feel the same warmth you felt when writing it.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">💌 Template One</div>
+                    <div class="template-box-content">
+                        "My love, I'm writing these words on [today's date], and I don't know where you'll be when you read this. But I know one thing: no matter how the world changes around me, my love for you will remain the same. I remember the day we [mention a beautiful moment you shared], and I remember how you looked at me in that moment. I was simply happy. I wanted to preserve that moment for you, because I'm afraid time might take it from me. If you're reading this years later, I want you to know: I haven't forgotten, and I never will."
+                    </div>
+                </div>
+
+                <h2><span class="num">2</span> The Apology & Reconciliation Letter</h2>
+                <p>Sometimes love comes with mistakes. Writing an apology letter to your future lover is a powerful way to take responsibility for your actions, opening the door for reconciliation even if time has passed. This type of letter requires courage and honesty.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">💜 Template Two</div>
+                    <div class="template-box-content">
+                        "I'm writing this apology knowing words aren't enough. On [event date], I did something I'm truly sorry for. I didn't mean to hurt you, but I was [honestly mention the reason]. I want you to know I've learned from this mistake, and I'll do everything in my power to be better. If time has healed the wounds, I hope you find peace in these words. And if not, I understand completely."
+                    </div>
+                </div>
+
+                <blockquote>
+                    Apologizing is not weakness — it's strength. When you apologize sincerely, you prove you value the relationship more than your pride.
+                </blockquote>
+
+                <h2><span class="num">3</span> Letter to Your Future Lover (Who You Haven't Met Yet)</h2>
+                <p>This type is unique — you're writing to someone <strong>you haven't met yet</strong>. It might be your future lover you'll meet years from now. This letter is like a promise or wish, a signature from your past to your emotional future.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">✨ Template Three</div>
+                    <div class="template-box-content">
+                        "To the love that hasn't come yet, I'm writing these words without knowing your face yet, or your name, or when I'll meet you. But I know you're out there in the future, waiting for me as I wait for you. I want you to know I'm keeping a place for you in my heart. I'll be the best version of myself until we meet, and I'll love you the way you deserve. Wait for me a little longer — I'm on my way to you."
+                    </div>
+                </div>
+
+                <h2><span class="num">4</span> The Anniversary Letter</h2>
+                <p>This type is written for a special occasion — anniversary of meeting, birthday, or Valentine's Day. You choose the delivery date to be on the same day, a year or more later, making it an annual tradition.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">🎉 Template Four</div>
+                    <div class="template-box-content">
+                        "A full year has passed since [occasion date]. On this day a year ago, I was [mention what happened that day]. I can't believe how fast time has passed. I wanted to preserve this moment because I know the future will bring changes, but I want to assure you my love hasn't changed — it has grown. Every day I discover something new about you that I love. Here's to next year, and to all the years that follow."
+                    </div>
+                </div>
+
+                <h2><span class="num">5</span> The Final Goodbye Letter</h2>
+                <p>The hardest type of letter, but the most impactful. When you know the relationship is ending, or when saying goodbye to someone you love (travel, separation, or even passing), writing a goodbye letter is a way to leave a final mark, closing the door with dignity and love.</p>
+
+                <div class="template-box">
+                    <div class="template-box-title">🌙 Template Five</div>
+                    <div class="template-box-content">
+                        "This is the last letter I'll write to you. I'm not angry, and I'm not sad — I'm grateful. Because you taught me how to love, how to hurt, and how to rise again. I wanted to say goodbye in a way that befits you, not with a scream but with peace. I'll carry our memories with me, but I'll walk forward. If we ever meet again on another path, I hope we smile at each other — because we both deserve peace."
+                    </div>
+                </div>
+
+                <div class="tip-box">
+                    <span class="tip-icon">💡</span>
+                    <div class="tip-text"><strong>Tip:</strong> Choose "nostalgia" mood on Chronos Capsule for goodbye and anniversary letters, and "love" mood for classic emotional letters. This helps strangers understand the context of your message.</div>
+                </div>
+
+                <h2>How to Send These Letters Through Time?</h2>
+                <p>After writing the letter, you can use <a href="index.html">Chronos Capsule</a> to send it on a specific future date. Here are the steps:</p>
+                <ul>
+                    <li>Choose the <strong>date</strong> you want the letter to arrive (after a month, year, or 5 years)</li>
+                    <li>Choose the appropriate <strong>mood</strong> (nostalgia, love, hope, confession)</li>
+                    <li>Write the letter in your natural voice — don't try to be a poet</li>
+                    <li>Choose <strong>capsule mode</strong>: private (for myself only) or public (strangers can read)</li>
+                </ul>
+
+                <h2>Conclusion</h2>
+                <p>Writing to your future lover isn't just romance — it's a <strong>powerful emotional tool</strong> for preserving feelings from time, transforming fleeting moments into eternal memories. Whether you're writing to a current lover, a future one, or even someone who has left, sincere words always find their way to the heart.</p>
+                <p>Open the <a href="index.html">homepage</a> now, and write your first letter to your future lover — it will be read when the time is right.</p>
+            </div>
+
+        </div>
+
+        <!-- ✅ Call to Action -->
+        <div class="article-cta">
+            <h3>
+                <span class="lang-ar">جاهز لإرسال رسالتك للحبيب؟</span>
+                <span class="lang-en">Ready to Send Your Letter?</span>
+            </h3>
+            <p>
+                <span class="lang-ar">Chronos Capsule يتيح لك إرسال رسائل حب للحبيب في المستقبل — مجاناً وبسرية تامة.</span>
+                <span class="lang-en">Chronos Capsule lets you send love letters to your future lover — free and completely private.</span>
+            </p>
+            <a href="index.html" class="article-cta-btn">
+                <span>🚀</span>
+                <span class="lang-ar">اكتب رسالتك الآن</span>
+                <span class="lang-en">Write Your Letter Now</span>
+            </a>
+        </div>
+
+        <!-- ✅ مقالات ذات صلة -->
+        <div class="related">
+            <h3 class="related-title">
+                <span class="lang-ar">مقالات ذات صلة</span>
+                <span class="lang-en">Related Articles</span>
+            </h3>
+            <div class="related-links">
+                <a href="blog-how-to-write-a-time-capsule.html">
+                    <span class="lang-ar">كيف تكتب كبسولة زمنية مؤثرة</span>
+                    <span class="lang-en">How to Write a Powerful Capsule</span>
+                </a>
+                <a href="blog-10-ideas-for-future-messages.html">
+                    <span class="lang-ar">10 أفكار لرسائل للمستقبل</span>
+                    <span class="lang-en">10 Ideas for Future Messages</span>
+                </a>
+                <a href="blog.html">
+                    <span class="lang-ar">كل المقالات</span>
+                    <span class="lang-en">All Articles</span>
+                </a>
+                <a href="how-it-works.html">
+                    <span class="lang-ar">كيف يعمل الموقع</span>
+                    <span class="lang-en">How It Works</span>
+                </a>
+            </div>
+        </div>
+
+    </article>
+
+</main>
+
+<footer class="page-footer">
+    <div class="footer-links">
+        <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+        <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
+        <a href="contact.html"><span class="lang-ar">اتصل بنا</span><span class="lang-en">Contact</span></a>
+        <a href="privacy.html"><span class="lang-ar">الخصوصية</span><span class="lang-en">Privacy</span></a>
+    </div>
+    <p>© 2026 Chronos Capsule. <span class="lang-ar">كل الحقوق محفوظة</span><span class="lang-en">All rights reserved</span></p>
+</footer>
+
+<!-- ✅ Service Worker -->
+<script>
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+        navigator.serviceWorker.register('/sw.js').catch(function() {});
+    });
+}
+</script>
+
+<!-- ✅ Language Toggle Logic -->
+<script>
+(function(){
+    'use strict';
+
+    const toggle = document.getElementById('postLangToggle');
+    if (!toggle) return;
+
+    function getLang() {
+        try {
+            var saved = localStorage.getItem('cc_lang');
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            return urlLang || saved || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+        } catch(e) { return 'ar'; }
+    }
+
+    function setLang(l) {
+        document.documentElement.lang = l;
+        document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+        try { localStorage.setItem('cc_lang', l); } catch(e) {}
+        try { document.cookie = 'cc_lang=' + l + ';max-age=31536000;path=/;SameSite=Lax'; } catch(e) {}
+        toggle.textContent = l === 'ar' ? 'EN' : 'عربي';
+    }
+
+    // التطبيق الأولي
+    setLang(getLang());
+
+    toggle.addEventListener('click', function() {
+        var current = document.documentElement.lang;
+        setLang(current === 'ar' ? 'en' : 'ar');
+    });
+})();
+</script>
+
+<!-- ✅ Page Load Animation -->
+<script>
+window.addEventListener('load', function() {
+    setTimeout(function() {
+        document.body.classList.add('cc-loaded');
+    }, 100);
+});
+setTimeout(function() {
+    document.body.classList.add('cc-loaded');
+}, 600);
+</script>
+
+</body>
+</html>
