@@ -16,7 +16,53 @@ body.cc-loaded {
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
-body {     overflow-x: hidden;     overflow-y: auto;     background: #010103;     color: #fff;     scroll-behavior: smooth; }
+
+/* ═══════════════════════════════════════════════════════════
+   ✅ خلفية فضائية موحدة لكل الصفحة (لمنع الخط الفاصل)
+   - نفس تدرج الكوكب البنفسجي لكن أخف
+   - نجوم CSS متوزعة
+   - الانتقال بين Hero وباقي الصفحة سلس
+   ═══════════════════════════════════════════════════════════ */
+body {
+    overflow-x: hidden;
+    overflow-y: auto;
+    color: #fff;
+    scroll-behavior: smooth;
+    background-color: #010103;
+    /* ✅ تدرج بنفسجي خفيف يتناسق مع الكوكب */
+    background-image:
+        radial-gradient(ellipse at 20% 0%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(59, 130, 246, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(167, 139, 250, 0.05) 0%, transparent 60%),
+        /* ✅ نجوم CSS متوزعة (نفس نجوم landing-section) */
+        radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 28% 42%, rgba(255,255,255,.5) 0%, transparent 100%),
+        radial-gradient(1px 1px at 55% 8%, rgba(255,255,255,.35) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 72% 65%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 88% 28%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 18% 82%, rgba(167,139,250,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 45% 55%, rgba(255,255,255,.25) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 82% 88%, rgba(58,225,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 5% 70%, rgba(255,255,255,.3) 0%, transparent 100%),
+        radial-gradient(1px 1px at 95% 50%, rgba(255,255,255,.35) 0%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 35% 25%, rgba(255,255,255,.4) 0%, transparent 100%),
+        radial-gradient(1px 1px at 65% 90%, rgba(167,139,250,.25) 0%, transparent 100%);
+    background-size: 900px 900px;
+    background-repeat: repeat;
+    background-attachment: fixed;
+    /* ✅ تأثير twinkle خفيف */
+    animation: ccBodyStars 12s ease-in-out infinite;
+}
+
+@keyframes ccBodyStars {
+    0%, 100% { background-position: 0 0; opacity: 1; }
+    50% { background-position: 0 -10px; opacity: 0.95; }
+}
+
+/* ✅ احترام prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+    body { animation: none !important; }
+}
 
 button, a, select, input[type="radio"], label, .close-btn, .country-label { cursor: pointer !important; }
 
@@ -1261,14 +1307,14 @@ body {
    ═══════════════════════════════════════════════════════════ */
 
 /* ═══ Section عام ═══ */
-/* ═══ Section عام ═══ */
 .landing-section {
     position: relative;
     padding: 100px 40px;
     max-width: 1200px;
     margin: 0 auto;
     z-index: 1;
-    background: #010103;
+    /* ✅ خلفية شفافة لإظهار نجوم body الفضائية */
+    background: transparent;
 }
 
 /* ═══ أول قسم — يبدا بـ padding أصغر ═══ */
@@ -1280,11 +1326,6 @@ body {
     margin-top: 0;
     position: relative;
     z-index: 2;
-}
-
-/* ✅ باقي الأقسام لها خلفية #010103 */
-.landing-section {
-    background: #010103;
 }
 
 /* ✨ نجوم في كل قسم */
