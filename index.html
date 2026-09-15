@@ -314,13 +314,13 @@
                 <a href="capsules.html" class="header-nav-link" data-i18n="nav_my_capsules">🛰️ كبسولاتي</a>
                 <a href="profile.html" class="profile-link-header" title="ملفي الشخصي">👤</a>
                 <!-- ✅ زر تسجيل الدخول بالبريد الإلكتروني (يفتح login.html) -->
-                <a href="login.html" class="email-auth-link" id="emailLoginLink" title="تسجيل الدخول بالبريد الإلكتروني" data-i18n-title="email_login_title" style="display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#cbd5e1;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s ease;white-space:nowrap;">
-                    <span>✉️</span>
+                <a href="login.html" class="email-auth-link" id="emailLoginLink" title="تسجيل الدخول بالبريد الإلكتروني" data-i18n-title="email_login_title" style="display:inline-flex;align-items:center;gap:6px;padding:8px 12px;border-radius:24px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.2);color:#cbd5e1;font-size:13px;font-weight:600;text-decoration:none;transition:all 0.2s ease;white-space:nowrap;" aria-label="تسجيل الدخول بالبريد الإلكتروني">
+                    <span aria-hidden="true">✉️</span>
                     <span class="email-login-text" data-i18n="email_login_btn">حسابي</span>
                 </a>
                 <!-- زر تسجيل الدخول عبر Google (يبقى كما هو - OAuth مباشر) -->
-                <button id="googleLoginBtn" class="google-auth-btn">
-                    <span>🌐</span> تسجيل الدخول
+                <button id="googleLoginBtn" class="google-auth-btn" aria-label="تسجيل الدخول باستخدام Google">
+                    <span aria-hidden="true">🌐</span> تسجيل الدخول
                 </button>
             </div>
         </header>
@@ -698,19 +698,19 @@
                 <div class="form-group">
                     <label data-i18n="mood_label">شعور رسالتك</label>
                     <div class="mood-picker">
-                        <label class="mood-chip"><input type="radio" name="mood" value="hope" checked><span>🌅</span><em data-i18n="mood_hope">أمل</em></label>
-                        <label class="mood-chip"><input type="radio" name="mood" value="nostalgia"><span>🌙</span><em data-i18n="mood_nostalgia">حنين</em></label>
-                        <label class="mood-chip"><input type="radio" name="mood" value="secret"><span>🤫</span><em data-i18n="mood_secret">سر</em></label>
-                        <label class="mood-chip"><input type="radio" name="mood" value="confession"><span>🎭</span><em data-i18n="mood_confession">اعتراف</em></label>
-                        <label class="mood-chip"><input type="radio" name="mood" value="bold"><span>💥</span><em data-i18n="mood_bold">جرأة</em></label>
+                        <label class="mood-chip" for="mood-hope"><input type="radio" name="mood" id="mood-hope" value="hope" checked aria-label="شعور: أمل"><span aria-hidden="true">🌅</span><em data-i18n="mood_hope">أمل</em></label>
+                        <label class="mood-chip" for="mood-nostalgia"><input type="radio" name="mood" id="mood-nostalgia" value="nostalgia" aria-label="شعور: حنين"><span aria-hidden="true">🌙</span><em data-i18n="mood_nostalgia">حنين</em></label>
+                        <label class="mood-chip" for="mood-secret"><input type="radio" name="mood" id="mood-secret" value="secret" aria-label="شعور: سر"><span aria-hidden="true">🤫</span><em data-i18n="mood_secret">سر</em></label>
+                        <label class="mood-chip" for="mood-confession"><input type="radio" name="mood" id="mood-confession" value="confession" aria-label="شعور: اعتراف"><span aria-hidden="true">🎭</span><em data-i18n="mood_confession">اعتراف</em></label>
+                        <label class="mood-chip" for="mood-bold"><input type="radio" name="mood" id="mood-bold" value="bold" aria-label="شعور: جرأة"><span aria-hidden="true">💥</span><em data-i18n="mood_bold">جرأة</em></label>
                     </div>
                 </div>
 
                 <div class="form-group">
                     <label data-i18n="mode_label">نمط الكبسولة</label>
                     <div class="radio-group">
-                        <label class="radio-label"><input type="radio" name="capsuleMode" value="public" checked><span data-i18n="mode_public">عامة يقرأها الجميع الآن</span></label>
-                        <label class="radio-label"><input type="radio" name="capsuleMode" value="private"><span data-i18n="mode_private">سفر عبر الزمن — لنفسي فقط</span></label>
+                        <label class="radio-label" for="mode-public"><input type="radio" name="capsuleMode" id="mode-public" value="public" checked aria-label="نمط: عامة يقرأها الجميع الآن"><span data-i18n="mode_public">عامة يقرأها الجميع الآن</span></label>
+                        <label class="radio-label" for="mode-private"><input type="radio" name="capsuleMode" id="mode-private" value="private" aria-label="نمط: سفر عبر الزمن، لنفسي فقط"><span data-i18n="mode_private">سفر عبر الزمن — لنفسي فقط</span></label>
                     </div>
                     <div class="privacy-note" id="privacyNotePub" data-i18n="privacy_note_pub">عامة الآن: تُنشر فورًا ويقرؤها الغرباء في أي لحظة.</div>
                     <div class="privacy-note" id="privacyNotePriv" style="display:none" data-i18n="privacy_note">كبسولتك تسبح خفيةً في المدار حتى موعد وصولها — لا يستطيع أحد قراءتها قبله، حتى أنت.</div>
@@ -802,11 +802,27 @@
     </script>
 
     <script>
+    /* ✅ Service Worker registration - فقط debug mode يطبع في console */
     if ('serviceWorker' in navigator) {
+        const __ccDebug = location.hostname === 'localhost' ||
+                          location.hostname === '127.0.0.1' ||
+                          location.search.includes('debug');
+
         window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
-                .then((reg) => console.log('✅ SW registered:', reg.scope))
-                .catch((err) => console.log('❌ SW error:', err));
+            /* ✅ التحقق من تسجيل سابق لتجنب التكرار */
+            navigator.serviceWorker.getRegistration('/sw.js').then(existing => {
+                if (existing) {
+                    if (__ccDebug) console.log('✅ SW already registered:', existing.scope);
+                    return existing;
+                }
+                return navigator.serviceWorker.register('/sw.js')
+                    .then(reg => {
+                        if (__ccDebug) console.log('✅ SW registered:', reg.scope);
+                    })
+                    .catch(err => {
+                        if (__ccDebug) console.log('❌ SW error:', err);
+                    });
+            });
         });
     }
 

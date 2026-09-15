@@ -1,12 +1,22 @@
 /**
- * Chronos Capsule - Notification System (i18n v3)
+ * Chronos Capsule - Notification System (i18n v3.1)
  * - مترجم بالكامل
  * - يتزامن مع تغيير اللغة
  * - يعمل مع panel + bell
  * - 🔒 الإصدار v3.1: إصلاح ثغرة XSS عبر دالة escapeHtml
+ * - ✅ v3.2: إصلاح Race Condition (init guard) + Realtime unsubscribe
  */
 (function() {
     'use strict';
+
+    /* ✅ Debug flag */
+    const __CC_DEBUG = location.hostname === 'localhost' ||
+                       location.hostname === '127.0.0.1' ||
+                       location.search.includes('debug');
+
+    /* ✅ Guard ضد تكرار init (Race Condition fix) */
+    let _initStarted = false;
+    let _realtimeChannel = null;
 
     const STORAGE_KEY = 'cc_notifications';
     const SUPABASE_NOTIFICATIONS_TABLE = 'notifications';
@@ -64,6 +74,13 @@
 
     /* ═══ Init ═══ */
     function init() {
+        /* ✅ Guard ضد تكرار init (Race Condition fix) */
+        if (_initStarted) {
+            if (__CC_DEBUG) console.log('ℹ️ notifications.js: init skipped (already started)');
+            return;
+        }
+        _initStarted = true;
+
         if (window.__ccSupabase) {
             supabase = window.__ccSupabase;
         } else if (window.CC_CONFIG && window.CC_CONFIG.SUPABASE_URL && window.CC_CONFIG.SUPABASE_ANON_KEY) {
@@ -327,7 +344,17 @@
     function setupRealtimeListener() {
         if (!supabase) return;
 
-        supabase
+        /* ✅ إصلاح Memory Leak: إنهاء أي channel سابق */
+        if (_realtimeChannel) {
+            try {
+                supabase.removeChannel(_realtimeChannel);
+                _realtimeChannel = null;
+            } catch (e) {
+                if (__CC_DEBUG) console.warn('Failed to remove old channel:', e);
+            }
+        }
+
+        _realtimeChannel = supabase
             .channel('notification-changes')
             .on(
                 'postgres_changes',
@@ -340,6 +367,19 @@
                 () => { loadNotifications(); }
             )
             .subscribe();
+
+        /* ✅ تنظيف عند مغادرة الصفحة (منع WebSocket leak) */
+        window.addEventListener('pagehide', () => {
+            if (_realtimeChannel && supabase) {
+                try {
+                    supabase.removeChannel(_realtimeChannel);
+                    _realtimeChannel = null;
+                    if (__CC_DEBUG) console.log('✅ Realtime channel closed');
+                } catch (e) {
+                    if (__CC_DEBUG) console.warn('Failed to close channel:', e);
+                }
+            }
+        }, { once: true });
     }
 
     function getIconForType(type) {
@@ -512,8 +552,11 @@
     };
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', () => {
+            /* ✅ Guard مزدوج ضد Race Condition */
+            if (!_initStarted) init();
+        });
     } else {
-        init();
+        if (!_initStarted) init();
     }
 })();

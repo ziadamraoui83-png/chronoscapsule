@@ -20,12 +20,22 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ═══ أدوات مساعدة ═══ */
     const $ = id => document.getElementById(id);
 
+    /* ✅ Debug flag */
+    const __CC_DEBUG = location.hostname === 'localhost' ||
+                       location.hostname === '127.0.0.1' ||
+                       location.search.includes('debug');
+
     function trackEvent(eventName, params = {}) {
         try {
-            if (typeof gtag === 'function') {
+            /* ✅ تحقق أكثر صرامة: gtag + dataLayer متاح */
+            if (typeof gtag === 'function' && Array.isArray(window.dataLayer)) {
                 gtag('event', eventName, params);
+            } else if (__CC_DEBUG) {
+                console.warn('GA not available, skipping event:', eventName);
             }
-        } catch (e) {}
+        } catch (e) {
+            if (__CC_DEBUG) console.error('trackEvent failed:', e);
+        }
     }
 
     const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({

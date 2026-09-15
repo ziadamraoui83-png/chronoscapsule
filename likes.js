@@ -1,10 +1,16 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — likes.js v5 (محسّن للأداء)
+   CHRONOS CAPSULE — likes.js v5.1 (محسّن للأداء + Memory Leak fix)
    - استبدال setInterval بـ MutationObserver (توفير CPU)
-   - نفس الوظائف السابقة بالكامل
+   - ✅ إصلاح Memory Leak: disconnect عند pagehide
+   - ✅ console.log فقط في debug mode
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
+
+    /* ✅ Debug flag - فقط في localhost أو ?debug */
+    const __CC_DEBUG = location.hostname === 'localhost' ||
+                       location.hostname === '127.0.0.1' ||
+                       location.search.includes('debug');
 
     /* ✅ نستعمل نفس Supabase client من script.js */
     function getSB() {
@@ -28,7 +34,11 @@
 
     function showToast(msg, ico = '❤️') {
         const t = document.getElementById('ccToast');
-        if (!t) { console.log(ico, msg); return; }
+        if (!t) {
+            /* ✅ فقط في debug mode */
+            if (__CC_DEBUG) console.log(ico, msg);
+            return;
+        }
         t.querySelector('.ico').textContent = ico;
         t.querySelector('.txt').textContent = msg;
         t.classList.add('show');
@@ -135,6 +145,7 @@
        - لا يستهلك CPU عندما لا توجد تغييرات في DOM
        - يستجيب فوراً عند إضافة عناصر جديدة
        - يحترم prefers-reduced-motion و battery saving
+       - ✅ v5.1: إضافة cleanup عند pagehide (منع Memory Leak)
     */
     let observer = null;
     function setupObserver() {
@@ -167,6 +178,23 @@
             childList: true,
             subtree: true
         });
+
+        /* ✅ إصلاح Memory Leak: تنظيف Observer عند مغادرة الصفحة */
+        const cleanup = () => {
+            if (observer) {
+                observer.disconnect();
+                observer = null;
+            }
+        };
+
+        /* pagehide: أفضل من unload (يدعم bfcache) */
+        window.addEventListener('pagehide', cleanup);
+        /* fallback: عند visibilitychange للتبديل بين التبويبات */
+        document.addEventListener('visibilitychange', () => {
+            if (document.visibilityState === 'hidden' && !observer) {
+                /* لا شيء - فقط نظف عند pagehide */
+            }
+        });
     }
 
     /* مسح أولي عند تحميل الصفحة */
@@ -184,5 +212,6 @@
     setTimeout(() => scan(document), 500);
     setTimeout(() => scan(document), 1500);
 
-    console.log('❤️ likes.js v5 ready (MutationObserver)');
+    /* ✅ console.log فقط في debug mode */
+    if (__CC_DEBUG) console.log('❤️ likes.js v5.1 ready (MutationObserver + cleanup)');
 })();
