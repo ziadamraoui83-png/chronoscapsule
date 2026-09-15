@@ -127,10 +127,15 @@
         return 'dev_' + Math.abs(hash).toString(36);
     }
 
-    /* ═══ إنشاء إشعار ═══ */
+    /* ═══ إنشاء إشعار (مع منع التكرار) ═══ */
     async function createNotification(notificationData) {
+        /* ✅ توليد ID ثابت بناءً على المحتوى لمنع التكرار */
+        const contentHash = (notificationData.title || '') + '|' +
+                           (notificationData.message || '') + '|' +
+                           (notificationData.type || '');
+
         const notification = {
-            id: Date.now().toString(),
+            id: Date.now().toString() + '_' + contentHash.length,
             ...notificationData,
             created_at: new Date().toISOString(),
             is_read: false
@@ -138,6 +143,20 @@
 
         const stored = localStorage.getItem(STORAGE_KEY);
         const notifications = stored ? JSON.parse(stored) : [];
+
+        /* ✅ منع التكرار: تحقق إن كان إشعار بنفس المحتوى موجود خلال آخر 5 دقائق */
+        const fiveMinAgo = Date.now() - (5 * 60 * 1000);
+        const isDuplicate = notifications.some(n => {
+            const nHash = (n.title || '') + '|' + (n.message || '') + '|' + (n.type || '');
+            const nTime = n.created_at ? new Date(n.created_at).getTime() : 0;
+            return nHash === contentHash && nTime > fiveMinAgo;
+        });
+
+        if (isDuplicate) {
+            /* ✅ إشعار مكرر - لا تضفه */
+            return null;
+        }
+
         notifications.unshift(notification);
 
         if (notifications.length > 50) {
@@ -198,7 +217,7 @@
         }, 10);
     }
 
-    /* ═══ تحميل الإشعارات ═══ */
+    /* ═══ تحميل الإشعارات (مع إزالة التكرار) ═══ */
     async function loadNotifications() {
         const stored = localStorage.getItem(STORAGE_KEY);
         const localNotifications = stored ? JSON.parse(stored) : [];
@@ -223,8 +242,18 @@
             if (error) throw error;
 
             if (data && data.length) {
-                saveNotifications(data);
-                return data;
+                /* ✅ إزالة الإشعارات المكررة من قاعدة البيانات */
+                const unique = [];
+                const seen = new Set();
+                for (const n of data) {
+                    const key = (n.title || '') + '|' + (n.message || '') + '|' + (n.type || '');
+                    if (!seen.has(key)) {
+                        seen.add(key);
+                        unique.push(n);
+                    }
+                }
+                saveNotifications(unique);
+                return unique;
             }
 
             return localNotifications;

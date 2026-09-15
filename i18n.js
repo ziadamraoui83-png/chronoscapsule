@@ -243,7 +243,13 @@
 
   function setLang(l, save) {
     lang = l;
-    if (save !== false) { try { localStorage.setItem('cc_lang', l); } catch (e) {} }
+    if (save !== false) {
+      try { localStorage.setItem('cc_lang', l); } catch (e) {}
+      /* ✅ حفظ في cookie أيضاً كاحتياطي (يدوم 365 يوم) */
+      try {
+        document.cookie = 'cc_lang=' + l + ';max-age=31536000;path=/;SameSite=Lax';
+      } catch (e) {}
+    }
     applyTexts();
     applyCountries();
     window.dispatchEvent(new CustomEvent('cc:lang'));
@@ -251,18 +257,28 @@
 
   /* ✅ تطبيق اللغة فوراً قبل DOMContentLoaded لمنع الوميض (FOUC) */
   function getInitialLang() {
+    /* 1. الأولوية الأولى: معامل URL (?lang=ar أو ?lang=en) */
     let urlLang = null;
     try {
       const p = new URLSearchParams(location.search).get('lang');
       if (p === 'ar' || p === 'en') urlLang = p;
     } catch (e) {}
 
+    /* 2. الأولوية الثانية: localStorage */
     let saved = null;
     try { saved = localStorage.getItem('cc_lang'); } catch (e) {}
 
-    return urlLang
-        || saved
-        || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+    /* 3. الأولوية الثالثة: cookie (احتياطي لـ incognito mode) */
+    let cookieLang = null;
+    try {
+      const m = document.cookie.match(/(?:^|;\s*)cc_lang=([a-z]{2})(?:;|$)/i);
+      if (m && (m[1] === 'ar' || m[1] === 'en')) cookieLang = m[1];
+    } catch (e) {}
+
+    /* 4. الأولوية الرابعة: لغة المتصفح (fallback نهائي) */
+    const browserLang = ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+
+    return urlLang || saved || cookieLang || browserLang;
   }
 
   /* ✅ تطبيق lang/dir على <html> مباشرة (لمنع وميض اللغة) */

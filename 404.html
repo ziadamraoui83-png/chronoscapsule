@@ -10,12 +10,14 @@
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // ✅ تطبيق اللغة فوراً لمنع الوميض (FOUC)
+        // ✅ تطبيق اللغة فوراً لمنع الوميض (FOUC) - يدعم localStorage + cookie
         (function() {
             try {
                 var savedLang = localStorage.getItem('cc_lang');
                 var urlLang = new URLSearchParams(location.search).get('lang');
-                var finalLang = urlLang || savedLang || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+                var cookieMatch = document.cookie.match(/(?:^|;\s*)cc_lang=([a-z]{2})(?:;|$)/i);
+                var cookieLang = (cookieMatch && (cookieMatch[1] === 'ar' || cookieMatch[1] === 'en')) ? cookieMatch[1] : null;
+                var finalLang = urlLang || savedLang || cookieLang || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
                 document.documentElement.lang = finalLang;
                 document.documentElement.dir = (finalLang === 'ar') ? 'rtl' : 'ltr';
             } catch (e) {}
@@ -450,6 +452,6 @@
     } catch (e) {}
 })();
 </script>
-    <script src="transitions.js"></script>
+    <script src="transitions.js?v=20260915"></script>
 </body>
 </html>
