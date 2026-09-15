@@ -435,6 +435,38 @@
 
         if (!bell || !panel) return;
 
+        /* ✅ ضبط موضع اللوحة تحت الجرس مباشرة */
+        function positionPanel() {
+            const bellRect = bell.getBoundingClientRect();
+            const panelWidth = 340;
+            const viewportW = window.innerWidth;
+            const isRTL = document.documentElement.dir === 'rtl';
+
+            /* الموضع العمودي: تحت الجرس بـ 8px */
+            panel.style.top = (bellRect.bottom + 8) + 'px';
+
+            /* الموضع الأفقي: محاذاة مع الجرس */
+            if (viewportW < 600) {
+                /* موبايل: اللوحة تأخذ عرض الشاشة مع هامش بسيط */
+                panel.style.left = '12px';
+                panel.style.right = '12px';
+                panel.style.width = 'auto';
+            } else {
+                /* ديسكتوب: محاذاة مع الجرس */
+                if (isRTL) {
+                    /* RTL (عربي): الجرس على اليسار، اللوحة تظهر تحته */
+                    panel.style.left = Math.max(12, bellRect.left) + 'px';
+                    panel.style.right = 'auto';
+                } else {
+                    /* LTR (إنجليزي): الجرس على اليمين، اللوحة تظهر تحته */
+                    const rightOffset = viewportW - bellRect.right;
+                    panel.style.right = Math.max(12, rightOffset) + 'px';
+                    panel.style.left = 'auto';
+                }
+                panel.style.width = panelWidth + 'px';
+            }
+        }
+
         bell.addEventListener('click', (e) => {
             e.stopPropagation();
             const isOpen = panel.classList.contains('show');
@@ -442,6 +474,7 @@
             if (isOpen) {
                 panel.classList.remove('show');
             } else {
+                positionPanel();
                 panel.classList.add('show');
                 if (content) renderNotificationList(content);
             }
@@ -456,6 +489,13 @@
         document.addEventListener('click', (e) => {
             if (!panel.contains(e.target) && !bell.contains(e.target)) {
                 panel.classList.remove('show');
+            }
+        });
+
+        /* ✅ إعادة ضبط الموضع عند resize */
+        window.addEventListener('resize', () => {
+            if (panel.classList.contains('show')) {
+                positionPanel();
             }
         });
     }
