@@ -351,7 +351,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function initThreeJS() {
         const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x010103);
+        /* ✅ تحديث: خلفية بنفسجية داكنة تتناسق مع body (#0a0118) */
+        scene.background = new THREE.Color(0x0a0118);
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
