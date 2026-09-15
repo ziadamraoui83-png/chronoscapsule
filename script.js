@@ -355,9 +355,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        /* ✅ تحسين الأداء:
+           - alpha: false (أسرع - نستعمل scene.background)
+           - powerPreference: high-performance
+           - pixelRatio مخفّض للموبايل */
+        renderer = new THREE.WebGLRenderer({
+            antialias: !isMobile, /* ✅ antialias فقط على الديسكتوب */
+            alpha: false,
+            powerPreference: 'high-performance'
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        /* ✅ pixelRatio: 1 على الموبايل، 2 على الديسكتوب */
+        renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
         document.getElementById('planet-viewport').appendChild(renderer.domElement);
 
         /* ═══ إضاءة ═══ */
@@ -365,10 +374,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
         dirLight.position.set(5, 3, 5);
         scene.add(dirLight);
-        const fillLight = new THREE.DirectionalLight(0x88aaff, 0.7);
+        /* ✅ تخفيف الإضاءة على الموبايل (توفير GPU) */
+        const fillLight = new THREE.DirectionalLight(0x88aaff, isMobile ? 0.4 : 0.7);
         fillLight.position.set(-5, -2, -3);
         scene.add(fillLight);
-        const bottomLight = new THREE.PointLight(0x3AE1FF, 0.4, 30);
+        const bottomLight = new THREE.PointLight(0x3AE1FF, isMobile ? 0.2 : 0.4, 30);
         bottomLight.position.set(0, -8, 0);
         scene.add(bottomLight);
 
@@ -496,8 +506,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const clock = new THREE.Clock();
         let frameCount = 0;
 
-        function animate() {
+        /* ✅ تحسين الأداء: FPS throttling على الموبايل (30 FPS بدل 60) */
+        const targetFPS = matchMedia('(max-width: 768px)').matches ? 30 : 60;
+        const frameInterval = 1000 / targetFPS;
+        let lastFrameTime = 0;
+
+        function animate(timestamp) {
             requestAnimationFrame(animate);
+
+            /* ✅ Skip frame إذا لم يحن وقت الإطار التالي */
+            if (timestamp - lastFrameTime < frameInterval) return;
+            lastFrameTime = timestamp;
+
             const dt = Math.min(clock.getDelta(), 0.05);
             frameCount++;
             const elapsed = clock.getElapsedTime();
