@@ -1,45 +1,34 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — Service Worker (v1.9.0)
-   - جميع الصفحات + الملفات في Cache
-   - يخزّن الملفات المحلية فقط
+   CHRONOS CAPSULE — Service Worker (v1.2.0)
+   يخزّن الملفات المحلية فقط — لا يعترض الطلبات الخارجية
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.9.0';
+/* ✅ إصلاح متوسط: توحيد الإصدار مع config.js
+   - يأخذ الإصدار من CC_CONFIG.SW_CACHE_VERSION إن وجد
+   - fallback على القيمة الافتراضية */
+const CACHE_VERSION = (typeof self !== 'undefined' &&
+                       self.CC_CONFIG && self.CC_CONFIG.SW_CACHE_VERSION)
+                      ? self.CC_CONFIG.SW_CACHE_VERSION
+                      : 'cc-v1.2.0';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
 const STATIC_ASSETS = [
     '/',
-    /* HTML Pages */
     '/index.html',
     '/archive.html',
     '/capsules.html',
     '/profile.html',
-    '/login.html',
     '/about.html',
     '/privacy.html',
     '/terms.html',
-    '/faq.html',
-    '/how-it-works.html',
-    '/contact.html',
-    '/blog.html',
-    '/blog-10-ideas-for-future-messages.html',
-    '/blog-how-to-write-a-time-capsule.html',
-    '/404.html',
-    /* CSS */
     '/style.css',
     '/archive.css',
-    /* JavaScript */
     '/config.js',
     '/i18n.js',
     '/script.js',
     '/archive.js',
     '/card-generator.js',
-    '/likes.js',
-    '/ratings.js',
-    '/notifications.js',
-    '/transitions.js',
-    /* Assets */
     '/manifest.json',
     '/icon-192.svg',
     '/icon-512.svg',

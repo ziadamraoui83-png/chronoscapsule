@@ -604,6 +604,23 @@
         }
     </style>
     <link rel="canonical" href="https://chronoscapsule.vercel.app/capsules.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="كبسولاتي الزمنية | Chronos Capsule">
+    <meta property="og:description" content="اعرض كبسولاتك الزمنية الخاصة وتابع مواعيد وصولها — كبسولة الزمن الكونية.">
+    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://chronoscapsule.vercel.app/capsules.html">
+    <meta property="og:site_name" content="Chronos Capsule">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="كبسولاتي الزمنية | Chronos Capsule">
+    <meta name="twitter:description" content="اعرض كبسولاتك الزمنية الخاصة وتابع مواعيد وصولها — كبسولة الزمن الكونية.">
+    <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/capsules.html">
+    <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/capsules.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/capsules.html">
     <script type="application/ld+json">
     {
     "@context": "https://schema.org",
@@ -692,7 +709,7 @@
         <span class="header-logo-text">CHRONOS CAPSULE</span>
     </a>
     <div class="header-actions">
-        <button class="lang-toggle-cap" id="capLangToggle">EN</button>
+        <button class="lang-toggle-cap" aria-label="تبديل اللغة" id="capLangToggle">EN</button>
         <a href="index.html" class="back-link">
             <span>←</span>
             <span id="backLinkText">العودة للكوكب</span>
@@ -718,9 +735,9 @@
     <div class="filter-bar">
         <input type="text" class="search-input" id="searchInput" placeholder="🔍 ابحث في كبسولاتك...">
         <div class="filter-chips" id="filterChips">
-            <button class="filter-chip active" data-filter="all">الكل</button>
-            <button class="filter-chip" data-filter="arrived">✅ وصلت</button>
-            <button class="filter-chip" data-filter="orbit">🛰️ في المدار</button>
+            <button class="filter-chip active" data-filter="all" aria-label="كل الكبسولات">الكل</button>
+            <button class="filter-chip" data-filter="arrived" aria-label="الكبسولات التي وصلت">✅ وصلت</button>
+            <button class="filter-chip" data-filter="orbit" aria-label="الكبسولات في المدار">🛰️ في المدار</button>
         </div>
     </div>
 
@@ -929,7 +946,7 @@
                 <a href="https://twitter.com/intent/tweet?text=${twText}&url=${twUrl}" target="_blank" rel="noopener" class="social-btn twitter" title="X / Twitter" data-social="twitter">𝕏</a>
                 <a href="https://www.facebook.com/sharer/sharer.php?u=${fbUrl}" target="_blank" rel="noopener" class="social-btn facebook" title="Facebook" data-social="facebook">f</a>
                 <a href="https://t.me/share/url?url=${tgUrl}&text=${tgText}" target="_blank" rel="noopener" class="social-btn telegram" title="Telegram" data-social="telegram">✈️</a>
-                <button class="social-btn copy-link" title="${capLang === 'ar' ? 'نسخ الرابط' : 'Copy link'}" data-copy-url="${esc(url)}">🔗</button>
+                <button class="social-btn copy-link" title="${capLang === 'ar' ? 'نسخ الرابط' : 'Copy link'}" data-copy-url="${esc(url)}" aria-label="نسخ الرابط">🔗</button>
             </div>`;
     }
 

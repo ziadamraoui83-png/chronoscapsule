@@ -1,28 +1,30 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — Card Generator (v2.1)
-   - 9 مشاعر (كان 5)
-   - خطوط محسّنة
-   - truncate بـ 3 نقاط
+   CHRONOS CAPSULE — Card Generator (v2.0)
+   توليد بطاقة احترافية بـ Canvas
+   مستوحى من: Glassmorphism + Serif Quote + Cosmic
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
+
+    /* ✅ إصلاح متوسط: Debug flag - فقط في localhost أو ?debug
+       - لا نحذف console.log الموجود
+       - نضيف فقط guard لمنع ظهوره في الإنتاج */
+    const __CC_DEBUG = location.hostname === 'localhost' ||
+                       location.hostname === '127.0.0.1' ||
+                       location.search.includes('debug');
 
     /* ═══ الأبعاد ═══ */
     const W = 1080;
     const H = 1350;
     const PAD = 60;
 
-    /* ═══ ألوان المشاعر (9) ═══ */
+    /* ═══ ألوان المشاعر ═══ */
     const MOOD_THEMES = {
         hope:       { c1: '#38bdf8', c2: '#0ea5e9', emoji: '💙', ar: 'أمل',    en: 'Hope' },
         nostalgia:  { c1: '#a78bfa', c2: '#8b5cf6', emoji: '💜', ar: 'حنين',   en: 'Nostalgia' },
         secret:     { c1: '#34d399', c2: '#10b981', emoji: '💚', ar: 'سر',     en: 'Secret' },
         confession: { c1: '#fbbf24', c2: '#f59e0b', emoji: '💛', ar: 'اعتراف', en: 'Confession' },
-        bold:       { c1: '#f87171', c2: '#ef4444', emoji: '❤️', ar: 'جرأة',   en: 'Bold' },
-        love:       { c1: '#f472b6', c2: '#ec4899', emoji: '❤️', ar: 'حب',     en: 'Love' },
-        dream:      { c1: '#fbbf24', c2: '#f59e0b', emoji: '💭', ar: 'حلم',    en: 'Dream' },
-        wisdom:     { c1: '#a78bfa', c2: '#8b5cf6', emoji: '🦉', ar: 'حكمة',   en: 'Wisdom' },
-        motivation: { c1: '#34d399', c2: '#10b981', emoji: '🔥', ar: 'تحفيز',  en: 'Motivation' }
+        bold:       { c1: '#f87171', c2: '#ef4444', emoji: '❤️', ar: 'جرأة',   en: 'Bold' }
     };
 
     /* ═══ أدوات مساعدة ═══ */
@@ -50,8 +52,7 @@
 
     function truncate(text, max) {
         const t = String(text || '');
-        if (t.length <= max) return t;
-        return t.slice(0, max - 3).trim() + '...';
+        return t.length > max ? t.slice(0, max - 1).trim() + '…' : t;
     }
 
     function flagOf(code) {
@@ -80,6 +81,7 @@
                 await document.fonts.ready;
             }
         } catch (e) {}
+        /* جرب تحميل الخطوط المعينة */
         const fontsToLoad = [
             'italic 400 40px "Amiri"',
             'italic 400 40px "Playfair Display"',
@@ -93,11 +95,12 @@
         await new Promise(r => setTimeout(r, 250));
     }
 
-    /* ═══ رسم البطاقة الزجاجية ═══ */
+    /* ═══ رسم مستطيل دائري مملوء + إطار ═══ */
     function drawGlassCard(ctx, x, y, w, h, theme, isArrived) {
         const color1 = isArrived ? '#34d399' : theme.c1;
         const color2 = isArrived ? '#10b981' : theme.c2;
 
+        /* ظل خارجي متوهج (طبقتان) */
         ctx.save();
         ctx.shadowColor = hexToRgba(color1, 0.35);
         ctx.shadowBlur = 60;
@@ -106,6 +109,7 @@
         ctx.fill();
         ctx.restore();
 
+        /* الخلفية الزجاجية */
         const bgGrad = ctx.createLinearGradient(x, y, x + w * 0.6, y + h);
         bgGrad.addColorStop(0, 'rgba(255,255,255,0.075)');
         bgGrad.addColorStop(0.34, 'rgba(255,255,255,0.028)');
@@ -122,6 +126,7 @@
         ctx.fill();
         ctx.restore();
 
+        /* الإطار المتوهج (2.5px) */
         ctx.save();
         const borderGrad = ctx.createLinearGradient(x, y, x + w, y + h);
         borderGrad.addColorStop(0, color1);
@@ -134,6 +139,7 @@
         ctx.stroke();
         ctx.restore();
 
+        /* وهج داخلي */
         ctx.save();
         const innerGlow = ctx.createRadialGradient(x + w / 2, y + h * 0.3, 0, x + w / 2, y + h * 0.3, w * 0.7);
         innerGlow.addColorStop(0, hexToRgba(color1, 0.06));
@@ -144,7 +150,7 @@
         ctx.restore();
     }
 
-    /* ═══ رسم Pill ═══ */
+    /* ═══ رسم Pill (Badge) ═══ */
     function drawPill(ctx, x, y, opts) {
         const { text, emoji, bg, border, color, fontSize = 22, paddingX = 18, paddingY = 10, fontFamily = '"Tajawal", sans-serif', fontWeight = '700', dot } = opts;
         ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
@@ -155,15 +161,18 @@
         const pillH = fontSize + paddingY * 2;
 
         ctx.save();
+        /* Background */
         ctx.fillStyle = bg;
         roundRect(ctx, x, y, pillW, pillH, pillH / 2);
         ctx.fill();
 
+        /* Border */
         ctx.strokeStyle = border;
         ctx.lineWidth = 1.5;
         roundRect(ctx, x + 0.75, y + 0.75, pillW - 1.5, pillH - 1.5, (pillH - 1.5) / 2);
         ctx.stroke();
 
+        /* Dot (اختياري) */
         let textStartX = x + paddingX;
         if (dot) {
             ctx.fillStyle = dot;
@@ -173,6 +182,7 @@
             textStartX += dotW;
         }
 
+        /* Text */
         ctx.fillStyle = color;
         ctx.textBaseline = 'middle';
         ctx.textAlign = 'left';
@@ -182,7 +192,7 @@
         return { w: pillW, h: pillH };
     }
 
-    /* ═══ رسم الاقتباس ═══ */
+    /* ═══ رسم الاقتباس (متعدد الأسطر) ═══ */
     function drawQuote(ctx, text, cx, cy, maxW, opts) {
         const { fontFamily = '"Playfair Display", serif', fontSize = 52, lineH = 76, color = '#f8fafc', quoteColor = null } = opts;
 
@@ -191,6 +201,7 @@
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
 
+        /* كسر النص إلى أسطر */
         const words = String(text || '').split(/\s+/);
         const lines = [];
         let current = '';
@@ -206,15 +217,18 @@
         }
         if (current) lines.push(current);
 
+        /* حد أقصى 5 أسطر */
         const maxLines = 5;
         if (lines.length > maxLines) {
             lines.length = maxLines;
-            lines[maxLines - 1] = truncate(lines[maxLines - 1], 40);
+            lines[maxLines - 1] = truncate(lines[maxLines - 1] + '…', 40);
         }
 
+        /* السطر الأول مع علامة الاقتباس المائية */
         const totalH = lines.length * lineH;
         const startY = cy - totalH / 2 + lineH / 2;
 
+        /* علامات الاقتباس المائية (خلفية) */
         if (quoteColor) {
             ctx.save();
             ctx.font = `italic 500 200px ${fontFamily}`;
@@ -226,6 +240,7 @@
             ctx.restore();
         }
 
+        /* النص */
         ctx.fillStyle = color;
         ctx.font = `italic 500 ${fontSize}px ${fontFamily}`;
         lines.forEach((line, i) => {
@@ -255,12 +270,14 @@
 
     /* ═══ رسم شريط التقدم ═══ */
     function drawProgressBar(ctx, x, y, w, h, progress, theme) {
+        /* الخلفية (المسار) */
         ctx.save();
         ctx.fillStyle = 'rgba(255,255,255,0.07)';
         roundRect(ctx, x, y, w, h, h / 2);
         ctx.fill();
         ctx.restore();
 
+        /* الملء */
         const fillW = Math.max(h, (progress / 100) * w);
         ctx.save();
         const fillGrad = ctx.createLinearGradient(x, 0, x + fillW, 0);
@@ -273,6 +290,7 @@
         ctx.fill();
         ctx.restore();
 
+        /* نقطة النهاية البيضاء */
         ctx.save();
         ctx.fillStyle = 'rgba(255,255,255,0.95)';
         ctx.shadowColor = hexToRgba(theme.c1, 1);
@@ -285,6 +303,7 @@
 
     /* ═══ خلفية كونية ═══ */
     function drawCosmicBackground(ctx, seed) {
+        /* التدرج الأساسي */
         const bg = ctx.createLinearGradient(0, 0, 0, H);
         bg.addColorStop(0, '#0a0e1a');
         bg.addColorStop(0.5, '#0f172a');
@@ -292,6 +311,7 @@
         ctx.fillStyle = bg;
         ctx.fillRect(0, 0, W, H);
 
+        /* سديم بنفسجي (زوايا) */
         const nebula1 = ctx.createRadialGradient(W * 0.15, H * 0.2, 0, W * 0.15, H * 0.2, W * 0.6);
         nebula1.addColorStop(0, 'rgba(139,92,246,0.10)');
         nebula1.addColorStop(1, 'transparent');
@@ -304,12 +324,14 @@
         ctx.fillStyle = nebula2;
         ctx.fillRect(0, 0, W, H);
 
+        /* نجوم (بذرة ثابتة) */
         let s = seed || 12345;
         const rand = () => {
             s = (s * 9301 + 49297) % 233280;
             return s / 233280;
         };
 
+        /* 250 نجمة صغيرة */
         ctx.save();
         for (let i = 0; i < 250; i++) {
             const x = rand() * W;
@@ -323,6 +345,7 @@
         }
         ctx.restore();
 
+        /* 6 نجوم لامعة مع وهج */
         for (let i = 0; i < 6; i++) {
             const x = rand() * W;
             const y = rand() * H;
@@ -363,16 +386,17 @@
         const isAr = lang === 'ar';
         const isArrived = !arrivalAt || new Date(arrivalAt) <= new Date();
 
+        /* إنشاء Canvas */
         const canvas = document.createElement('canvas');
         canvas.width = W;
         canvas.height = H;
         const ctx = canvas.getContext('2d');
 
-        /* 1) الخلفية الكونية */
+        /* ═══ 1) الخلفية الكونية ═══ */
         const seed = String(text || '').split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0) || 12345;
         drawCosmicBackground(ctx, seed);
 
-        /* 2) البطاقة الزجاجية */
+        /* ═══ 2) البطاقة الزجاجية ═══ */
         const cardPad = 80;
         const cardX = cardPad;
         const cardY = cardPad + 30;
@@ -380,13 +404,14 @@
         const cardH = H - cardPad * 2 - 30;
         drawGlassCard(ctx, cardX, cardY, cardW, cardH, theme, isArrived);
 
-        /* 3) الصف العلوي */
+        /* ═══ 3) الصف العلوي: Pills ═══ */
         const innerPad = 50;
         const topY = cardY + 48;
 
+        /* Mood pill (يسار في RTL، يمين في LTR) */
         const moodLabel = isAr ? theme.ar : theme.en;
         const moodPillX = isAr ? cardX + cardW - innerPad - 240 : cardX + innerPad;
-        drawPill(ctx, moodPillX, topY, {
+        const moodPillResult = drawPill(ctx, moodPillX, topY, {
             text: moodLabel,
             emoji: theme.emoji,
             bg: hexToRgba(theme.c2, 0.18),
@@ -395,10 +420,12 @@
             fontSize: 22
         });
 
+        /* Status pill (يمين في RTL، يسار في LTR) */
         const statusText = isArrived
             ? (isAr ? 'وصلت' : 'ARRIVED')
             : (isAr ? 'في المدار' : 'IN ORBIT');
         const statusColor = isArrived ? '#34d399' : theme.c1;
+        const statusTextW = ctx.measureText(statusText).width;
         const statusPillX = isAr ? cardX + innerPad : cardX + cardW - innerPad - 200;
         drawPill(ctx, statusPillX, topY, {
             text: statusText,
@@ -411,7 +438,7 @@
             dot: statusColor
         });
 
-        /* 4) الاقتباس */
+        /* ═══ 4) الاقتباس (منتصف) ═══ */
         const quoteCX = cardX + cardW / 2;
         const quoteCY = cardY + cardH * 0.42;
         const quoteFontSize = isAr ? 54 : 50;
@@ -427,7 +454,7 @@
             quoteColor: hexToRgba(theme.c2, 0.25)
         });
 
-        /* 5) المؤلف والتاريخ */
+        /* ═══ 5) المؤلف والتاريخ ═══ */
         const authorY = cardY + cardH * 0.68;
         const authorName = author || (isAr ? 'مجهول' : 'Anonymous');
         const whenISO = arrivalAt || createdAt || new Date().toISOString();
@@ -446,7 +473,7 @@
         ctx.fillText(authorLine, quoteCX, authorY);
         ctx.restore();
 
-        /* 6) الإحصائيات */
+        /* ═══ 6) الإحصائيات ═══ */
         const statsY = authorY + 52;
         ctx.save();
         ctx.font = '500 20px "IBM Plex Mono", "Tajawal", monospace';
@@ -463,7 +490,7 @@
         ctx.fillText(statsText, quoteCX, statsY);
         ctx.restore();
 
-        /* 7) شريط التقدم */
+        /* ═══ 7) شريط التقدم (فقط إن كان في المدار) ═══ */
         if (!isArrived && arrivalAt) {
             const cd = getCountdownData(createdAt, arrivalAt);
             const progress = cd ? cd.progress : 0;
@@ -472,6 +499,7 @@
             const progX = cardX + 100;
             const barH = 10;
 
+            /* التسميات */
             ctx.save();
             ctx.font = '500 18px "IBM Plex Mono", "Tajawal", monospace';
             ctx.fillStyle = '#94a3b8';
@@ -494,8 +522,10 @@
             }
             ctx.restore();
 
+            /* الشريط */
             drawProgressBar(ctx, progX, progY, progW, barH, progress, theme);
 
+            /* علامة النسبة (Chip على الشريط) */
             const chipW = 90;
             const chipH = 40;
             const chipCX = progX + (progress / 100) * progW;
@@ -503,6 +533,7 @@
             const chipY = progY + barH / 2 - chipH / 2;
 
             ctx.save();
+            /* خلفية الـ chip */
             ctx.fillStyle = 'rgba(9,13,26,0.95)';
             ctx.shadowColor = hexToRgba(theme.c1, 0.5);
             ctx.shadowBlur = 16;
@@ -510,6 +541,7 @@
             ctx.fill();
             ctx.restore();
 
+            /* إطار الـ chip */
             ctx.save();
             ctx.strokeStyle = hexToRgba(theme.c1, 0.6);
             ctx.lineWidth = 1.5;
@@ -517,6 +549,7 @@
             ctx.stroke();
             ctx.restore();
 
+            /* نص الـ chip */
             ctx.save();
             ctx.font = '700 20px "IBM Plex Mono", monospace';
             ctx.fillStyle = theme.c1;
@@ -526,7 +559,7 @@
             ctx.restore();
         }
 
-        /* 8) التذييل */
+        /* ═══ 8) التذييل (رابط الموقع) ═══ */
         ctx.save();
         ctx.font = '500 22px "IBM Plex Mono", "Tajawal", monospace';
         ctx.fillStyle = hexToRgba(theme.c1, 0.85);
@@ -535,6 +568,7 @@
         ctx.fillText('🔗 chronoscapsule.vercel.app', W / 2, cardY + cardH - 45);
         ctx.restore();
 
+        /* إرجاع Blob URL */
         return new Promise((resolve, reject) => {
             canvas.toBlob((blob) => {
                 if (!blob) return reject(new Error('Failed to create image'));
@@ -592,6 +626,7 @@
         const actionsRow = modal.querySelector('#cardModalActions');
         const socialRow = modal.querySelector('#cardSocialRow');
 
+        /* توليد البطاقة */
         generateCard(options).then(blobUrl => {
             const img = document.createElement('img');
             img.src = blobUrl;
@@ -601,6 +636,7 @@
             actionsRow.style.display = 'flex';
             socialRow.style.display = 'flex';
 
+            /* تحميل */
             modal.querySelector('#cardDownloadBtn').addEventListener('click', () => {
                 const a = document.createElement('a');
                 a.href = blobUrl;
@@ -611,6 +647,7 @@
                 if (typeof gtag === 'function') gtag('event', 'card_downloaded', { mood: options.mood, lang: options.lang });
             });
 
+            /* مشاركة أصلية */
             modal.querySelector('#cardShareBtn').addEventListener('click', async () => {
                 if (navigator.share && navigator.canShare) {
                     try {
@@ -628,6 +665,7 @@
                         }
                     } catch (e) {}
                 }
+                /* fallback: تحميل */
                 const a = document.createElement('a');
                 a.href = blobUrl;
                 a.download = `chronos-capsule-${Date.now()}.png`;
@@ -636,6 +674,7 @@
                 document.body.removeChild(a);
             });
 
+            /* نسخ الرابط */
             modal.querySelector('#cardCopyBtn').addEventListener('click', () => {
                 const text = (options.text || '').slice(0, 100);
                 const shareText = `${text}\n\n🔗 https://chronoscapsule.vercel.app`;
@@ -648,6 +687,7 @@
                 if (typeof gtag === 'function') gtag('event', 'card_link_copied', { lang: options.lang });
             });
 
+            /* سوشيال */
             const shareUrl = encodeURIComponent('https://chronoscapsule.vercel.app');
             const shareTxt = encodeURIComponent((options.text || '').slice(0, 120) + '\n\n🚀 Chronos Capsule');
 
@@ -667,10 +707,14 @@
             });
 
         }).catch(err => {
-            console.error('Card generation failed:', err);
+            /* ✅ إصلاح متوسط: احترام __CC_DEBUG بدل console.error دائماً */
+            if (typeof __CC_DEBUG !== 'undefined' && __CC_DEBUG) {
+                console.error('Card generation failed:', err);
+            }
             preview.innerHTML = `<div style="color:#f87171;text-align:center;padding:40px;font-size:14px">${isAr ? 'تعذر توليد البطاقة' : 'Failed to generate card'}</div>`;
         });
 
+        /* إغلاق */
         const close = () => {
             modal.classList.remove('active');
             setTimeout(() => {

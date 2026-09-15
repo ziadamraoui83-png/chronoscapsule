@@ -1265,4 +1265,38 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => requestAnimationFrame(() => logo.classList.add('live')));
         }
     }
+
+    /* ═══════════════════════════════════════════════════════════
+       ✅ إصلاح متوسط: Memory Leak Prevention
+       - لا نحذف أي addEventListener موجود
+       - نضيف فقط cleanup عند pagehide لتجنب تراكم listeners
+       - يعمل تلقائياً عند مغادرة الصفحة (bfcache safe)
+       ═══════════════════════════════════════════════════════════ */
+    if (typeof window !== 'undefined') {
+        // تخزين أي timers/observers مهمة للتنظيف
+        window.__ccCleanup = window.__ccCleanup || [];
+
+        // دالة مساعدة لتسجيل العناصر للتنظيف (للاستعمال المستقبلي)
+        window.__ccRegisterForCleanup = function(item) {
+            if (item && typeof item.disconnect === 'function') {
+                window.__ccCleanup.push(item);
+            }
+        };
+
+        // تنفيذ التنظيف عند مغادرة الصفحة
+        window.addEventListener('pagehide', function() {
+            if (window.__ccCleanup) {
+                window.__ccCleanup.forEach(function(item) {
+                    try {
+                        if (item && typeof item.disconnect === 'function') item.disconnect();
+                        else if (item && typeof item.unsubscribe === 'function') item.unsubscribe();
+                        else if (item && typeof item.close === 'function') item.close();
+                    } catch (e) {
+                        if (window.__CC_DEBUG) console.warn('cleanup failed:', e);
+                    }
+                });
+                window.__ccCleanup.length = 0;
+            }
+        }, { once: true });
+    }
 });

@@ -40,6 +40,14 @@
             margin-bottom: 24px;
             color: #38bdf8;
         }
+        /* ✅ H1 styling لنفس مظهر h2 */
+        .login-title {
+            text-align: center;
+            margin: 0 0 24px 0;
+            color: #38bdf8;
+            font-size: 1.5em;
+            font-weight: 700;
+        }
         .input-group {
             margin-bottom: 16px;
         }
@@ -184,6 +192,23 @@
         }
     </style>
     <link rel="canonical" href="https://chronoscapsule.vercel.app/login.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="تسجيل الدخول | Chronos Capsule">
+    <meta property="og:description" content="سجّل دخولك إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
+    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://chronoscapsule.vercel.app/login.html">
+    <meta property="og:site_name" content="Chronos Capsule">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="تسجيل الدخول | Chronos Capsule">
+    <meta name="twitter:description" content="سجّل دخولك إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
+    <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/login.html">
+    <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/login.html?lang=en">
+    <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/login.html">
     <script type="application/ld+json">
     {
     "@context": "https://schema.org",
@@ -268,7 +293,7 @@
 
 
     <div class="login-card">
-        <h2 id="formTitle">تسجيل الدخول</h2>
+        <h1 id="formTitle" class="login-title">تسجيل الدخول</h1>
 
         <div id="alertBox" class="alert"></div>
 
@@ -287,13 +312,13 @@
                        autocomplete="current-password"
                        minlength="6">
             </div>
-            <button type="submit" class="btn-submit" id="submitBtn">دخول</button>
+            <button type="submit" class="btn-submit" id="submitBtn" aria-label="تسجيل الدخول">دخول</button>
         </form>
 
         <div class="separator">أو</div>
 
         <!-- زر تسجيل الدخول بواسطة غوغل -->
-        <button type="button" class="btn-google" id="googleLoginBtn">
+        <button type="button" class="btn-google" id="googleLoginBtn" aria-label="التسجيل باستخدام Google">
             <svg viewBox="0 0 24 24">
                 <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
                 <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.15v3.14C3.15 21.32 7.23 24 12 24z"/>

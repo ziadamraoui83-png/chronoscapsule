@@ -87,7 +87,7 @@
       msg_label: 'Your message',
       msg_ph: "Write freely what's on your mind...",
       mood_label: 'Message mood',
-      mood_hope: 'Hope', mood_nostalgia: 'Nostalgia', mood_secret: 'Secret', mood_confession: 'Confession', mood_bold: 'Bold',
+      mood_love: 'Love', mood_hope: 'Hope', mood_dream: 'Dream', mood_wisdom: 'Wisdom', mood_motivation: 'Motivation', mood_nostalgia: 'Nostalgia', mood_secret: 'Secret', mood_confession: 'Confession', mood_bold: 'Bold',
       mode_label: 'Capsule mode',
       mode_public: 'Public — everyone reads it now',
       mode_private: 'Time travel — for my eyes only',

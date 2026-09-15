@@ -335,7 +335,7 @@
         <div id="notifPanel" class="notification-panel">
             <div class="notification-header">
                 <h3 data-i18n="notif_title">الإشعارات</h3>
-                <button class="notification-close" id="notifClose" type="button">×</button>
+                <button class="notification-close" id="notifClose" type="button" aria-label="إغلاق">×</button>
             </div>
             <div class="notification-content" id="notifContent">
                 <div class="no-notifications" data-i18n="notif_empty">لا توجد إشعارات جديدة</div>
@@ -392,8 +392,8 @@
         </div>
 
         <div class="zoom-controls">
-            <button id="zoomInBtn" title="تقريب">+</button>
-            <button id="zoomOutBtn" title="تبعيد">-</button>
+            <button id="zoomInBtn" title="تقريب" aria-label="تقريب">+</button>
+            <button id="zoomOutBtn" title="تبعيد" aria-label="تبعيد">-</button>
         </div>
 
         <div class="mood-legend">
@@ -692,7 +692,7 @@
         <div class="modal-card">
             <div class="modal-header">
                 <h3>إرسال كبسولة جديدة</h3>
-                <button id="closeModalBtn" class="close-btn">&times;</button>
+                <button id="closeModalBtn" class="close-btn" aria-label="إغلاق">&times;</button>
             </div>
 
             <form id="messageForm">
@@ -726,11 +726,11 @@
                 <div class="form-group" id="arrivalGroup" style="display:none">
                     <label data-i18n="arrival_label">متى تريد أن تصل؟</label>
                     <div class="arrival-chips">
-                        <button type="button" class="chip" data-days="1" data-i18n-chip="tomorrow">غدًا</button>
-                        <button type="button" class="chip" data-days="7" data-i18n-chip="week">بعد أسبوع</button>
-                        <button type="button" class="chip" data-days="30" data-i18n-chip="month">بعد شهر</button>
-                        <button type="button" class="chip" data-days="365" data-i18n-chip="year">بعد سنة</button>
-                        <button type="button" class="chip" data-days="custom" data-i18n-chip="custom">تاريخ مخصص</button>
+                        <button type="button" class="chip" data-days="1" data-i18n-chip="tomorrow" aria-label="غداً">غدًا</button>
+                        <button type="button" class="chip" data-days="7" data-i18n-chip="week" aria-label="بعد أسبوع">بعد أسبوع</button>
+                        <button type="button" class="chip" data-days="30" data-i18n-chip="month" aria-label="بعد شهر">بعد شهر</button>
+                        <button type="button" class="chip" data-days="365" data-i18n-chip="year" aria-label="بعد سنة">بعد سنة</button>
+                        <button type="button" class="chip" data-days="custom" data-i18n-chip="custom" aria-label="تاريخ مخصص">تاريخ مخصص</button>
                     </div>
                     <input type="date" id="arrivalDate">
                     <div class="arrival-preview" id="arrivalPreview"></div>
@@ -762,7 +762,7 @@
 
     <div id="deepModal" class="modal-overlay deep-overlay">
         <div class="modal-card deep-card">
-            <button id="deepClose" class="close-btn">&times;</button>
+            <button id="deepClose" class="close-btn" aria-label="إغلاق">&times;</button>
             <div class="deep-scene">
                 <div class="deep-bubble"></div>
                 <div class="deep-content">
