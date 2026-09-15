@@ -62,8 +62,7 @@
       nav_my_capsules: '🛰️ كبسولاتي',
       stat_capsules: 'كبسولة',
       stat_countries: 'دولة',
-      hero_learn: 'كيف يعمل الموقع؟ →'
-    },
+      hero_learn: 'كيف يعمل الموقع؟ →',
       notif_empty: 'لا توجد إشعارات جديدة',
       notif_mark_all: 'تحديد الكل كمقروء',
       notif_just_now: 'الآن',
@@ -71,7 +70,7 @@
       notif_hours_ago: 'منذ {n} ساعة',
       notif_days_ago: 'منذ {n} يوم',
       notif_new: 'جديد',
-      notif_title: 'الإشعارات',
+      notif_title: 'الإشعارات'
     },
     en: {
       title: 'Chronos Capsule | Send a message to space',
@@ -132,7 +131,7 @@
       nav_my_capsules: '🛰️ My Capsules',       
       stat_capsules: 'capsules',  
       stat_countries: 'countries',       
-      hero_learn: 'How it works? →' 
+      hero_learn: 'How it works? →',
       notif_empty: 'No new notifications',
       notif_mark_all: 'Mark all as read',
       notif_just_now: 'just now',
@@ -140,7 +139,7 @@
       notif_hours_ago: '{n} h ago',
       notif_days_ago: '{n} d ago',
       notif_new: 'New',
-      notif_title: 'Notifications',
+      notif_title: 'Notifications'
     }
   };
 
