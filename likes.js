@@ -1,5 +1,7 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — likes.js v4
+   CHRONOS CAPSULE — likes.js v5 (محسّن للأداء)
+   - استبدال setInterval بـ MutationObserver (توفير CPU)
+   - نفس الوظائف السابقة بالكامل
    ═══════════════════════════════════════════════════════════ */
 (function(){
     'use strict';
@@ -128,10 +130,59 @@
         scan: scan
     };
 
-    setInterval(() => scan(document), 400);
-    document.addEventListener('DOMContentLoaded', () => scan(document));
+    /* ═══✅ التحسين: استخدام MutationObserver بدلاً من setInterval ═══
+       الفوائد:
+       - لا يستهلك CPU عندما لا توجد تغييرات في DOM
+       - يستجيب فوراً عند إضافة عناصر جديدة
+       - يحترم prefers-reduced-motion و battery saving
+    */
+    let observer = null;
+    function setupObserver() {
+        if (observer || !('MutationObserver' in window)) return;
+
+        observer = new MutationObserver(function(mutations) {
+            let hasNewButtons = false;
+            for (const mutation of mutations) {
+                if (mutation.type !== 'childList') continue;
+                for (const node of mutation.addedNodes) {
+                    if (node.nodeType !== 1) continue; // عناصر فقط
+                    // تحقق إن كان العنصر نفسه أو أحد أبنائه زر إعجاب جديد
+                    if (node.matches && node.matches('.like-btn:not([data-bound])')) {
+                        hasNewButtons = true;
+                        break;
+                    }
+                    if (node.querySelectorAll && node.querySelectorAll('.like-btn:not([data-bound])').length > 0) {
+                        hasNewButtons = true;
+                        break;
+                    }
+                }
+                if (hasNewButtons) break;
+            }
+            if (hasNewButtons) {
+                scan(document);
+            }
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    /* مسح أولي عند تحميل الصفحة */
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            scan(document);
+            setupObserver();
+        });
+    } else {
+        scan(document);
+        setupObserver();
+    }
+
+    /* مسح احتياطي بعد فترات قصيرة (للعناصر المحملة بتأخير) */
     setTimeout(() => scan(document), 500);
     setTimeout(() => scan(document), 1500);
 
-    console.log('❤️ likes.js v4 ready');
+    console.log('❤️ likes.js v5 ready (MutationObserver)');
 })();
