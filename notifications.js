@@ -3,6 +3,7 @@
  * - مترجم بالكامل
  * - يتزامن مع تغيير اللغة
  * - يعمل مع panel + bell
+ * - 🔒 الإصدار v3.1: إصلاح ثغرة XSS عبر دالة escapeHtml
  */
 (function() {
     'use strict';
@@ -12,6 +13,17 @@
     let supabase = null;
     let userId = null;
     let deviceHash = null;
+
+    /* ═══ 🔒 دالة تطهير HTML لمنع هجمات XSS ═══ */
+    function escapeHtml(str) {
+        if (str == null) return '';
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
 
     /* ═══ ترجمة ═══ */
     function t(key) {
@@ -162,11 +174,12 @@
     function showNotificationUI(notification) {
         const container = document.createElement('div');
         container.className = `notification notification-${notification.type}`;
+        /* 🔒 تطهير كل المحتوى قبل حقنه في innerHTML لمنع XSS */
         container.innerHTML =
             '<div class="notification-icon ' + (notification.type || 'info') + '">' + getIconForType(notification.type) + '</div>' +
             '<div class="notification-content-inner">' +
-                (notification.title ? '<div class="notification-title">' + notification.title + '</div>' : '') +
-                '<div class="notification-message">' + notification.message + '</div>' +
+                (notification.title ? '<div class="notification-title">' + escapeHtml(notification.title) + '</div>' : '') +
+                '<div class="notification-message">' + escapeHtml(notification.message) + '</div>' +
             '</div>' +
             '<button class="notification-close" type="button">×</button>';
 
@@ -334,9 +347,9 @@
                 item.innerHTML =
                     '<div class="notification-icon ' + (notification.type || 'info') + '">' + getIconForType(notification.type) + '</div>' +
                     '<div class="notification-content-inner">' +
-                        (notification.title ? '<div class="notification-title">' + notification.title + '</div>' : '') +
-                        '<div class="notification-message">' + notification.message + '</div>' +
-                        '<div class="notification-time">' + timeAgo + '</div>' +
+                        (notification.title ? '<div class="notification-title">' + escapeHtml(notification.title) + '</div>' : '') +
+                        '<div class="notification-message">' + escapeHtml(notification.message) + '</div>' +
+                        '<div class="notification-time">' + escapeHtml(timeAgo) + '</div>' +
                     '</div>';
 
                 item.addEventListener('click', () => {

@@ -20,7 +20,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
         }
         .login-card {
             background: rgba(30, 41, 59, 0.7);
@@ -31,6 +31,8 @@
             width: 100%;
             max-width: 400px;
             border: 1px solid rgba(255, 255, 255, 0.1);
+            box-sizing: border-box;
+            margin: 20px;
         }
         h2 {
             text-align: center;
@@ -53,6 +55,7 @@
             background: #0f172a;
             color: #fff;
             box-sizing: border-box;
+            font-size: 14px;
         }
         input:focus {
             outline: none;
@@ -69,9 +72,14 @@
             cursor: pointer;
             margin-top: 10px;
             transition: background 0.2s;
+            font-size: 14px;
         }
-        .btn-submit:hover {
+        .btn-submit:hover:not(:disabled) {
             background: #0ea5e9;
+        }
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         .separator {
             display: flex;
@@ -88,7 +96,7 @@
         }
         .separator::before { margin-left: 10px; }
         .separator::after { margin-right: 10px; }
-        
+
         .btn-google {
             width: 100%;
             padding: 12px;
@@ -103,32 +111,101 @@
             justify-content: center;
             gap: 10px;
             transition: background 0.2s;
+            font-size: 14px;
         }
-        .btn-google:hover {
+        .btn-google:hover:not(:disabled) {
             background: #f1f5f9;
+        }
+        .btn-google:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
         }
         .btn-google svg {
             width: 18px;
             height: 18px;
+        }
+
+        /* رسالة التنبيه */
+        .alert {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            display: none;
+            line-height: 1.5;
+        }
+        .alert.show { display: block; }
+        .alert-error {
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            color: #fca5a5;
+        }
+        .alert-success {
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.5);
+            color: #86efac;
+        }
+        .alert-info {
+            background: rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            color: #7dd3fc;
+        }
+
+        .toggle-mode {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+        .toggle-mode a {
+            color: #38bdf8;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        .toggle-mode a:hover {
+            text-decoration: underline;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid currentColor;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.6s linear infinite;
+            vertical-align: middle;
+            margin-left: 8px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
 
     <div class="login-card">
-        <h2>تسجيل الدخول</h2>
-        
-        <!-- نموذج تسجيل الدخول العادي -->
-        <form id="loginForm">
+        <h2 id="formTitle">تسجيل الدخول</h2>
+
+        <div id="alertBox" class="alert"></div>
+
+        <!-- نموذج تسجيل الدخول / التسجيل -->
+        <form id="loginForm" autocomplete="on">
             <div class="input-group">
                 <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" required placeholder="name@example.com">
+                <input type="email" id="email" name="email" required
+                       placeholder="name@example.com"
+                       autocomplete="email" autocapitalize="off">
             </div>
             <div class="input-group">
                 <label for="password">كلمة المرور</label>
-                <input type="password" id="password" required placeholder="••••••••">
+                <input type="password" id="password" name="password" required
+                       placeholder="••••••••"
+                       autocomplete="current-password"
+                       minlength="6">
             </div>
-            <button type="submit" class="btn-submit">دخول</button>
+            <button type="submit" class="btn-submit" id="submitBtn">دخول</button>
         </form>
 
         <div class="separator">أو</div>
@@ -143,21 +220,229 @@
             </svg>
             التسجيل باستخدام Google
         </button>
+
+        <div class="toggle-mode">
+            <span id="toggleText">ليس لديك حساب؟</span>
+            <a id="toggleMode">إنشاء حساب جديد</a>
+        </div>
     </div>
 
+    <!-- ═══ Supabase JS SDK + إعدادات المشروع ═══ -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+
     <script>
-        // التعامل مع تسجيل الدخول العادي وتحويلك لصفحة الكرة الأرضية (مثلاً index.html)
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
+        'use strict';
+
+        /* ═══ حالة الواجهة: login | signup ═══ */
+        let mode = 'login';
+
+        /* ═══ تهيئة عميل Supabase ═══ */
+        let sb = null;
+        try {
+            if (window.CC_CONFIG && window.CC_CONFIG.SUPABASE_URL && window.CC_CONFIG.SUPABASE_ANON_KEY && window.supabase) {
+                sb = window.supabase.createClient(
+                    window.CC_CONFIG.SUPABASE_URL,
+                    window.CC_CONFIG.SUPABASE_ANON_KEY
+                );
+            }
+        } catch (e) {
+            console.error('فشل تهيئة Supabase:', e);
+        }
+
+        /* ═══ عناصر DOM ═══ */
+        const form = document.getElementById('loginForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const submitBtn = document.getElementById('submitBtn');
+        const googleBtn = document.getElementById('googleLoginBtn');
+        const toggleModeLink = document.getElementById('toggleMode');
+        const toggleText = document.getElementById('toggleText');
+        const formTitle = document.getElementById('formTitle');
+        const alertBox = document.getElementById('alertBox');
+
+        /* ═══ عرض رسالة (نجاح / خطأ / معلومات) ═══ */
+        function showAlert(type, message) {
+            alertBox.className = 'alert alert-' + type + ' show';
+            alertBox.textContent = message;
+        }
+
+        function hideAlert() {
+            alertBox.className = 'alert';
+            alertBox.textContent = '';
+        }
+
+        /* ═══ تبديل بين الدخول والتسجيل ═══ */
+        function setMode(newMode) {
+            mode = newMode;
+            hideAlert();
+            if (mode === 'login') {
+                formTitle.textContent = 'تسجيل الدخول';
+                submitBtn.textContent = 'دخول';
+                toggleText.textContent = 'ليس لديك حساب؟';
+                toggleModeLink.textContent = 'إنشاء حساب جديد';
+                passwordInput.setAttribute('autocomplete', 'current-password');
+            } else {
+                formTitle.textContent = 'إنشاء حساب جديد';
+                submitBtn.textContent = 'إنشاء الحساب';
+                toggleText.textContent = 'لديك حساب بالفعل؟';
+                toggleModeLink.textContent = 'تسجيل الدخول';
+                passwordInput.setAttribute('autocomplete', 'new-password');
+            }
+        }
+
+        toggleModeLink.addEventListener('click', function(e) {
             e.preventDefault();
-            // هنا تقدر تزيد التحقق إذا حبيت، مباشرة نوجهوه لملف الكرة الأرضية
-            window.location.href = 'index.html'; 
+            setMode(mode === 'login' ? 'signup' : 'login');
         });
 
-        // محاكاة تسجيل الدخول بغوغل والتحويل المباشر
-        document.getElementById('googleLoginBtn').addEventListener('click', function() {
-            // ربط مع مصادقة غوغل مستقبلاً، حالياً يوجهك مباشرة للكرة الأرضية
-            window.location.href = 'index.html';
+        /* ═══ التحقق من جودة كلمة المرور ═══ */
+        function validatePassword(pwd) {
+            if (pwd.length < 6) {
+                return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+            }
+            return null;
+        }
+
+        /* ═══ معالجة تسجيل الدخول / التسجيل ═══ */
+        async function handleSubmit(e) {
+            e.preventDefault();
+            hideAlert();
+
+            if (!sb) {
+                showAlert('error', 'تعذّر الاتصال بالخادم. تأكد من تحميل ملف config.js بشكل صحيح.');
+                return;
+            }
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value;
+
+            /* تحقق بسيط من صحة المدخلات قبل إرسال الطلب */
+            if (!email || !password) {
+                showAlert('error', 'الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+                return;
+            }
+
+            const pwdError = validatePassword(password);
+            if (pwdError) {
+                showAlert('error', pwdError);
+                return;
+            }
+
+            /* تعطيل الزر أثناء الطلب */
+            submitBtn.disabled = true;
+            const originalText = submitBtn.textContent;
+            submitBtn.innerHTML = originalText + '<span class="spinner"></span>';
+
+            try {
+                let result;
+                if (mode === 'login') {
+                    /* تسجيل الدخول بالبريد وكلمة المرور */
+                    result = await sb.auth.signInWithPassword({ email, password });
+                } else {
+                    /* إنشاء حساب جديد */
+                    result = await sb.auth.signUp({
+                        email,
+                        password,
+                        options: { emailRedirectTo: window.location.origin + '/index.html' }
+                    });
+                }
+
+                if (result.error) throw result.error;
+
+                /* في حالة التسجيل: قد يتطلب تأكيد البريد */
+                if (mode === 'signup' && result.data?.user && !result.data?.session) {
+                    showAlert('success', 'تم إنشاء حسابك! تحقق من بريدك الإلكتروني لتأكيد الحساب قبل تسجيل الدخول.');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalText;
+                    setMode('login');
+                    return;
+                }
+
+                /* حفظ بيانات المستخدم وتوجيهه للصفحة الرئيسية */
+                if (result.data?.user || result.data?.session) {
+                    try {
+                        localStorage.setItem('cc_user', JSON.stringify(result.data.user));
+                    } catch (e) {}
+
+                    showAlert('success', mode === 'login' ? 'تم تسجيل الدخول بنجاح! جاري التحويل...' : 'تم إنشاء الحساب بنجاح! جاري التحويل...');
+
+                    setTimeout(function() {
+                        const redirect = new URLSearchParams(location.search).get('redirect') || 'index.html';
+                        window.location.href = redirect;
+                    }, 800);
+                } else {
+                    throw new Error('استجابة غير متوقعة من الخادم');
+                }
+            } catch (err) {
+                console.error('Auth error:', err);
+                let msg = err.message || 'حدث خطأ غير متوقع';
+                /* ترجمة الأخطاء الشائعة */
+                if (msg.includes('Invalid login credentials')) {
+                    msg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
+                } else if (msg.includes('Email not confirmed')) {
+                    msg = 'يجب تأكيد بريدك الإلكتروني أولاً. تحقق من بريدك.';
+                } else if (msg.includes('already registered')) {
+                    msg = 'هذا البريد الإلكتروني مُسجّل بالفعل. حاول تسجيل الدخول.';
+                } else if (msg.includes('rate limit')) {
+                    msg = 'محاولات كثيرة. انتظر قليلاً قبل المحاولة مرة أخرى.';
+                }
+                showAlert('error', msg);
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+            }
+        }
+
+        form.addEventListener('submit', handleSubmit);
+
+        /* ═══ تسجيل الدخول عبر Google OAuth ═══ */
+        googleBtn.addEventListener('click', async function() {
+            if (!sb) {
+                showAlert('error', 'تعذّر الاتصال بالخادم.');
+                return;
+            }
+
+            googleBtn.disabled = true;
+            const originalHTML = googleBtn.innerHTML;
+            googleBtn.innerHTML = '<span class="spinner"></span> جاري الفتح...';
+
+            try {
+                const { data, error } = await sb.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin + '/index.html'
+                    }
+                });
+                if (error) throw error;
+                /* سيتم توجيه المستخدم تلقائياً إلى Google ثم العودة */
+            } catch (err) {
+                console.error('Google OAuth error:', err);
+                let msg = err.message || 'فشل تسجيل الدخول بـ Google';
+                if (msg.includes('provider is not enabled') || msg.includes('not enabled')) {
+                    msg = 'تسجيل الدخول بـ Google غير مُفعّل. فعّله من لوحة تحكم Supabase.';
+                }
+                showAlert('error', msg);
+                googleBtn.disabled = false;
+                googleBtn.innerHTML = originalHTML;
+            }
         });
+
+        /* ═══ إذا كان المستخدم مسجلاً دخوله بالفعل، وجهه للصفحة الرئيسية ═══ */
+        async function checkExistingSession() {
+            if (!sb) return;
+            try {
+                const { data } = await sb.auth.getSession();
+                if (data?.session) {
+                    /* المستخدم مسجل دخوله بالفعل */
+                    window.location.href = 'index.html';
+                }
+            } catch (e) {
+                /* تجاهل */
+            }
+        }
+
+        checkExistingSession();
+        setMode('login');
     </script>
     <script src="transitions.js"></script>
 </body>
