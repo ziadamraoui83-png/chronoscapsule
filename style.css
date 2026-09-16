@@ -193,7 +193,9 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 
 /* ═════════ عدّاد الكبسولات ═════════ */
 .capsule-counter {
-    position: absolute; bottom: 40px; z-index: 10;
+    position: absolute;
+    bottom: 90px;        /* ← كان 40px — ارفعه فوق */
+    z-index: 10;
     display: flex; align-items: center; gap: 9px;
     background: rgba(15, 23, 42, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.15);
