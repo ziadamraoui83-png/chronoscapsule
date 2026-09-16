@@ -2,6 +2,14 @@
   "cleanUrls": false,
   "trailingSlash": false,
 
+  "redirects": [
+    {
+      "source": "/chronos.html",
+      "destination": "/",
+      "permanent": true
+    }
+  ],
+
   "headers": [
     {
       "source": "/(.*)",
