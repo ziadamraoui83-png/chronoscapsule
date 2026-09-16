@@ -16,6 +16,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let rotFactor = 1;
     let fitDist = 21;
+
+    /* ✅ إصلاح التجميد أثناء السكرول: نتوقف عن رسم Three.js كليًا عندما
+          يخرج الـ Hero (الكوكب) من الشاشة — لا معنى لحرق الـ GPU/CPU في
+          60 إطارًا/ثانية لمشهد لا يراه المستخدم وهو يقرأ أسفل الصفحة */
+    let heroVisible = true;
+    const heroEl = document.querySelector('.space-container');
+    if (heroEl && typeof IntersectionObserver === 'function') {
+        new IntersectionObserver((entries) => {
+            heroVisible = entries[0].isIntersecting;
+        }, { threshold: 0.02 }).observe(heroEl);
+    }
     const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const PLANET_RADIUS = 5.05;
 
@@ -524,6 +535,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function animate(timestamp) {
             requestAnimationFrame(animate);
+
+            /* ✅ إصلاح التجميد أثناء السكرول: إذا خرج الـ Hero من الشاشة
+                  نتوقف فورًا — rAF يبقى خفيفًا (لا عمل تقريبًا) والرسم
+                  يستأنف تلقائيًا عند العودة */
+            if (!heroVisible) return;
 
             /* ✅ Skip frame إذا لم يحن وقت الإطار التالي */
             if (timestamp - lastFrameTime < frameInterval) return;
