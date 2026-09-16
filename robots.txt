@@ -34,3 +34,9 @@ Disallow: /
 
 # Sitemap
 Sitemap: https://chronoscapsule.vercel.app/sitemap.xml
+# IndexNow - تسريع الفهرسة
+User-agent: *
+Allow: /
+
+# IndexNow key location
+# https://chronoscapsule.vercel.app/chronoscapsule2026.txt
