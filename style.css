@@ -704,7 +704,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     .hero-panel { 
         padding: 20px;
         width: 95%;
-        right: 2.5%;
         max-height: 70vh;
     }
     .modal-card { 
@@ -1217,7 +1216,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     .hero-panel { 
         width: 95%; 
         padding: 25px;
-        right: 2.5%;
         max-height: 75vh;
     }
     .modal-card { 
