@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let scene, camera, renderer, controls, planet, stars;
 
     let isZooming = false;
-    let zoomTargetVector = new THREE.Vector3();
+    /* ✅ كسول (lazy): لا نلمس THREE هنا — إذا فشل تحميل الـ CDN لا يموت السكربت كله.
+          يُهيَّأ داخل initThreeJS بعد التأكد من توفر THREE */
+    let zoomTargetVector = null;
 
     let rotFactor = 1;
     let fitDist = 21;
@@ -349,10 +351,18 @@ document.addEventListener('DOMContentLoaded', () => {
        إعداد Three.js
        ═══════════════════════════════════════════════════════════ */
     function initThreeJS() {
+        /* ✅ حارس: إذا فشل تحميل Three.js من الـ CDN نرمي خطأ واضحاً
+              بدل TypeError غامض — try/catch الخارجي سيلتقطه ويُبقي باقي الموقع يعمل */
+        if (typeof THREE === 'undefined') {
+            throw new Error('THREE undefined — CDN load failed');
+        }
+
         const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
+        /* ✅ الآن THREE متأكد من توفره — تهيئة المتجه الكسول */
+        zoomTargetVector = new THREE.Vector3();
+
         scene = new THREE.Scene();
-        /* ✅ تحديث: خلفية بنفسجية داكنة تتناسق مع body (#0a0118) */
-        scene.background = new THREE.Color(0x0a0118);
+        scene.background = new THREE.Color(0x010103);
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -734,6 +744,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function spawnMeteor() {
+        /* ✅ حارس: لا شهب إذا لم يتهيأ المشهد (فشل WebGL/CDN) —
+              يمنع أخطاء uncaught متكررة كل 5-12 ثانية */
+        if (!scene || typeof THREE === 'undefined') return;
         if (document.visibilityState !== 'visible') return;
         const R = () => THREE.MathUtils.randFloatSpread(1);
         const start = new THREE.Vector3(R(), R() * 0.6 + 0.2, R()).normalize()
@@ -766,6 +779,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createMessageMarker(msg) {
+        /* ✅ حارس: بدون كوكب (فشل WebGL/CDN) نتجاهل العلامة بهدوء —
+              الكبسولة نفسها محفوظة في القاعدة، فقط العلامة البصرية تسقط */
+        if (!planet || typeof THREE === 'undefined') return;
+
         const localPos = get3DPos(msg.lat, msg.lng);
         const moodColor = MOOD_COLORS[msg.mood] || 0x60a5fa;
 
@@ -896,6 +913,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function launchMessage(countryCode, text, author, mood) {
+        /* ✅ حارس: الكبسولة حُفظت في القاعدة بالفعل (save() قبل هذه الدالة) —
+              إذا فشل WebGL/CDN نتجاهل الأنيميشن البصري فقط، بدون خطأ مضلل للمستخدم */
+        if (!scene || typeof THREE === 'undefined') return;
+
         const targetInfo = COUNTRY_INFO[countryCode] || COUNTRY_INFO.OTHER;
         const endPos = get3DPos(targetInfo.lat, targetInfo.lng);
         const startPos = endPos.clone().normalize().multiplyScalar(15);
