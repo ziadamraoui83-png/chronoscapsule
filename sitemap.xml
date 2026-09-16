@@ -161,4 +161,36 @@
         <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/terms.html"/>
     </url>
 
+
+    <!-- ✅ مقالات جديدة 16 سبتمبر 2026 -->
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-best-time-capsule-websites.html</loc>
+        <lastmod>2026-09-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-best-time-capsule-websites.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/blog-best-time-capsule-websites.html?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-best-time-capsule-websites.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html</loc>
+        <lastmod>2026-09-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html</loc>
+        <lastmod>2026-09-16</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html?lang=en"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html"/>
+    </url>
+
 </urlset>
