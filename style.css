@@ -1,6 +1,8 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — style.css (نسخة نهائية + الكبسولة الذهبية)
+   CHRONOS CAPSULE — style.css (v1.3.0)
+   ✅ إصلاح: hero-panel على الموبايل (متوسط + لا يحجب الكوكب)
    ═══════════════════════════════════════════════════════════ */
+
 /* ═══ منع الوميض الأبيض ═══ */
 html {
     background: #010103 !important;
@@ -17,19 +19,11 @@ body.cc-loaded {
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 
-/* ═══════════════════════════════════════════════════════════
-   ✅ خلفية خفيفة (تدرج واحد فقط - بدون نجوم متحركة على body)
-   - النجوم فقط في .landing-section::before (خفيفة)
-   - لا animation على body (منع الكراش)
-   ═══════════════════════════════════════════════════════════ */
 body {
     overflow-x: hidden;
     overflow-y: auto;
     color: #fff;
     scroll-behavior: smooth;
-    /* ✅ خلفية بنفسجية داكنة تتناسق مع إضاءة الكوكب
-       - نفس ألوان Three.js (0x88aaff + 0x8b5cf6)
-       - opacity عالية لمنع التباين الحاد */
     background-color: #0a0118;
     background-image:
         radial-gradient(ellipse 80% 50% at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 70%),
@@ -46,15 +40,12 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     min-height: 700px;
     overflow: hidden;
     background: transparent;
-    /* ✅ تحسين الأداء: GPU acceleration */
     will-change: transform;
     transform: translateZ(0);
     contain: layout style paint;
-    /* ✅ منع التمرير الأفقي نهائياً */
     overflow-x: clip;
 }
 
-/* ✅ تدرج ناعم من Hero إلى باقي الصفحة (بدون خط فاصل) */
 .space-container::after {
     content: '';
     position: absolute;
@@ -62,7 +53,6 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     left: 0;
     right: 0;
     height: 250px;
-    /* ✅ تدرج من شفاف إلى لون body الجديد (#0a0118) */
     background: linear-gradient(to bottom,
         transparent 0%,
         rgba(10, 1, 24, 0.3) 30%,
@@ -72,7 +62,6 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     z-index: 5;
 }
 
-/* ✅ كتمان الخط الفاصل تماماً */
 .space-container::before {
     content: '';
     position: absolute;
@@ -83,6 +72,7 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     background: transparent;
     z-index: 6;
 }
+
 #planet-viewport { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; cursor: grab; }
 #planet-viewport:active { cursor: grabbing; }
 
@@ -194,7 +184,7 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 /* ═════════ عدّاد الكبسولات ═════════ */
 .capsule-counter {
     position: absolute;
-    bottom: 90px;        /* ← كان 40px — ارفعه فوق */
+    bottom: 90px;
     z-index: 10;
     display: flex; align-items: center; gap: 9px;
     background: rgba(15, 23, 42, 0.7);
@@ -260,7 +250,6 @@ html[dir="ltr"] .mood-legend {
     white-space: nowrap;
     transition: opacity 0.3s ease, transform 0.2s ease, background-color 0.2s ease;
     display: flex; align-items: center; gap: 5px;
-    /* ✅ منع تجاوز الشاشة - إخفاء أي تسمية تخرج */
     max-width: 120px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -273,21 +262,18 @@ html[dir="ltr"] .mood-legend {
 .country-label.spawn { animation: labelPop 0.55s cubic-bezier(0.2, 0.75, 0.2, 1); }
 @keyframes labelPop { from { transform: translate(-50%, -100%) scale(0.3); opacity: 0; } }
 
-/* ✅ منع تجاوز تسميات الدول لحدود الكرة الأرضية على الموبايل */
 @media (max-width: 768px) {
     .country-label {
         font-size: 10px;
         padding: 3px 8px;
         max-width: 110px;
     }
-    /* إخفاء التسميات البعيدة على الموبايل لتجنب التمرير الأفقي */
     #labels-container {
         max-width: 100%;
         overflow: hidden;
     }
 }
 
-/* ✅ منع التمرير الأفقي العام */
 html, body {
     overflow-x: hidden;
     max-width: 100vw;
@@ -520,32 +506,37 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
   .my-capsules-link{font-size:12.5px;margin-top:10px}
 }
 
-/* ✅ الموبايل الصغير جداً - تعديل الترتيب لإظهار البطاقة بوضوح */
+/* ✅ الموبايل الصغير جداً — البطاقة متوسطة ولا تحجب الكوكب */
 @media(max-width:600px){
-  /* تقليل ارتفاع الـ hero لإظهار كل العناصر */
   .space-container {
-    height: auto;
-    min-height: 100vh;
+    height: 100dvh;
+    min-height: 100dvh;
   }
-  /* رفع البطاقة للأعلى قليلاً لإظهار العناصر السفلية */
   .hero-panel {
     bottom: 140px;
-    padding: 16px 18px;
+    padding: 14px 16px;
+    max-height: 55vh;              /* ✅ لا تتجاوز 55% من الشاشة */
+    overflow-y: auto;              /* ✅ تمرير داخلي إذا طال المحتوى */
+    -webkit-overflow-scrolling: touch;
   }
-  .hero-panel .main-title { font-size: 1.4rem; }
-  .hero-panel .main-desc { font-size: 0.85rem; }
-  /* تكبير الأزرار قليلاً */
+  .hero-panel .main-title { font-size: 1.25rem; margin-bottom: 8px; }
+  .hero-panel .main-desc { font-size: 0.82rem; margin-bottom: 12px; line-height: 1.5; }
+  .hero-panel .btn-primary,
+  .hero-panel .deep-btn { padding: 11px 14px; font-size: 0.9rem; }
+  .hero-panel .hero-stats { font-size: 11px; gap: 10px; }
+  .hero-panel .hero-learn-link { font-size: 11.5px; }
+
   .zoom-controls button {
     width: 40px;
     height: 40px;
     font-size: 20px;
   }
-  /* ✅ إخفاء بعض عناصر الـ header على الموبايل الصغير */
+
   .profile-link-header,
   .header-search-btn {
     display: none !important;
   }
-  /* تقليل حجم زر Google على الموبايل */
+
   .google-auth-btn {
     padding: 6px 10px !important;
     font-size: 12px !important;
@@ -553,29 +544,25 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
   .google-auth-btn .g-text {
     font-size: 12px !important;
   }
-  /* تقليل زر "حسابي" */
   .email-auth-link {
     padding: 6px 10px !important;
     font-size: 12px !important;
   }
-  /* تقليل الـ nav link */
   .header-nav-link {
     font-size: 12px !important;
     padding: 6px 8px !important;
   }
 }
 
-/* ✅ الموبايل الأصغر (≤480px) - إخفاء المزيد */
 @media(max-width:480px){
   .header-nav-link {
     display: none !important;
   }
-  /* إظهار فقط: bell + email link + google btn */
 }
 
 @media(max-width:768px){.cc-logo{height:38px}}
 @media(max-width:480px){
-  .hero-panel{bottom:112px; padding:16px 18px}
+  .hero-panel{bottom:120px; padding:14px 16px; max-height: 52vh;}
   .cc-logo{height:34px}
   .lang-toggle{padding:6px 11px; font-size:12px}
   .capsule-counter span:last-child{display:inline; max-width:96px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
@@ -701,11 +688,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 @media (max-width: 600px) {
     .footer-nav { font-size: 11px; gap: 4px; }
     .footer-nav a { padding: 2px 2px; }
-    .hero-panel { 
-        padding: 20px;
-        width: 95%;
-        max-height: 70vh;
-    }
     .modal-card { 
         padding: 25px 20px;
         width: 95%;
@@ -722,53 +704,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 .header-nav-link {
     display: inline-flex;
     align-items: center;
-    gap: 7px;
-    background: rgba(139, 92, 246, 0.12);
-    border: 1px solid rgba(139, 92, 246, 0.35);
-    color: #c4b5fd;
-    padding: 7px 14px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-size: 13px;
-    font-weight: 700;
-    font-family: 'Tajawal', sans-serif;
-    transition: all 0.3s ease;
-    backdrop-filter: blur(8px);
-    white-space: nowrap;
-}
-
-.header-nav-link:hover {
-    background: rgba(139, 92, 246, 0.25);
-    border-color: #8b5cf6;
-    color: #fff;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.3);
-}
-
-.header-nav-link .nav-icon {
-    font-size: 14px;
-    line-height: 1;
-}
-
-.header-nav-link .nav-text {
-    line-height: 1;
-}
-
-@media (max-width: 768px) {
-    .header-nav-link {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-    .header-nav-link .nav-text {
-        display: none;
-    }
-    .header-nav-link .nav-icon {
-        font-size: 16px;
-    }
-}
-.header-nav-link {
-    display: inline-flex;
-    align-items: center;
     gap: 6px;
     background: linear-gradient(135deg, rgba(139,92,246,.15), rgba(59,130,246,.15));
     border: 1px solid rgba(139,92,246,.4);
@@ -779,9 +714,7 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     font-family: 'Tajawal', sans-serif;
     font-size: 12.5px;
     font-weight: 700;
-    letter-spacing: 0.02em;
     backdrop-filter: blur(10px);
-    box-shadow: 0 4px 16px rgba(139,92,246,.15), inset 0 1px 0 rgba(255,255,255,.08);
     transition: all 0.3s ease;
     white-space: nowrap;
 }
@@ -791,26 +724,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(139,92,246,.35);
-}
-@media (max-width: 480px) {
-    .header-nav-link { padding: 5px 10px; font-size: 11.5px; }
-}
-.header-nav-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    background: linear-gradient(135deg, rgba(139,92,246,.15), rgba(59,130,246,.15));
-    border: 1px solid rgba(139,92,246,.4);
-    color: #c4b5fd;
-    padding: 6px 14px;
-    border-radius: 999px;
-    text-decoration: none;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 12.5px;
-    font-weight: 700;
-    backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
-    white-space: nowrap;
 }
 
 /* ═════════ نظام الإشعارات ═════════ */
@@ -837,7 +750,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
 /* ═════════ قائمة الإشعارات ═════════ */
 .notification-panel {
     position: fixed;
-    /* ✅ موضع ديناميكي يُضبط عبر JS بناءً على موضع الجرس */
     top: 70px;
     inset-inline-end: 64px;
     width: 340px;
@@ -871,7 +783,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     display: flex;
 }
 
-/* ✅ سهم صغير يشير إلى الجرس */
 .notification-panel::before {
     content: '';
     position: absolute;
@@ -1036,7 +947,6 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     font-size: 13px;
 }
 
-/* ═══ الجوال ═══ */
 @media (max-width: 600px) {
     .notification-panel {
         inset-inline-start: 12px;
@@ -1045,179 +955,15 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
         max-height: 60vh;
         top: 60px;
     }
-    /* ✅ إخفاء السهم على الموبايل لأن اللوحة تأخذ كامل العرض */
     .notification-panel::before {
         display: none;
     }
 }
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
 
-.notification-panel.show {
-    display: flex;
-}
-
-.notification-header {
-    padding: 16px 20px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.notification-header h3 {
-    font-size: 16px;
-    font-weight: 700;
-    margin: 0;
-    color: #fff;
-}
-
-.notification-close {
-    background: none;
-    border: none;
-    color: #9ca3af;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    transition: all 0.2s ease;
-}
-
-.notification-close:hover {
-    color: #fff;
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.notification-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-}
-
-.notification-list {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.notification-item {
-    padding: 12px 16px;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    gap: 12px;
-}
-
-.notification-item:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateX(-4px);
-}
-
-.notification-item.unread {
-    background: rgba(139, 92, 246, 0.15);
-    border-color: rgba(139, 92, 246, 0.3);
-}
-
-.notification-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    flex-shrink: 0;
-}
-
-.notification-icon.success {
-    background: rgba(34, 197, 94, 0.2);
-    color: #22c55e;
-}
-
-.notification-icon.error {
-    background: rgba(239, 68, 68, 0.2);
-    color: #ef4444;
-}
-
-.notification-icon.warning {
-    background: rgba(245, 158, 11, 0.2);
-    color: #f59e0b;
-}
-
-.notification-icon.info {
-    background: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
-}
-
-.notification-content-inner {
-    flex: 1;
-}
-
-.notification-title {
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 4px;
-    color: #fff;
-}
-
-.notification-message {
-    font-size: 13px;
-    color: #cbd5e1;
-    line-height: 1.4;
-    margin-bottom: 4px;
-}
-
-.notification-time {
-    font-size: 11px;
-    color: #64748b;
-}
-
-.mark-all-read-btn {
-    width: 100%;
-    padding: 12px;
-    background: rgba(139, 92, 246, 0.1);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-    color: #a78bfa;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 8px;
-}
-
-.mark-all-read-btn:hover {
-    background: rgba(139, 92, 246, 0.2);
-    color: #c4b5fd;
-}
-
-.no-notifications {
-    text-align: center;
-    padding: 40px 20px;
-    color: #64748b;
-    font-size: 14px;
-}
-
-/* ═════════ استجابة ═════════ */
+/* ═════════ استجابة عامة ═════════ */
 @media (max-width: 768px) {
     .site-header { padding: 18px 25px; }
     .main-title { font-size: 2rem; }
-    .hero-panel { 
-        width: 95%; 
-        padding: 25px;
-        max-height: 75vh;
-    }
     .modal-card { 
         padding: 30px 25px;
         width: 95%;
@@ -1231,20 +977,10 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
         left: 20px;
         top: 60px;
         max-height: 60vh;
-        /* ✅ إخفاء السهم على الموبايل */
     }
     .notification-panel::before {
         display: none;
     }
-}
-.header-nav-link:hover {
-    background: linear-gradient(135deg, rgba(139,92,246,.3), rgba(59,130,246,.3));
-    border-color: #8b5cf6;
-    color: #fff;
-    transform: translateY(-2px);
-}
-@media (max-width: 480px) {
-    .header-nav-link { padding: 5px 10px; font-size: 11.5px; }
 }
 
 .card-social-btn {
@@ -1285,34 +1021,27 @@ body {
    🎨 الأقسام الجديدة (تحت Hero)
    ═══════════════════════════════════════════════════════════ */
 
-/* ═══ Section عام ═══ */
 .landing-section {
     position: relative;
     padding: 100px 40px;
     max-width: 1200px;
     margin: 0 auto;
     z-index: 1;
-    /* ✅ خلفية شفافة لإظهار نجوم body الفضائية */
     background: transparent;
 }
 
-/* ═══ أول قسم — يبدا بـ padding أصغر ═══ */
 .landing-section:first-of-type {
     padding-top: 80px;
-    /* ✅ إزالة الخلفية تماماً لمنع الخط الفاصل */
     background: transparent;
-    /* ✅ إزالة margin-top السلبي (كان يسبب تداخل) */
     margin-top: 0;
     position: relative;
     z-index: 2;
 }
 
-/* ✨ نجوم خفيفة في كل قسم (بدون animation - منع الكراش) */
 .landing-section::before {
     content: '';
     position: absolute;
     inset: 0;
-    /* ✅ تقليل النجوم من 8 لـ 4 (أخف على GPU) */
     background-image:
         radial-gradient(1px 1px at 10% 15%, rgba(255,255,255,.4) 0%, transparent 100%),
         radial-gradient(1px 1px at 55% 8%, rgba(255,255,255,.3) 0%, transparent 100%),
@@ -1323,13 +1052,8 @@ body {
     pointer-events: none;
     z-index: -1;
     opacity: 0.4;
-    /* ✅ إزالة animation - منع الكراش */
 }
 
-@keyframes starsTwinkle {
-    0%, 100% { opacity: 0.4; }
-    50%      { opacity: 0.7; }
-}
 .landing-section-title {
     font-size: 2.2rem;
     font-weight: 900;
@@ -1601,7 +1325,6 @@ body {
 }
 
 /* ═══ New Footer ═══ */
-
 .footer-content {
     max-width: 1200px;
     margin: 0 auto;
@@ -1698,7 +1421,6 @@ body {
     transform: translateY(0);
 }
 
-/* إلغاء Reveal في التقليل من الحركة */
 @media (prefers-reduced-motion: reduce) {
     .reveal {
         opacity: 1 !important;
@@ -1711,7 +1433,6 @@ body {
    🍔 HAMBURGER MENU (Mobile Only - max-width: 768px)
    ═══════════════════════════════════════════════════════════ */
 
-/* ✅ زر الهامبرغر - مخفي على الديسكتوب */
 .hamburger-btn {
     display: none;
     flex-direction: column;
@@ -1746,7 +1467,6 @@ body {
     margin-bottom: 4px;
 }
 
-/* ✅ Animation عند الفتح - يتحول لـ X */
 .hamburger-btn.active .hamburger-line:nth-child(1) {
     transform: translateY(6px) rotate(45deg);
     background: #f87171;
@@ -1761,11 +1481,10 @@ body {
     background: #f87171;
 }
 
-/* ✅ القائمة المنزلقة */
 .hamburger-menu {
     position: fixed;
     top: 0;
-    inset-inline-end: 0; /* يمين في RTL، يسار في LTR */
+    inset-inline-end: 0;
     width: 280px;
     max-width: 85vw;
     height: 100vh;
@@ -1784,14 +1503,12 @@ body {
     visibility: hidden;
 }
 
-/* ✅ RTL (عربي): القائمة تنزلق من اليمين */
 html[dir="rtl"] .hamburger-menu {
     transform: translateX(100%);
     inset-inline-end: 0;
     inset-inline-start: auto;
 }
 
-/* ✅ LTR (إنجليزي): القائمة تنزلق من اليسار */
 html[dir="ltr"] .hamburger-menu {
     transform: translateX(-100%);
     inset-inline-start: 0;
@@ -1803,7 +1520,6 @@ html[dir="ltr"] .hamburger-menu {
     visibility: visible;
 }
 
-/* ✅ رأس القائمة */
 .hamburger-header {
     display: flex;
     justify-content: space-between;
@@ -1841,7 +1557,6 @@ html[dir="ltr"] .hamburger-menu {
     color: #fca5a5;
 }
 
-/* ✅ قائمة الروابط */
 .hamburger-list {
     list-style: none;
     padding: 16px 12px;
@@ -1882,14 +1597,12 @@ html[dir="ltr"] .hamburger-link:hover {
     font-size: 18px;
 }
 
-/* ✅ فاصل */
 .hamburger-divider {
     height: 1px;
     background: rgba(255, 255, 255, 0.08);
     margin: 12px 16px;
 }
 
-/* ✅ زر الإشعارات في القائمة */
 .hamburger-notif-btn {
     justify-content: space-between;
 }
@@ -1904,7 +1617,6 @@ html[dir="ltr"] .hamburger-link:hover {
     margin-inline-start: auto;
 }
 
-/* ✅ Backdrop خلف القائمة */
 .hamburger-backdrop {
     display: none;
     position: fixed;
@@ -1923,21 +1635,15 @@ html[dir="ltr"] .hamburger-link:hover {
     opacity: 1;
 }
 
-/* ✅ منع تمرير الصفحة عند فتح القائمة */
 body.hamburger-open {
     overflow: hidden;
 }
 
-/* ═══════════════════════════════════════════════════════════
-   📱 MOBILE: إظهار Hamburger + إخفاء العناصر المزدحمة
-   ═══════════════════════════════════════════════════════════ */
 @media (max-width: 768px) {
-    /* ✅ إظهار زر الهامبرغر */
     .hamburger-btn {
         display: flex !important;
     }
 
-    /* ✅ إخفاء العناصر التالية على الموبايل */
     .header-search-btn,
     .notifications-btn,
     .header-nav-link,
@@ -1948,7 +1654,6 @@ body.hamburger-open {
         display: none !important;
     }
 
-    /* ✅ تقليل حجم الشعار على الموبايل */
     .cc-logo-icon {
         width: 36px !important;
         height: 36px !important;
@@ -1962,14 +1667,12 @@ body.hamburger-open {
         font-size: 10px !important;
     }
 
-    /* ✅ Header أكثر إحكاماً */
     .site-header {
         padding: 14px 16px !important;
         gap: 12px;
     }
 }
 
-/* ✅ الموبايل الصغير جداً */
 @media (max-width: 480px) {
     .hamburger-menu {
         width: 100vw;
@@ -1982,7 +1685,6 @@ body.hamburger-open {
     }
 }
 
-/* ✅ الوضع الأفقي (Landscape) */
 @media (max-width: 768px) and (orientation: landscape) {
     .hamburger-menu {
         width: 320px;
