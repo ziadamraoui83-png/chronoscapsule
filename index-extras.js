@@ -1,54 +1,54 @@
-﻿/* ═══ index-extras.js — كان سكربتات مضمنة في index.html ═══
-   المحتوى: ccLoader / زر CTA السفلي / Service Worker / زر التثبيت PWA /
-   Lenis Smooth Scroll + Reveal / قائمة Hamburger
-   ⚠️ يُحمَّل في نفس الموضع السابق: بعد المكتبات وقبل transitions.js */
+/* ═══════════════════════════════════════════════════════════
+   CHRONOS CAPSULE — index-extras.js (v2.0)
+   يحتوي على: Loader / CTA button / SW / PWA / Lenis + Reveal / Hamburger
+   ⚠️ يُحمَّل قبل transitions.js
+   ═══════════════════════════════════════════════════════════ */
+(function(){
+    'use strict';
 
-    window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
+    const __CC_DEBUG = location.hostname === 'localhost' ||
+                       location.hostname === '127.0.0.1' ||
+                       location.search.includes('debug');
+
+    /* ═══════════════════════════════════════════════════════
+       1) Loader — يختفي بعد التحميل
+       ═══════════════════════════════════════════════════════ */
+    window.addEventListener('load', () =>
+        setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400)
+    );
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
 
-    /* زر CTA السفلي → يفتح نفس Modal */
+    /* ═══════════════════════════════════════════════════════
+       2) زر CTA السفلي → يفتح نفس Modal
+       ═══════════════════════════════════════════════════════ */
     document.getElementById('openModalBtnBottom')?.addEventListener('click', () => {
         document.getElementById('openModalBtn')?.click();
     });
 
-    /* Scroll smooth */
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', (e) => {
-            const id = a.getAttribute('href');
-            if (id && id.length > 1) {
-                const el = document.querySelector(id);
-                if (el) {
-                    e.preventDefault();
-                    el.scrollIntoView({ behavior: 'smooth' });
-                }
-            }
-        });
-    });
-
-    /* ✅ Service Worker registration - فقط debug mode يطبع في console */
+    /* ═══════════════════════════════════════════════════════
+       3) Service Worker registration
+       ═══════════════════════════════════════════════════════ */
     if ('serviceWorker' in navigator) {
-        const __ccDebug = location.hostname === 'localhost' ||
-                          location.hostname === '127.0.0.1' ||
-                          location.search.includes('debug');
-
         window.addEventListener('load', () => {
-            /* ✅ التحقق من تسجيل سابق لتجنب التكرار */
             navigator.serviceWorker.getRegistration('/sw.js').then(existing => {
                 if (existing) {
-                    if (__ccDebug) console.log('✅ SW already registered:', existing.scope);
+                    if (__CC_DEBUG) console.log('✅ SW already registered:', existing.scope);
                     return existing;
                 }
                 return navigator.serviceWorker.register('/sw.js')
                     .then(reg => {
-                        if (__ccDebug) console.log('✅ SW registered:', reg.scope);
+                        if (__CC_DEBUG) console.log('✅ SW registered:', reg.scope);
                     })
                     .catch(err => {
-                        if (__ccDebug) console.log('❌ SW error:', err);
+                        if (__CC_DEBUG) console.log('❌ SW error:', err);
                     });
             });
         });
     }
 
+    /* ═══════════════════════════════════════════════════════
+       4) PWA Install Button
+       ═══════════════════════════════════════════════════════ */
     let deferredPrompt = null;
     const installBtn = document.createElement('button');
     installBtn.id = 'ccInstallBtn';
@@ -103,9 +103,10 @@
         installBtn.remove();
     });
 
+    /* ═══════════════════════════════════════════════════════
+       5) Lenis Smooth Scroll + Reveal Animations
+       ═══════════════════════════════════════════════════════ */
     (function(){
-        'use strict';
-
         const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         /* ═══ Lenis Smooth Scroll ═══ */
@@ -124,7 +125,7 @@
             }
             requestAnimationFrame(raf);
 
-            /* دعم روابط الـ anchor */
+            /* ✅ دعم روابط الـ anchor — معالج واحد فقط (بدون تكرار) */
             document.querySelectorAll('a[href^="#"]').forEach(a => {
                 a.addEventListener('click', (e) => {
                     const id = a.getAttribute('href');
@@ -137,9 +138,23 @@
                     }
                 });
             });
+        } else {
+            /* ✅ Fallback: إذا Lenis غير متاح */
+            document.querySelectorAll('a[href^="#"]').forEach(a => {
+                a.addEventListener('click', (e) => {
+                    const id = a.getAttribute('href');
+                    if (id && id.length > 1) {
+                        const el = document.querySelector(id);
+                        if (el) {
+                            e.preventDefault();
+                            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
+                });
+            });
         }
 
-        /* ═══ Reveal Animations (IntersectionObserver) ═══ */
+        /* ═══ Reveal Animations ═══ */
         const revealTargets = document.querySelectorAll(
             '.landing-section-title, .landing-section-sub, .feature-card, .blog-preview-card, .stat-card, .cta-title, .cta-desc, .btn-cta-big, .blog-preview-cta'
         );
@@ -148,9 +163,8 @@
             revealTargets.forEach(el => el.classList.add('reveal'));
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
+                entries.forEach((entry) => {
                     if (entry.isIntersecting) {
-                        /* تأخير متسلسل للعناصر المتعددة */
                         const delay = Math.min(entry.target.dataset.delay || 0, 300);
                         setTimeout(() => {
                             entry.target.classList.add('visible');
@@ -173,9 +187,11 @@
             revealTargets.forEach(el => observer.observe(el));
         }
     })();
-    (function() {
-        'use strict';
 
+    /* ═══════════════════════════════════════════════════════
+       6) Hamburger Menu
+       ═══════════════════════════════════════════════════════ */
+    (function(){
         const hamburgerBtn = document.getElementById('hamburgerBtn');
         const hamburgerMenu = document.getElementById('hamburgerMenu');
         const hamburgerClose = document.getElementById('hamburgerClose');
@@ -234,7 +250,6 @@
         /* ✅ إغلاق عند النقر على أي رابط داخل القائمة */
         hamburgerMenu.querySelectorAll('a.hamburger-link').forEach(function(link) {
             link.addEventListener('click', function() {
-                /* تأخير قصير للسماح بالتنقل */
                 setTimeout(closeMenu, 150);
             });
         });
@@ -243,7 +258,6 @@
         if (hamburgerNotifBtn) {
             hamburgerNotifBtn.addEventListener('click', function() {
                 closeMenu();
-                /* فتح لوحة الإشعارات بعد إغلاق القائمة */
                 setTimeout(function() {
                     const bell = document.getElementById('notifBell');
                     if (bell) bell.click();
@@ -254,11 +268,9 @@
         /* ✅ زر تبديل اللغة داخل القائمة */
         if (hamburgerLangBtn) {
             hamburgerLangBtn.addEventListener('click', function() {
-                /* استعمال زر اللغة الرئيسي إن وجد */
                 const langToggle = document.querySelector('.lang-toggle');
                 if (langToggle) {
                     langToggle.click();
-                    /* تحديث نص زر اللغة في القائمة */
                     setTimeout(function() {
                         const span = hamburgerLangBtn.querySelector('span:last-child');
                         if (span && window.CCI18N) {
@@ -269,22 +281,37 @@
             });
         }
 
-        /* ✅ مزامنة شارة الإشعارات بين الجرس والقائمة */
+        /* ✅ مزامنة شارة الإشعارات — MutationObserver بدل setInterval */
+        const menuBadge = hamburgerNotifBtn?.querySelector('.notification-badge');
+        const originalBadge = document.querySelector('.notifications-btn .notification-badge');
+
         function syncNotifBadge() {
-            const originalBadge = document.querySelector('.notifications-btn .notification-badge');
-            const menuBadge = hamburgerNotifBtn?.querySelector('.notification-badge');
-            if (originalBadge && menuBadge) {
-                if (originalBadge.style.display !== 'none' && originalBadge.textContent) {
-                    menuBadge.style.display = 'inline-block';
-                    menuBadge.textContent = originalBadge.textContent;
-                } else {
-                    menuBadge.style.display = 'none';
-                }
+            if (!originalBadge || !menuBadge) return;
+            if (originalBadge.style.display !== 'none' && originalBadge.textContent) {
+                menuBadge.style.display = 'inline-block';
+                menuBadge.textContent = originalBadge.textContent;
+            } else {
+                menuBadge.style.display = 'none';
             }
         }
 
-        /* تحديث كل 2 ثانية */
-        setInterval(syncNotifBadge, 2000);
+        /* ✅ مراقبة التغييرات على شارة الإشعارات الأصلية بدل setInterval */
+        if (originalBadge && menuBadge && 'MutationObserver' in window) {
+            const badgeObserver = new MutationObserver(syncNotifBadge);
+            badgeObserver.observe(originalBadge, {
+                attributes: true,
+                childList: true,
+                characterData: true,
+                subtree: true
+            });
+
+            /* ✅ تنظيف عند مغادرة الصفحة */
+            window.addEventListener('pagehide', () => {
+                badgeObserver.disconnect();
+            }, { once: true });
+        }
+
+        /* مزامنة أولية */
         syncNotifBadge();
 
         /* ✅ إغلاق عند تغيير حجم الشاشة لديسكتوب */
@@ -294,3 +321,5 @@
             }
         });
     })();
+
+})();
