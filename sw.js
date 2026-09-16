@@ -6,10 +6,11 @@
 /* ✅ إصلاح متوسط: توحيد الإصدار مع config.js
    - يأخذ الإصدار من CC_CONFIG.SW_CACHE_VERSION إن وجد
    - fallback على القيمة الافتراضية */
-const CACHE_VERSION = (typeof self !== 'undefined' &&
-                       self.CC_CONFIG && self.CC_CONFIG.SW_CACHE_VERSION)
-                      ? self.CC_CONFIG.SW_CACHE_VERSION
-                      : 'cc-v1.2.0';
+/* ═══════════════════════════════════════════════════════════
+   ⚠️ عند تحديث مهم للموقع: غيّر CACHE_VERSION فقط
+   ═══════════════════════════════════════════════════════════ */
+
+const CACHE_VERSION = 'cc-v1.3.0';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
