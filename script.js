@@ -10,23 +10,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let scene, camera, renderer, controls, planet, stars;
 
     let isZooming = false;
-    /* ✅ كسول (lazy): لا نلمس THREE هنا — إذا فشل تحميل الـ CDN لا يموت السكربت كله.
-          يُهيَّأ داخل initThreeJS بعد التأكد من توفر THREE */
-    let zoomTargetVector = null;
+    let zoomTargetVector = new THREE.Vector3();
 
     let rotFactor = 1;
     let fitDist = 21;
-
-    /* ✅ إصلاح التجميد أثناء السكرول: نتوقف عن رسم Three.js كليًا عندما
-          يخرج الـ Hero (الكوكب) من الشاشة — لا معنى لحرق الـ GPU/CPU في
-          60 إطارًا/ثانية لمشهد لا يراه المستخدم وهو يقرأ أسفل الصفحة */
-    let heroVisible = true;
-    const heroEl = document.querySelector('.space-container');
-    if (heroEl && typeof IntersectionObserver === 'function') {
-        new IntersectionObserver((entries) => {
-            heroVisible = entries[0].isIntersecting;
-        }, { threshold: 0.02 }).observe(heroEl);
-    }
     const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const PLANET_RADIUS = 5.05;
 
@@ -64,9 +51,12 @@ document.addEventListener('DOMContentLoaded', () => {
         SUPABASE_URL: '',
         SUPABASE_ANON_KEY: ''
     };
-    const sb = (CC_CONFIG.SUPABASE_URL && window.supabase)
-        ? supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY) : null;
-    window.__ccSupabase = sb;
+    /* ✅ إصلاح Multiple Supabase Client: استعمال instance واحد */
+    let sb = window.__ccSupabase || null;
+    if (!sb && CC_CONFIG.SUPABASE_URL && window.supabase) {
+        sb = supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY);
+        window.__ccSupabase = sb;
+    }
 
     function getDeviceHash() {
         let h = localStorage.getItem('cc_device');
@@ -362,18 +352,10 @@ document.addEventListener('DOMContentLoaded', () => {
        إعداد Three.js
        ═══════════════════════════════════════════════════════════ */
     function initThreeJS() {
-        /* ✅ حارس: إذا فشل تحميل Three.js من الـ CDN نرمي خطأ واضحاً
-              بدل TypeError غامض — try/catch الخارجي سيلتقطه ويُبقي باقي الموقع يعمل */
-        if (typeof THREE === 'undefined') {
-            throw new Error('THREE undefined — CDN load failed');
-        }
-
         const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
-        /* ✅ الآن THREE متأكد من توفره — تهيئة المتجه الكسول */
-        zoomTargetVector = new THREE.Vector3();
-
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x010103);
+        /* ✅ تحديث: خلفية بنفسجية داكنة تتناسق مع body (#0a0118) */
+        scene.background = new THREE.Color(0x0a0118);
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
@@ -535,11 +517,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function animate(timestamp) {
             requestAnimationFrame(animate);
-
-            /* ✅ إصلاح التجميد أثناء السكرول: إذا خرج الـ Hero من الشاشة
-                  نتوقف فورًا — rAF يبقى خفيفًا (لا عمل تقريبًا) والرسم
-                  يستأنف تلقائيًا عند العودة */
-            if (!heroVisible) return;
 
             /* ✅ Skip frame إذا لم يحن وقت الإطار التالي */
             if (timestamp - lastFrameTime < frameInterval) return;
@@ -760,9 +737,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function spawnMeteor() {
-        /* ✅ حارس: لا شهب إذا لم يتهيأ المشهد (فشل WebGL/CDN) —
-              يمنع أخطاء uncaught متكررة كل 5-12 ثانية */
-        if (!scene || typeof THREE === 'undefined') return;
         if (document.visibilityState !== 'visible') return;
         const R = () => THREE.MathUtils.randFloatSpread(1);
         const start = new THREE.Vector3(R(), R() * 0.6 + 0.2, R()).normalize()
@@ -795,10 +769,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createMessageMarker(msg) {
-        /* ✅ حارس: بدون كوكب (فشل WebGL/CDN) نتجاهل العلامة بهدوء —
-              الكبسولة نفسها محفوظة في القاعدة، فقط العلامة البصرية تسقط */
-        if (!planet || typeof THREE === 'undefined') return;
-
         const localPos = get3DPos(msg.lat, msg.lng);
         const moodColor = MOOD_COLORS[msg.mood] || 0x60a5fa;
 
@@ -929,10 +899,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function launchMessage(countryCode, text, author, mood) {
-        /* ✅ حارس: الكبسولة حُفظت في القاعدة بالفعل (save() قبل هذه الدالة) —
-              إذا فشل WebGL/CDN نتجاهل الأنيميشن البصري فقط، بدون خطأ مضلل للمستخدم */
-        if (!scene || typeof THREE === 'undefined') return;
-
         const targetInfo = COUNTRY_INFO[countryCode] || COUNTRY_INFO.OTHER;
         const endPos = get3DPos(targetInfo.lat, targetInfo.lng);
         const startPos = endPos.clone().normalize().multiplyScalar(15);
