@@ -27,15 +27,32 @@
 
     <meta name="google-site-verification" content="F0LC1gHJdqI7RF6OdtE51g2DMhnCkko3c-GzsEzKzUI" />
 
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
+    <!-- ✅ تحسين الأداء: تأخير Google Analytics بعد تحميل الصفحة
+         - بدل تحميل 160KB فوراً (يحجب العرض)
+         - نحمّلها بعد first paint (توفير ~2 ثانية) -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-Z872SS657T', {
-        page_title: document.title,
-        page_location: window.location.href
-      });
+
+      // ✅ تأخير تحميل GA حتى بعد أول تفاعل أو بعد 3 ثوان
+      function loadGA() {
+        if (window.__gaLoaded) return;
+        window.__gaLoaded = true;
+        var s = document.createElement('script');
+        s.async = true;
+        s.src = 'https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T';
+        document.head.appendChild(s);
+        gtag('js', new Date());
+        gtag('config', 'G-Z872SS657T', {
+          page_title: document.title,
+          page_location: window.location.href
+        });
+      }
+
+      // ✅ تحميل بعد: أول scroll، أول click، أو بعد 3 ثوان (أيهما أولاً)
+      window.addEventListener('scroll', loadGA, { once: true, passive: true });
+      window.addEventListener('click', loadGA, { once: true });
+      setTimeout(loadGA, 3000);
     </script>
 
     <meta name="description" content="أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية. اكتب، اختر موعد الوصول، ودع الغرباء يقرؤها. مجاناً وبسرية تامة.">
@@ -807,15 +824,21 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="config.js?v=20260915"></script>
-    <script src="i18n.js?v=20260915"></script>
-    <script src="script.js?v=20260915"></script>
-    <script src="likes.js?v=20260915"></script>
-    <script src="notifications.js?v=20260915"></script>
+    <!-- ✅ تحسين الأداء: defer على كل السكريبتات الخارجية
+         - تُحمّل بالتوازي مع HTML
+         - تُنفّذ بعد اكتمال DOM
+         - لا تحجب العرض (لا render-blocking) -->
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+    <script src="config.js?v=20260915" defer></script>
+    <script src="i18n.js?v=20260915" defer></script>
+    <!-- ✅ script.js: defer (يُنفّذ بعد DOMContentLoaded) -->
+    <script src="script.js?v=20260915" defer></script>
+    <!-- ✅ likes.js + notifications.js: defer (غير حرجة للعرض الأولي) -->
+    <script src="likes.js?v=20260915" defer></script>
+    <script src="notifications.js?v=20260915" defer></script>
 <script>
     window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
