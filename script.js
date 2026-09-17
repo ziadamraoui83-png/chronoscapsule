@@ -1269,7 +1269,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 `<span>${esc(CCI18N.lang === 'ar' ? 'بقلم' : 'by')} <b>${esc(r.o_author || '—')}</b></span>` +
                 `<span>${esc(when)}</span>` +
                 `<span>👁️ <b>${r.o_reads != null ? r.o_reads : 0}</b> ${esc(CCI18N.t('deep_reads'))}</span>`;
-            sb.rpc('read_capsule', { p_id: r.o_id }).catch(() => {});
+            sb.rpc('read_capsule', { p_id: r.o_id }).then(() => {}).catch(() => {});
         }
         deepModal.classList.add('active');
     }
