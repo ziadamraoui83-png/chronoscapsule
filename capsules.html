@@ -1270,7 +1270,7 @@
                 lang: capLang
             });
             if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at) <= new Date()) {
-                sb.rpc('read_capsule', { p_id: r.o_id }).catch(() => {});
+                sb.rpc('read_capsule', { p_id: r.o_id }).then(() => {}).catch(() => {});
             }
         } catch (e) {
             toast(capLang === 'ar' ? 'حدث خطأ، حاول مجدداً' : 'Something went wrong, try again', '⚠️');
