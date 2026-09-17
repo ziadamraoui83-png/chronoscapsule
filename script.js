@@ -351,7 +351,24 @@ document.addEventListener('DOMContentLoaded', () => {
     /* ═══════════════════════════════════════════════════════════
        إعداد Three.js
        ═══════════════════════════════════════════════════════════ */
-    function initThreeJS() {
+    function showPlanetFallback() {
+  var vp = document.getElementById('planet-viewport');
+  if (!vp) return;
+  vp.innerHTML = '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 30% 30%, rgba(139,92,246,.6) 0%, rgba(59,130,246,.4) 40%, rgba(15,23,42,.9) 80%);border-radius:50%;max-width:400px;margin:auto;aspect-ratio:1/1;"></div>';
+}
+
+   function initThreeJS() {
+      try {
+        var testCanvas = document.createElement('canvas');
+        var testGL = testCanvas.getContext('webgl') || testCanvas.getContext('experimental-webgl');
+        if (!testGL) {
+            showPlanetFallback();
+            return;
+        }
+    } catch(e) {
+        showPlanetFallback();
+        return;
+    }
         const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
         scene = new THREE.Scene();
         scene.background = new THREE.Color(0x0a0118);
