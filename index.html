@@ -56,7 +56,6 @@
     </script>
 
     <meta name="description" content="أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية. اكتب، اختر موعد الوصول، ودع الغرباء يقرؤها. مجاناً وبسرية تامة.">
-    <meta name="keywords" content="كبسولة الزمن, رسالة للمستقبل, chronos capsule, time capsule, رسالة سرية, كبسولة زمنية, رسالة إلى الفضاء">
     <meta name="author" content="Chronos Capsule">
     <meta name="theme-color" content="#010103">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
@@ -107,7 +106,7 @@
           "name": "Chronos Capsule",
           "alternateName": ["كبسولة الزمن", "Chronos Capsule", "كبسولة الزمن الكونية"],
           "description": "أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية.",
-          "inLanguage": ["ar", "en"],
+          "inLanguage": "ar",
           "publisher": { "@id": "https://chronoscapsule.vercel.app/#organization" },
           "potentialAction": {
             "@type": "SearchAction",
@@ -141,7 +140,7 @@
           "description": "أرسل رسالتك السرية عبر الزمن إلى الفضاء — كبسولة الزمن الكونية.",
           "inLanguage": "ar",
           "datePublished": "2026-09-08",
-          "dateModified": "2026-09-14"
+          "dateModified": "2026-09-17"
         }
       ]
     }
@@ -413,11 +412,11 @@
             <h1 class="main-title">أرسل رسالتك إلى <span class="highlight">الفضاء</span></h1>
             <p class="main-desc">اكتب رسالتك السرية أو اعترافك، اختر دولتك، ودعها تطير لتستقر على كبسولة الزمن الكونية ليقرأها الغرباء بسلام.</p>
             <div class="hero-actions">
-                <button id="openModalBtn" class="btn-primary">
+                <button id="openModalBtn" class="btn-primary" aria-label="اكتب رسالة جديدة">
                     <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                     <span data-i18n="new_msg">اكتب رسالة جديدة</span>
                 </button>
-                <button id="deepBtn" class="deep-btn" title="افتح رسالة عشوائية من أعماق المحيط">
+                <button id="deepBtn" class="deep-btn" title="افتح رسالة عشوائية من أعماق المحيط" aria-label="كبسولة من الأعماق">
                     <span class="db-ico">🎲</span>
                     <span class="db-txt" data-i18n="deep_btn">كبسولة من الأعماق</span>
                 </button>
@@ -667,7 +666,7 @@
             <span class="lang-ar">الأمر لا يستغرق أكثر من دقيقتين. ابدأ رحلتك عبر الزمن الآن — مجاناً وبسرية تامة.</span>
             <span class="lang-en">It takes less than two minutes. Start your journey through time now — free and fully private.</span>
         </p>
-        <button id="openModalBtnBottom" class="btn-cta-big">
+        <button id="openModalBtnBottom" class="btn-cta-big" aria-label="اكتب كبسولة الآن">
             <span>🚀</span>
             <span class="lang-ar">اكتب كبسولة الآن</span>
             <span class="lang-en">Write a Capsule Now</span>
@@ -801,7 +800,7 @@
                     </select>
                 </div>
 
-                <button type="submit" class="btn-submit">إطلاق الكبسولة نحو الفضاء</button>
+                <button type="submit" class="btn-submit" aria-label="إطلاق الكبسولة نحو الفضاء">إطلاق الكبسولة نحو الفضاء</button>
             </form>
         </div>
     </div>
@@ -817,7 +816,7 @@
                     <div class="deep-head">🌊 <span data-i18n="deep_title">من أعماق المحيط</span></div>
                     <p class="deep-text" dir="auto" id="deepText">…</p>
                     <div class="deep-meta" id="deepMeta"></div>
-                    <button id="deepAgain" class="deep-again">🎲 <span data-i18n="deep_again">غَوْصة أخرى</span></button>
+                    <button id="deepAgain" class="deep-again" aria-label="غَوْصة أخرى">🎲 <span data-i18n="deep_again">غَوْصة أخرى</span></button>
                 </div>
             </div>
         </div>

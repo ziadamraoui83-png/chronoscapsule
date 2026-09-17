@@ -29,6 +29,24 @@
     <meta name="theme-color" content="#010103">
     <meta name="robots" content="index, follow">
 
+    <link rel="canonical" href="https://chronoscapsule.vercel.app/capsules.html">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="كبسولاتي الزمنية | Chronos Capsule">
+    <meta property="og:description" content="اعرض كبسولاتك الزمنية الخاصة وتابع مواعيد وصولها — كبسولة الزمن الكونية.">
+    <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://chronoscapsule.vercel.app/capsules.html">
+    <meta property="og:site_name" content="Chronos Capsule">
+    <meta property="og:locale" content="ar_AR">
+    <meta property="og:locale:alternate" content="en_US">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="كبسولاتي الزمنية | Chronos Capsule">
+    <meta name="twitter:description" content="اعرض كبسولاتك الزمنية الخاصة وتابع مواعيد وصولها — كبسولة الزمن الكونية.">
+    <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/capsules.html">
+    <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/capsules.html">
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -727,7 +745,7 @@
         <div class="code-box-title">🔑 <span id="codeBoxTitle">افتح كبسولة بالمفتاح السري</span></div>
         <div class="code-box-row">
             <input type="text" id="codeInput" placeholder="XXXX-XXXX-XXXX" autocomplete="off" spellcheck="false">
-            <button id="openCodeBtn" type="button">🔓 <span id="openBtnText">فتح</span></button>
+            <button id="openCodeBtn" type="button" aria-label="فتح الكبسولة بالكود">🔓 <span id="openBtnText">فتح</span></button>
         </div>
         <p class="hint" id="codeHint">أدخل مفتاح الكبسولة الذي وصلك — يعمل حتى قبل موعد الوصول</p>
     </div>
@@ -964,7 +982,7 @@
             `data-card-created="${esc(c.created_at || c.o_created || '')}"`,
             `data-card-reads="${c.o_reads != null ? c.o_reads : 0}"`
         ].join(' ');
-        return `<div class="card-actions-row"><button class="btn-create-card" ${dataAttrs} type="button">${label}</button></div>`;
+        return `<div class="card-actions-row"><button class="btn-create-card" ${dataAttrs} type="button" aria-label="${label}">${label}</button></div>`;
     }
 
     function shareCapsule(code, text){
@@ -1088,9 +1106,9 @@
             </div>
             ${countdownText ? `<div class="cap-countdown" data-arrival="${esc(arrivalISO)}">⏳ T-${esc(countdownText)}</div>` : ''}
             <div class="cap-actions">
-                ${codeVal ? `<button class="btn-copy-code" data-code="${esc(codeVal)}">${labels.copy}</button>` : ''}
-                ${arrived && codeVal ? `<button class="btn-share" data-code="${esc(codeVal)}" data-text="${esc(rawText.slice(0, 80))}">${labels.share}</button>` : ''}
-                ${capId ? `<button class="btn-delete" data-delete-id="${capId}" type="button">🗑️ ${labels.delete}</button>` : ''}
+                ${codeVal ? `<button class="btn-copy-code" data-code="${esc(codeVal)}" aria-label="${labels.copy}">${labels.copy}</button>` : ''}
+                ${arrived && codeVal ? `<button class="btn-share" data-code="${esc(codeVal)}" data-text="${esc(rawText.slice(0, 80))}" aria-label="${labels.share}">${labels.share}</button>` : ''}
+                ${capId ? `<button class="btn-delete" data-delete-id="${capId}" type="button" aria-label="${labels.delete}">🗑️ ${labels.delete}</button>` : ''}
             </div>
             ${arrived && codeVal ? buildSocialRow(codeVal, rawText) : ''}
             ${arrived ? buildCardButton(c) : ''}
