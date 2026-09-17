@@ -82,18 +82,18 @@
         _initStarted = true;
 
         if (window.__ccSupabase) {
-            supabase = window.__ccSupabase;
-        } else if (window.CC_CONFIG && window.CC_CONFIG.SUPABASE_URL && window.CC_CONFIG.SUPABASE_ANON_KEY) {
-            try {
-                supabase = window.supabase.createClient(
-                    window.CC_CONFIG.SUPABASE_URL,
-                    window.CC_CONFIG.SUPABASE_ANON_KEY
-                );
-            } catch (error) {
-                console.warn('❌ Supabase init failed:', error);
-            }
-        }
-
+    supabase = window.__ccSupabase;
+} else if (window.CC_CONFIG && window.CC_CONFIG.SUPABASE_URL && window.CC_CONFIG.SUPABASE_ANON_KEY) {
+    try {
+        supabase = window.supabase.createClient(
+            window.CC_CONFIG.SUPABASE_URL,
+            window.CC_CONFIG.SUPABASE_ANON_KEY
+        );
+        window.__ccSupabase = supabase;   // ✅ مشاركة الـ instance
+    } catch (error) {
+        console.warn('❌ Supabase init failed:', error);
+    }
+}
         const user = localStorage.getItem('cc_user');
         if (user) {
             try {
