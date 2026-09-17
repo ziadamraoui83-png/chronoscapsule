@@ -349,8 +349,23 @@ document.addEventListener('DOMContentLoaded', () => {
     window.launchConfetti = launchConfetti;
 
     /* ═══════════════════════════════════════════════════════════
-
+       إعداد Three.js
+       ═══════════════════════════════════════════════════════════ */
     function initThreeJS() {
+        const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0118);
+
+        camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        renderer = new THREE.WebGLRenderer({
+            antialias: !isMobile,
+            alpha: false,
+            powerPreference: 'high-performance'
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
+        document.getElementById('planet-viewport').appendChild(renderer.domElement);
 
         /* ═══ إضاءة ═══ */
         scene.add(new THREE.AmbientLight(0xffffff, 1.1));
