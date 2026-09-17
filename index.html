@@ -150,9 +150,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
 
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@1,400;1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@1,500;1,700&family=Space+Grotesk:wght@400;500;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=20260915">
     <style>
         html[lang="ar"] .lang-en { display: none !important; }
@@ -822,11 +822,15 @@
         </div>
     </div>
 
-    <!-- ✅ تحسين الأداء: defer على كل السكريبتات الخارجية
-         - تُحمّل بالتوازي مع HTML
-         - تُنفّذ بعد اكتمال DOM
-         - لا تحجب العرض (لا render-blocking) -->
-    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+   
+    <script>
+window.addEventListener('load', function() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var s = document.createElement('script');
+  s.src = 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js';
+  document.body.appendChild(s);
+});
+</script>
     <script>
 window.addEventListener('load', function() {
   var s1 = document.createElement('script');
@@ -843,10 +847,25 @@ window.addEventListener('load', function() {
     <script src="config.js?v=20260915" defer></script>
     <script src="i18n.js?v=20260915" defer></script>
     <!-- ✅ script.js: defer (يُنفّذ بعد DOMContentLoaded) -->
-    <script src="script.js?v=20260915" defer></script>
-    <!-- ✅ likes.js + notifications.js: defer (غير حرجة للعرض الأولي) -->
-    <script src="likes.js?v=20260915" defer></script>
-    <script src="notifications.js?v=20260915" defer></script>
+    <script>
+(function(){
+  function loadScript(src) {
+    var s = document.createElement('script');
+    s.src = src;
+    document.body.appendChild(s);
+  }
+  function loadDeferred() {
+    if (window.__deferredLoaded) return;
+    window.__deferredLoaded = true;
+    loadScript('script.js?v=20260915');
+    loadScript('likes.js?v=20260915');
+    loadScript('notifications.js?v=20260915');
+  }
+  window.addEventListener('scroll', loadDeferred, { once: true, passive: true });
+  window.addEventListener('click', loadDeferred, { once: true });
+  setTimeout(loadDeferred, 3000);
+})();
+</script>
 <script>
     window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
