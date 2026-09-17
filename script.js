@@ -1,10 +1,7 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — script.js (v2 محسّن)
-   - حذف seedMessages الفارغ
-   - حذف rotTarget الثابت
-   - PLANET_RADIUS constant
-   - try/catch حول initThreeJS
-   - باقي الكود كما هو
+   CHRONOS CAPSULE — script.js (v2.1 — scroll fix)
+   - نقل heroVisible/documentVisible إلى DOMContentLoaded
+   - إصلاح السكرول: إيقاف الرسم عند مغادرة Hero
    ═══════════════════════════════════════════════════════════ */
 
 /* ✅ Debug flag — معرّف خارج الـ closure ليكون متاحاً للدوال الخارجية */
@@ -23,12 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const REDUCE = matchMedia('(prefers-reduced-motion: reduce)').matches;
     const PLANET_RADIUS = 5.05;
 
+    /* ✅ إصلاح السكرول: متغيرات عامة داخل DOMContentLoaded */
+    let heroVisible = true;
+    let documentVisible = !document.hidden;
+
     /* ═══ أدوات مساعدة ═══ */
     const $ = id => document.getElementById(id);
 
     function trackEvent(eventName, params = {}) {
         try {
-            /* ✅ تحقق أكثر صرامة: gtag + dataLayer متاح */
             if (typeof gtag === 'function' && Array.isArray(window.dataLayer)) {
                 gtag('event', eventName, params);
             } else if (window.__CC_DEBUG) {
@@ -52,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         SUPABASE_URL: '',
         SUPABASE_ANON_KEY: ''
     };
-    /* ✅ إصلاح Multiple Supabase Client: استعمال instance واحد */
     let sb = window.__ccSupabase || null;
     if (!sb && CC_CONFIG.SUPABASE_URL && window.supabase) {
         sb = supabase.createClient(CC_CONFIG.SUPABASE_URL, CC_CONFIG.SUPABASE_ANON_KEY);
@@ -355,22 +354,16 @@ document.addEventListener('DOMContentLoaded', () => {
     function initThreeJS() {
         const isMobile = matchMedia('(max-width: 768px)').matches || /Mobi|Android/i.test(navigator.userAgent);
         scene = new THREE.Scene();
-        /* ✅ تحديث: خلفية بنفسجية داكنة تتناسق مع body (#0a0118) */
         scene.background = new THREE.Color(0x0a0118);
 
         camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
 
-        /* ✅ تحسين الأداء:
-           - alpha: false (أسرع - نستعمل scene.background)
-           - powerPreference: high-performance
-           - pixelRatio مخفّض للموبايل */
         renderer = new THREE.WebGLRenderer({
-            antialias: !isMobile, /* ✅ antialias فقط على الديسكتوب */
+            antialias: !isMobile,
             alpha: false,
             powerPreference: 'high-performance'
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        /* ✅ pixelRatio: 1 على الموبايل، 2 على الديسكتوب */
         renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
         document.getElementById('planet-viewport').appendChild(renderer.domElement);
 
@@ -379,7 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const dirLight = new THREE.DirectionalLight(0xffffff, 1.6);
         dirLight.position.set(5, 3, 5);
         scene.add(dirLight);
-        /* ✅ تخفيف الإضاءة على الموبايل (توفير GPU) */
         const fillLight = new THREE.DirectionalLight(0x88aaff, isMobile ? 0.4 : 0.7);
         fillLight.position.set(-5, -2, -3);
         scene.add(fillLight);
@@ -511,13 +503,38 @@ document.addEventListener('DOMContentLoaded', () => {
         const clock = new THREE.Clock();
         let frameCount = 0;
 
-        /* ✅ تحسين الأداء: FPS throttling على الموبايل (30 FPS بدل 60) */
+        /* ═══ ✅ إصلاح السكرول: متغيرات الرسم المحلية ═══ */
+        let rafId = null;
+        let lastCameraPos = new THREE.Vector3(999, 999, 999);
+
+        function shouldRender() {
+            return heroVisible && documentVisible;
+        }
+
+        function startRender() {
+            if (rafId === null) {
+                lastFrameTime = performance.now();
+                rafId = requestAnimationFrame(animate);
+            }
+        }
+
+        function stopRender() {
+            if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
+        }
+
+        /* ✅ FPS throttling */
         const targetFPS = matchMedia('(max-width: 768px)').matches ? 30 : 60;
         const frameInterval = 1000 / targetFPS;
         let lastFrameTime = 0;
 
         function animate(timestamp) {
-            requestAnimationFrame(animate);
+            rafId = requestAnimationFrame(animate);
+
+            /* ✅ لا ترسم إذا Hero غير مرئي أو الـ tab مخفي */
+            if (!shouldRender()) return;
 
             /* ✅ Skip frame إذا لم يحن وقت الإطار التالي */
             if (timestamp - lastFrameTime < frameInterval) return;
@@ -561,10 +578,41 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             controls.update();
-            if (frameCount % 2 === 0) updateLabelsPosition();
+
+            /* ✅ حدّث labels فقط إذا تحركت الكاميرا */
+            if (frameCount % 2 === 0 && !camera.position.equals(lastCameraPos)) {
+                updateLabelsPosition();
+                lastCameraPos.copy(camera.position);
+            }
+
             renderer.render(scene, camera);
         }
-        animate();
+
+        /* ✅ مراقبة ظهور Hero */
+        const heroEl = document.querySelector('.space-container');
+        if (heroEl && 'IntersectionObserver' in window) {
+            const heroObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    heroVisible = entry.isIntersecting;
+                    document.documentElement.classList.toggle('hero-visible', heroVisible);
+                    if (shouldRender()) startRender();
+                    else stopRender();
+                });
+            }, { threshold: 0 });
+            heroObserver.observe(heroEl);
+        } else {
+            document.documentElement.classList.add('hero-visible');
+        }
+
+        /* ✅ مراقبة الـ tab */
+        document.addEventListener('visibilitychange', () => {
+            documentVisible = !document.hidden;
+            if (shouldRender()) startRender();
+            else stopRender();
+        });
+
+        /* ✅ بدء الرسم */
+        startRender();
     }
 
     /* ═══ تحسينات الكون ═══ */
@@ -738,7 +786,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function spawnMeteor() {
-        if (document.visibilityState !== 'visible') return;
+        /* ✅ لا ترسل شهاباً إذا Hero مخفي */
+        if (!heroVisible || document.hidden) return;
         const R = () => THREE.MathUtils.randFloatSpread(1);
         const start = new THREE.Vector3(R(), R() * 0.6 + 0.2, R()).normalize()
             .multiplyScalar(THREE.MathUtils.randFloat(55, 95));
@@ -1292,23 +1341,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* ═══════════════════════════════════════════════════════════
-       ✅ إصلاح متوسط: Memory Leak Prevention
-       - لا نحذف أي addEventListener موجود
-       - نضيف فقط cleanup عند pagehide لتجنب تراكم listeners
-       - يعمل تلقائياً عند مغادرة الصفحة (bfcache safe)
+       ✅ Memory Leak Prevention
        ═══════════════════════════════════════════════════════════ */
     if (typeof window !== 'undefined') {
-        // تخزين أي timers/observers مهمة للتنظيف
         window.__ccCleanup = window.__ccCleanup || [];
 
-        // دالة مساعدة لتسجيل العناصر للتنظيف (للاستعمال المستقبلي)
         window.__ccRegisterForCleanup = function(item) {
             if (item && typeof item.disconnect === 'function') {
                 window.__ccCleanup.push(item);
             }
         };
 
-        // تنفيذ التنظيف عند مغادرة الصفحة
         window.addEventListener('pagehide', function() {
             if (window.__ccCleanup) {
                 window.__ccCleanup.forEach(function(item) {
