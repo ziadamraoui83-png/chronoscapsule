@@ -1,6 +1,9 @@
 /* ═══════════════════════════════════════════════════════════
-   CHRONOS CAPSULE — style.css (v1.3.0)
-   ✅ إصلاح: hero-panel على الموبايل (متوسط + لا يحجب الكوكب)
+   CHRONOS CAPSULE — style.css (v1.3.1 — scroll fix)
+   ✅ إيقاف panelFloat عند خروج Hero
+   ✅ إزالة scroll-behavior: smooth (تعارض مع Lenis)
+   ✅ حذف right: 2.5% من قواعد الموبايل
+   ✅ max-height + overflow للبطاقة على الموبايل الصغير
    ═══════════════════════════════════════════════════════════ */
 
 /* ═══ منع الوميض الأبيض ═══ */
@@ -19,11 +22,14 @@ body.cc-loaded {
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 
+/* ═══════════════════════════════════════════════════════════
+   ✅ خلفية خفيفة
+   ✅ حذف scroll-behavior: smooth (Lenis يقوم بالعمل)
+   ═══════════════════════════════════════════════════════════ */
 body {
     overflow-x: hidden;
     overflow-y: auto;
     color: #fff;
-    scroll-behavior: smooth;
     background-color: #0a0118;
     background-image:
         radial-gradient(ellipse 80% 50% at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 70%),
@@ -72,7 +78,6 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
     background: transparent;
     z-index: 6;
 }
-
 #planet-viewport { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; cursor: grab; }
 #planet-viewport:active { cursor: grabbing; }
 
@@ -122,6 +127,11 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 @keyframes panelFloat {
     0%, 100% { transform: translateY(-50%); }
     50%      { transform: translateY(calc(-50% - 12px)); }
+}
+
+/* ✅ إصلاح السكرول: إيقاف حركة البطاقة عند خروج Hero من الشاشة */
+html:not(.hero-visible) .hero-panel {
+    animation-play-state: paused;
 }
 
 .main-title { font-size: 2.5rem; font-weight: 900; margin-bottom: 15px; line-height: 1.2; }
@@ -183,9 +193,7 @@ button, a, select, input[type="radio"], label, .close-btn, .country-label { curs
 
 /* ═════════ عدّاد الكبسولات ═════════ */
 .capsule-counter {
-    position: absolute;
-    bottom: 90px;
-    z-index: 10;
+    position: absolute; bottom: 40px; z-index: 10;
     display: flex; align-items: center; gap: 9px;
     background: rgba(15, 23, 42, 0.7);
     border: 1px solid rgba(255, 255, 255, 0.15);
@@ -336,7 +344,8 @@ html, body {
     opacity: 1;
     transform: translateY(0);
 }
-/* ═════════ المودال — القاعدة الأساسية (مفقودة سابقاً) ═════════ */
+
+/* ═════════ المودال ═════════ */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -352,18 +361,15 @@ html, body {
     transition: opacity 0.3s ease, visibility 0.3s ease;
     padding: 20px;
     overflow-y: auto;
-    pointer-events: none;      /* ← لا يستقبل نقرات وهو مخفي */
+    pointer-events: none;
 }
 
 .modal-overlay.active {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto;      /* ← يستقبل النقرات عند الفتح */
+    pointer-events: auto;
 }
-.modal-overlay.active { 
-    opacity: 1; 
-    visibility: visible; 
-}
+
 .modal-card {
     background: rgba(15, 23, 42, 0.98); 
     width: 90%; 
@@ -539,8 +545,8 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
   .hero-panel {
     bottom: 140px;
     padding: 14px 16px;
-    max-height: 55vh;              /* ✅ لا تتجاوز 55% من الشاشة */
-    overflow-y: auto;              /* ✅ تمرير داخلي إذا طال المحتوى */
+    max-height: 55vh;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
   .hero-panel .main-title { font-size: 1.25rem; margin-bottom: 8px; }
@@ -748,6 +754,9 @@ html[lang="en"] body{ font-family:'Space Grotesk','Tajawal',sans-serif }
     color: #fff;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(139,92,246,.35);
+}
+@media (max-width: 480px) {
+    .header-nav-link { padding: 5px 10px; font-size: 11.5px; }
 }
 
 /* ═════════ نظام الإشعارات ═════════ */
