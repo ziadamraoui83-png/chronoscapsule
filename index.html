@@ -831,8 +831,66 @@
     <script src="notifications.js?v=20260915" defer></script>
 
     <!-- ✅ index-extras.js — يستبدل كل السكربتات المضمنة السابقة -->
-    <!-- (Loader + CTA button + Service Worker + PWA + Lenis + Reveal + Hamburger) -->
-    <script src="index-extras.js?v=20260916" defer></script>
+        <!-- ✅ Critical inline: Loader + Hamburger (فوري — ~2KB) -->
+    <script>
+    (function(){
+        'use strict';
+        // ✅ Loader — يختفي بدون انتظار أي ملف
+        window.addEventListener('load', function(){ setTimeout(function(){ document.getElementById('ccLoader')?.classList.add('done'); }, 400); });
+        setTimeout(function(){ document.getElementById('ccLoader')?.classList.add('done'); }, 6000);
+
+        // ✅ زر CTA السفلي
+        document.getElementById('openModalBtnBottom')?.addEventListener('click', function(){ document.getElementById('openModalBtn')?.click(); });
+
+        // ✅ Hamburger Menu
+        var btn = document.getElementById('hamburgerBtn');
+        var menu = document.getElementById('hamburgerMenu');
+        if (btn && menu) {
+            var closeBtn = document.getElementById('hamburgerClose');
+            var backdrop = document.getElementById('hamburgerBackdrop');
+            var notifBtn = document.getElementById('hamburgerNotifBtn');
+            var langBtn = document.getElementById('hamburgerLangBtn');
+            var isOpen = false;
+
+            function open(){ isOpen=true; btn.classList.add('active'); btn.setAttribute('aria-expanded','true'); menu.classList.add('open'); menu.setAttribute('aria-hidden','false'); if(backdrop){ backdrop.classList.add('show'); backdrop.setAttribute('aria-hidden','false'); } document.body.classList.add('hamburger-open'); }
+            function closeM(){ isOpen=false; btn.classList.remove('active'); btn.setAttribute('aria-expanded','false'); menu.classList.remove('open'); menu.setAttribute('aria-hidden','true'); if(backdrop){ backdrop.classList.remove('show'); backdrop.setAttribute('aria-hidden','true'); } document.body.classList.remove('hamburger-open'); }
+
+            btn.addEventListener('click', function(){ isOpen ? closeM() : open(); });
+            if (closeBtn) closeBtn.addEventListener('click', closeM);
+            if (backdrop) backdrop.addEventListener('click', closeM);
+            document.addEventListener('keydown', function(e){ if(e.key === 'Escape' && isOpen) closeM(); });
+            menu.querySelectorAll('a.hamburger-link').forEach(function(a){ a.addEventListener('click', function(){ setTimeout(closeM, 150); }); });
+            if (notifBtn) notifBtn.addEventListener('click', function(){ closeM(); setTimeout(function(){ var b = document.getElementById('notifBell'); if(b) b.click(); }, 350); });
+            if (langBtn) langBtn.addEventListener('click', function(){ var lt = document.querySelector('.lang-toggle'); if(lt){ lt.click(); setTimeout(function(){ var span = langBtn.querySelector('span:last-child'); if(span && window.CCI18N) span.textContent = window.CCI18N.t('lang_btn'); }, 100); } });
+
+            var menuBadge = notifBtn ? notifBtn.querySelector('.notification-badge') : null;
+            var origBadge = document.querySelector('.notifications-btn .notification-badge');
+            function syncBadge(){ if(!origBadge || !menuBadge) return; if(origBadge.style.display !== 'none' && origBadge.textContent){ menuBadge.style.display='inline-block'; menuBadge.textContent=origBadge.textContent; } else { menuBadge.style.display='none'; } }
+            if (origBadge && menuBadge && 'MutationObserver' in window){ new MutationObserver(syncBadge).observe(origBadge, {attributes:true,childList:true,characterData:true,subtree:true}); }
+            syncBadge();
+            window.addEventListener('resize', function(){ if(window.innerWidth > 768 && isOpen) closeM(); });
+        }
+    })();
+    </script>
+
+    <!-- ✅ Deferred: Lenis + Reveal + PWA + SW (يُحمّل عند التفاعل أو بعد 3s) -->
+    <script>
+    (function(){
+        'use strict';
+        function loadExtras(){
+            if (window.__ccExtrasLoaded) return;
+            window.__ccExtrasLoaded = true;
+            var s = document.createElement('script');
+            s.src = 'index-extras.js?v=20260917';
+            s.defer = true;
+            document.body.appendChild(s);
+        }
+        ['scroll','click','keydown','touchstart'].forEach(function(evt){
+            window.addEventListener(evt, loadExtras, { once: true, passive: true });
+        });
+        setTimeout(loadExtras, 3000);
+    })();
+    </script>
 
     <!-- ✅ transitions.js آخر شي -->
     <script src="transitions.js?v=20260915"></script>
