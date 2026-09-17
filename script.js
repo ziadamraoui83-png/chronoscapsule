@@ -819,6 +819,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function createMessageMarker(msg) {
+        if (!planet) return;
         const localPos = get3DPos(msg.lat, msg.lng);
         const moodColor = MOOD_COLORS[msg.mood] || 0x60a5fa;
 
