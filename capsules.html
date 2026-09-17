@@ -619,7 +619,6 @@
     <meta name="twitter:description" content="اعرض كبسولاتك الزمنية الخاصة وتابع مواعيد وصولها — كبسولة الزمن الكونية.">
     <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
     <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/capsules.html">
-    <link rel="alternate" hreflang="en" href="https://chronoscapsule.vercel.app/capsules.html?lang=en">
     <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/capsules.html">
     <script type="application/ld+json">
     {
@@ -1270,7 +1269,7 @@
                 lang: capLang
             });
             if (r.o_id && r.o_arrival_at && new Date(r.o_arrival_at) <= new Date()) {
-                sb.rpc('read_capsule', { p_id: r.o_id }).then(() => {}).catch(() => {});
+                sb.rpc('read_capsule', { p_id: r.o_id }).catch(() => {});
             }
         } catch (e) {
             toast(capLang === 'ar' ? 'حدث خطأ، حاول مجدداً' : 'Something went wrong, try again', '⚠️');
