@@ -14,13 +14,15 @@
 
     /* ✅ نستعمل نفس Supabase client من script.js */
     function getSB() {
-        if (window.__ccSupabase) return window.__ccSupabase;
-        if (!window.CC_CONFIG || !window.supabase) return null;
-        return window.supabase.createClient(
-            window.CC_CONFIG.SUPABASE_URL,
-            window.CC_CONFIG.SUPABASE_ANON_KEY
-        );
-    }
+    if (window.__ccSupabase) return window.__ccSupabase;
+    if (!window.CC_CONFIG || !window.supabase) return null;
+    const client = window.supabase.createClient(
+        window.CC_CONFIG.SUPABASE_URL,
+        window.CC_CONFIG.SUPABASE_ANON_KEY
+    );
+    window.__ccSupabase = client;   // ✅ مشاركة الـ instance
+    return client;
+}
 
     function getDeviceHash() {
         let h = localStorage.getItem('cc_device');
