@@ -837,7 +837,7 @@ window.addEventListener('load', function() {
     <script src="config.js?v=20260915" defer></script>
     <script src="i18n.js?v=20260915" defer></script>
     <!-- ✅ script.js: defer (يُنفّذ بعد DOMContentLoaded) -->
-    <script> (function waitForThree(){   if (typeof THREE === 'undefined') {     setTimeout(waitForThree, 50);     return;   }   var s = document.createElement('script');   s.src = 'script.js?v=20260915';   document.body.appendChild(s); })(); </script>
+    <script src="script.js?v=20260915" defer></script>
 <script src="likes.js?v=20260915" defer></script>
 <script src="notifications.js?v=20260915" defer></script>
 <script>
