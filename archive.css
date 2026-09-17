@@ -590,3 +590,27 @@ html[dir="rtl"] .skeleton-item::after{
         font-size: 11px;
     }
 }
+
+/* ═════════ قسم مقدمة الأرشيف ═════════ */
+.archive-intro {
+    max-width: 800px;
+    margin: 0 auto 30px;
+    text-align: center;
+    padding: 0 20px;
+}
+.archive-intro h2 {
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+.archive-intro p {
+    color: #94a3b8;
+    font-size: 0.95rem;
+    line-height: 1.7;
+}
+@media (max-width: 600px) {
+    .archive-intro h2 { font-size: 1.2rem; }
+    .archive-intro p { font-size: 0.88rem; }
+}
