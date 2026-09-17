@@ -11,11 +11,13 @@
   function getSB() {
     if (window.__ccSupabase) return window.__ccSupabase;
     if (!window.CC_CONFIG || !window.supabase) return null;
-    return window.supabase.createClient(
-      window.CC_CONFIG.SUPABASE_URL,
-      window.CC_CONFIG.SUPABASE_ANON_KEY
+    const client = window.supabase.createClient(
+        window.CC_CONFIG.SUPABASE_URL,
+        window.CC_CONFIG.SUPABASE_ANON_KEY
     );
-  }
+    window.__ccSupabase = client;   // ✅ مشاركة الـ instance
+    return client;
+}
 
   /* ═══ Device Hash (نفس likes.js) ═══ */
   function getStoredDevice() {
