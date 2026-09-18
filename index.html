@@ -315,7 +315,7 @@
          🚀 HERO SECTION (كوكب 3D + أزرار)
          ═══════════════════════════════════════════════════════ -->
     <div class="space-container">
-        <div id="planet-viewport"></div>
+        <div id="planet-viewport">     <div id="planetPoster" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(60vw,400px);aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(139,92,246,.6) 0%,rgba(59,130,246,.4) 40%,rgba(15,23,42,.9) 80%);box-shadow:inset -20px -20px 60px rgba(0,0,0,.6),inset 10px 10px 40px rgba(167,139,250,.3),0 0 60px rgba(139,92,246,.4),0 0 120px rgba(139,92,246,.2);z-index:1;transition:opacity .5s;"></div> </div>
         <div id="labels-container"></div>
         <div id="msgTooltip" class="msg-tooltip"></div>
 
@@ -831,8 +831,20 @@ window.addEventListener('load', function() {
   document.body.appendChild(s);
 });
 </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js" defer></script>
+    <script>
+requestAnimationFrame(function(){
+  setTimeout(function(){
+    var s1 = document.createElement('script');
+    s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
+    s1.onload = function(){
+      var s2 = document.createElement('script');
+      s2.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
+      document.body.appendChild(s2);
+    };
+    document.body.appendChild(s1);
+  }, 100);
+});
+</script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="config.js?v=20260915" defer></script>
     <script src="i18n.js?v=20260915" defer></script>
