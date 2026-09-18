@@ -28,9 +28,6 @@
     <meta property="og:title" content="أرشيف الكوكب | Chronos Capsule">
     <meta property="og:description" content="اقرأ آلاف الرسائل التي تسبح في الفضاء — كبسولة الزمن الكونية.">
     <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="أرشيف Chronos Capsule — كبسولات الزمن العالمية">
     <meta property="og:url" content="https://chronoscapsule.vercel.app/archive.html">
     <meta property="og:locale" content="ar_AR">
     <meta name="twitter:card" content="summary_large_image">
@@ -115,26 +112,25 @@
 }
 </style>
     <meta name="msvalidate.01" content="8C98F70BB0281EC2491186C219E54D90" />
-    <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "الرئيسية",
-      "item": "https://chronoscapsule.vercel.app/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "الأرشيف",
-      "item": "https://chronoscapsule.vercel.app/archive.html"
-    }
-  ]
-}
-</script>
+    
+    <!-- 🔥 Early cc-loaded activation (fix for LCP) -->
+    <script>
+    (function(){
+      function showPage(){ 
+        if (!document.body.classList.contains('cc-loaded')) {
+          document.body.classList.add('cc-loaded');
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function(){ 
+          setTimeout(showPage, 100); 
+        });
+      } else {
+        setTimeout(showPage, 100);
+      }
+      setTimeout(showPage, 800);
+    })();
+    </script>
 </head>
 <body>
 <nav class="breadcrumbs-nav" aria-label="مسار التنقل">
@@ -158,7 +154,7 @@
             <span class="header-logo-text">Chronos Capsule</span>
         </a>
         <div class="header-actions">
-            <button id="langToggle" class="lang-toggle-cap">EN</button>
+            <button id="langToggle" class="lang-toggle-cap" aria-label="تبديل اللغة">EN</button>
             <a href="index.html" class="back-link">
                 <span id="backLinkText">العودة للكوكب</span>
             </a>
@@ -193,6 +189,17 @@
                 <option value="reads">👁️ الأكثر قراءة</option>
             </select>
         </aside>
+
+        <section class="archive-intro">
+            <h2>
+                <span class="lang-ar">أرشيف كبسولات الزمن العالمية</span>
+                <span class="lang-en">Global Time Capsules Archive</span>
+            </h2>
+            <p>
+                <span class="lang-ar">استكشف آلاف الرسائل والاعترافات المرسلة عبر الزمن. هذا الأرشيف يمثل الذاكرة الجماعية لمنصة <strong>Chronos Capsule</strong>، حيث نشارك كبسولات زمنية عامة مليئة بالأمل، الحنين، والأسرار من مختلف أنحاء العالم.</span>
+                <span class="lang-en">Explore thousands of messages and confessions sent through time. This archive represents the collective memory of <strong>Chronos Capsule</strong>, where we share public time capsules filled with hope, nostalgia, and secrets from around the world.</span>
+            </p>
+        </section>
 
         <section class="cap-list" id="archiveList"></section>
         <div id="loader" class="loader">جاري جلب الكبسولات...</div>

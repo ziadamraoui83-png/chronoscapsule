@@ -150,9 +150,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@1,400;1,700&family=IBM+Plex+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@1,500;1,700&family=Space+Grotesk:wght@400;500;700&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=20260915">
     <style>
         html[lang="ar"] .lang-en { display: none !important; }
@@ -307,6 +307,25 @@
         }
     </style>
     <meta name="msvalidate.01" content="8C98F70BB0281EC2491186C219E54D90" />
+    
+    <!-- 🔥 Early cc-loaded activation (fix for LCP) -->
+    <script>
+    (function(){
+      function showPage(){ 
+        if (!document.body.classList.contains('cc-loaded')) {
+          document.body.classList.add('cc-loaded');
+        }
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function(){ 
+          setTimeout(showPage, 100); 
+        });
+      } else {
+        setTimeout(showPage, 100);
+      }
+      setTimeout(showPage, 800);
+    })();
+    </script>
 </head>
 <body>
     <div id="ccLoader"><div class="orb"></div><p>CHRONOS CAPSULE</p></div>
@@ -315,7 +334,7 @@
          🚀 HERO SECTION (كوكب 3D + أزرار)
          ═══════════════════════════════════════════════════════ -->
     <div class="space-container">
-        <div id="planet-viewport">     <div id="planetPoster" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(60vw,400px);aspect-ratio:1/1;border-radius:50%;background:radial-gradient(circle at 30% 30%,rgba(139,92,246,.6) 0%,rgba(59,130,246,.4) 40%,rgba(15,23,42,.9) 80%);box-shadow:inset -20px -20px 60px rgba(0,0,0,.6),inset 10px 10px 40px rgba(167,139,250,.3),0 0 60px rgba(139,92,246,.4),0 0 120px rgba(139,92,246,.2);z-index:1;transition:opacity .5s;"></div> </div>
+        <div id="planet-viewport"></div>
         <div id="labels-container"></div>
         <div id="msgTooltip" class="msg-tooltip"></div>
 
@@ -822,36 +841,21 @@
         </div>
     </div>
 
-   
-    <script>
-window.addEventListener('load', function() {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  var s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js';
-  document.body.appendChild(s);
-});
-</script>
-    <script>
-requestAnimationFrame(function(){
-  setTimeout(function(){
-    var s1 = document.createElement('script');
-    s1.src = 'https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js';
-    s1.onload = function(){
-      var s2 = document.createElement('script');
-      s2.src = 'https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js';
-      document.body.appendChild(s2);
-    };
-    document.body.appendChild(s1);
-  }, 100);
-});
-</script>
+    <!-- ✅ تحسين الأداء: defer على كل السكريبتات الخارجية
+         - تُحمّل بالتوازي مع HTML
+         - تُنفّذ بعد اكتمال DOM
+         - لا تحجب العرض (لا render-blocking) -->
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
     <script src="config.js?v=20260915" defer></script>
     <script src="i18n.js?v=20260915" defer></script>
     <!-- ✅ script.js: defer (يُنفّذ بعد DOMContentLoaded) -->
     <script src="script.js?v=20260915" defer></script>
-<script src="likes.js?v=20260915" defer></script>
-<script src="notifications.js?v=20260915" defer></script>
+    <!-- ✅ likes.js + notifications.js: defer (غير حرجة للعرض الأولي) -->
+    <script src="likes.js?v=20260915" defer></script>
+    <script src="notifications.js?v=20260915" defer></script>
 <script>
     window.addEventListener('load', () => setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 400));
     setTimeout(() => document.getElementById('ccLoader')?.classList.add('done'), 6000);
