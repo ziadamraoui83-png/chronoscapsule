@@ -366,6 +366,10 @@ document.addEventListener('DOMContentLoaded', () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(isMobile ? 1 : Math.min(window.devicePixelRatio, 2));
         document.getElementById('planet-viewport').appendChild(renderer.domElement);
+       setTimeout(function(){
+  var p = document.getElementById('planetPoster');
+  if (p) { p.style.opacity = '0'; setTimeout(function(){ p.remove(); }, 600); }
+}, 500);
 
         /* ═══ إضاءة ═══ */
         scene.add(new THREE.AmbientLight(0xffffff, 1.1));
