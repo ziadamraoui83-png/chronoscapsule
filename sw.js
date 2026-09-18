@@ -10,7 +10,7 @@
    ⚠️ عند تحديث مهم للموقع: غيّر CACHE_VERSION فقط
    ═══════════════════════════════════════════════════════════ */
 
-const CACHE_VERSION = 'cc-v1.3.0';
+const CACHE_VERSION = 'cc-v1.3.1';
 const CACHE_STATIC = 'cc-static-' + CACHE_VERSION;
 const CACHE_DYNAMIC = 'cc-dynamic-' + CACHE_VERSION;
 
