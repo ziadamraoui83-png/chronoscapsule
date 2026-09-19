@@ -151,10 +151,9 @@
     <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 
+    <link rel="stylesheet" href="style.css?v=20260915">
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Tajawal:wght@300;400;500;700;900&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Tajawal:wght@300;400;500;700;900&display=swap"></noscript>
-    <link rel="stylesheet" href="style.css?v=20260915">
-    <noscript><link rel="stylesheet" href="style.css?v=20260915"></noscript>
     <style>
         html[lang="ar"] .lang-en { display: none !important; }
         html[lang="en"] .lang-ar { display: none !important; }
@@ -315,7 +314,6 @@
       function showPage(){ 
         if (!document.body.classList.contains('cc-loaded')) {
           document.body.classList.add('cc-loaded');
-            document.body.classList.add('css-loaded');
         }
       }
       if (document.readyState === 'loading') {
@@ -328,16 +326,6 @@
       setTimeout(showPage, 800);
     })();
     </script>
-    <style id="cc_critical_css">
-  *{box-sizing:border-box;margin:0;padding:0}
-  body{background:#010103;color:#fff;font-family:'Tajawal',sans-serif;overflow-x:hidden}
-  a{color:inherit;text-decoration:none;cursor:pointer}
-  button{cursor:pointer;font-family:inherit}
-  img{max-width:100%;display:block}
-  body:not(.css-loaded) .modal-overlay,
-  body:not(.css-loaded) .notification-panel,
-  body:not(.css-loaded) .golden-panel{display:none !important}
-</style>
 </head>
 <body>
     <div id="ccLoader"><div class="orb"></div><p>CHRONOS CAPSULE</p></div>
@@ -463,7 +451,7 @@
             </a>
         </div>
 
-        <div class="capsule-counter" title="عدد الكبسولات السابحة في الفضاء">
+        <div class="capsule-counter" title="عدد الكبسولات السابحة في الفضاء" style="visibility:hidden;">
             <span class="pulse-dot"></span>
             <b id="capsuleCount">0</b>
             <span>كبسولة تسبح في الفضاء</span>

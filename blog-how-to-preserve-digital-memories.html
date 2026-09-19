@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+    <!-- ═══ منع الوميض الأبيض — inline (critical CSS) ═══ -->
     <style id="cc_critical">
         html { background: #0a0118 !important; }
         body { background: #0a0118; opacity: 0; transition: opacity 0.35s ease; }
@@ -9,6 +10,7 @@
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
+        // ✅ تطبيق اللغة فوراً لمنع الوميض (FOUC) - يدعم localStorage + cookie
         (function() {
             try {
                 var savedLang = localStorage.getItem('cc_lang');
@@ -24,6 +26,7 @@
 
     <title>كيف تحفظ ذكرياتك الرقمية للأبد: 5 طرق عملية وآمنة | Chronos Capsule</title>
     <meta name="description" content="دليل شامل لحفظ الذكريات الرقمية للأبد — من الصور إلى الرسائل. 5 طرق عملية وآمنة مع نصائح خبراء للحفاظ على لحظاتك الثمينة لعقود قادمة.">
+    <meta name="keywords" content="حفظ الذكريات, ذكريات رقمية, كبسولة زمنية, أرشفة رقمية, حفظ الصور, رسالة للمستقبل, Chronos Capsule, ذكريات للأبد, تخزين سحابي, أرشيف رقمي">
     <meta name="theme-color" content="#0a0118">
     <meta name="robots" content="index, follow, max-image-preview:large">
     <meta name="author" content="Chronos Capsule">
@@ -40,12 +43,10 @@
     <meta property="og:title" content="كيف تحفظ ذكرياتك الرقمية للأبد: 5 طرق عملية وآمنة">
     <meta property="og:description" content="دليل شامل لحفظ الذكريات الرقمية للأبد — 5 طرق عملية وآمنة مع نصائح خبراء.">
     <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta property="og:image:alt" content="حفظ الذكريات الرقمية">
     <meta property="og:url" content="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html">
     <meta property="og:site_name" content="Chronos Capsule">
     <meta property="og:locale" content="ar_AR">
+    <meta property="og:locale:alternate" content="en_US">
     <meta property="article:published_time" content="2026-09-18">
     <meta property="article:author" content="Chronos Capsule">
 
@@ -60,12 +61,13 @@
     <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html">
     <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html">
 
+    <!-- Schema.org Article -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Article",
       "headline": "كيف تحفظ ذكرياتك الرقمية للأبد: 5 طرق عملية وآمنة",
-      "description": "دليل شامل لحفظ الذكريات الرقمية للأبد — من الصور إلى الرسائل. 5 طرق عملية وآمنة مع نصائح خبراء.",
+      "description": "دليل شامل لحفظ الذكريات الرقمية للأبد — من الصور إلى الرسائل. 5 طرق عملية وآمنة مع نصائح خبراء للحفاظ على لحظاتك الثمينة لعقود قادمة.",
       "image": "https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png",
       "datePublished": "2026-09-18",
       "dateModified": "2026-09-18",
@@ -73,10 +75,12 @@
       "author": { "@type": "Organization", "name": "Chronos Capsule", "url": "https://chronoscapsule.vercel.app/" },
       "publisher": { "@type": "Organization", "name": "Chronos Capsule", "logo": { "@type": "ImageObject", "url": "https://chronoscapsule.vercel.app/icon-512.svg" } },
       "mainEntityOfPage": { "@type": "WebPage", "@id": "https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html" },
+      "keywords": "حفظ الذكريات, ذكريات رقمية, كبسولة زمنية, أرشفة رقمية",
       "wordCount": "1500"
     }
     </script>
 
+    <!-- Schema.org BreadcrumbList -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -121,6 +125,9 @@
         .back-link{color:#a78bfa;text-decoration:none;font-size:13px;display:flex;align-items:center;gap:6px;
             padding:7px 14px;border:1px solid rgba(167,139,250,.3);border-radius:10px;transition:all .3s}
         .back-link:hover{color:#fff;border-color:#8b5cf6;background:rgba(139,92,246,.1)}
+        .lang-toggle-cap{background:rgba(15,23,42,.7);border:1px solid rgba(255,255,255,.15);color:#cbd5e1;
+            border-radius:10px;padding:7px 14px;font-size:13px;font-weight:700;backdrop-filter:blur(8px);transition:all .3s}
+        .lang-toggle-cap:hover{border-color:#8b5cf6;color:#fff}
         .page{max-width:760px;margin:0 auto;padding:40px 20px 80px;position:relative;z-index:1}
 
         .breadcrumb{font-size:12.5px;color:#64748b;margin-bottom:20px}
@@ -128,6 +135,7 @@
         .breadcrumb a:hover{color:#fff}
 
         .article-header{margin-bottom:30px}
+        /* لون الـ tag أخضر — يناسب "حفظ الذكريات" */
         .article-tag{display:inline-block;font-size:11px;font-weight:900;letter-spacing:.08em;
             color:#4ade80;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);
             padding:3px 12px;border-radius:999px;margin-bottom:14px}
@@ -152,6 +160,7 @@
         .article-body ul{list-style:none;margin:14px 0;padding:0}
         .article-body ul li{padding:6px 0 6px 26px;position:relative;font-size:.97rem}
         .article-body ul li::before{content:'→';position:absolute;left:0;color:#8b5cf6;font-weight:900}
+        html[dir="ltr"] .article-body ul li{padding:6px 0 6px 26px}
         .article-body ol{margin:14px 0;padding-right:24px}
         .article-body ol li{padding:6px 0;font-size:.97rem}
         .article-body ol li::marker{color:#a78bfa;font-weight:900}
@@ -212,6 +221,7 @@
         }
     </style>
     <meta name="msvalidate.01" content="8C98F70BB0281EC2491186C219E54D90" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
 
@@ -242,11 +252,16 @@
         <span class="header-logo-text">CHRONOS CAPSULE</span>
     </a>
     <div class="header-actions">
+        <button class="lang-toggle-cap" aria-label="تبديل اللغة" id="postLangToggle">EN</button>
         <a href="blog.html" class="back-link"><span>←</span> المدونة</a>
     </div>
 </header>
 
 <main class="page">
+
+    <nav class="breadcrumb">
+        <a href="index.html">الرئيسية</a> › <a href="blog.html">المدونة</a> › حفظ الذكريات الرقمية
+    </nav>
 
     <article>
 
@@ -409,11 +424,39 @@
 <script>
 (function(){
     'use strict';
+    /* ===== Language toggle (getLang / setLang) ===== */
+    function getLang(){
+        try {
+            var urlLang = new URLSearchParams(location.search).get('lang');
+            if (urlLang === 'ar' || urlLang === 'en') return urlLang;
+            return localStorage.getItem('cc_lang') || 'ar';
+        } catch (e) { return 'ar'; }
+    }
+    function setLang(l){
+        try { localStorage.setItem('cc_lang', l); } catch (e) {}
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+        var btn = document.getElementById('postLangToggle');
+        if (btn) btn.textContent = (l === 'ar') ? 'EN' : 'عربي';
+    }
+    var currentLang = getLang();
+    var btn = document.getElementById('postLangToggle');
+    if (btn) {
+        btn.addEventListener('click', function(){
+            currentLang = (currentLang === 'ar') ? 'en' : 'ar';
+            setLang(currentLang);
+        });
+    }
+    setLang(currentLang);
+
+    /* ===== Service worker registration ===== */
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function(){
             navigator.serviceWorker.register('sw.js').catch(function(){});
         });
     }
+
+    /* ===== Page load animation (body.cc-loaded) ===== */
     requestAnimationFrame(function(){
         requestAnimationFrame(function(){
             document.body.classList.add('cc-loaded');
