@@ -65,7 +65,7 @@
     <!-- ═══ المدونة ═══ -->
     <url>
         <loc>https://chronoscapsule.vercel.app/blog.html</loc>
-        <lastmod>2026-09-17</lastmod>
+        <lastmod>2026-09-19</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
         <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog.html"/>
@@ -165,6 +165,16 @@
         <priority>0.7</priority>
         <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html"/>
         <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html"/>
+    </url>
+
+    <!-- ✅ مقال جديد 19 سبتمبر 2026 -->
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-time-capsule-for-my-child.html</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-time-capsule-for-my-child.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-time-capsule-for-my-child.html"/>
     </url>
 
 </urlset>
