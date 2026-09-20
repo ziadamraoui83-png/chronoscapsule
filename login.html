@@ -1,84 +1,53 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <!-- ═══ منع الوميض الأبيض — inline (critical CSS) ═══ -->
     <style id="cc_critical">
-        html { background: #010103 !important; }
-        body { background: #010103; opacity: 0; transition: opacity 0.35s ease; }
+        html { background: #030712 !important; }
+        body { background: #030712; opacity: 0; transition: opacity 0.35s ease; }
         body.cc-loaded { opacity: 1; }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تسجيل الدخول | Chronos Capsule Login — ادخل إلى رسائلك الكونية</title>
-    <meta name="description" content="سجّل دخولك إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
+    <title>تسجيل الدخول | Chronos Capsule — ادخل إلى رسائلك الكونية</title>
+    <meta name="description" content="سجّل دخولك بأمان إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
+    
     <style>
-        /* ═══════════════ المتغيرات ═══════════════ */
         :root {
-            --bg: #010103;
-            --text: #f1f5f9;
-            --text-soft: #cbd5e1;
-            --muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-2: #818cf8;
-            --line: rgba(148, 163, 184, 0.22);
-            --line-strong: rgba(148, 163, 184, 0.45);
+            --bg-color: #030712;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-color: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --input-bg: rgba(15, 23, 42, 0.6);
         }
 
-        *, *::before, *::after { box-sizing: border-box; }
-
-        html { color-scheme: dark; }
+        * {
+            box-sizing: border-box;
+        }
 
         body {
             margin: 0;
-            min-height: 100vh;
-            min-height: 100dvh;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg-color);
+            background-image: 
+                radial-gradient(at 20% 20%, rgba(56, 189, 248, 0.12) 0px, transparent 50%),
+                radial-gradient(at 80% 80%, rgba(14, 165, 233, 0.08) 0px, transparent 50%);
+            color: var(--text-primary);
             display: flex;
             flex-direction: column;
-            font-family: 'Segoe UI', Tahoma, 'Noto Sans Arabic', system-ui, -apple-system, Arial, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
+            min-height: 100vh;
         }
 
-        /* ═══════════════ خلفية الفضاء ═══════════════ */
-        .cosmos {
-            position: fixed;
-            inset: 0;
-            z-index: 0;
-            pointer-events: none;
-            background:
-                radial-gradient(60% 50% at 85% 8%, rgba(99, 102, 241, 0.24), transparent 70%),
-                radial-gradient(50% 45% at 8% 92%, rgba(56, 189, 248, 0.16), transparent 70%),
-                radial-gradient(40% 40% at 50% 50%, rgba(139, 92, 246, 0.08), transparent 70%);
-        }
-        .cosmos::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.85), transparent),
-                radial-gradient(1px 1px at 27% 72%, rgba(255,255,255,.6), transparent),
-                radial-gradient(1.5px 1.5px at 41% 33%, rgba(186,230,253,.9), transparent),
-                radial-gradient(1px 1px at 58% 86%, rgba(255,255,255,.6), transparent),
-                radial-gradient(1px 1px at 66% 14%, rgba(255,255,255,.8), transparent),
-                radial-gradient(1.5px 1.5px at 79% 58%, rgba(199,210,254,.9), transparent),
-                radial-gradient(1px 1px at 91% 38%, rgba(255,255,255,.7), transparent),
-                radial-gradient(1px 1px at 5% 55%, rgba(255,255,255,.6), transparent),
-                radial-gradient(1px 1px at 35% 6%, rgba(255,255,255,.7), transparent),
-                radial-gradient(1px 1px at 72% 92%, rgba(255,255,255,.5), transparent);
-            animation: twinkle 6s ease-in-out infinite alternate;
-        }
-        @keyframes twinkle { from { opacity: .45; } to { opacity: .9; } }
-
-        nav, main, footer { position: relative; z-index: 1; }
-
-        /* ═══════════════ مسار التنقل ═══════════════ */
+        /* ═══ Breadcrumbs ═══ */
         .breadcrumbs-nav {
-            padding: 16px 28px 0;
+            padding: 16px 24px;
             font-size: 13px;
-            color: var(--muted);
+            color: var(--text-secondary);
+            z-index: 5;
         }
         .breadcrumbs-nav ol {
             list-style: none;
@@ -89,246 +58,230 @@
             margin: 0;
             padding: 0;
         }
-        .breadcrumbs-nav li { display: flex; align-items: center; gap: 6px; }
+        .breadcrumbs-nav li {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
         .breadcrumbs-nav li:not(:last-child)::after {
-            content: "‹";
+            content: "›";
             margin: 0 4px;
             color: #475569;
             font-size: 16px;
         }
-        .breadcrumbs-nav a { color: var(--accent); text-decoration: none; transition: color .2s; }
-        .breadcrumbs-nav a:hover { color: #7dd3fc; text-decoration: underline; }
-        .breadcrumbs-nav [aria-current="page"] { color: var(--text-soft); font-weight: 500; }
+        .breadcrumbs-nav a {
+            color: var(--accent-color);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .breadcrumbs-nav a:hover {
+            color: #7dd3fc;
+            text-decoration: underline;
+        }
+        .breadcrumbs-nav [aria-current="page"] {
+            color: #cbd5e1;
+            font-weight: 500;
+        }
 
-        /* ═══════════════ منطقة المحتوى ═══════════════ */
-        .stage {
+        /* ═══ Main Content Container ═══ */
+        .main-wrapper {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 24px 16px;
+            padding: 20px;
         }
 
-        /* ═══════════════ بطاقة Glassmorphism ═══════════════ */
+        /* ═══ Login Card (Glassmorphism) ═══ */
         .login-card {
-            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 40px 32px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
             width: 100%;
-            max-width: 430px;
-            padding: 36px 34px 30px;
-            border-radius: 24px;
-            background: linear-gradient(160deg, rgba(30, 41, 59, 0.62), rgba(15, 23, 42, 0.5));
-            -webkit-backdrop-filter: blur(22px) saturate(150%);
-            backdrop-filter: blur(22px) saturate(150%);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            box-shadow:
-                0 24px 60px -12px rgba(0, 0, 0, 0.65),
-                0 0 0 1px rgba(255, 255, 255, 0.03) inset,
-                0 1px 0 rgba(255, 255, 255, 0.14) inset;
-            animation: rise .6s cubic-bezier(.2,.7,.2,1) both;
-        }
-        @keyframes rise {
-            from { opacity: 0; transform: translateY(14px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
-        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-            .login-card { background: rgba(15, 23, 42, 0.94); }
+            max-width: 420px;
+            border: 1px solid var(--border-color);
         }
 
-        /* ═══════════════ الشعار والعنوان ═══════════════ */
-        .brand {
-            display: flex;
-            flex-direction: column;
+        /* Brand Logo Icon Header */
+        .brand-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .brand-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 12px;
+            display: inline-flex;
             align-items: center;
-            gap: 8px;
-            margin-bottom: 18px;
-        }
-        .logo {
-            width: 68px;
-            height: 68px;
-            filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.45));
-            animation: float 6s ease-in-out infinite;
-        }
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50%      { transform: translateY(-4px); }
-        }
-        .brand-name {
-            direction: ltr;
-            font-size: 11px;
-            letter-spacing: .32em;
-            text-transform: uppercase;
-            color: var(--muted);
+            justify-content: center;
+            margin-bottom: 12px;
+            color: var(--accent-color);
         }
 
         .login-title {
             text-align: center;
-            margin: 0 0 12px;
-            font-size: 1.65rem;
+            margin: 0 0 8px 0;
+            color: var(--text-primary);
+            font-size: 1.6em;
             font-weight: 700;
-            color: #f8fafc;
-            letter-spacing: -.01em;
+            letter-spacing: -0.5px;
         }
 
-        .trust-note {
-            margin: 0 0 24px;
-            padding: 11px 14px;
+        .trust-subtitle {
             text-align: center;
             font-size: 13px;
-            line-height: 1.75;
-            color: #b6c4d8;
-            background: rgba(56, 189, 248, 0.06);
-            border: 1px solid rgba(56, 189, 248, 0.16);
-            border-radius: 12px;
+            color: var(--text-secondary);
+            margin: 0 0 24px 0;
+            line-height: 1.5;
         }
 
-        /* ═══════════════ الحقول ═══════════════ */
-        .input-group { margin-bottom: 16px; }
-
+        .input-group {
+            margin-bottom: 18px;
+        }
         label {
             display: block;
-            margin-bottom: 7px;
+            margin-bottom: 8px;
             font-size: 13px;
-            font-weight: 600;
-            color: var(--text-soft);
+            font-weight: 500;
+            color: #cbd5e1;
         }
-
         input {
             width: 100%;
-            padding: 13px 15px;
-            border-radius: 12px;
-            border: 1px solid var(--line);
-            background: rgba(2, 6, 23, 0.55);
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            background: var(--input-bg);
             color: #fff;
-            font: inherit;
-            font-size: 15px;
-            direction: ltr;
-            text-align: right;
-            transition: border-color .2s, box-shadow .2s, background .2s;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: all 0.2s ease;
         }
-        input::placeholder { color: #64748b; }
-        input:hover { border-color: var(--line-strong); }
         input:focus {
             outline: none;
-            border-color: var(--accent);
-            background: rgba(2, 6, 23, 0.75);
-            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+            background: rgba(15, 23, 42, 0.8);
         }
 
-        /* ═══════════════ الأزرار ═══════════════ */
         .btn-submit {
             width: 100%;
-            padding: 13px;
-            margin-top: 8px;
+            padding: 12px;
+            background: var(--accent-color);
+            color: #0284c7;
+            color: #030712;
             border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-2));
-            color: #020617;
-            font: inherit;
-            font-size: 15px;
+            border-radius: 10px;
             font-weight: 700;
             cursor: pointer;
-            box-shadow: 0 8px 22px -6px rgba(56, 189, 248, 0.5);
-            transition: transform .18s, box-shadow .18s, filter .18s;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.25);
         }
         .btn-submit:hover:not(:disabled) {
-            transform: translateY(-2px);
-            filter: brightness(1.08);
-            box-shadow: 0 12px 28px -6px rgba(99, 102, 241, 0.6);
+            background: var(--accent-hover);
+            transform: translateY(-1px);
         }
-        .btn-submit:active:not(:disabled) { transform: translateY(0); }
-        .btn-submit:focus-visible,
-        .btn-google:focus-visible {
-            outline: 2px solid #fff;
-            outline-offset: 3px;
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            box-shadow: none;
         }
-        .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
 
         .separator {
             display: flex;
             align-items: center;
-            gap: 14px;
+            text-align: center;
             margin: 22px 0;
-            color: var(--muted);
+            color: #64748b;
             font-size: 13px;
         }
         .separator::before, .separator::after {
             content: '';
             flex: 1;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
+            border-bottom: 1px solid #334155;
         }
+        .separator::before { margin-left: 12px; }
+        .separator::after { margin-right: 12px; }
 
         .btn-google {
             width: 100%;
             padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            background: #fff;
-            color: #1f2937;
-            font: inherit;
-            font-size: 14px;
+            background: #ffffff;
+            color: #1e293b;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: transform .18s, box-shadow .18s, background .18s;
+            transition: all 0.2s ease;
+            font-size: 14px;
         }
         .btn-google:hover:not(:disabled) {
             background: #f8fafc;
-            transform: translateY(-2px);
-            box-shadow: 0 10px 22px -8px rgba(255, 255, 255, 0.35);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
         }
-        .btn-google:active:not(:disabled) { transform: translateY(0); }
-        .btn-google:disabled { opacity: .6; cursor: not-allowed; }
-        .btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .btn-google:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .btn-google svg {
+            width: 18px;
+            height: 18px;
+        }
 
-        /* ═══════════════ رسائل التنبيه ═══════════════ */
+        /* Alert Messages */
         .alert {
             padding: 12px 16px;
-            border-radius: 12px;
-            margin-bottom: 16px;
+            border-radius: 10px;
+            margin-bottom: 18px;
             font-size: 13px;
             display: none;
-            line-height: 1.6;
+            line-height: 1.5;
         }
         .alert.show { display: block; }
         .alert-error {
             background: rgba(239, 68, 68, 0.15);
-            border: 1px solid rgba(239, 68, 68, 0.5);
+            border: 1px solid rgba(239, 68, 68, 0.4);
             color: #fca5a5;
         }
         .alert-success {
             background: rgba(34, 197, 94, 0.15);
-            border: 1px solid rgba(34, 197, 94, 0.5);
+            border: 1px solid rgba(34, 197, 94, 0.4);
             color: #86efac;
         }
         .alert-info {
             background: rgba(56, 189, 248, 0.15);
-            border: 1px solid rgba(56, 189, 248, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.4);
             color: #7dd3fc;
         }
 
-        /* ═══════════════ التبديل بين الدخول والتسجيل ═══════════════ */
         .toggle-mode {
             text-align: center;
             margin-top: 22px;
-            font-size: 14px;
-            color: var(--muted);
+            font-size: 13px;
+            color: var(--text-secondary);
         }
         .toggle-mode a {
-            color: var(--accent);
+            color: var(--accent-color);
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
-            border-radius: 4px;
-            transition: color .2s;
+            margin-right: 4px;
         }
-        .toggle-mode a:hover { color: #7dd3fc; text-decoration: underline; }
-        .toggle-mode a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+        .toggle-mode a:hover {
+            text-decoration: underline;
+        }
 
-        /* ═══════════════ مؤشر التحميل ═══════════════ */
         .spinner {
             display: inline-block;
             width: 14px;
@@ -336,68 +289,55 @@
             border: 2px solid currentColor;
             border-top-color: transparent;
             border-radius: 50%;
-            animation: spin .6s linear infinite;
+            animation: spin 0.6s linear infinite;
             vertical-align: middle;
-            margin-inline-start: 8px;
+            margin-left: 8px;
         }
-        .btn-google .spinner { margin: 0; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-        /* ═══════════════ التذييل ═══════════════ */
+        /* ═══ Trust Footer (إغلاق ثغرة التحذير بإنشاء الهوية الرسمية) ═══ */
         .site-footer {
-            padding: 20px 16px 26px;
+            padding: 24px 16px;
             text-align: center;
-            font-size: 13px;
-            color: var(--muted);
-            border-top: 1px solid rgba(148, 163, 184, 0.1);
-            background: linear-gradient(to top, rgba(2, 6, 23, 0.6), transparent);
-        }
-        .footer-inner { max-width: 640px; margin: 0 auto; }
-        .footer-copy { margin: 0 0 8px; }
-        .footer-links {
-            list-style: none;
-            margin: 0 0 10px;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-        }
-        .footer-links li + li::before {
-            content: '|';
-            margin: 0 12px;
-            color: #475569;
-        }
-        .footer-links a {
-            color: var(--text-soft);
-            text-decoration: none;
-            transition: color .2s;
-        }
-        .footer-links a:hover { color: var(--accent); text-decoration: underline; }
-        .footer-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
-        .footer-note {
-            margin: 0;
             font-size: 12px;
-            color: #8391a7;
+            color: #64748b;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+        }
+        .site-footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .site-footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .site-footer-links a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+        .site-footer-note {
+            font-size: 11px;
+            color: #475569;
+            margin-top: 6px;
         }
 
-        /* ═══════════════ الشاشات الصغيرة ═══════════════ */
-        @media (max-width: 480px) {
-            .breadcrumbs-nav { padding: 12px 16px 0; font-size: 12px; }
-            .stage { padding: 16px 12px; }
-            .login-card { padding: 28px 20px 24px; border-radius: 20px; }
-            .login-title { font-size: 1.45rem; }
-            .footer-links li + li::before { margin: 0 8px; }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after { animation: none !important; transition: none !important; }
+        @media (max-width: 600px) {
+            .breadcrumbs-nav { padding: 12px 16px 0; font-size: 11px; }
+            .login-card { padding: 30px 20px; }
         }
     </style>
+
     <link rel="canonical" href="https://chronoscapsule.vercel.app/login.html">
     <meta property="og:type" content="website">
     <meta property="og:title" content="تسجيل الدخول | Chronos Capsule">
-    <meta property="og:description" content="سجّل دخولك إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
+    <meta property="og:description" content="سجّل دخولك بأمان إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
     <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -407,28 +347,26 @@
     <meta property="og:locale:alternate" content="en_US">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="تسجيل الدخول | Chronos Capsule">
-    <meta name="twitter:description" content="سجّل دخولك إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
+    <meta name="twitter:description" content="سجّل دخولك بأمان إلى Chronos Capsule — كبسولة الزمن الكونية.">
     <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
     <link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/login.html">
     <link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/login.html">
+
     <script type="application/ld+json">
     {
-    "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "تسجيل الدخول | Chronos Capsule",
-    "url": "https://chronoscapsule.vercel.app/login.html",
-    "description": "سجّل دخولك إلى Chronos Capsule — كبسولة الزمن الكونية.",
-    "inLanguage": [
-        "ar",
-        "en"
-    ],
-    "isPartOf": {
-        "@id": "https://chronoscapsule.vercel.app/#website"
-    },
-    "publisher": {
-        "@id": "https://chronoscapsule.vercel.app/#organization"
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "تسجيل الدخول | Chronos Capsule",
+        "url": "https://chronoscapsule.vercel.app/login.html",
+        "description": "سجّل دخولك بأمان إلى Chronos Capsule — كبسولة الزمن الكونية.",
+        "inLanguage": ["ar", "en"],
+        "isPartOf": {
+            "@id": "https://chronoscapsule.vercel.app/#website"
+        },
+        "publisher": {
+            "@id": "https://chronoscapsule.vercel.app/#organization"
+        }
     }
-}
     </script>
     <meta name="msvalidate.01" content="8C98F70BB0281EC2491186C219E54D90" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -436,105 +374,91 @@
     <link rel="apple-touch-icon" href="/icon-192.svg">
 </head>
 <body>
-<div class="cosmos" aria-hidden="true"></div>
 
-<nav class="breadcrumbs-nav" aria-label="مسار التنقل">
-  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
-    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-      <a itemscope itemtype="https://schema.org/WebPage" itemprop="item" itemid="https://chronoscapsule.vercel.app/" href="https://chronoscapsule.vercel.app/">
-        <span itemprop="name">الرئيسية</span>
-      </a>
-      <meta itemprop="position" content="1">
-    </li>
-    <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
-      <span itemprop="name" aria-current="page">تسجيل الدخول</span>
-      <meta itemprop="position" content="2">
-    </li>
-  </ol>
-</nav>
+    <!-- Breadcrumb Navigation -->
+    <nav class="breadcrumbs-nav" aria-label="مسار التنقل">
+        <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <a itemscope itemtype="https://schema.org/WebPage" itemprop="item" itemid="https://chronoscapsule.vercel.app/" href="https://chronoscapsule.vercel.app/">
+                    <span itemprop="name">الرئيسية</span>
+                </a>
+                <meta itemprop="position" content="1">
+            </li>
+            <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                <span itemprop="name" aria-current="page">تسجيل الدخول</span>
+                <meta itemprop="position" content="2">
+            </li>
+        </ol>
+    </nav>
 
-<main class="stage">
-    <div class="login-card">
-
-        <!-- الشعار -->
-        <div class="brand">
-            <svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="شعار Chronos Capsule">
-                <defs>
-                    <linearGradient id="ccGrad" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
-                        <stop offset="0" stop-color="#7dd3fc"/>
-                        <stop offset="1" stop-color="#a78bfa"/>
-                    </linearGradient>
-                </defs>
-                <!-- مدار كوكبي -->
-                <circle cx="32" cy="32" r="29" stroke="url(#ccGrad)" stroke-width="1.5" opacity=".5"/>
-                <ellipse cx="32" cy="32" rx="29" ry="10" transform="rotate(-25 32 32)" stroke="url(#ccGrad)" stroke-width="1.5" opacity=".85"/>
-                <!-- ساعة رملية (الزمن) -->
-                <path d="M22 18h20M22 46h20M24 18c0 8 6 10 8 14-2 4-8 6-8 14M40 18c0 8-6 10-8 14 2 4 8 6 8 14"
-                      stroke="url(#ccGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M27.5 44c1-4 3.5-6 4.5-6s3.5 2 4.5 6z" fill="url(#ccGrad)" opacity=".6"/>
-                <!-- كوكب صغير على المدار -->
-                <circle cx="58.3" cy="19.7" r="3" fill="#7dd3fc"/>
-            </svg>
-            <span class="brand-name">Chronos Capsule</span>
-        </div>
-
-        <h1 id="formTitle" class="login-title">تسجيل الدخول</h1>
-
-        <p class="trust-note">مرحباً بك في Chronos Capsule. قم بتسجيل الدخول بأمان للوصول إلى كبسولاتك الزمنية عبر خدمة Supabase المشفرة.</p>
-
-        <div id="alertBox" class="alert" role="alert" aria-live="polite"></div>
-
-        <!-- نموذج تسجيل الدخول / التسجيل -->
-        <form id="loginForm" autocomplete="on">
-            <div class="input-group">
-                <label for="email">البريد الإلكتروني</label>
-                <input type="email" id="email" name="email" required
-                       placeholder="name@example.com"
-                       autocomplete="email" autocapitalize="off">
+    <!-- Main Content -->
+    <main class="main-wrapper">
+        <div class="login-card">
+            <div class="brand-header">
+                <div class="brand-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h1 id="formTitle" class="login-title">تسجيل الدخول</h1>
+                <p class="trust-subtitle">مرحباً بك في Chronos Capsule. سجل دخولك بأمان للوصول إلى كبسولاتك الزمنية المحفوظة عبر Supabase Auth.</p>
             </div>
-            <div class="input-group">
-                <label for="password">كلمة المرور</label>
-                <input type="password" id="password" name="password" required
-                       placeholder="••••••••"
-                       autocomplete="current-password"
-                       minlength="6">
+
+            <div id="alertBox" class="alert"></div>
+
+            <!-- نموذج تسجيل الدخول / التسجيل -->
+            <form id="loginForm" autocomplete="on">
+                <div class="input-group">
+                    <label for="email">البريد الإلكتروني</label>
+                    <input type="email" id="email" name="email" required
+                           placeholder="name@example.com"
+                           autocomplete="email" autocapitalize="off">
+                </div>
+                <div class="input-group">
+                    <label for="password">كلمة المرور</label>
+                    <input type="password" id="password" name="password" required
+                           placeholder="••••••••"
+                           autocomplete="current-password"
+                           minlength="6">
+                </div>
+                <button type="submit" class="btn-submit" id="submitBtn" aria-label="تسجيل الدخول">دخول</button>
+            </form>
+
+            <div class="separator">أو</div>
+
+            <!-- زر تسجيل الدخول بواسطة غوغل -->
+            <button type="button" class="btn-google" id="googleLoginBtn" aria-label="التسجيل باستخدام Google">
+                <svg viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.15v3.14C3.15 21.32 7.23 24 12 24z"/>
+                    <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.15C.42 8.1 0 9.99 0 12s.42 3.9 1.15 5.4l4.12-3.16z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.15 2.68 1.15 6.6l4.12 3.14c.95-2.85 3.6-4.99 6.73-4.99z"/>
+                </svg>
+                التسجيل باستخدام Google
+            </button>
+
+            <div class="toggle-mode">
+                <span id="toggleText">ليس لديك حساب؟</span>
+                <a id="toggleMode">إنشاء حساب جديد</a>
             </div>
-            <button type="submit" class="btn-submit" id="submitBtn" aria-label="تسجيل الدخول">دخول</button>
-        </form>
-
-        <div class="separator">أو</div>
-
-        <!-- زر تسجيل الدخول بواسطة غوغل -->
-        <button type="button" class="btn-google" id="googleLoginBtn" aria-label="التسجيل باستخدام Google">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
-                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.15v3.14C3.15 21.32 7.23 24 12 24z"/>
-                <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.15C.42 8.1 0 9.99 0 12s.42 3.9 1.15 5.4l4.12-3.16z"/>
-                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.15 2.68 1.15 6.6l4.12 3.14c.95-2.85 3.6-4.99 6.73-4.99z"/>
-            </svg>
-            التسجيل باستخدام Google
-        </button>
-
-        <div class="toggle-mode">
-            <span id="toggleText">ليس لديك حساب؟</span>
-            <a id="toggleMode" href="#" role="button">إنشاء حساب جديد</a>
         </div>
-    </div>
-</main>
+    </main>
 
-<!-- ═══ التذييل ═══ -->
-<footer class="site-footer">
-    <div class="footer-inner">
-        <p class="footer-copy">© 2026 Chronos Capsule. جميع الحقوق محفوظة.</p>
-        <ul class="footer-links">
-            <li><a href="#">سياسة الخصوصية</a></li>
-            <li><a href="#">شروط الاستخدام</a></li>
-            <li><a href="#">اتصل بنا</a></li>
-        </ul>
-        <p class="footer-note">هذا الموقع هو مشروع تجريبي آمن، ولا يقوم بجمع بيانات لجهات خارجية.</p>
-    </div>
-</footer>
-
+    <!-- ═══ Official Trust Footer ═══ -->
+    <footer class="site-footer">
+        <div class="site-footer-links">
+            <a href="/index.html">الرئيسية</a>
+            <span>•</span>
+            <a href="/privacy.html">سياسة الخصوصية</a>
+            <span>•</span>
+            <a href="/terms.html">شروط الاستخدام</a>
+            <span>•</span>
+            <a href="/contact.html">اتصل بنا</a>
+        </div>
+        <p>&copy; 2026 Chronos Capsule. جميع الحقوق محفوظة.</p>
+        <p class="site-footer-note">هذا تطبيق ويب رسمي ومحمي لتخزين الكبسولات الزمنية المشفرة عبر خدمات خادم آمنة.</p>
+    </footer>
 
     <!-- ═══ Supabase JS SDK + إعدادات المشروع ═══ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -571,8 +495,7 @@
             return sb;
         }
 
-        /* ✅ إصلاح Race Condition: انتظار تحميل Supabase SDK
-           قبل التخلي عن الطلب */
+        /* ✅ انتظار تحميل Supabase SDK قبل التخلي عن الطلب */
         function waitForSupabase(maxRetries = 30, intervalMs = 100) {
             return new Promise((resolve, reject) => {
                 if (initSupabase()) return resolve(sb);
@@ -592,7 +515,6 @@
             });
         }
 
-        // محاولة أولية للتهيئة
         initSupabase();
 
         /* ═══ عناصر DOM ═══ */
@@ -657,7 +579,6 @@
             const email = emailInput.value.trim();
             const password = passwordInput.value;
 
-            /* تحقق بسيط من صحة المدخلات قبل إرسال الطلب */
             if (!email || !password) {
                 showAlert('error', 'الرجاء إدخال البريد الإلكتروني وكلمة المرور');
                 return;
@@ -669,13 +590,11 @@
                 return;
             }
 
-            /* تعطيل الزر أثناء الطلب */
             submitBtn.disabled = true;
             const originalText = submitBtn.textContent;
             submitBtn.innerHTML = originalText + '<span class="spinner"></span>';
 
             try {
-                /* ✅ إصلاح Race Condition: انتظار Supabase SDK */
                 const client = sb || await waitForSupabase();
                 if (!client) {
                     throw new Error('تعذّر تحميل SDK. تحقق من اتصال الإنترنت.');
@@ -684,10 +603,8 @@
 
                 let result;
                 if (mode === 'login') {
-                    /* تسجيل الدخول بالبريد وكلمة المرور */
                     result = await sb.auth.signInWithPassword({ email, password });
                 } else {
-                    /* إنشاء حساب جديد */
                     result = await sb.auth.signUp({
                         email,
                         password,
@@ -697,7 +614,6 @@
 
                 if (result.error) throw result.error;
 
-                /* في حالة التسجيل: قد يتطلب تأكيد البريد */
                 if (mode === 'signup' && result.data?.user && !result.data?.session) {
                     showAlert('success', 'تم إنشاء حسابك! تحقق من بريدك الإلكتروني لتأكيد الحساب قبل تسجيل الدخول.');
                     submitBtn.disabled = false;
@@ -706,7 +622,6 @@
                     return;
                 }
 
-                /* حفظ بيانات المستخدم وتوجيهه للصفحة الرئيسية */
                 if (result.data?.user || result.data?.session) {
                     try {
                         localStorage.setItem('cc_user', JSON.stringify(result.data.user));
@@ -724,7 +639,6 @@
             } catch (err) {
                 if (__CC_DEBUG) console.error('Auth error:', err);
                 let msg = err.message || 'حدث خطأ غير متوقع';
-                /* ترجمة الأخطاء الشائعة */
                 if (msg.includes('Invalid login credentials')) {
                     msg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
                 } else if (msg.includes('Email not confirmed')) {
@@ -751,7 +665,6 @@
             googleBtn.innerHTML = '<span class="spinner"></span> جاري الفتح...';
 
             try {
-                /* ✅ انتظار Supabase SDK */
                 const client = sb || await waitForSupabase();
                 if (!client) {
                     throw new Error('تعذّر تحميل SDK');
@@ -765,7 +678,6 @@
                     }
                 });
                 if (error) throw error;
-                /* سيتم توجيه المستخدم تلقائياً إلى Google ثم العودة */
             } catch (err) {
                 if (__CC_DEBUG) console.error('Google OAuth error:', err);
                 let msg = err.message || 'فشل تسجيل الدخول بـ Google';
@@ -780,19 +692,17 @@
             }
         });
 
-        /* ═══ إذا كان المستخدم مسجلاً دخوله بالفعل، وجهه للصفحة الرئيسية ═══ */
+        /* ═══ إذا كان المستخدم مسجلاً دخوله بالفعل ═══ */
         async function checkExistingSession() {
             try {
                 const client = await waitForSupabase(10, 100);
                 if (!client) return;
                 const { data } = await client.auth.getSession();
                 if (data?.session) {
-                    /* المستخدم مسجل دخوله بالفعل */
                     if (__CC_DEBUG) console.log('✅ Session found, redirecting...');
                     window.location.href = 'index.html';
                 }
             } catch (e) {
-                /* تجاهل - لن تمنع المستخدم من الصفحة */
                 if (__CC_DEBUG) console.warn('Session check failed:', e);
             }
         }
