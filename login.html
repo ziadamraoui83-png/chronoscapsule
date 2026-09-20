@@ -9,10 +9,21 @@
     body { background: #010103; }
 </style>
 
+<script>
+(function(){
+    try {
+        var saved = localStorage.getItem('cc_lang');
+        var url = new URLSearchParams(location.search).get('lang');
+        var finalLang = url || saved || ((navigator.language || 'ar').toLowerCase().startsWith('ar') ? 'ar' : 'en');
+        document.documentElement.lang = finalLang;
+        document.documentElement.dir = (finalLang === 'ar') ? 'rtl' : 'ltr';
+    } catch(e) {}
+})();
+</script>
+
 <title>تسجيل الدخول | Chronos Capsule</title>
-<meta name="description" content="سجّل دخولك إلى Chronos Capsule — منصة آمنة ومجانية لإرسال رسائل وكبسولات زمنية إلى المستقبل. الدخول عبر البريد الإلكتروني أو Google.">
+<meta name="description" content="سجّل دخولك إلى Chronos Capsule — منصة آمنة ومجانية لإرسال رسائل وكبسولات زمنية إلى المستقبل.">
 <meta name="robots" content="index, follow, max-image-preview:large">
-<meta name="author" content="Chronos Capsule">
 <meta name="theme-color" content="#010103">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z872SS657T"></script>
@@ -32,10 +43,11 @@
 <meta property="og:url" content="https://chronoscapsule.vercel.app/login.html">
 <meta property="og:site_name" content="Chronos Capsule">
 <meta property="og:locale" content="ar_AR">
+<meta property="og:locale:alternate" content="en_US">
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="تسجيل الدخول | Chronos Capsule">
-<meta name="twitter:description" content="سجّل دخولك إلى Chronos Capsule — منصة آمنة ومجانية للرسائل الزمنية.">
+<meta name="twitter:description" content="سجّل دخولك إلى Chronos Capsule.">
 <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
 
 <link rel="canonical" href="https://chronoscapsule.vercel.app/login.html">
@@ -50,10 +62,10 @@
 {
   "@context": "https://schema.org",
   "@type": "WebPage",
-  "name": "تسجيل الدخول | Chronos Capsule",
+  "name": "Login | Chronos Capsule",
   "url": "https://chronoscapsule.vercel.app/login.html",
-  "description": "سجّل دخولك إلى Chronos Capsule — منصة آمنة ومجانية للرسائل الزمنية.",
-  "inLanguage": "ar",
+  "description": "Sign in to Chronos Capsule — a free, secure platform for sending time capsules.",
+  "inLanguage": ["ar", "en"],
   "isPartOf": { "@id": "https://chronoscapsule.vercel.app/#website" },
   "publisher": { "@id": "https://chronoscapsule.vercel.app/#organization" }
 }
@@ -64,7 +76,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 
 <style>
-    /* ═══ أساسيات الصفحة ═══ */
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Tajawal', sans-serif; }
 
     html, body {
@@ -84,10 +95,16 @@
         line-height: 1.6;
     }
 
+    html[lang="en"] body { font-family: 'Space Grotesk', 'Tajawal', sans-serif; }
+
     a { text-decoration: none; color: inherit; }
     button { cursor: pointer; font-family: inherit; }
 
-    /* ═══ الهيدر — مطابق للموقع ═══ */
+    /* ═══ إخفاء/إظهار حسب اللغة ═══ */
+    html[lang="ar"] .lang-en { display: none !important; }
+    html[lang="en"] .lang-ar { display: none !important; }
+
+    /* ═══ الهيدر ═══ */
     .page-header {
         position: sticky;
         top: 0;
@@ -150,6 +167,24 @@
         gap: 10px;
     }
 
+    .lang-toggle-cap {
+        background: rgba(139, 92, 246, 0.12);
+        border: 1px solid rgba(139, 92, 246, 0.4);
+        color: #c4b5fd;
+        border-radius: 10px;
+        padding: 8px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        backdrop-filter: blur(8px);
+        transition: all 0.3s;
+        font-family: inherit;
+    }
+    .lang-toggle-cap:hover {
+        background: rgba(139, 92, 246, 0.25);
+        border-color: #8b5cf6;
+        color: #fff;
+    }
+
     .back-link {
         display: inline-flex;
         align-items: center;
@@ -180,7 +215,7 @@
         position: relative;
     }
 
-    /* ═══ بطاقة تسجيل الدخول ═══ */
+    /* ═══ البطاقة ═══ */
     .login-card {
         width: 100%;
         max-width: 460px;
@@ -215,7 +250,6 @@
         to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ═══ الشعار ═══ */
     .brand {
         display: flex;
         flex-direction: column;
@@ -245,7 +279,6 @@
         text-transform: uppercase;
     }
 
-    /* ═══ العنوان ═══ */
     .login-title {
         text-align: center;
         font-size: 1.65rem;
@@ -258,7 +291,6 @@
         line-height: 1.35;
     }
 
-    /* ═══ ملاحظة الثقة ═══ */
     .trust-note {
         margin: 0 0 26px;
         padding: 13px 16px;
@@ -281,7 +313,6 @@
         flex: none;
     }
 
-    /* ═══ التنبيهات ═══ */
     .alert {
         padding: 12px 16px;
         border-radius: 12px;
@@ -295,7 +326,6 @@
     .alert-success { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.5); color: #86efac; }
     .alert-info { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.5); color: #7dd3fc; }
 
-    /* ═══ الحقول ═══ */
     .input-group { margin-bottom: 16px; }
 
     label {
@@ -328,8 +358,8 @@
     }
 
     #email { direction: ltr; text-align: right; }
+    html[lang="en"] #email { text-align: left; }
 
-    /* ═══ الأزرار ═══ */
     .btn-submit {
         width: 100%;
         padding: 14px;
@@ -354,7 +384,6 @@
 
     .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* ═══ الفاصل ═══ */
     .separator {
         display: flex;
         align-items: center;
@@ -373,7 +402,6 @@
         background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.4), transparent);
     }
 
-    /* ═══ زر Google ═══ */
     .btn-google {
         width: 100%;
         padding: 13px;
@@ -401,7 +429,6 @@
     .btn-google:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-    /* ═══ toggle mode ═══ */
     .toggle-mode {
         text-align: center;
         margin-top: 24px;
@@ -423,7 +450,6 @@
         border-bottom-color: #3AE1FF;
     }
 
-    /* ═══ Spinner ═══ */
     .spinner {
         display: inline-block;
         width: 14px;
@@ -440,7 +466,7 @@
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ═══ الفوتر — مطابق للموقع ═══ */
+    /* ═══ الفوتر ═══ */
     .footer-new {
         background: rgba(1, 1, 3, 0.7);
         border-top: 1px solid rgba(255, 255, 255, 0.06);
@@ -497,7 +523,6 @@
         color: #64748b;
     }
 
-    /* ═══ الجوال ═══ */
     @media (max-width: 900px) {
         .page-header { padding: 14px 20px; }
         .cc-logo-icon { width: 38px; height: 38px; }
@@ -515,6 +540,7 @@
         .footer-content { grid-template-columns: 1fr; gap: 24px; }
         .back-link { font-size: 12px; padding: 6px 12px; }
         .cc-logo-text { display: none; }
+        .lang-toggle-cap { padding: 6px 10px; font-size: 12px; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -537,69 +563,81 @@
         </div>
     </a>
     <div class="header-actions">
+        <button class="lang-toggle-cap" id="langToggle" type="button" aria-label="Toggle language">EN</button>
         <a href="index.html" class="back-link">
             <span aria-hidden="true">←</span>
-            <span>الرئيسية</span>
+            <span class="lang-ar">الرئيسية</span>
+            <span class="lang-en">Home</span>
         </a>
     </div>
 </header>
 
-<!-- ═══ بطاقة تسجيل الدخول ═══ -->
+<!-- ═══ البطاقة ═══ -->
 <main class="stage">
     <div class="login-card">
 
-        <!-- الشعار -->
         <div class="brand">
             <img src="/icon-192.svg" alt="Chronos Capsule" class="brand-logo" width="72" height="72">
             <span class="brand-name">Chronos Capsule</span>
         </div>
 
-        <!-- العنوان -->
-        <h1 id="formTitle" class="login-title">تسجيل الدخول</h1>
+        <h1 id="formTitle" class="login-title">
+            <span class="lang-ar">تسجيل الدخول</span>
+            <span class="lang-en">Sign In</span>
+        </h1>
 
-        <!-- ملاحظة الثقة -->
         <p class="trust-note">
-            الدخول آمن ومشفّر عبر Supabase. لا نشارك بياناتك مع أي طرف ثالث.
+            <span class="lang-ar">الدخول آمن ومشفّر عبر Supabase. لا نشارك بياناتك مع أي طرف ثالث.</span>
+            <span class="lang-en">Secure encrypted sign-in via Supabase. We never share your data with third parties.</span>
         </p>
 
-        <!-- التنبيهات -->
         <div id="alertBox" class="alert" role="alert" aria-live="polite"></div>
 
-        <!-- النموذج -->
         <form id="loginForm" autocomplete="on" novalidate>
             <div class="input-group">
-                <label for="email">البريد الإلكتروني</label>
+                <label for="email" class="lang-ar">البريد الإلكتروني</label>
+                <label for="email" class="lang-en">Email</label>
                 <input type="email" id="email" name="email" required
                        placeholder="name@example.com"
                        autocomplete="email" autocapitalize="off">
             </div>
             <div class="input-group">
-                <label for="password">كلمة المرور</label>
+                <label for="password" class="lang-ar">كلمة المرور</label>
+                <label for="password" class="lang-en">Password</label>
                 <input type="password" id="password" name="password" required
                        placeholder="••••••••"
                        autocomplete="current-password"
                        minlength="6">
             </div>
-            <button type="submit" class="btn-submit" id="submitBtn" aria-label="تسجيل الدخول">
-                دخول
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span class="lang-ar">دخول</span>
+                <span class="lang-en">Sign In</span>
             </button>
         </form>
 
-        <div class="separator">أو</div>
+        <div class="separator">
+            <span class="lang-ar">أو</span>
+            <span class="lang-en">OR</span>
+        </div>
 
-        <button type="button" class="btn-google" id="googleLoginBtn" aria-label="التسجيل باستخدام Google">
+        <button type="button" class="btn-google" id="googleLoginBtn">
             <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
                 <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.15v3.14C3.15 21.32 7.23 24 12 24z"/>
                 <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.15C.42 8.1 0 9.99 0 12s.42 3.9 1.15 5.4l4.12-3.16z"/>
                 <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.23 0 3.15 2.68 1.15 6.6l4.12 3.14c.95-2.85 3.6-4.99 6.73-4.99z"/>
             </svg>
-            التسجيل باستخدام Google
+            <span class="lang-ar">التسجيل باستخدام Google</span>
+            <span class="lang-en">Sign in with Google</span>
         </button>
 
         <div class="toggle-mode">
-            <span id="toggleText">ليس لديك حساب؟</span>
-            <a id="toggleMode" href="#" role="button">إنشاء حساب جديد</a>
+            <span id="toggleText" class="lang-ar">ليس لديك حساب؟</span>
+            <span id="toggleTextEn" class="lang-en">Don't have an account?</span>
+            <a id="toggleMode" href="#" role="button">
+                <span class="lang-ar">إنشاء حساب جديد</span>
+                <span class="lang-en">Create one now</span>
+            </a>
         </div>
     </div>
 </main>
@@ -613,45 +651,56 @@
                 <span style="font-weight:900; background:linear-gradient(135deg,#a78bfa,#3AE1FF); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;">CHRONOS CAPSULE</span>
             </div>
             <p class="footer-brand-desc">
-                منصة عالمية مجانية لإرسال رسائل إلى المستقبل — بالعربية والإنجليزية.
+                <span class="lang-ar">منصة عالمية مجانية لإرسال رسائل إلى المستقبل — بالعربية والإنجليزية.</span>
+                <span class="lang-en">A free global platform for sending messages to the future — in Arabic and English.</span>
             </p>
         </div>
 
         <div>
-            <div class="footer-col-title">المنصة</div>
+            <div class="footer-col-title">
+                <span class="lang-ar">المنصة</span>
+                <span class="lang-en">Platform</span>
+            </div>
             <div class="footer-col-links">
-                <a href="index.html">الرئيسية</a>
-                <a href="archive.html">الأرشيف</a>
-                <a href="capsules.html">كبسولاتي</a>
-                <a href="how-it-works.html">كيف يعمل</a>
+                <a href="index.html"><span class="lang-ar">الرئيسية</span><span class="lang-en">Home</span></a>
+                <a href="archive.html"><span class="lang-ar">الأرشيف</span><span class="lang-en">Archive</span></a>
+                <a href="capsules.html"><span class="lang-ar">كبسولاتي</span><span class="lang-en">My Capsules</span></a>
+                <a href="how-it-works.html"><span class="lang-ar">كيف يعمل</span><span class="lang-en">How It Works</span></a>
             </div>
         </div>
 
         <div>
-            <div class="footer-col-title">المصادر</div>
+            <div class="footer-col-title">
+                <span class="lang-ar">المصادر</span>
+                <span class="lang-en">Resources</span>
+            </div>
             <div class="footer-col-links">
-                <a href="blog.html">المدونة</a>
-                <a href="faq.html">الأسئلة الشائعة</a>
-                <a href="about.html">من نحن</a>
-                <a href="contact.html">اتصل بنا</a>
+                <a href="blog.html"><span class="lang-ar">المدونة</span><span class="lang-en">Blog</span></a>
+                <a href="faq.html"><span class="lang-ar">الأسئلة الشائعة</span><span class="lang-en">FAQ</span></a>
+                <a href="about.html"><span class="lang-ar">من نحن</span><span class="lang-en">About</span></a>
+                <a href="contact.html"><span class="lang-ar">اتصل بنا</span><span class="lang-en">Contact</span></a>
             </div>
         </div>
 
         <div>
-            <div class="footer-col-title">قانوني</div>
+            <div class="footer-col-title">
+                <span class="lang-ar">قانوني</span>
+                <span class="lang-en">Legal</span>
+            </div>
             <div class="footer-col-links">
-                <a href="privacy.html">سياسة الخصوصية</a>
-                <a href="terms.html">شروط الاستخدام</a>
+                <a href="privacy.html"><span class="lang-ar">سياسة الخصوصية</span><span class="lang-en">Privacy Policy</span></a>
+                <a href="terms.html"><span class="lang-ar">شروط الاستخدام</span><span class="lang-en">Terms of Use</span></a>
             </div>
         </div>
     </div>
 
     <div class="footer-bottom">
-        © 2026 Chronos Capsule — منصة عالمية 🌍
+        © 2026 Chronos Capsule — 
+        <span class="lang-ar">منصة عالمية 🌍</span>
+        <span class="lang-en">Global platform 🌍</span>
     </div>
 </footer>
 
-<!-- ═══ Supabase + منطق المصادقة ═══ -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
 <script src="config.js?v=20260915" defer></script>
 
@@ -665,6 +714,62 @@
 
     let mode = 'login';
     let sb = null;
+    let currentLang = document.documentElement.lang || 'ar';
+
+    const T = {
+        ar: {
+            title: 'تسجيل الدخول',
+            titleSignup: 'إنشاء حساب جديد',
+            submit: 'دخول',
+            submitSignup: 'إنشاء الحساب',
+            toggleAsk: 'ليس لديك حساب؟',
+            toggleAskSignup: 'لديك حساب بالفعل؟',
+            toggleCta: 'إنشاء حساب جديد',
+            toggleCtaSignup: 'تسجيل الدخول',
+            errMissing: 'الرجاء إدخال البريد الإلكتروني وكلمة المرور',
+            errPwd: 'كلمة المرور يجب أن تكون 6 أحرف على الأقل',
+            errSdk: 'تعذّر تحميل SDK. تحقق من اتصال الإنترنت.',
+            successLogin: 'تم تسجيل الدخول بنجاح! جاري التحويل...',
+            successSignup: 'تم إنشاء الحساب بنجاح!',
+            confirmEmail: 'تم إنشاء حسابك! تحقق من بريدك الإلكتروني لتأكيد الحساب.',
+            errGeneric: 'حدث خطأ غير متوقع',
+            errCreds: 'البريد الإلكتروني أو كلمة المرور غير صحيحة',
+            errNotConfirmed: 'يجب تأكيد بريدك الإلكتروني أولاً.',
+            errRegistered: 'هذا البريد مُسجّل بالفعل.',
+            errRate: 'محاولات كثيرة. انتظر قليلاً.',
+            errSdkLoad: 'تعذّر تحميل خدمة المصادقة.',
+            errOAuth: 'فشل تسجيل الدخول بـ Google',
+            errProvider: 'تسجيل Google غير مُفعّل.',
+            loading: 'جاري الفتح...'
+        },
+        en: {
+            title: 'Sign In',
+            titleSignup: 'Create Account',
+            submit: 'Sign In',
+            submitSignup: 'Create Account',
+            toggleAsk: "Don't have an account?",
+            toggleAskSignup: 'Already have an account?',
+            toggleCta: 'Create one now',
+            toggleCtaSignup: 'Sign in',
+            errMissing: 'Please enter your email and password',
+            errPwd: 'Password must be at least 6 characters',
+            errSdk: 'Failed to load SDK. Check your connection.',
+            successLogin: 'Signed in successfully! Redirecting...',
+            successSignup: 'Account created successfully!',
+            confirmEmail: 'Account created! Check your email to confirm.',
+            errGeneric: 'Unexpected error occurred',
+            errCreds: 'Invalid email or password',
+            errNotConfirmed: 'Please confirm your email first.',
+            errRegistered: 'This email is already registered.',
+            errRate: 'Too many attempts. Please wait.',
+            errSdkLoad: 'Failed to load authentication service.',
+            errOAuth: 'Google sign-in failed',
+            errProvider: 'Google sign-in is not enabled.',
+            loading: 'Opening...'
+        }
+    };
+
+    function t(key) { return (T[currentLang] || T.ar)[key]; }
 
     function initSupabase() {
         if (sb) return sb;
@@ -675,11 +780,8 @@
                     window.CC_CONFIG.SUPABASE_URL,
                     window.CC_CONFIG.SUPABASE_ANON_KEY
                 );
-                if (__CC_DEBUG) console.log('✅ Supabase initialized');
             }
-        } catch (e) {
-            console.error('فشل تهيئة Supabase:', e);
-        }
+        } catch (e) { console.error('Supabase init:', e); }
         return sb;
     }
 
@@ -690,9 +792,7 @@
             const check = () => {
                 attempts++;
                 if (initSupabase()) return resolve(sb);
-                if (attempts >= maxRetries) {
-                    return reject(new Error('Supabase SDK failed to load'));
-                }
+                if (attempts >= maxRetries) return reject(new Error('Supabase SDK failed to load'));
                 setTimeout(check, intervalMs);
             };
             check();
@@ -704,6 +804,22 @@
         else document.addEventListener('DOMContentLoaded', fn);
     }
 
+    function applyLang(l) {
+        currentLang = l;
+        try { localStorage.setItem('cc_lang', l); } catch(e) {}
+        document.documentElement.lang = l;
+        document.documentElement.dir = (l === 'ar') ? 'rtl' : 'ltr';
+
+        const btn = document.getElementById('langToggle');
+        if (btn) btn.textContent = (l === 'ar') ? 'EN' : 'عربي';
+
+        // تحديث عناوين الصفحة
+        document.title = (l === 'ar' ? 'تسجيل الدخول' : 'Sign In') + ' | Chronos Capsule';
+
+        // تحديث الحالة الحالية
+        setMode(mode);
+    }
+
     ready(function(){
         initSupabase();
 
@@ -713,9 +829,9 @@
         const submitBtn = document.getElementById('submitBtn');
         const googleBtn = document.getElementById('googleLoginBtn');
         const toggleModeLink = document.getElementById('toggleMode');
-        const toggleText = document.getElementById('toggleText');
         const formTitle = document.getElementById('formTitle');
         const alertBox = document.getElementById('alertBox');
+        const langToggle = document.getElementById('langToggle');
 
         function showAlert(type, message) {
             alertBox.className = 'alert alert-' + type + ' show';
@@ -729,20 +845,31 @@
         function setMode(newMode) {
             mode = newMode;
             hideAlert();
-            if (mode === 'login') {
-                formTitle.textContent = 'تسجيل الدخول';
-                submitBtn.textContent = 'دخول';
-                toggleText.textContent = 'ليس لديك حساب؟';
-                toggleModeLink.textContent = 'إنشاء حساب جديد';
-                passwordInput.setAttribute('autocomplete', 'current-password');
-            } else {
-                formTitle.textContent = 'إنشاء حساب جديد';
-                submitBtn.textContent = 'إنشاء الحساب';
-                toggleText.textContent = 'لديك حساب بالفعل؟';
-                toggleModeLink.textContent = 'تسجيل الدخول';
-                passwordInput.setAttribute('autocomplete', 'new-password');
-            }
+
+            const titleKey = (mode === 'login') ? 'title' : 'titleSignup';
+            const submitKey = (mode === 'login') ? 'submit' : 'submitSignup';
+            const toggleAskKey = (mode === 'login') ? 'toggleAsk' : 'toggleAskSignup';
+            const toggleCtaKey = (mode === 'login') ? 'toggleCta' : 'toggleCtaSignup';
+
+            formTitle.querySelector('.lang-ar').textContent = T.ar[titleKey];
+            formTitle.querySelector('.lang-en').textContent = T.en[titleKey];
+            submitBtn.querySelector('.lang-ar').textContent = T.ar[submitKey];
+            submitBtn.querySelector('.lang-en').textContent = T.en[submitKey];
+
+            const toggleAskAr = document.getElementById('toggleText');
+            const toggleAskEn = document.getElementById('toggleTextEn');
+            if (toggleAskAr) toggleAskAr.textContent = T.ar[toggleAskKey];
+            if (toggleAskEn) toggleAskEn.textContent = T.en[toggleAskKey];
+
+            toggleModeLink.querySelector('.lang-ar').textContent = T.ar[toggleCtaKey];
+            toggleModeLink.querySelector('.lang-en').textContent = T.en[toggleCtaKey];
+
+            passwordInput.setAttribute('autocomplete', mode === 'login' ? 'current-password' : 'new-password');
         }
+
+        langToggle.addEventListener('click', function(){
+            applyLang(currentLang === 'ar' ? 'en' : 'ar');
+        });
 
         toggleModeLink.addEventListener('click', function(e) {
             e.preventDefault();
@@ -750,7 +877,7 @@
         });
 
         function validatePassword(pwd) {
-            if (pwd.length < 6) return 'كلمة المرور يجب أن تكون 6 أحرف على الأقل';
+            if (pwd.length < 6) return t('errPwd');
             return null;
         }
 
@@ -762,22 +889,19 @@
             const password = passwordInput.value;
 
             if (!email || !password) {
-                showAlert('error', 'الرجاء إدخال البريد الإلكتروني وكلمة المرور');
+                showAlert('error', t('errMissing'));
                 return;
             }
             const pwdError = validatePassword(password);
-            if (pwdError) {
-                showAlert('error', pwdError);
-                return;
-            }
+            if (pwdError) { showAlert('error', pwdError); return; }
 
             submitBtn.disabled = true;
-            const originalText = submitBtn.textContent;
-            submitBtn.innerHTML = originalText + '<span class="spinner"></span>';
+            const originalHTML = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<span class="spinner"></span>';
 
             try {
                 const client = sb || await waitForSupabase();
-                if (!client) throw new Error('تعذّر تحميل SDK. تحقق من اتصال الإنترنت.');
+                if (!client) throw new Error(t('errSdk'));
                 sb = client;
 
                 let result;
@@ -789,38 +913,37 @@
                         options: { emailRedirectTo: window.location.origin + '/index.html' }
                     });
                 }
-
                 if (result.error) throw result.error;
 
                 if (mode === 'signup' && result.data?.user && !result.data?.session) {
-                    showAlert('success', 'تم إنشاء حسابك! تحقق من بريدك الإلكتروني لتأكيد الحساب.');
+                    showAlert('success', t('confirmEmail'));
                     submitBtn.disabled = false;
-                    submitBtn.textContent = originalText;
+                    submitBtn.innerHTML = originalHTML;
                     setMode('login');
                     return;
                 }
 
                 if (result.data?.user || result.data?.session) {
-                    try { localStorage.setItem('cc_user', JSON.stringify(result.data.user)); } catch (e) {}
-                    showAlert('success', mode === 'login' ? 'تم تسجيل الدخول بنجاح! جاري التحويل...' : 'تم إنشاء الحساب بنجاح!');
+                    try { localStorage.setItem('cc_user', JSON.stringify(result.data.user)); } catch(e) {}
+                    showAlert('success', mode === 'login' ? t('successLogin') : t('successSignup'));
                     setTimeout(function() {
                         const redirect = new URLSearchParams(location.search).get('redirect') || 'index.html';
                         window.location.href = redirect;
                     }, 800);
                 } else {
-                    throw new Error('استجابة غير متوقعة من الخادم');
+                    throw new Error(t('errGeneric'));
                 }
             } catch (err) {
                 if (__CC_DEBUG) console.error('Auth error:', err);
-                let msg = err.message || 'حدث خطأ غير متوقع';
-                if (msg.includes('Invalid login credentials')) msg = 'البريد الإلكتروني أو كلمة المرور غير صحيحة';
-                else if (msg.includes('Email not confirmed')) msg = 'يجب تأكيد بريدك الإلكتروني أولاً.';
-                else if (msg.includes('already registered')) msg = 'هذا البريد مُسجّل بالفعل.';
-                else if (msg.includes('rate limit')) msg = 'محاولات كثيرة. انتظر قليلاً.';
-                else if (msg.includes('SDK failed to load')) msg = 'تعذّر تحميل خدمة المصادقة.';
+                let msg = err.message || t('errGeneric');
+                if (msg.includes('Invalid login credentials')) msg = t('errCreds');
+                else if (msg.includes('Email not confirmed')) msg = t('errNotConfirmed');
+                else if (msg.includes('already registered')) msg = t('errRegistered');
+                else if (msg.includes('rate limit')) msg = t('errRate');
+                else if (msg.includes('SDK failed to load')) msg = t('errSdkLoad');
                 showAlert('error', msg);
                 submitBtn.disabled = false;
-                submitBtn.textContent = originalText;
+                submitBtn.innerHTML = originalHTML;
             }
         }
 
@@ -829,11 +952,11 @@
         googleBtn.addEventListener('click', async function() {
             googleBtn.disabled = true;
             const originalHTML = googleBtn.innerHTML;
-            googleBtn.innerHTML = '<span class="spinner"></span> جاري الفتح...';
+            googleBtn.innerHTML = '<span class="spinner"></span> ' + t('loading');
 
             try {
                 const client = sb || await waitForSupabase();
-                if (!client) throw new Error('تعذّر تحميل SDK');
+                if (!client) throw new Error(t('errSdk'));
                 sb = client;
 
                 const { error } = await sb.auth.signInWithOAuth({
@@ -843,8 +966,8 @@
                 if (error) throw error;
             } catch (err) {
                 if (__CC_DEBUG) console.error('Google OAuth error:', err);
-                let msg = err.message || 'فشل تسجيل الدخول بـ Google';
-                if (msg.includes('provider is not enabled')) msg = 'تسجيل Google غير مُفعّل.';
+                let msg = err.message || t('errOAuth');
+                if (msg.includes('provider is not enabled')) msg = t('errProvider');
                 showAlert('error', msg);
                 googleBtn.disabled = false;
                 googleBtn.innerHTML = originalHTML;
@@ -857,11 +980,12 @@
                 if (!client) return;
                 const { data } = await client.auth.getSession();
                 if (data?.session) window.location.href = 'index.html';
-            } catch (e) {}
+            } catch(e) {}
         }
 
+        // تفعيل أولي
+        applyLang(currentLang);
         checkExistingSession();
-        setMode('login');
     });
 })();
 </script>
