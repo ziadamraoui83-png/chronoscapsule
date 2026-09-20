@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
@@ -12,136 +12,286 @@
     <title>تسجيل الدخول | Chronos Capsule Login — ادخل إلى رسائلك الكونية</title>
     <meta name="description" content="سجّل دخولك إلى Chronos Capsule — كبسولة الزمن الكونية. ادخل بحسابك أو سجّل بالبريد الإلكتروني لمتابعة كبسولاتك الزمنية.">
     <style>
+        /* ═══════════════ المتغيرات ═══════════════ */
+        :root {
+            --bg: #010103;
+            --text: #f1f5f9;
+            --text-soft: #cbd5e1;
+            --muted: #94a3b8;
+            --accent: #38bdf8;
+            --accent-2: #818cf8;
+            --line: rgba(148, 163, 184, 0.22);
+            --line-strong: rgba(148, 163, 184, 0.45);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html { color-scheme: dark; }
+
         body {
             margin: 0;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            font-family: 'Segoe UI', Tahoma, 'Noto Sans Arabic', system-ui, -apple-system, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* ═══════════════ خلفية الفضاء ═══════════════ */
+        .cosmos {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(60% 50% at 85% 8%, rgba(99, 102, 241, 0.24), transparent 70%),
+                radial-gradient(50% 45% at 8% 92%, rgba(56, 189, 248, 0.16), transparent 70%),
+                radial-gradient(40% 40% at 50% 50%, rgba(139, 92, 246, 0.08), transparent 70%);
+        }
+        .cosmos::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(1px 1px at 12% 18%, rgba(255,255,255,.85), transparent),
+                radial-gradient(1px 1px at 27% 72%, rgba(255,255,255,.6), transparent),
+                radial-gradient(1.5px 1.5px at 41% 33%, rgba(186,230,253,.9), transparent),
+                radial-gradient(1px 1px at 58% 86%, rgba(255,255,255,.6), transparent),
+                radial-gradient(1px 1px at 66% 14%, rgba(255,255,255,.8), transparent),
+                radial-gradient(1.5px 1.5px at 79% 58%, rgba(199,210,254,.9), transparent),
+                radial-gradient(1px 1px at 91% 38%, rgba(255,255,255,.7), transparent),
+                radial-gradient(1px 1px at 5% 55%, rgba(255,255,255,.6), transparent),
+                radial-gradient(1px 1px at 35% 6%, rgba(255,255,255,.7), transparent),
+                radial-gradient(1px 1px at 72% 92%, rgba(255,255,255,.5), transparent);
+            animation: twinkle 6s ease-in-out infinite alternate;
+        }
+        @keyframes twinkle { from { opacity: .45; } to { opacity: .9; } }
+
+        nav, main, footer { position: relative; z-index: 1; }
+
+        /* ═══════════════ مسار التنقل ═══════════════ */
+        .breadcrumbs-nav {
+            padding: 16px 28px 0;
+            font-size: 13px;
+            color: var(--muted);
+        }
+        .breadcrumbs-nav ol {
+            list-style: none;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0f172a;
-            color: #f8fafc;
+        }
+        .breadcrumbs-nav li { display: flex; align-items: center; gap: 6px; }
+        .breadcrumbs-nav li:not(:last-child)::after {
+            content: "‹";
+            margin: 0 4px;
+            color: #475569;
+            font-size: 16px;
+        }
+        .breadcrumbs-nav a { color: var(--accent); text-decoration: none; transition: color .2s; }
+        .breadcrumbs-nav a:hover { color: #7dd3fc; text-decoration: underline; }
+        .breadcrumbs-nav [aria-current="page"] { color: var(--text-soft); font-weight: 500; }
+
+        /* ═══════════════ منطقة المحتوى ═══════════════ */
+        .stage {
+            flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            padding: 24px 16px;
         }
+
+        /* ═══════════════ بطاقة Glassmorphism ═══════════════ */
         .login-card {
-            background: rgba(30, 41, 59, 0.7);
-            backdrop-filter: blur(10px);
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            position: relative;
             width: 100%;
-            max-width: 400px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-sizing: border-box;
-            margin: 20px;
+            max-width: 430px;
+            padding: 36px 34px 30px;
+            border-radius: 24px;
+            background: linear-gradient(160deg, rgba(30, 41, 59, 0.62), rgba(15, 23, 42, 0.5));
+            -webkit-backdrop-filter: blur(22px) saturate(150%);
+            backdrop-filter: blur(22px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            box-shadow:
+                0 24px 60px -12px rgba(0, 0, 0, 0.65),
+                0 0 0 1px rgba(255, 255, 255, 0.03) inset,
+                0 1px 0 rgba(255, 255, 255, 0.14) inset;
+            animation: rise .6s cubic-bezier(.2,.7,.2,1) both;
         }
-        h2 {
-            text-align: center;
-            margin-bottom: 24px;
-            color: #38bdf8;
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(14px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
-        /* ✅ H1 styling لنفس مظهر h2 */
+        @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+            .login-card { background: rgba(15, 23, 42, 0.94); }
+        }
+
+        /* ═══════════════ الشعار والعنوان ═══════════════ */
+        .brand {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 18px;
+        }
+        .logo {
+            width: 68px;
+            height: 68px;
+            filter: drop-shadow(0 0 16px rgba(56, 189, 248, 0.45));
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-4px); }
+        }
+        .brand-name {
+            direction: ltr;
+            font-size: 11px;
+            letter-spacing: .32em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
         .login-title {
             text-align: center;
-            margin: 0 0 24px 0;
-            color: #38bdf8;
-            font-size: 1.5em;
+            margin: 0 0 12px;
+            font-size: 1.65rem;
             font-weight: 700;
+            color: #f8fafc;
+            letter-spacing: -.01em;
         }
-        .input-group {
-            margin-bottom: 16px;
+
+        .trust-note {
+            margin: 0 0 24px;
+            padding: 11px 14px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.75;
+            color: #b6c4d8;
+            background: rgba(56, 189, 248, 0.06);
+            border: 1px solid rgba(56, 189, 248, 0.16);
+            border-radius: 12px;
         }
+
+        /* ═══════════════ الحقول ═══════════════ */
+        .input-group { margin-bottom: 16px; }
+
         label {
             display: block;
-            margin-bottom: 6px;
-            font-size: 14px;
+            margin-bottom: 7px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-soft);
         }
+
         input {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #475569;
-            background: #0f172a;
+            padding: 13px 15px;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            background: rgba(2, 6, 23, 0.55);
             color: #fff;
-            box-sizing: border-box;
-            font-size: 14px;
+            font: inherit;
+            font-size: 15px;
+            direction: ltr;
+            text-align: right;
+            transition: border-color .2s, box-shadow .2s, background .2s;
         }
+        input::placeholder { color: #64748b; }
+        input:hover { border-color: var(--line-strong); }
         input:focus {
             outline: none;
-            border-color: #38bdf8;
+            border-color: var(--accent);
+            background: rgba(2, 6, 23, 0.75);
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.18);
         }
+
+        /* ═══════════════ الأزرار ═══════════════ */
         .btn-submit {
             width: 100%;
-            padding: 12px;
-            background: #38bdf8;
-            color: #0f172a;
+            padding: 13px;
+            margin-top: 8px;
             border: none;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #020617;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.2s;
-            font-size: 14px;
+            box-shadow: 0 8px 22px -6px rgba(56, 189, 248, 0.5);
+            transition: transform .18s, box-shadow .18s, filter .18s;
         }
         .btn-submit:hover:not(:disabled) {
-            background: #0ea5e9;
+            transform: translateY(-2px);
+            filter: brightness(1.08);
+            box-shadow: 0 12px 28px -6px rgba(99, 102, 241, 0.6);
         }
-        .btn-submit:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
+        .btn-submit:active:not(:disabled) { transform: translateY(0); }
+        .btn-submit:focus-visible,
+        .btn-google:focus-visible {
+            outline: 2px solid #fff;
+            outline-offset: 3px;
         }
+        .btn-submit:disabled { opacity: .6; cursor: not-allowed; }
+
         .separator {
             display: flex;
             align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: #94a3b8;
+            gap: 14px;
+            margin: 22px 0;
+            color: var(--muted);
             font-size: 13px;
         }
         .separator::before, .separator::after {
             content: '';
             flex: 1;
-            border-bottom: 1px solid #475569;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--line-strong), transparent);
         }
-        .separator::before { margin-left: 10px; }
-        .separator::after { margin-right: 10px; }
 
         .btn-google {
             width: 100%;
             padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
             background: #fff;
-            color: #333;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
+            color: #1f2937;
+            font: inherit;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            transition: background 0.2s;
-            font-size: 14px;
+            transition: transform .18s, box-shadow .18s, background .18s;
         }
         .btn-google:hover:not(:disabled) {
-            background: #f1f5f9;
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 22px -8px rgba(255, 255, 255, 0.35);
         }
-        .btn-google:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .btn-google svg {
-            width: 18px;
-            height: 18px;
-        }
+        .btn-google:active:not(:disabled) { transform: translateY(0); }
+        .btn-google:disabled { opacity: .6; cursor: not-allowed; }
+        .btn-google svg { width: 18px; height: 18px; flex-shrink: 0; }
 
-        /* رسالة التنبيه */
+        /* ═══════════════ رسائل التنبيه ═══════════════ */
         .alert {
             padding: 12px 16px;
-            border-radius: 8px;
+            border-radius: 12px;
             margin-bottom: 16px;
             font-size: 13px;
             display: none;
-            line-height: 1.5;
+            line-height: 1.6;
         }
         .alert.show { display: block; }
         .alert-error {
@@ -160,22 +310,25 @@
             color: #7dd3fc;
         }
 
+        /* ═══════════════ التبديل بين الدخول والتسجيل ═══════════════ */
         .toggle-mode {
             text-align: center;
-            margin-top: 20px;
-            font-size: 13px;
-            color: #94a3b8;
+            margin-top: 22px;
+            font-size: 14px;
+            color: var(--muted);
         }
         .toggle-mode a {
-            color: #38bdf8;
+            color: var(--accent);
             cursor: pointer;
             text-decoration: none;
             font-weight: 600;
+            border-radius: 4px;
+            transition: color .2s;
         }
-        .toggle-mode a:hover {
-            text-decoration: underline;
-        }
+        .toggle-mode a:hover { color: #7dd3fc; text-decoration: underline; }
+        .toggle-mode a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+        /* ═══════════════ مؤشر التحميل ═══════════════ */
         .spinner {
             display: inline-block;
             width: 14px;
@@ -183,12 +336,62 @@
             border: 2px solid currentColor;
             border-top-color: transparent;
             border-radius: 50%;
-            animation: spin 0.6s linear infinite;
+            animation: spin .6s linear infinite;
             vertical-align: middle;
-            margin-left: 8px;
+            margin-inline-start: 8px;
         }
-        @keyframes spin {
-            to { transform: rotate(360deg); }
+        .btn-google .spinner { margin: 0; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ═══════════════ التذييل ═══════════════ */
+        .site-footer {
+            padding: 20px 16px 26px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            border-top: 1px solid rgba(148, 163, 184, 0.1);
+            background: linear-gradient(to top, rgba(2, 6, 23, 0.6), transparent);
+        }
+        .footer-inner { max-width: 640px; margin: 0 auto; }
+        .footer-copy { margin: 0 0 8px; }
+        .footer-links {
+            list-style: none;
+            margin: 0 0 10px;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer-links li + li::before {
+            content: '|';
+            margin: 0 12px;
+            color: #475569;
+        }
+        .footer-links a {
+            color: var(--text-soft);
+            text-decoration: none;
+            transition: color .2s;
+        }
+        .footer-links a:hover { color: var(--accent); text-decoration: underline; }
+        .footer-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+        .footer-note {
+            margin: 0;
+            font-size: 12px;
+            color: #8391a7;
+        }
+
+        /* ═══════════════ الشاشات الصغيرة ═══════════════ */
+        @media (max-width: 480px) {
+            .breadcrumbs-nav { padding: 12px 16px 0; font-size: 12px; }
+            .stage { padding: 16px 12px; }
+            .login-card { padding: 28px 20px 24px; border-radius: 20px; }
+            .login-title { font-size: 1.45rem; }
+            .footer-links li + li::before { margin: 0 8px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
         }
     </style>
     <link rel="canonical" href="https://chronoscapsule.vercel.app/login.html">
@@ -227,58 +430,14 @@
     }
 }
     </script>
-
-<style>
-.breadcrumbs-nav {
-  padding: 14px 25px 0;
-  font-size: 13px;
-  color: #94a3b8;
-  position: relative;
-  z-index: 5;
-}
-.breadcrumbs-nav ol {
-  list-style: none;
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  align-items: center;
-  margin: 0;
-  padding: 0;
-}
-.breadcrumbs-nav li {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-.breadcrumbs-nav li:not(:last-child)::after {
-  content: "›";
-  margin: 0 4px;
-  color: #475569;
-  font-size: 16px;
-}
-.breadcrumbs-nav a {
-  color: #38bdf8;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.breadcrumbs-nav a:hover {
-  color: #7dd3fc;
-  text-decoration: underline;
-}
-.breadcrumbs-nav [aria-current="page"] {
-  color: #cbd5e1;
-  font-weight: 500;
-}
-@media (max-width: 600px) {
-  .breadcrumbs-nav { padding: 10px 14px 0; font-size: 11px; }
-}
-</style>
     <meta name="msvalidate.01" content="8C98F70BB0281EC2491186C219E54D90" />
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
     <link rel="apple-touch-icon" href="/icon-192.svg">
 </head>
 <body>
+<div class="cosmos" aria-hidden="true"></div>
+
 <nav class="breadcrumbs-nav" aria-label="مسار التنقل">
   <ol itemscope itemtype="https://schema.org/BreadcrumbList">
     <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
@@ -294,11 +453,36 @@
   </ol>
 </nav>
 
-
+<main class="stage">
     <div class="login-card">
+
+        <!-- الشعار -->
+        <div class="brand">
+            <svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="شعار Chronos Capsule">
+                <defs>
+                    <linearGradient id="ccGrad" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+                        <stop offset="0" stop-color="#7dd3fc"/>
+                        <stop offset="1" stop-color="#a78bfa"/>
+                    </linearGradient>
+                </defs>
+                <!-- مدار كوكبي -->
+                <circle cx="32" cy="32" r="29" stroke="url(#ccGrad)" stroke-width="1.5" opacity=".5"/>
+                <ellipse cx="32" cy="32" rx="29" ry="10" transform="rotate(-25 32 32)" stroke="url(#ccGrad)" stroke-width="1.5" opacity=".85"/>
+                <!-- ساعة رملية (الزمن) -->
+                <path d="M22 18h20M22 46h20M24 18c0 8 6 10 8 14-2 4-8 6-8 14M40 18c0 8-6 10-8 14 2 4 8 6 8 14"
+                      stroke="url(#ccGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M27.5 44c1-4 3.5-6 4.5-6s3.5 2 4.5 6z" fill="url(#ccGrad)" opacity=".6"/>
+                <!-- كوكب صغير على المدار -->
+                <circle cx="58.3" cy="19.7" r="3" fill="#7dd3fc"/>
+            </svg>
+            <span class="brand-name">Chronos Capsule</span>
+        </div>
+
         <h1 id="formTitle" class="login-title">تسجيل الدخول</h1>
 
-        <div id="alertBox" class="alert"></div>
+        <p class="trust-note">مرحباً بك في Chronos Capsule. قم بتسجيل الدخول بأمان للوصول إلى كبسولاتك الزمنية عبر خدمة Supabase المشفرة.</p>
+
+        <div id="alertBox" class="alert" role="alert" aria-live="polite"></div>
 
         <!-- نموذج تسجيل الدخول / التسجيل -->
         <form id="loginForm" autocomplete="on">
@@ -322,7 +506,7 @@
 
         <!-- زر تسجيل الدخول بواسطة غوغل -->
         <button type="button" class="btn-google" id="googleLoginBtn" aria-label="التسجيل باستخدام Google">
-            <svg viewBox="0 0 24 24">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z"/>
                 <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.13 0-5.78-2.11-6.73-4.96H1.15v3.14C3.15 21.32 7.23 24 12 24z"/>
                 <path fill="#FBBC05" d="M5.27 14.24c-.25-.72-.38-1.49-.38-2.24s.13-1.52.38-2.24V6.6H1.15C.42 8.1 0 9.99 0 12s.42 3.9 1.15 5.4l4.12-3.16z"/>
@@ -333,9 +517,24 @@
 
         <div class="toggle-mode">
             <span id="toggleText">ليس لديك حساب؟</span>
-            <a id="toggleMode">إنشاء حساب جديد</a>
+            <a id="toggleMode" href="#" role="button">إنشاء حساب جديد</a>
         </div>
     </div>
+</main>
+
+<!-- ═══ التذييل ═══ -->
+<footer class="site-footer">
+    <div class="footer-inner">
+        <p class="footer-copy">© 2026 Chronos Capsule. جميع الحقوق محفوظة.</p>
+        <ul class="footer-links">
+            <li><a href="#">سياسة الخصوصية</a></li>
+            <li><a href="#">شروط الاستخدام</a></li>
+            <li><a href="#">اتصل بنا</a></li>
+        </ul>
+        <p class="footer-note">هذا الموقع هو مشروع تجريبي آمن، ولا يقوم بجمع بيانات لجهات خارجية.</p>
+    </div>
+</footer>
+
 
     <!-- ═══ Supabase JS SDK + إعدادات المشروع ═══ -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
