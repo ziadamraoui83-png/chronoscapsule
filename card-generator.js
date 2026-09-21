@@ -27,6 +27,9 @@
         bold:       { c1: '#f87171', c2: '#ef4444', emoji: '❤️', ar: 'جرأة',   en: 'Bold' }
     };
 
+    /* ═══ خريطة الأشهر العربية (إصلاح: Intl.DateTimeFormat مع ar-DZ يعطي "أيام" للشهر) ═══ */
+    const AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+
     /* ═══ أدوات مساعدة ═══ */
     function roundRect(ctx, x, y, w, h, r) {
         ctx.beginPath();
@@ -52,7 +55,9 @@
 
     function truncate(text, max) {
         const t = String(text || '');
-        return t.length > max ? t.slice(0, max - 1).trim() + '…' : t;
+        // استخدم code points (وليس UTF-16 code units) للتعامل الصحيح مع الإيموجي والعربية
+        const chars = [...t];
+        return chars.length > max ? chars.slice(0, max - 1).join('').trim() + '…' : t;
     }
 
     function flagOf(code) {
@@ -154,7 +159,7 @@
     function drawPill(ctx, x, y, opts) {
         const { text, emoji, bg, border, color, fontSize = 22, paddingX = 18, paddingY = 10, fontFamily = '"Tajawal", sans-serif', fontWeight = '700', dot } = opts;
         ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
-        const fullText = (emoji ? emoji + ' ' : '') + text;
+        const fullText = text;
         const textW = ctx.measureText(fullText).width;
         const dotW = dot ? 14 : 0;
         const pillW = textW + paddingX * 2 + dotW;
@@ -458,9 +463,18 @@
         const authorY = cardY + cardH * 0.68;
         const authorName = author || (isAr ? 'مجهول' : 'Anonymous');
         const whenISO = arrivalAt || createdAt || new Date().toISOString();
-        const whenText = new Intl.DateTimeFormat(isAr ? 'ar-DZ' : 'en-GB', {
-            year: 'numeric', month: 'short', day: 'numeric'
-        }).format(new Date(whenISO));
+        const whenDate = new Date(whenISO);
+        let whenText;
+        if (isAr) {
+            const day = whenDate.getDate();
+            const month = AR_MONTHS[whenDate.getMonth()];
+            const year = whenDate.getFullYear();
+            whenText = `${day} ${month} ${year}`;
+        } else {
+            whenText = new Intl.DateTimeFormat('en-GB', {
+                year: 'numeric', month: 'short', day: 'numeric'
+            }).format(whenDate);
+        }
 
         ctx.save();
         ctx.font = '400 22px "IBM Plex Mono", "Tajawal", monospace';
