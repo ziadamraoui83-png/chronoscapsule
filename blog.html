@@ -2,15 +2,12 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-    <!-- ═══ منع الوميض الأبيض — inline (critical CSS) ═══ -->
     <style id="cc_critical">
         html { background: #010103 !important; }
-        body { background: #010103; opacity: 0; transition: opacity 0.35s ease; }
-        body.cc-loaded { opacity: 1; }
+        body { background: #010103; }
     </style>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script>
-        // ✅ تطبيق اللغة فوراً لمنع الوميض (FOUC) - يدعم localStorage + cookie
         (function() {
             try {
                 var savedLang = localStorage.getItem('cc_lang');
@@ -22,7 +19,7 @@
                 document.documentElement.dir = (finalLang === 'ar') ? 'rtl' : 'ltr';
             } catch (e) {}
         })();
-        </script>
+    </script>
 
     <script>
     (function() {
@@ -37,7 +34,6 @@
     </script>
     <title>مدونة Chronos Capsule — مقالات عن الزمن والذكريات والكبسولات</title>
     <meta name="description" content="مدونة Chronos Capsule — مقالات ونصائح حول الكبسولات الزمنية، حفظ الذكريات، ورسائل المستقبل. محتوى عربي وإنجليزي مجاني.">
-    <meta name="keywords" content="مدونة, كبسولة الزمن, مقالات, Chronos Capsule blog, time capsule articles, ذكريات">
     <meta name="theme-color" content="#010103">
     <meta name="robots" content="index, follow, max-image-preview:large">
 
@@ -53,6 +49,8 @@
     <meta property="og:title" content="المدونة | Chronos Capsule">
     <meta property="og:description" content="مقالات ونصائح حول الكبسولات الزمنية وحفظ الذكريات.">
     <meta property="og:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
     <meta property="og:url" content="https://chronoscapsule.vercel.app/blog.html">
     <meta property="og:locale" content="ar_AR">
     <meta name="twitter:card" content="summary_large_image">
@@ -61,6 +59,7 @@
     <meta name="twitter:image" content="https://sylnhrtgrxfacskjaxlq.supabase.co/storage/v1/object/public/assets/og-cover.png">
     <meta name="twitter:image:alt" content="Chronos Capsule">
 
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/icon-192.svg">
     <link rel="apple-touch-icon" href="/icon-192.svg">
     <link rel="canonical" href="https://chronoscapsule.vercel.app/blog.html">
@@ -73,7 +72,7 @@
       "@type": "Blog",
       "name": "مدونة Chronos Capsule",
       "url": "https://chronoscapsule.vercel.app/blog.html",
-      "inLanguage": ["ar", "en"],
+      "inLanguage": "ar",
       "publisher": {
         "@type": "Organization",
         "name": "Chronos Capsule",
@@ -238,7 +237,6 @@
 }
 </style>
     <meta name="msvalidate.01" content="8C98F70BB0281EC2491186C219E54D90" />
-    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
 <nav class="breadcrumbs-nav" aria-label="مسار التنقل">
@@ -255,7 +253,6 @@
     </li>
   </ol>
 </nav>
-
 
 <header class="page-header">
     <a href="index.html" class="header-logo">
@@ -288,25 +285,25 @@
 
     <section class="posts">
 
-<!-- مقال جديد 21 سبتمبر 2026 -->
-<a href="blog-time-capsule-message-examples.html" class="post-card">
-    <span class="post-tag"><span class="lang-ar">قوالب</span><span class="lang-en">TEMPLATES</span></span>
-    <h2 class="post-title">
-        <span class="lang-ar">20 نموذج رسالة كبسولة زمنية جاهزة لكل مناسبة</span>
-        <span class="lang-en">20 Time Capsule Message Examples for Every Occasion</span>
-    </h2>
-    <p class="post-excerpt">
-        <span class="lang-ar">20 نموذجًا جاهزًا للنسخ: عيد ميلاد، تخرج، زفاف، مولود جديد، صديق، أو لنفسك. اختر، خصّص، وأرسل عبر الزمن.</span>
-        <span class="lang-en">20 ready-to-copy templates: birthdays, graduations, weddings, newborns, friends, or yourself. Pick, customize, and send through time.</span>
-    </p>
-    <div class="post-meta">
-        <span>📅 <span class="lang-ar">21 سبتمبر 2026</span><span class="lang-en">September 21, 2026</span></span>
-        <span>⏱️ <span class="lang-ar">11 دقيقة قراءة</span><span class="lang-en">11 min read</span></span>
-    </div>
-</a>
-        <span>⏱️ <span class="lang-ar">5 دقائق قراءة</span><span class="lang-en">5 min read</span></span>
-    </div>
+        <!-- مقال 21 سبتمبر 2026 — نماذج رسائل -->
+        <a href="blog-time-capsule-message-examples.html" class="post-card">
+            <span class="post-tag"><span class="lang-ar">قوالب</span><span class="lang-en">TEMPLATES</span></span>
+            <h2 class="post-title">
+                <span class="lang-ar">20 نموذج رسالة كبسولة زمنية جاهزة لكل مناسبة</span>
+                <span class="lang-en">20 Time Capsule Message Examples for Every Occasion</span>
+            </h2>
+            <p class="post-excerpt">
+                <span class="lang-ar">20 نموذجًا جاهزًا للنسخ: عيد ميلاد، تخرج، زفاف، مولود جديد، صديق، أو لنفسك. اختر، خصّص، وأرسل عبر الزمن.</span>
+                <span class="lang-en">20 ready-to-copy templates: birthdays, graduations, weddings, newborns, friends, or yourself. Pick, customize, and send through time.</span>
+            </p>
+            <div class="post-meta">
+                <span>📅 <span class="lang-ar">21 سبتمبر 2026</span><span class="lang-en">September 21, 2026</span></span>
+                <span>⏱️ <span class="lang-ar">11 دقيقة قراءة</span><span class="lang-en">11 min read</span></span>
+            </div>
+        </a>
 
+        <!-- مقال 20 سبتمبر 2026 — 50 سؤالاً -->
+        <a href="blog-time-capsule-questions.html" class="post-card">
             <span class="post-tag"><span class="lang-ar">أسئلة</span><span class="lang-en">QUESTIONS</span></span>
             <h2 class="post-title">
                 <span class="lang-ar">50 سؤالاً لكتابة كبسولة زمنية</span>
@@ -318,11 +315,11 @@
             </p>
             <div class="post-meta">
                 <span>📅 <span class="lang-ar">20 سبتمبر 2026</span><span class="lang-en">September 20, 2026</span></span>
-                <span>⏱️ <span class="lang-ar">10 دقائق قراءة</span><span class="lang-en">10 min read</span></span>
+                <span>⏱️ <span class="lang-ar">9 دقائق قراءة</span><span class="lang-en">9 min read</span></span>
             </div>
         </a>
 
-        <!-- مقال جديد -->
+        <!-- مقال 19 سبتمبر 2026 — كبسولة طفلي -->
         <a href="blog-time-capsule-for-my-child.html" class="post-card">
             <span class="post-tag"><span class="lang-ar">دليل</span><span class="lang-en">GUIDE</span></span>
             <h2 class="post-title">
@@ -339,58 +336,7 @@
             </div>
         </a>
 
-        <!-- مقال 1 -->
-        <a href="blog-how-to-write-a-time-capsule.html" class="post-card">
-            <span class="post-tag"><span class="lang-ar">دليل</span><span class="lang-en">GUIDE</span></span>
-            <h2 class="post-title">
-                <span class="lang-ar">كيف تكتب كبسولة زمنية مؤثرة؟ دليل كامل</span>
-                <span class="lang-en">How to Write a Powerful Time Capsule: Complete Guide</span>
-            </h2>
-            <p class="post-excerpt">
-                <span class="lang-ar">تعرّف على 7 نصائح عملية لكتابة كبسولة زمنية تترك أثراً حقيقياً — من اختيار الكلمات إلى تحديد الموعد المناسب.</span>
-                <span class="lang-en">Learn 7 practical tips for writing a time capsule that leaves a real impact — from choosing your words to setting the right time.</span>
-            </p>
-            <div class="post-meta">
-                <span>📅 <span class="lang-ar">13 سبتمبر 2026</span><span class="lang-en">September 13, 2026</span></span>
-                <span>⏱️ <span class="lang-ar">5 دقائق قراءة</span><span class="lang-en">5 min read</span></span>
-            </div>
-        </a>
-
-                <!-- مقال 2 -->
-        <a href="blog-10-ideas-for-future-messages.html" class="post-card">
-            <span class="post-tag"><span class="lang-ar">أفكار</span><span class="lang-en">IDEAS</span></span>
-            <h2 class="post-title">
-                <span class="lang-ar">10 أفكار لرسائل للمستقبل — دليل شامل</span>
-                <span class="lang-en">10 Ideas for Future Messages — Complete Guide</span>
-            </h2>
-            <p class="post-excerpt">
-                <span class="lang-ar">10 أفكار ملهمة وعملية لكتابة رسائل للمستقبل — من رسالة لنفسك بعد سنة، إلى رسالة لطفلك المستقبلي.</span>
-                <span class="lang-en">10 inspiring and practical ideas for writing future messages — from a letter to yourself in a year, to a letter to your future child.</span>
-            </p>
-            <div class="post-meta">
-                <span>📅 <span class="lang-ar">13 سبتمبر 2026</span><span class="lang-en">September 13, 2026</span></span>
-                <span>⏱️ <span class="lang-ar">6 دقائق قراءة</span><span class="lang-en">6 min read</span></span>
-            </div>
-        </a>
-
-        <!-- مقال 3 -->
-        <a href="blog-letter-to-future-lover.html" class="post-card">
-            <span class="post-tag"><span class="lang-ar">علاقات</span><span class="lang-en">RELATIONSHIPS</span></span>
-            <h2 class="post-title">
-                <span class="lang-ar">كيف تكتب رسالة لحبيبك في المستقبل: 5 نماذج وطرق مؤثرة</span>
-                <span class="lang-en">How to Write a Letter to Your Future Lover: 5 Templates</span>
-            </h2>
-            <p class="post-excerpt">
-                <span class="lang-ar">5 نماذج جاهزة + نصائح عاطفية لكتابة رسالة حب للحبيب في المستقبل — من الرسالة الكلاسيكية إلى رسالة الوداع.</span>
-                <span class="lang-en">5 ready templates + emotional tips for writing a love letter to your future lover — from classic to goodbye letters.</span>
-            </p>
-            <div class="post-meta">
-                <span>📅 <span class="lang-ar">15 سبتمبر 2026</span><span class="lang-en">September 15, 2026</span></span>
-                <span>⏱️ <span class="lang-ar">7 دقائق قراءة</span><span class="lang-en">7 min read</span></span>
-            </div>
-        </a>
-
-        <!-- مقال 4 -->
+        <!-- مقال 16 سبتمبر 2026 — أفضل المواقع -->
         <a href="blog-best-time-capsule-websites.html" class="post-card">
             <span class="post-tag"><span class="lang-ar">قائمة</span><span class="lang-en">LIST</span></span>
             <h2 class="post-title">
@@ -407,7 +353,7 @@
             </div>
         </a>
 
-        <!-- مقال 5 -->
+        <!-- مقال 16 سبتمبر 2026 — حفظ الذكريات -->
         <a href="blog-how-to-preserve-digital-memories.html" class="post-card">
             <span class="post-tag"><span class="lang-ar">دليل</span><span class="lang-en">GUIDE</span></span>
             <h2 class="post-title">
@@ -424,7 +370,7 @@
             </div>
         </a>
 
-        <!-- مقال 6 -->
+        <!-- مقال 16 سبتمبر 2026 — رسالة لنفسي -->
         <a href="blog-letter-to-my-future-self.html" class="post-card">
             <span class="post-tag"><span class="lang-ar">نماذج</span><span class="lang-en">TEMPLATES</span></span>
             <h2 class="post-title">
@@ -441,6 +387,56 @@
             </div>
         </a>
 
+        <!-- مقال 15 سبتمبر 2026 — رسالة لحبيبك -->
+        <a href="blog-letter-to-future-lover.html" class="post-card">
+            <span class="post-tag"><span class="lang-ar">علاقات</span><span class="lang-en">RELATIONSHIPS</span></span>
+            <h2 class="post-title">
+                <span class="lang-ar">كيف تكتب رسالة لحبيبك في المستقبل: 5 نماذج وطرق مؤثرة</span>
+                <span class="lang-en">How to Write a Letter to Your Future Lover: 5 Templates</span>
+            </h2>
+            <p class="post-excerpt">
+                <span class="lang-ar">5 نماذج جاهزة + نصائح عاطفية لكتابة رسالة حب للحبيب في المستقبل — من الرسالة الكلاسيكية إلى رسالة الوداع.</span>
+                <span class="lang-en">5 ready templates + emotional tips for writing a love letter to your future lover — from classic to goodbye letters.</span>
+            </p>
+            <div class="post-meta">
+                <span>📅 <span class="lang-ar">15 سبتمبر 2026</span><span class="lang-en">September 15, 2026</span></span>
+                <span>⏱️ <span class="lang-ar">7 دقائق قراءة</span><span class="lang-en">7 min read</span></span>
+            </div>
+        </a>
+
+        <!-- مقال 13 سبتمبر 2026 — كيف تكتب كبسولة -->
+        <a href="blog-how-to-write-a-time-capsule.html" class="post-card">
+            <span class="post-tag"><span class="lang-ar">دليل</span><span class="lang-en">GUIDE</span></span>
+            <h2 class="post-title">
+                <span class="lang-ar">كيف تكتب كبسولة زمنية مؤثرة؟ دليل كامل</span>
+                <span class="lang-en">How to Write a Powerful Time Capsule: Complete Guide</span>
+            </h2>
+            <p class="post-excerpt">
+                <span class="lang-ar">تعرّف على 7 نصائح عملية لكتابة كبسولة زمنية تترك أثراً حقيقياً — من اختيار الكلمات إلى تحديد الموعد المناسب.</span>
+                <span class="lang-en">Learn 7 practical tips for writing a time capsule that leaves a real impact — from choosing your words to setting the right time.</span>
+            </p>
+            <div class="post-meta">
+                <span>📅 <span class="lang-ar">13 سبتمبر 2026</span><span class="lang-en">September 13, 2026</span></span>
+                <span>⏱️ <span class="lang-ar">5 دقائق قراءة</span><span class="lang-en">5 min read</span></span>
+            </div>
+        </a>
+
+        <!-- مقال 13 سبتمبر 2026 — 10 أفكار -->
+        <a href="blog-10-ideas-for-future-messages.html" class="post-card">
+            <span class="post-tag"><span class="lang-ar">أفكار</span><span class="lang-en">IDEAS</span></span>
+            <h2 class="post-title">
+                <span class="lang-ar">10 أفكار لرسائل للمستقبل — دليل شامل</span>
+                <span class="lang-en">10 Ideas for Future Messages — Complete Guide</span>
+            </h2>
+            <p class="post-excerpt">
+                <span class="lang-ar">10 أفكار ملهمة وعملية لكتابة رسائل للمستقبل — من رسالة لنفسك بعد سنة، إلى رسالة لطفلك المستقبلي.</span>
+                <span class="lang-en">10 inspiring and practical ideas for writing future messages — from a letter to yourself in a year, to a letter to your future child.</span>
+            </p>
+            <div class="post-meta">
+                <span>📅 <span class="lang-ar">13 سبتمبر 2026</span><span class="lang-en">September 13, 2026</span></span>
+                <span>⏱️ <span class="lang-ar">6 دقائق قراءة</span><span class="lang-en">6 min read</span></span>
+            </div>
+        </a>
 
         <!-- مقالات قادمة -->
         <div class="coming-soon">
@@ -511,8 +507,18 @@
         applyLang(currentLang === 'ar' ? 'en' : 'ar');
     });
     applyLang(currentLang);
+
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function(){
+            navigator.serviceWorker.register('sw.js').catch(function(){});
+        });
+    }
+    requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+            document.body.classList.add('cc-loaded');
+        });
+    });
 })();
 </script>
-    <script src="transitions.js?v=20260915"></script>
 </body>
 </html>
