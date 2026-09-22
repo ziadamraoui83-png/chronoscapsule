@@ -1,19 +1,186 @@
-1.  /
-2.  /capsules.html
-3.  /archive.html
-4.  /how-it-works.html
-5.  /faq.html
-6.  /blog.html                       (lastmod محدّث)
-7.  /blog-how-to-write-a-time-capsule.html
-8.  /blog-10-ideas-for-future-messages.html
-9.  /blog-letter-to-future-lover.html
-10. /blog-best-time-capsule-websites.html
-11. /blog-how-to-preserve-digital-memories.html
-12. /blog-letter-to-my-future-self.html
-13. /blog-time-capsule-for-my-child.html
-14. /blog-time-capsule-questions.html
-15. /blog-time-capsule-message-examples.html
-16. /about.html
-17. /contact.html
-18. /privacy.html
-19. /terms.html
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/"/>
+        <image:image>
+            <image:loc>https://chronoscapsule.vercel.app/icon-512.svg</image:loc>
+            <image:caption>Chronos Capsule — كبسولة الزمن الكونية</image:caption>
+            <image:title>Chronos Capsule Logo</image:title>
+        </image:image>
+        <image:image>
+            <image:loc>https://chronoscapsule.vercel.app/screenshot.png</image:loc>
+            <image:caption>لقطة شاشة للموقع الرئيسي</image:caption>
+        </image:image>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/capsules.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/capsules.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/capsules.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/archive.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/archive.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/archive.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/how-it-works.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/how-it-works.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/how-it-works.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/faq.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/faq.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/faq.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog.html</loc>
+        <lastmod>2026-09-21</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-how-to-write-a-time-capsule.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-how-to-write-a-time-capsule.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-how-to-write-a-time-capsule.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-10-ideas-for-future-messages.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-10-ideas-for-future-messages.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-10-ideas-for-future-messages.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-letter-to-future-lover.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-best-time-capsule-websites.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-best-time-capsule-websites.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-best-time-capsule-websites.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-how-to-preserve-digital-memories.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-letter-to-my-future-self.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-time-capsule-for-my-child.html</loc>
+        <lastmod>2026-09-19</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-time-capsule-for-my-child.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-time-capsule-for-my-child.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-time-capsule-questions.html</loc>
+        <lastmod>2026-09-20</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-time-capsule-questions.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-time-capsule-questions.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/blog-time-capsule-message-examples.html</loc>
+        <lastmod>2026-09-21</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/blog-time-capsule-message-examples.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/blog-time-capsule-message-examples.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/about.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/about.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/about.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/contact.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.7</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/contact.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/contact.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/privacy.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/privacy.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/privacy.html"/>
+    </url>
+
+    <url>
+        <loc>https://chronoscapsule.vercel.app/terms.html</loc>
+        <lastmod>2026-09-17</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.5</priority>
+        <xhtml:link rel="alternate" hreflang="ar" href="https://chronoscapsule.vercel.app/terms.html"/>
+        <xhtml:link rel="alternate" hreflang="x-default" href="https://chronoscapsule.vercel.app/terms.html"/>
+    </url>
+
+</urlset>
