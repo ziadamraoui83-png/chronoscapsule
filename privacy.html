@@ -309,7 +309,8 @@
             <li><a href="#s6" id="toc6">حقوقك</a></li>
             <li><a href="#s7" id="toc7">خصوصية الأطفال</a></li>
             <li><a href="#s8" id="toc8">تحديثات السياسة</a></li>
-            <li><a href="#s9" id="toc9">تواصل معنا</a></li>
+            <li><a href="#s9" id="toc9">سياسة المحتوى</a></li>
+            <li><a href="#s10" id="toc10">تواصل معنا</a></li>
         </ul>
     </nav>
 
@@ -354,8 +355,13 @@
     </div>
 
     <div class="card" id="s9">
-        <h2 class="card-title"><span class="card-title-icon">✉️</span><span id="s9Title">9. تواصل معنا</span></h2>
+        <h2 class="card-title"><span class="card-title-icon">🛡️</span><span id="s9Title">9. سياسة المحتوى</span></h2>
         <div class="card-text" id="s9Text"></div>
+    </div>
+
+    <div class="card" id="s10">
+        <h2 class="card-title"><span class="card-title-icon">✉️</span><span id="s10Title">10. تواصل معنا</span></h2>
+        <div class="card-text" id="s10Text"></div>
     </div>
 
     <div class="contact-box">
@@ -418,7 +424,7 @@ function copyEmail(btn) {
             tocTitle: 'فهرس المحتويات',
             toc1: 'المعلومات التي نجمعها', toc2: 'كيف نستخدم معلوماتك', toc3: 'ملفات تعريف الارتباط',
             toc4: 'خدمات الطرف الثالث', toc5: 'أمان البيانات', toc6: 'حقوقك',
-            toc7: 'خصوصية الأطفال', toc8: 'تحديثات السياسة', toc9: 'تواصل معنا',
+            toc7: 'خصوصية الأطفال', toc8: 'تحديثات السياسة', toc9: 'سياسة المحتوى', toc10: 'تواصل معنا',
             s1Title: '1. المعلومات التي نجمعها',
             s1Text: `<p>لا نطلب منك أي معلومات شخصية إلزامية. جميع الكبسولات مجهولة افتراضيًا.</p>
                 <p>مع ذلك، نجمع الأنواع التالية من المعلومات:</p>
@@ -484,8 +490,21 @@ function copyEmail(btn) {
             s8Title: '8. تحديثات السياسة',
             s8Text: `<p>قد نقوم بتحديث هذه السياسة من وقت لآخر. أي تغييرات جوهرية ستُعلن على الموقع.</p>
                 <p>استمرارك في استخدام الموقع بعد التغييرات يعني موافقتك على السياسة المُحدّثة.</p>`,
-            s9Title: '9. تواصل معنا',
-            s9Text: '<p>لأي سؤال حول سياسة الخصوصية، أو لممارسة حقوقك، تواصل معنا:</p>',
+            s9Title: '9. سياسة المحتوى',
+            s9Text: `<p>نلتزم في Chronos Capsule بتوفير بيئة آمنة ومحترمة. عند استخدام المنصة، يُمنع إرسال:</p>
+                <ul>
+                    <li>الكلمات البذيئة أو المسيئة</li>
+                    <li>خطاب الكراهية ضد أي مجموعة</li>
+                    <li>المحتوى الجنسي الصريح</li>
+                    <li>التهديدات أو العنف</li>
+                    <li>المحتوى غير القانوني</li>
+                    <li>الإعلانات أو الرسائل التجارية (Spam)</li>
+                    <li>المعلومات الشخصية للأطراف الثالثة</li>
+                </ul>
+                <p>نستخدم فلترًا تلقائيًا للكلمات المحظورة. عند اكتشاف مخالفة، يتم رفض الرسالة تلقائيًا مع رسالة تنبيه.</p>
+                <p>إذا لاحظت محتوى مخالفًا، يمكنك الإبلاغ عنه بالضغط على زر 🚩 بجانب الرسالة.</p>`,
+            s10Title: '10. تواصل معنا',
+            s10Text: '<p>لأي سؤال حول سياسة الخصوصية، أو لممارسة حقوقك، تواصل معنا:</p>',
             contactTitle: 'هل لديك سؤال؟',
             contactDesc: 'نحن هنا للإجابة على أي استفسار حول خصوصيتك.',
             contactBtn: 'راسلنا عبر Gmail',
@@ -507,7 +526,7 @@ function copyEmail(btn) {
             tocTitle: 'Table of Contents',
             toc1: 'Information We Collect', toc2: 'How We Use It', toc3: 'Cookies',
             toc4: 'Third-Party Services', toc5: 'Data Security', toc6: 'Your Rights',
-            toc7: 'Children\'s Privacy', toc8: 'Policy Updates', toc9: 'Contact Us',
+            toc7: 'Children\'s Privacy', toc8: 'Policy Updates', toc9: 'Content Policy', toc10: 'Contact Us',
             s1Title: '1. Information We Collect',
             s1Text: `<p>We don't require any mandatory personal information. All capsules are anonymous by default.</p>
                 <p>However, we collect the following types of information:</p>
@@ -573,8 +592,21 @@ function copyEmail(btn) {
             s8Title: '8. Policy Updates',
             s8Text: `<p>We may update this policy from time to time. Any substantial changes will be announced on the site.</p>
                 <p>Your continued use of the site after changes means you accept the updated policy.</p>`,
-            s9Title: '9. Contact Us',
-            s9Text: '<p>For any privacy question or to exercise your rights, contact us:</p>',
+            s9Title: '9. Content Policy',
+            s9Text: `<p>We at Chronos Capsule are committed to providing a safe and respectful environment. When using the platform, the following are prohibited:</p>
+                <ul>
+                    <li>Profanity or offensive language</li>
+                    <li>Hate speech against any group</li>
+                    <li>Explicit sexual content</li>
+                    <li>Threats or violence</li>
+                    <li>Illegal content</li>
+                    <li>Advertisements or commercial messages (Spam)</li>
+                    <li>Personal information of third parties</li>
+                </ul>
+                <p>We use an automated filter for prohibited words. When a violation is detected, the message is automatically rejected with a warning.</p>
+                <p>If you notice violating content, you can report it by pressing the 🚩 button next to the message.</p>`,
+            s10Title: '10. Contact Us',
+            s10Text: '<p>For any privacy question or to exercise your rights, contact us:</p>',
             contactTitle: 'Have a question?',
             contactDesc: 'We\'re here to answer any inquiry about your privacy.',
             contactBtn: 'Contact via Gmail',
@@ -606,7 +638,7 @@ function copyEmail(btn) {
         $('tocTitle').textContent = D.tocTitle;
         $('toc1').textContent = D.toc1; $('toc2').textContent = D.toc2; $('toc3').textContent = D.toc3;
         $('toc4').textContent = D.toc4; $('toc5').textContent = D.toc5; $('toc6').textContent = D.toc6;
-        $('toc7').textContent = D.toc7; $('toc8').textContent = D.toc8; $('toc9').textContent = D.toc9;
+        $('toc7').textContent = D.toc7; $('toc8').textContent = D.toc8; $('toc9').textContent = D.toc9; $('toc10').textContent = D.toc10;
         $('s1Title').textContent = D.s1Title; $('s1Text').innerHTML = D.s1Text;
         $('s2Title').textContent = D.s2Title; $('s2Text').innerHTML = D.s2Text;
         $('s3Title').textContent = D.s3Title; $('s3Text').innerHTML = D.s3Text;
@@ -616,6 +648,7 @@ function copyEmail(btn) {
         $('s7Title').textContent = D.s7Title; $('s7Text').innerHTML = D.s7Text;
         $('s8Title').textContent = D.s8Title; $('s8Text').innerHTML = D.s8Text;
         $('s9Title').textContent = D.s9Title; $('s9Text').innerHTML = D.s9Text;
+        $('s10Title').textContent = D.s10Title; $('s10Text').innerHTML = D.s10Text;
         $('contactTitle').textContent = D.contactTitle;
         $('contactDesc').textContent = D.contactDesc;
         $('contactBtn').textContent = D.contactBtn;
